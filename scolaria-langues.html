@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>ScolarIA — Langues</title>
+<meta name="theme-color" content="#0ea5e9">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@700;800&family=IBM+Plex+Mono:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#020b14;--surf:#040f1c;--card:#071828;--bord:#0c2a42;--a1:#0ea5e9;--a2:#38bdf8;--a3:#22d3ee;--a4:#f59e0b;--tx:#e0f2fe;--mu:#4a7fa0;--nav:62px;--hdr:52px;--fb:'IBM Plex Sans',sans-serif;--fd:'IBM Plex Serif',serif;--fm:'IBM Plex Mono',monospace}
+[data-theme=light]{--bg:#f0f9ff;--surf:#fff;--card:#e0f2fe;--bord:#bae6fd;--tx:#0c4a6e;--mu:#0369a1}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;height:100dvh;background:var(--bg);color:var(--tx);font-family:var(--fb);overflow:hidden;-webkit-font-smoothing:antialiased}
+#app{display:flex;flex-direction:column;height:100dvh;max-width:480px;margin:0 auto;overflow:hidden;padding-top:env(safe-area-inset-top,0px)}
+#hdr{height:var(--hdr);background:var(--bg);border-bottom:1px solid var(--bord);display:flex;align-items:center;padding:0 12px;gap:8px;flex-shrink:0;z-index:50}
+.hdr-back{width:34px;height:34px;border-radius:10px;background:rgba(14,165,233,.1);border:1px solid rgba(14,165,233,.2);color:var(--a1);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;text-decoration:none;flex-shrink:0;line-height:1}
+.hdr-logo{font-family:var(--fd);font-size:15px;font-weight:700;color:var(--tx);flex:1}
+.lb{padding:4px 10px;border-radius:20px;border:1.5px solid var(--bord);background:transparent;color:var(--mu);font-size:11px;font-weight:700;cursor:pointer;transition:all .2s}
+.lb.on{border-color:var(--a1);background:rgba(14,165,233,.15);color:var(--a1)}
+.hdr-xp{font-family:var(--fm);font-size:11px;color:var(--a4);background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.2);border-radius:20px;padding:3px 10px;flex-shrink:0}
+#xpw{height:3px;background:var(--bord);flex-shrink:0}
+#xpb{height:100%;background:linear-gradient(90deg,var(--a1),var(--a2));width:0%;transition:width .6s}
+#content{flex:1;overflow:hidden;position:relative;margin-bottom:calc(var(--nav) + env(safe-area-inset-bottom,0px))}
+.sec{position:absolute;inset:0;overflow-y:auto;padding:16px;padding-bottom:calc(var(--nav) + 42px + env(safe-area-inset-bottom,0px));display:none;scrollbar-width:thin;scrollbar-color:rgba(14,165,233,.45) transparent}
+.sec::-webkit-scrollbar{width:6px}
+.sec::-webkit-scrollbar-track{background:rgba(255,255,255,.03);border-radius:3px}
+.sec::-webkit-scrollbar-thumb{background:rgba(14,165,233,.45);border-radius:3px}
+.sec::-webkit-scrollbar-thumb:hover{background:rgba(14,165,233,.75)}
+.sec.on{display:block}
+#nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;height:calc(var(--nav) + 22px + env(safe-area-inset-bottom, 20px));background:transparent;border:none;display:flex;align-items:flex-end;padding:0 4px calc(8px + env(safe-area-inset-bottom, 16px)) 4px;z-index:99990;overflow:visible;transition:transform .22s ease,opacity .22s ease}
+#nav::before{content:"";position:absolute;left:0;right:0;bottom:0;height:calc(var(--nav) + env(safe-area-inset-bottom,20px));background:rgba(2,11,20,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--bord);z-index:-1;pointer-events:none}
+.ni{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;border:none;background:transparent;color:var(--mu);padding:6px 2px;cursor:pointer;font-size:9.5px;font-weight:600;font-family:var(--fb);position:relative;transition:color .25s;-webkit-tap-highlight-color:transparent}
+.ni.on{color:var(--a1)}
+.niw{width:44px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:14px;transition:all .22s}
+.ni.on .niw{background:rgba(14,165,233,.15);transform:translateY(-3px)}
+.nic{flex:0 0 64px;position:relative;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;align-self:flex-start}
+.nic .niw{width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,var(--a1),var(--a2));color:#fff;box-shadow:0 4px 16px rgba(14,165,233,.45);margin-top:0;font-size:22px;transition:transform .2s,box-shadow .2s;position:relative;z-index:99999;animation:navPulse 3s ease-in-out infinite}
+.nic.on .niw{box-shadow:0 6px 24px rgba(14,165,233,.7)}
+@keyframes navPulse{0%,100%{box-shadow:0 4px 16px rgba(14,165,233,.45)}50%{box-shadow:0 6px 24px rgba(14,165,233,.7)}}
+.gph{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.gpt{font-family:var(--fd);font-size:18px;font-weight:700}
+.xpc{background:linear-gradient(135deg,var(--a1),var(--a2));border-radius:22px;padding:20px;color:#fff;margin-bottom:16px;position:relative;overflow:hidden}
+.xpc::before{content:'';position:absolute;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.07);top:-30px;right:-30px;pointer-events:none}
+.sg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px}
+.sc{background:var(--card);border:1px solid var(--bord);border-radius:18px;padding:14px 8px;text-align:center}
+.sn{font-family:var(--fm);font-size:24px;font-weight:700;color:var(--a1)}
+.sl{font-size:9.5px;color:var(--mu);margin-top:3px}
+.cont{background:var(--surf);border:1.5px solid var(--a1);border-radius:18px;padding:14px 16px;margin-bottom:12px;cursor:pointer;display:none;width:100%;text-align:left}
+.bmain{width:100%;padding:15px;background:linear-gradient(135deg,var(--a1),var(--a2));border:none;color:#fff;border-radius:18px;font-size:15px;font-family:var(--fd);font-weight:700;cursor:pointer;box-shadow:0 6px 20px rgba(14,165,233,.35);animation:glowPulse 3s ease-in-out infinite}
+@keyframes glowPulse{0%,100%{box-shadow:0 6px 20px rgba(14,165,233,.35)}50%{box-shadow:0 8px 28px rgba(14,165,233,.55)}}
+.cc{background:var(--surf);border:1px solid var(--bord);border-radius:20px;padding:16px;margin-bottom:10px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all .2s}
+.cc:active{transform:scale(.97);border-color:var(--a1)}
+.cc.done{border-color:rgba(79,214,160,.3)}
+.cci{width:52px;height:52px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0}
+.ccin{flex:1;min-width:0}
+.cct{font-size:14px;font-weight:700;color:var(--tx);margin-bottom:2px}
+.ccs{font-size:11px;color:var(--mu);line-height:1.4}
+.ccm{display:flex;align-items:center;gap:8px;margin-top:6px}
+.ccb{font-size:9px;font-weight:700;padding:2px 8px;border-radius:20px}
+.ccp{flex:1;height:4px;background:var(--bord);border-radius:2px;overflow:hidden}
+.ccpf{height:100%;border-radius:2px;transition:width .4s}
+#cm{position:fixed;inset:0;z-index:700;background:var(--bg);display:none;flex-direction:column}
+#cm.on{display:flex}
+.cmh{display:flex;align-items:center;gap:10px;padding:14px 16px;background:var(--surf);border-bottom:1px solid var(--bord);flex-shrink:0}
+.cmb{flex:1;overflow-y:auto;padding:18px 16px;scrollbar-width:thin;scrollbar-color:rgba(14,165,233,.45) transparent}
+.cmb::-webkit-scrollbar{width:6px}
+.cmb::-webkit-scrollbar-track{background:rgba(255,255,255,.03);border-radius:3px}
+.cmb::-webkit-scrollbar-thumb{background:rgba(14,165,233,.45);border-radius:3px}
+.cmb::-webkit-scrollbar-thumb:hover{background:rgba(14,165,233,.75)}
+.cmf{padding:14px 16px;background:var(--surf);border-top:1px solid var(--bord);display:flex;gap:8px;padding-bottom:max(14px,env(safe-area-inset-bottom))}
+.cs{margin-bottom:18px}
+.ct{font-size:13px;font-weight:800;color:var(--tx);margin-bottom:10px}
+.crule{background:rgba(14,165,233,.08);border-left:3px solid var(--a1);border-radius:0 12px 12px 0;padding:12px 14px;font-size:13px;color:var(--tx);line-height:1.8;margin-bottom:12px}
+.ctw{overflow-x:auto;border-radius:14px;border:1px solid var(--bord);margin-bottom:10px}
+.ctb{width:100%;border-collapse:collapse;font-size:12px}
+.ctb th{background:rgba(14,165,233,.1);color:var(--a1);font-weight:700;padding:10px 12px;text-align:left;border-bottom:1px solid var(--bord)}
+.ctb td{padding:9px 12px;color:var(--tx);border-bottom:1px solid rgba(255,255,255,.04)}
+.ctb tr:last-child td{border-bottom:none}
+.ctip{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:12px;padding:10px 14px;font-size:12px;color:var(--a4);line-height:1.6}
+.cex{background:var(--card);border:1px solid var(--bord);border-radius:12px;padding:10px 14px;margin-bottom:8px}
+.cen{display:block;font-size:13px;font-weight:600;color:var(--tx)}
+.cfr{display:block;font-size:11.5px;color:var(--mu);margin-top:2px}
+.pc{margin-bottom:28px}
+.phd{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.phl{flex:1;height:1px;background:var(--bord)}
+.phb{font-size:10px;font-weight:700;padding:4px 12px;border-radius:20px;background:var(--card);border:1px solid var(--bord);color:var(--mu)}
+.phb.done{background:rgba(79,214,160,.1);border-color:rgba(79,214,160,.3);color:var(--a3)}
+.pp{position:relative;padding:0 16px}
+.pr{display:flex;margin-bottom:0}
+.pr.left{justify-content:flex-start;padding-left:8px}
+.pr.right{justify-content:flex-end;padding-right:8px}
+.pr.center{justify-content:center}
+.pzig{width:100%;height:56px;display:block}
+.pn{width:72px;height:72px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .22s;border:3px solid var(--bord);background:var(--card);flex-shrink:0}
+.pn.done{background:rgba(79,214,160,.1);border-color:var(--a3)}
+.pn.cur{background:linear-gradient(135deg,var(--a1),var(--a2));border-color:transparent;box-shadow:0 8px 24px rgba(14,165,233,.5);animation:pulse 2s ease-in-out infinite}
+.pn.lock{opacity:.35;cursor:not-allowed}
+@keyframes pulse{0%,100%{box-shadow:0 8px 24px rgba(14,165,233,.4)}50%{box-shadow:0 10px 30px rgba(14,165,233,.7)}}
+.pe{font-size:26px;line-height:1}
+.pl{font-size:8.5px;font-weight:700;margin-top:2px;text-align:center;max-width:62px;color:var(--mu);line-height:1.2}
+.pn.cur .pl{color:rgba(255,255,255,.9)}
+.pn.done .pl{color:var(--a3)}
+.pxp{font-family:var(--fm);font-size:9px;color:var(--a4);margin-top:4px}
+.pcd{margin:8px 16px 16px;padding:10px;background:rgba(79,214,160,.08);border:1px solid rgba(79,214,160,.2);border-radius:14px;font-size:11.5px;font-weight:700;color:var(--a3);text-align:center}
+#lo{position:fixed;inset:0;z-index:800;background:var(--bg);display:none;flex-direction:column}
+#lo.on{display:flex}
+.lh{display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--surf);border-bottom:1px solid var(--bord);flex-shrink:0}
+.lc{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid var(--bord);color:var(--mu);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.lpw{flex:1;height:8px;background:var(--bord);border-radius:4px;overflow:hidden}
+.lpf{height:100%;background:var(--a1);border-radius:4px;transition:width .4s}
+.lxp{font-family:var(--fm);font-size:11px;font-weight:700;color:var(--a4);flex-shrink:0}
+.lb2{flex:1;overflow-y:auto;padding:20px 18px;display:flex;flex-direction:column;gap:12px;scrollbar-width:thin;scrollbar-color:rgba(14,165,233,.45) transparent}
+.lb2::-webkit-scrollbar{width:6px}
+.lb2::-webkit-scrollbar-track{background:rgba(255,255,255,.03);border-radius:3px}
+.lb2::-webkit-scrollbar-thumb{background:rgba(14,165,233,.45);border-radius:3px}
+.lb2::-webkit-scrollbar-thumb:hover{background:rgba(14,165,233,.75)}
+.lty{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--mu)}
+.lti{font-family:var(--fd);font-size:20px;font-weight:700;color:var(--tx);line-height:1.3}
+.lft{padding:14px 18px;background:var(--surf);border-top:1px solid var(--bord);flex-shrink:0;padding-bottom:max(14px,env(safe-area-inset-bottom))}
+.lbtn{width:100%;padding:14px;border:none;border-radius:16px;font-size:15px;font-family:var(--fb);font-weight:700;cursor:pointer;background:var(--a1);color:#fff;box-shadow:0 4px 16px rgba(14,165,233,.3)}
+.lbtn:disabled{opacity:.4;cursor:not-allowed}
+.vg{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.vc{background:var(--card);border:1.5px solid var(--bord);border-radius:14px;padding:12px;text-align:center;cursor:pointer;min-height:60px;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:all .18s}
+.vc.on{border-color:var(--a3);background:rgba(79,214,160,.06)}
+.vf{font-size:13px;font-weight:700;color:var(--tx)}
+.vb{font-size:12px;color:var(--a1);margin-top:4px;display:none}
+.vc.on .vb{display:block}
+.qq{font-size:15px;font-weight:700;color:var(--tx);line-height:1.5;margin-bottom:14px}
+.qo{display:flex;flex-direction:column;gap:8px}
+.qb{padding:12px 16px;border-radius:14px;border:1.5px solid var(--bord);background:transparent;color:var(--tx);font-size:13px;font-family:var(--fb);text-align:left;cursor:pointer;transition:all .18s}
+.qb.ok{border-color:var(--a3);background:rgba(79,214,160,.1);color:var(--a3)}
+.qb.ko{border-color:#fc5c7d;background:rgba(252,92,125,.08);color:#fc5c7d}
+.mg{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.mi{padding:12px 10px;border-radius:14px;border:2px solid var(--bord);background:var(--card);text-align:center;font-size:13px;font-weight:600;color:var(--tx);cursor:pointer;transition:all .18s}
+.mi.sel{border-color:var(--a1);background:rgba(14,165,233,.1);color:var(--a1)}
+.mi.mat{border-color:var(--a3);background:rgba(79,214,160,.1);color:var(--a3);pointer-events:none}
+.mi.bad{border-color:#fc5c7d;background:rgba(252,92,125,.08)}
+.ws{display:flex;flex-wrap:wrap;gap:8px;min-height:50px;background:rgba(14,165,233,.05);border:1.5px solid rgba(14,165,233,.2);border-radius:14px;padding:10px;margin-bottom:10px}
+.wb{display:flex;flex-wrap:wrap;gap:8px;min-height:44px;background:var(--card);border:1.5px dashed var(--bord);border-radius:14px;padding:10px}
+.wc{padding:7px 14px;border-radius:20px;background:var(--surf);border:1.5px solid var(--bord);font-size:13px;font-weight:600;color:var(--tx);cursor:pointer;user-select:none;transition:all .15s}
+.wc.used{background:rgba(14,165,233,.1);border-color:var(--a1);color:var(--a1)}
+.fo{padding:11px 14px;border-radius:14px;border:1.5px solid var(--bord);background:transparent;color:var(--tx);font-size:13px;font-family:var(--fb);text-align:left;cursor:pointer;transition:all .18s}
+.fo.ok{border-color:var(--a3);background:rgba(79,214,160,.1);color:var(--a3)}
+.fo.ko{border-color:#fc5c7d;background:rgba(252,92,125,.08);color:#fc5c7d}
+.rb{background:rgba(14,165,233,.08);border-left:3px solid var(--a1);border-radius:0 12px 12px 0;padding:12px 14px;font-size:13px;color:var(--tx);line-height:1.8;margin-bottom:12px}
+.ei{background:var(--card);border:1px solid var(--bord);border-radius:12px;padding:10px 14px}
+.een{font-size:13px;font-weight:600;color:var(--tx)}
+.efr{font-size:11.5px;color:var(--mu);margin-top:2px}
+.ti{width:100%;background:var(--card);border:1.5px solid var(--bord);border-radius:12px;padding:11px 14px;color:var(--tx);font-size:16px;font-family:var(--fb);outline:none;margin-top:10px}
+.ti:focus{border-color:var(--a1)}
+.ti.ok{border-color:var(--a3);background:rgba(79,214,160,.06)}
+.ti.ko{border-color:#fc5c7d;background:rgba(252,92,125,.06)}
+.tf{font-size:12px;font-weight:600;margin-top:6px;display:none}
+.tf.ok{color:var(--a3);display:block}
+.tf.ko{color:#fc5c7d;display:block}
+.rw{text-align:center;padding:32px 20px;display:flex;flex-direction:column;align-items:center;gap:14px}
+.re{font-size:64px}
+.rt{font-family:var(--fd);font-size:24px;font-weight:700;color:var(--tx)}
+.rx{font-size:32px;font-weight:800;color:var(--a4);font-family:var(--fm)}
+.cqw{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.cqb{padding:11px 8px;border-radius:14px;border:1px solid var(--bord);background:var(--card);color:var(--tx);font-size:11.5px;font-family:var(--fb);font-weight:600;cursor:pointer;text-align:center;line-height:1.3}
+.cqb:active{border-color:var(--a1);background:rgba(14,165,233,.08)}
+.ciw{background:var(--card);border:1.5px solid var(--bord);border-radius:18px;padding:10px 14px;display:flex;gap:8px;align-items:flex-end}
+.cia{flex:1;background:transparent;border:none;outline:none;color:var(--tx);font-size:16px;font-family:var(--fb);resize:none;max-height:80px;line-height:1.5}
+.cis{width:38px;height:38px;border-radius:50%;background:var(--a1);border:none;color:#fff;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.profav{font-size:52px;margin-bottom:10px}
+.profn{font-family:var(--fd);font-size:20px;font-weight:700}
+.profs{font-size:12px;opacity:.8;margin-top:3px}
+#toast{position:fixed;bottom:calc(var(--nav) + 12px);left:50%;transform:translateX(-50%) translateY(20px);background:var(--surf);border:1px solid var(--bord);border-radius:20px;padding:10px 20px;font-size:13px;font-weight:600;color:var(--tx);z-index:9999;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,.3)}
+#toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+.hdr-logo span{color:var(--a1)}
+/* DOT GRID */
+#dotgrid{position:fixed;inset:0;pointer-events:none;z-index:0;max-width:480px;left:50%;transform:translateX(-50%)}
+/* ANIMATIONS */
+@keyframes slideUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes shimmer{0%,100%{opacity:0}50%{opacity:1}}
+/* HERO */
+.hero-card{background:linear-gradient(135deg,rgba(14,165,233,.18),rgba(56,189,248,.06));border:1px solid rgba(14,165,233,.18);border-radius:24px;padding:20px;margin-bottom:14px;position:relative;overflow:hidden;animation:slideUp .4s ease both}
+.hero-card::before{content:'';position:absolute;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(14,165,233,.1),transparent);top:-40px;right:-40px;pointer-events:none}
+.hero-row{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.hero-avatar{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--a1),var(--a2));display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;border:2px solid rgba(14,165,233,.35)}
+.hero-name{font-family:var(--fd);font-size:18px;font-weight:700;color:var(--tx);letter-spacing:-.3px}
+.hero-sub{font-size:10px;color:rgba(224,242,254,.55);margin-top:2px;text-transform:uppercase;letter-spacing:1.2px}
+.streak-row{display:flex;align-items:center;gap:6px}
+.streak-val{font-family:var(--fm);font-size:15px;font-weight:700;color:var(--a4)}
+.streak-lbl{font-size:10px;color:rgba(224,242,254,.55);margin-left:2px}
+.hero-quote{font-family:var(--fd);font-size:12px;font-style:italic;color:rgba(224,242,254,.5);margin-top:10px;line-height:1.5;border-top:1px solid rgba(14,165,233,.12);padding-top:10px}
+/* XP CARD */
+.xp-card{background:var(--card);border:1px solid rgba(14,165,233,.18);border-radius:20px;padding:16px;margin-bottom:12px;animation:slideUp .4s .06s ease both}
+.xp-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.xp-level{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--a1);background:rgba(14,165,233,.08);padding:3px 10px;border-radius:20px;border:1px solid rgba(14,165,233,.18)}
+.xp-val{font-family:var(--fm);font-size:20px;font-weight:700;color:var(--a4)}
+.xp-sub{font-size:9px;color:var(--mu)}
+.xp-bar-wrap{height:6px;background:var(--bord);border-radius:3px;overflow:hidden}
+.xp-bar-fill{height:100%;background:linear-gradient(90deg,var(--a1),var(--a2));border-radius:3px;transition:width .6s}
+/* STATS */
+.stats-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px;animation:slideUp .4s .12s ease both}
+.stat-card{background:var(--card);border:1px solid var(--bord);border-radius:16px;padding:12px 8px;text-align:center}
+.stat-n{font-family:var(--fm);font-size:22px;font-weight:700;color:var(--a1)}
+.stat-l{font-size:9px;color:var(--mu);margin-top:3px;line-height:1.3}
+/* CTA */
+.cta-btn{width:100%;padding:15px;background:linear-gradient(135deg,var(--a1),var(--a2));border:none;color:#fff;border-radius:18px;font-size:15px;font-family:var(--fd);font-weight:700;cursor:pointer;box-shadow:0 6px 20px rgba(14,165,233,.35);margin-bottom:14px;animation:glowPulse 3s infinite,slideUp .4s .18s ease both;letter-spacing:-.2px}
+.cta-btn:active{transform:scale(.97)}
+/* SECTION LABELS */
+.sec-sep{height:1px;background:linear-gradient(90deg,transparent,rgba(14,165,233,.3),transparent);margin:16px 0}
+.sec-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.8px;color:var(--mu);margin-bottom:10px}
+/* XP BAR shimmer */
+#xpb::after{content:'';position:absolute;top:0;right:-20px;width:30px;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.5));animation:shimmer 2s infinite}
+#xpb{position:relative}
+</style>
+</head>
+<body>
+<div id="app">
+<svg id="dotgrid" preserveAspectRatio="none">
+  <defs><pattern id="dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="#0ea5e9" opacity="0.4"/></pattern></defs>
+  <rect width="100%" height="100%" fill="url(#dots)" opacity="0.04"/>
+</svg>
+<div id="hdr">
+  <a href="scolaria-base.html" class="hdr-back" title="Retour">&#8249;</a>
+  <div class="hdr-logo">ScolarIA <span>Langues</span></div>
+  <div style="display:flex;gap:5px">
+    <button class="lb on" id="b-en" onclick="switchLang('en')">&#127468;&#127463; EN</button>
+    <button class="lb" id="b-es" onclick="switchLang('es')">&#127466;&#127480; ES</button>
+  </div>
+  <div class="hdr-xp" id="hxp">0 XP</div>
+</div>
+<div id="xpw"><div id="xpb"></div></div>
+<div id="content">
+  <div class="sec on" id="s-accueil">
+    <div class="hero-card">
+      <div class="hero-row">
+        <div class="hero-avatar" id="heroAvatar">🌍</div>
+        <div>
+          <div class="hero-name" id="heroName">Gabriel</div>
+          <div class="hero-sub">Langues · 3ème</div>
+        </div>
+      </div>
+      <div class="streak-row">
+        <span style="font-size:18px">🔥</span>
+        <span class="streak-val" id="as">0</span>
+        <span class="streak-lbl">jour(s) de streak</span>
+      </div>
+      <div class="hero-quote" id="heroQuote">Une langue ouvre une fen&#234;tre sur le monde.</div>
+    </div>
+
+    <div class="xp-card">
+      <div class="xp-row">
+        <div class="xp-level" id="alv">D&#233;butant</div>
+        <div>
+          <div class="xp-val" id="axp">0 XP</div>
+          <div class="xp-sub">/ <span id="an">100</span> XP prochain niveau</div>
+        </div>
+      </div>
+      <div class="xp-bar-wrap"><div class="xp-bar-fill" id="ab" style="width:0%"></div></div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-n" id="al">0</div>
+        <div class="stat-l">Le&#231;ons</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n" style="color:var(--a4)" id="statStrk">0</div>
+        <div class="stat-l">🔥 Streak</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n" style="color:var(--a3)" id="aw">0</div>
+        <div class="stat-l">Mots appris</div>
+      </div>
+    </div>
+
+    <button class="cont" id="bcont" onclick="langContinue()" style="display:none">
+      <div style="font-size:9px;color:var(--a1);font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px">&#9654; Continuer</div>
+      <div style="font-size:13px;font-weight:700;color:var(--tx)" id="ctxt">Reprendre</div>
+    </button>
+
+    <button class="cta-btn" onclick="goSec('parcours')">🗺 Voir le parcours</button>
+  </div>
+  <div class="sec" id="s-cours">
+    <div class="gph">
+      <div class="gpt">&#128218; Cours</div>
+      <div style="display:flex;gap:5px">
+        <button class="lb on" id="lc-en" onclick="switchLang('en')">&#127468;&#127463;</button>
+        <button class="lb" id="lc-es" onclick="switchLang('es')">&#127466;&#127480;</button>
+      </div>
+    </div>
+    <div id="clist"></div>
+  </div>
+  <div class="sec" id="s-parcours">
+    <div class="gph">
+      <div class="gpt">&#128506; Parcours</div>
+      <div style="display:flex;gap:5px">
+        <button class="lb on" id="lp-en" onclick="switchLang('en')">&#127468;&#127463;</button>
+        <button class="lb" id="lp-es" onclick="switchLang('es')">&#127466;&#127480;</button>
+      </div>
+    </div>
+    <div id="ppath"></div>
+  </div>
+  <div class="sec" id="s-chat">
+    <div class="gph"><div class="gpt">&#129302; Chat IA</div></div>
+    <div style="background:linear-gradient(135deg,rgba(14,165,233,.1),rgba(56,189,248,.05));border:1px solid rgba(14,165,233,.2);border-radius:18px;padding:14px;margin-bottom:14px">
+      <div style="font-size:13px;font-weight:700;color:var(--a1);margin-bottom:5px">Professeur IA</div>
+      <div style="font-size:12px;color:var(--mu);line-height:1.6">Pose n'importe quelle question. J'explique, je corrige, je g\u00e9n\u00e8re des exercices.</div>
+    </div>
+    <div class="cqw">
+      <button class="cqb" onclick="askAI('Explique le pr\u00e9sent simple avec tableau')">Conjugaison</button>
+      <button class="cqb" onclick="askAI('10 mots essentiels A2 avec exemples')">Vocabulaire</button>
+      <button class="cqb" onclick="askAI('Dialogue 10 repliques A2 avec traduction')">Dialogue</button>
+      <button class="cqb" onclick="askAI('5 exercices de grammaire A2 avec corrections')">Exercices</button>
+    </div>
+    <div class="ciw">
+      <textarea class="cia" id="cia" rows="1" placeholder="Pose ta question..." oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,80)+'px'" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChat()}"></textarea>
+      <button class="cis" onclick="sendChat()">&#10148;</button>
+    </div>
+    <div id="cres" style="margin-top:12px"></div>
+  </div>
+  <div class="sec" id="s-profil">
+    <div class="gph"><div class="gpt">Profil</div></div>
+    <div style="background:linear-gradient(135deg,var(--a1),var(--a2));border-radius:22px;padding:22px;color:#fff;text-align:center;margin-bottom:16px">
+      <div class="profav">&#127891;</div>
+      <div class="profn" id="pnm">Apprenant</div>
+      <div class="profs" id="psb">D\u00e9butant . 0 XP</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px" id="psg"></div>
+    <button onclick="if(confirm('R\u00e9initialiser ?')){localStorage.removeItem('sk_lang');location.reload()}" style="width:100%;padding:12px;background:rgba(252,92,125,.07);border:1px solid rgba(252,92,125,.2);color:#fc5c7d;border-radius:14px;font-size:13px;font-family:var(--fb);cursor:pointer">R\u00e9initialiser ma progression</button>
+  </div>
+</div>
+<div id="cm">
+  <div class="cmh">
+    <button onclick="closeCM()" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid var(--bord);color:var(--mu);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">&#10005;</button>
+    <div style="font-family:var(--fd);font-size:16px;font-weight:800;flex:1" id="cmtit">Cours</div>
+    <span id="cmbdg" style="font-size:9px;font-weight:700;padding:3px 10px;border-radius:20px">A1</span>
+  </div>
+  <div class="cmb" id="cmbd"></div>
+  <div class="cmf">
+    <button onclick="closeCM()" style="flex:1;padding:13px;background:var(--card);border:1.5px solid var(--bord);color:var(--tx);border-radius:14px;font-size:14px;font-family:var(--fb);font-weight:600;cursor:pointer">Fermer</button>
+    <button id="cmst" style="flex:2;padding:13px;background:linear-gradient(135deg,var(--a1),var(--a2));border:none;color:#fff;border-radius:14px;font-size:14px;font-family:var(--fb);font-weight:700;cursor:pointer">&#9654; Commencer</button>
+  </div>
+</div>
+<div id="lo">
+  <div class="lh">
+    <button class="lc" onclick="closeLesson()">&#10005;</button>
+    <div class="lpw"><div class="lpf" id="lpf"></div></div>
+    <div class="lxp" id="lxp">+0 XP</div>
+  </div>
+  <div class="lb2" id="lbd"></div>
+  <div class="lft"><button class="lbtn" id="lbtn" onclick="nextStep()">Continuer</button></div>
+</div>
+<nav id="nav">
+  <button class="ni" id="ni-cours" onclick="goSec('cours')">
+    <div class="niw"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+    <span>Cours</span>
+  </button>
+  <button class="ni" id="ni-parcours" onclick="goSec('parcours')">
+    <div class="niw"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+    <span>Parcours</span>
+  </button>
+  <button class="ni nic on" id="ni-accueil" onclick="goSec('accueil')">
+    <div class="niw"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+    <span>Accueil</span>
+  </button>
+  <button class="ni" id="ni-chat" onclick="goSec('chat')">
+    <div class="niw"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+    <span>Chat IA</span>
+  </button>
+  <button class="ni" id="ni-profil" onclick="goSec('profil')">
+    <div class="niw"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+    <span>Profil</span>
+  </button>
+</nav>
+<div id="toast"></div>
+</div>
+<script>
+
+const LANG_COURSES={
+  en:{name:'Anglais',flag:'🇬🇧',color:'#0ea5e9',units:[
+    {id:'en_a1_1',level:'A1',title:'Se présenter',emoji:'👋',xp:50,color:'#0ea5e9',
+     desc:'Salutations, prénom, âge — les bases pour se présenter',
+     lessons:[
+      {id:'en_a1_1_1',title:'Salutations',type:'vocab',
+       pairs:[['Hello','Bonjour'],['Hi','Salut'],['Good morning','Bonjour (matin)'],['Good evening','Bonsoir'],['Goodbye','Au revoir'],['See you later','À plus tard']]},
+      {id:'en_a1_1_2',title:'Se présenter',type:'grammar',
+       rule:'I am ... / My name is ...',
+       examples:[['I am Gabriel.','Je suis Gabriel.'],['My name is Lea.','Je m appelle Léa.'],['I am 14 years old.','J ai 14 ans.'],['I am French.','Je suis français(e).']],
+       exercise:{type:'translate',items:[['Je suis étudiant.','I am a student.'],['J ai 15 ans.','I am 15 years old.']]}},
+      {id:'en_a1_1_3',title:'Associer les paires',type:'match',
+       pairs:[['Hello','Bonjour'],['Goodbye','Au revoir'],['Thank you','Merci'],['Sorry','Désolé'],['Please','S\'il vous plaît'],['Yes','Oui']]},
+      {id:'en_a1_1_4',title:'QCM — Salutations',type:'qcm',
+       questions:[
+        {q:'Comment dit-on "Bonjour" en anglais ?',opts:['Hello','Goodbye','Thank you','Sorry'],a:0},
+        {q:'Quelle phrase est correcte ?',opts:['I am 15 years.','I have 15 years old.','I am 15 years old.','My age is 15.'],a:2},
+        {q:'Au revoir ?',opts:['Hello','Goodbye','Sorry','Please'],a:1}
+       ]}
+     ]},
+    {id:'en_a1_2',level:'A1',title:'Nombres & couleurs',emoji:'🎨',xp:60,color:'#8b5cf6',
+     desc:'Compter jusqu\'à 20 et nommer les couleurs',
+     lessons:[
+      {id:'en_a1_2_1',title:'Chiffres 1-20',type:'vocab',
+       pairs:[['one','un'],['two','deux'],['three','trois'],['four','quatre'],['five','cinq'],['ten','dix'],['fifteen','quinze'],['twenty','vingt']]},
+      {id:'en_a1_2_2',title:'Les couleurs',type:'vocab',
+       pairs:[['red','rouge'],['blue','bleu'],['green','vert'],['yellow','jaune'],['black','noir'],['white','blanc'],['orange','orange'],['purple','violet']]},
+      {id:'en_a1_2_3',title:'Mettre dans l\'ordre',type:'order',
+       sentences:[
+        {words:['I','am','fifteen','years','old'],answer:'I am fifteen years old'},
+        {words:['The','sky','is','blue'],answer:'The sky is blue'},
+        {words:['She','has','two','cats'],answer:'She has two cats'}
+       ]}
+     ]},
+    {id:'en_a2_1',level:'A2',title:'Present Simple',emoji:'⏱',xp:80,color:'#10b981',
+     desc:'La règle fondamentale du présent en anglais',
+     lessons:[
+      {id:'en_a2_1_1',title:'Règle du Present Simple',type:'grammar',
+       rule:'Sujet + verbe (base) — He/She/It + verbe + S',
+       examples:[['I play football.','Je joue au foot.'],['She plays piano.','Elle joue du piano.'],['They study maths.','Ils étudient les maths.'],['He works every day.','Il travaille chaque jour.']],
+       exercise:{type:'translate',items:[['Je mange une pomme.','I eat an apple.'],['Elle aime la musique.','She likes music.']]}},
+      {id:'en_a2_1_2',title:'Verbes courants',type:'vocab',
+       pairs:[['to eat','manger'],['to drink','boire'],['to sleep','dormir'],['to work','travailler'],['to study','étudier'],['to play','jouer'],['to like','aimer'],['to go','aller']]},
+      {id:'en_a2_1_3',title:'Compléter les blancs',type:'fill',
+       items:[
+        {sentence:'She ___ to school every day.',blank:'goes',opts:['go','goes','going','gone']},
+        {sentence:'They ___ football on weekends.',blank:'play',opts:['play','plays','playing','played']},
+        {sentence:'He ___ English very well.',blank:'speaks',opts:['speak','speaks','speaking','spoken']}
+       ]},
+      {id:'en_a2_1_4',title:'QCM Present Simple',type:'qcm',
+       questions:[
+        {q:'She ___ to school every day.',opts:['go','goes','going','gone'],a:1},
+        {q:'Traduire : "Ils jouent au foot"',opts:['They play football.','They plays football.','They playing.','They played.'],a:0},
+        {q:'He/She/It...',opts:['ne change pas','prend un S','prend ES','se double'],a:1}
+       ]}
+     ]},
+    {id:'en_a2_2',level:'A2',title:'Past Simple',emoji:'⏪',xp:90,color:'#f59e0b',
+     desc:'Exprimer des actions passées et les verbes irréguliers',
+     lessons:[
+      {id:'en_a2_2_1',title:'Verbes réguliers (+ED)',type:'grammar',
+       rule:'Verbe régulier + ED au passé',
+       examples:[['I played football yesterday.','J ai joué au foot hier.'],['She worked all night.','Elle a travaillé toute la nuit.'],['They studied for the exam.','Ils ont étudié pour l exam.']],
+       exercise:{type:'translate',items:[['Elle a regardé la télé.','She watched TV.'],['Nous avons étudié.','We studied.']]}},
+      {id:'en_a2_2_2',title:'Verbes irréguliers essentiels',type:'vocab',
+       pairs:[['go went','aller allé'],['eat ate','manger mangé'],['have had','avoir eu'],['see saw','voir vu'],['come came','venir venu'],['take took','prendre pris']]},
+      {id:'en_a2_2_3',title:'Associer les irréguliers',type:'match',
+       pairs:[['go','went'],['eat','ate'],['have','had'],['see','saw'],['take','took'],['make','made']]}
+     ]},
+    {id:'en_b1_1',level:'B1',title:'Will / Going to',emoji:'🚀',xp:100,color:'#ef4444',
+     desc:'Parler du futur et exprimer ses projets',
+     lessons:[
+      {id:'en_b1_1_1',title:'Will vs Going to',type:'grammar',
+       rule:'Will = décision spontanée / Going to = plan prévu',
+       examples:[['I will help you!','Je vais t aider ! (spontané)'],['I am going to study tonight.','Je vais étudier ce soir. (plan)'],['She will probably pass.','Elle va probablement réussir.']],
+       exercise:{type:'translate',items:[['Je vais aller au cinéma ce soir.','I am going to go to the cinema tonight.'],['Il va pleuvoir.','It is going to rain.']]}},
+      {id:'en_b1_1_2',title:'Vocabulaire avancé',type:'vocab',
+       pairs:[['although','bien que'],['however','cependant'],['therefore','donc'],['moreover','de plus'],['nevertheless','néanmoins'],['whereas','tandis que']]},
+      {id:'en_b1_1_3',title:'Mettre dans l\'ordre',type:'order',
+       sentences:[
+        {words:['I','am','going','to','study','tonight'],answer:'I am going to study tonight'},
+        {words:['She','will','probably','pass','the','exam'],answer:'She will probably pass the exam'},
+        {words:['We','are','going','to','travel','to','Paris'],answer:'We are going to travel to Paris'}
+       ]},
+    {id:'en_b1_2',level:'B1',title:'Present Perfect',emoji:'🔄',xp:110,color:'#8b5cf6',
+     desc:'Relier le passe au present — have + participe passe',
+     lessons:[
+      {id:'en_b1_2_1',title:'Formation',type:'grammar',
+       rule:'Subject + have/has + past participle',
+       examples:[['I have visited Paris.','J ai visite Paris.'],['She has never eaten sushi.','Elle n a jamais mange de sushi.']],
+       exercise:{type:'translate',items:[['J ai deja vu ce film.','I have already seen this film.']]}},
+      {id:'en_b1_2_2',title:'Marqueurs cl\u00e9s',type:'vocab',
+       pairs:[['already','d\u00e9j\u00e0'],['never','jamais'],['just','venir de'],['for','depuis dur\u00e9e'],['since','depuis date'],['ever','d\u00e9j\u00e0 question']]},
+      {id:'en_b1_2_3',title:'QCM Present Perfect',type:'qcm',
+       questions:[
+        {q:'Forme correcte :',opts:['I have saw','I have seen','I saw him yesterday','I am seen'],a:1},
+        {q:'for ou since avec une date ?',opts:['for 2020','since 2020','since 3 years','for last Monday'],a:1}
+       ]}
+     ]}
+     ]}
+  ]},
+  es:{name:'Espagnol',flag:'🇪🇸',color:'#f59e0b',units:[
+    {id:'es_a1_1',level:'A1',title:'Hola — Saludos',emoji:'👋',xp:50,color:'#f59e0b',
+     desc:'Les salutations et se présenter en espagnol',
+     lessons:[
+      {id:'es_a1_1_1',title:'Salutations',type:'vocab',
+       pairs:[['Hola','Salut'],['Buenos días','Bonjour'],['Buenas tardes','Bon apr\u00e8s-midi'],['Buenas noches','Bonne nuit'],['Adiós','Au revoir'],['Hasta luego','À bientôt']]},
+      {id:'es_a1_1_2',title:'Se présenter',type:'grammar',
+       rule:'Me llamo... / Tengo... años / Soy de...',
+       examples:[['Me llamo Gabriel.','Je m appelle Gabriel.'],['Tengo 14 años.','J ai 14 ans.'],['Soy de Francia.','Je suis de France.'],['Soy estudiante.','Je suis élève.']],
+       exercise:{type:'translate',items:[['Je m appelle Marie.','Me llamo Marie.'],['J ai 16 ans.','Tengo 16 años.']]}},
+      {id:'es_a1_1_3',title:'Associer les paires',type:'match',
+       pairs:[['Hola','Salut'],['Gracias','Merci'],['Sí','Oui'],['No','Non'],['Por favor','S\'il vous plaît'],['Adiós','Au revoir']]},
+      {id:'es_a1_1_4',title:'QCM Saludos',type:'qcm',
+       questions:[
+        {q:'Bonjour (matin) en espagnol ?',opts:['Hola','Buenos días','Buenas tardes','Adiós'],a:1},
+        {q:'Je m appelle Lucas ?',opts:['Yo soy Lucas','Me llamo Lucas','Mi nombre Lucas','Llamo me Lucas'],a:1},
+        {q:'J ai 15 ans ?',opts:['Soy 15 años','Tengo 15 años','Estoy 15 años','Tengo 15 ano'],a:1}
+       ]}
+     ]},
+    {id:'es_a1_2',level:'A1',title:'Números y colores',emoji:'🎨',xp:60,color:'#8b5cf6',
+     desc:'Compter et nommer les couleurs en espagnol',
+     lessons:[
+      {id:'es_a1_2_1',title:'Chiffres 1-20',type:'vocab',
+       pairs:[['uno','un'],['dos','deux'],['tres','trois'],['cuatro','quatre'],['cinco','cinq'],['diez','dix'],['quince','quinze'],['veinte','vingt']]},
+      {id:'es_a1_2_2',title:'Los colores',type:'vocab',
+       pairs:[['rojo','rouge'],['azul','bleu'],['verde','vert'],['amarillo','jaune'],['negro','noir'],['blanco','blanc'],['naranja','orange'],['morado','violet']]},
+      {id:'es_a1_2_3',title:'Compléter les blancs',type:'fill',
+       items:[
+        {sentence:'Tengo ___ años.',blank:'quince',opts:['uno','quince','veinte','dos']},
+        {sentence:'El cielo es ___.',blank:'azul',opts:['rojo','verde','azul','negro']},
+        {sentence:'Hay ___ gatos.',blank:'tres',opts:['uno','dos','tres','cuatro']}
+       ]}
+     ]},
+    {id:'es_a2_1',level:'A2',title:'Presente de indicativo',emoji:'⏱',xp:80,color:'#10b981',
+     desc:'Le présent de l\'indicatif et les verbes irréguliers',
+     lessons:[
+      {id:'es_a2_1_1',title:'Verbes en -AR (Hablar)',type:'grammar',
+       rule:'hablo, hablas, habla, hablamos, habláis, hablan',
+       examples:[['Yo hablo español.','Je parle espagnol.'],['Él habla muy bien.','Il parle très bien.'],['Nosotros hablamos en clase.','Nous parlons en classe.']],
+       exercise:{type:'translate',items:[['Je parle français.','Hablo francés.'],['Elle travaille chaque jour.','Ella trabaja cada día.']]}},
+      {id:'es_a2_1_2',title:'Verbes irréguliers courants',type:'vocab',
+       pairs:[['ser','être (permanent)'],['estar','être (temporaire)'],['tener','avoir'],['ir','aller'],['hacer','faire'],['decir','dire']]},
+      {id:'es_a2_1_3',title:'Associer',type:'match',
+       pairs:[['ser','être'],['tener','avoir'],['ir','aller'],['hacer','faire'],['poder','pouvoir'],['querer','vouloir']]},
+      {id:'es_a2_1_4',title:'QCM Presente',type:'qcm',
+       questions:[
+        {q:'Conjuguer "hablar" 3e pers. sing.',opts:['hablo','hablas','habla','hablamos'],a:2},
+        {q:'Différence SER / ESTAR ?',opts:['Aucune','SER=temporaire','SER=permanent / ESTAR=temporaire','Synonymes'],a:2},
+        {q:'"Tener" à la 1ère personne :',opts:['tengo','tienes','tiene','tenemos'],a:0}
+       ]}
+     ]},
+    {id:'es_a2_2',level:'A2',title:'Pretérito indefinido',emoji:'⏪',xp:90,color:'#ef4444',
+     desc:'Le passé simple espagnol pour raconter des événements',
+     lessons:[
+      {id:'es_a2_2_1',title:'Passé simple -AR',type:'grammar',
+       rule:'hablé, hablaste, habló, hablamos, hablasteis, hablaron',
+       examples:[['Ayer hablé con María.','Hier j ai parlé avec María.'],['Ella trabajó toda la noche.','Elle a travaillé toute la nuit.'],['Comimos pizza juntos.','Nous avons mangé ensemble.']],
+       exercise:{type:'translate',items:[['Hier j ai étudié 2 heures.','Ayer estudié 2 horas.'],['Il a mangé une pomme.','Él comió una manzana.']]}},
+      {id:'es_a2_2_2',title:'Verbes irréguliers passé',type:'vocab',
+       pairs:[['ir fui','aller allé'],['ser fui','être fus'],['tener tuve','avoir eus'],['hacer hice','faire fis'],['venir vine','venir vins'],['decir dije','dire dis']]},
+      {id:'es_a2_2_3',title:'Mettre dans l\'ordre',type:'order',
+       sentences:[
+        {words:['Ayer','hablé','con','María'],answer:'Ayer hablé con María'},
+        {words:['Ella','trabajó','toda','la','noche'],answer:'Ella trabajó toda la noche'},
+        {words:['Comimos','pizza','juntos'],answer:'Comimos pizza juntos'}
+       ]}
+     ]},{id:'es_b1_1',level:'B1',title:'Futuro simple',emoji:'🚀',xp:100,color:'#ef4444',
+     desc:'Le futur simple pour parler de projets et pr\u00e9dictions',
+     lessons:[
+      {id:'es_b1_1_1',title:'Formation du futur',type:'grammar',
+       rule:'Infinitif + e, as, a, emos, eis, an',
+       examples:[['Ma\u00f1ana estudiar\u00e9.','Demain j etudierai.'],['Ella hablar\u00e1 con el.','Elle parlera avec lui.'],['Viviremos en Madrid.','Nous vivrons a Madrid.']],
+       exercise:{type:'translate',items:[['Demain je travaillerai.','Ma\u00f1ana trabajar\u00e9.'],['Il voyagera en ete.','El viajar\u00e1 en verano.']]}},
+      {id:'es_b1_1_2',title:'Irreguliers futur',type:'vocab',
+       pairs:[['tener tendr\u00e9','avoir aurai'],['hacer har\u00e9','faire ferai'],['poder podr\u00e9','pouvoir pourrai'],['saber sabr\u00e9','savoir saurai'],['venir vendr\u00e9','venir viendrai'],['decir dir\u00e9','dire dirai']]},
+      {id:'es_b1_1_3',title:'QCM Futuro',type:'qcm',
+       questions:[
+        {q:'Futur de hablar a yo :',opts:['hablar\u00e9','hablar\u00e1s','habla','hablo'],a:0},
+        {q:'Futur irregulier de tener :',opts:['tenera','tendr\u00e1','tenia','teneras'],a:1},
+        {q:'Traduire : Il fera beau demain',opts:['Har\u00e1 buen tiempo ma\u00f1ana.','Hace buen tiempo.','Hizo buen tiempo.','Hacer buen tiempo.'],a:0}
+       ]}
+     ]},
+    {id:'es_b1_2',level:'B1',title:'Subjuntivo',emoji:'🌀',xp:120,color:'#8b5cf6',
+     desc:'Le subjonctif pour exprimer souhait et obligation',
+     lessons:[
+      {id:'es_b1_2_1',title:'Formation subjonctif',type:'grammar',
+       rule:'Quiero que + SUBJONCTIF — terminaisons inversees',
+       examples:[['Quiero que vengas.','Je veux que tu viennes.'],['Es importante que estudies.','Il est important que tu etudies.'],['Espero que todo salga bien.','J espere que tout ira bien.']],
+       exercise:{type:'translate',items:[['Je veux que tu etudies.','Quiero que estudies.']]}},
+      {id:'es_b1_2_2',title:'Expressions subjonctif',type:'vocab',
+       pairs:[['quiero que','je veux que'],['es importante que','il est important que'],['ojal\u00e1','pourvu que'],['para que','pour que'],['aunque','bien que'],['espero que','j esp\u00e8re que']]}
+     ]}
+  ]}
+};
+
+const COURSE_DATA={};
+COURSE_DATA['en_a1_1']='<div class="cs"><div class="ct">🔄 Rappel — Tu sais déjà</div><div class="ctw"><table class="ctb"><tr><th>Expression</th><th>Traduction</th></tr><tr><td>Hello / Hi</td><td>Bonjour / Salut</td></tr><tr><td>My name is...</td><td>Je m appelle...</td></tr><tr><td>I am ... years old</td><td>J ai ... ans</td></tr><tr><td>How are you?</td><td>Comment vas-tu ?</td></tr></table></div></div><div class="cs"><div class="ct">🎯 Niveau 3ème — Présentation complète</div><div class="crule">I am [adj] / I have [noun] / I live in [lieu] / I would like to [verbe]</div><div class="ctw"><table class="ctb"><tr><th>Structure</th><th>Exemple</th><th>Traduction</th></tr><tr><td>I am + adj</td><td>I am passionate about manga</td><td>Je suis passionné de manga</td></tr><tr><td>I live in...</td><td>I live in France</td><td>J habite en France</td></tr><tr><td>I would like to...</td><td>I would like to be a developer</td><td>Je voudrais être développeur</td></tr><tr><td>In my free time...</td><td>In my free time, I read manga</td><td>Dans mon temps libre, je lis des manga</td></tr></table></div><div class="ctip">💡 En 3ème, la présentation doit être COMPLÈTE : goûts, projets, description. Pas juste ton prénom.</div></div><div class="cs"><div class="ct">📝 Exemple niveau brevet</div><div class="cex"><span class="cen">Hi! My name is Gabriel. I am 14 years old and I live in France. I am passionate about manga and technology. In my free time, I read manga and develop apps. I would like to become a developer in the future.</span><span class="cfr">Bonjour ! Je m appelle Gabriel. J ai 14 ans et j habite en France...</span></div></div>';
+COURSE_DATA['en_a2_1']='<div class="cs"><div class="ct">🔄 Rappel — He/She/It + S</div><div class="crule">Sujet + verbe de base — SAUF He/She/It qui prend un S</div></div><div class="cs"><div class="ct">📊 Tableau complet — TO WORK</div><div class="ctw"><table class="ctb"><tr><th>Pronom</th><th>Affirmatif</th><th>Négatif</th><th>Interrogatif</th></tr><tr><td>I / You / We / They</td><td>I work</td><td>I do not work</td><td>Do you work?</td></tr><tr><td>He / She / It</td><td>He <strong>works</strong></td><td>He does not work</td><td>Does she work?</td></tr></table></div><div class="ctip">⚠️ Piège brevet : avec does not, le verbe perd son S.<br>✅ She does not work (pas does not works)</div></div><div class="cs"><div class="ct">🕐 Marqueurs de temps</div><div class="ctw"><table class="ctb"><tr><th>Marqueur</th><th>Traduction</th></tr><tr><td>every day / always</td><td>tous les jours / toujours</td></tr><tr><td>often / sometimes / never</td><td>souvent / parfois / jamais</td></tr><tr><td>on Mondays / twice a week</td><td>le lundi / deux fois par semaine</td></tr></table></div></div><div class="cs"><div class="ct">📝 Exemples niveau brevet</div><div class="cex"><span class="cen">She does not like horror films but she often watches thrillers.</span><span class="cfr">Elle n aime pas les films d horreur mais elle regarde souvent des thrillers.</span></div><div class="cex"><span class="cen">Does he play a sport? — Yes, he plays football twice a week.</span><span class="cfr">Est-ce qu il fait un sport ? — Oui, il joue au foot deux fois par semaine.</span></div></div>';
+COURSE_DATA['en_a2_2']='<div class="cs"><div class="ct">🔄 Rappel</div><div class="crule">Régulier : verbe + ED — Irrégulier : forme à mémoriser<br>Négatif/Interrogatif : did not + base / Did + sujet + base?</div><div class="ctip">⚠️ Avec did not et Did, le verbe revient à la BASE : Did she go? (pas went)</div></div><div class="cs"><div class="ct">⚡ 10 irréguliers indispensables</div><div class="ctw"><table class="ctb"><tr><th>Infinitif</th><th>Passé</th><th>Participe</th><th>Fr</th></tr><tr><td>be</td><td>was/were</td><td>been</td><td>être</td></tr><tr><td>go</td><td><strong>went</strong></td><td>gone</td><td>aller</td></tr><tr><td>have</td><td><strong>had</strong></td><td>had</td><td>avoir</td></tr><tr><td>see</td><td><strong>saw</strong></td><td>seen</td><td>voir</td></tr><tr><td>come</td><td><strong>came</strong></td><td>come</td><td>venir</td></tr><tr><td>take</td><td><strong>took</strong></td><td>taken</td><td>prendre</td></tr><tr><td>give</td><td><strong>gave</strong></td><td>given</td><td>donner</td></tr><tr><td>know</td><td><strong>knew</strong></td><td>known</td><td>savoir</td></tr><tr><td>make</td><td><strong>made</strong></td><td>made</td><td>faire</td></tr><tr><td>get</td><td><strong>got</strong></td><td>got</td><td>obtenir</td></tr></table></div></div><div class="cs"><div class="ct">🕐 Marqueurs Past Simple</div><div class="ctw"><table class="ctb"><tr><th>Marqueur</th><th>Traduction</th></tr><tr><td>yesterday</td><td>hier</td></tr><tr><td>last week / last year</td><td>la semaine / l an dernier</td></tr><tr><td>in 2020 / ago</td><td>en 2020 / il y a (3 days ago)</td></tr></table></div></div>';
+COURSE_DATA['en_b1_1']='<div class="cs"><div class="ct">📊 WILL vs GOING TO</div><div class="ctw"><table class="ctb"><tr><th></th><th>WILL</th><th>GOING TO</th></tr><tr><td>Formation</td><td>will + base</td><td>am/is/are going to + base</td></tr><tr><td>Emploi</td><td>Décision spontanée / promesse / prédiction sans preuve</td><td>Plan prévu / intention / preuve visible</td></tr><tr><td>Exemple</td><td>I will help you! (spontané)</td><td>I am going to study tonight. (plan)</td></tr><tr><td>Négatif</td><td>will not (won\'t)</td><td>am/is/are not going to</td></tr></table></div><div class="ctip">💡 Preuve visible → GOING TO : Look at those clouds — it is going to rain.<br>Décision sur le coup → WILL : Someone knocks — I will get it!</div></div><div class="cs"><div class="ct">📝 Exemples niveau brevet</div><div class="cex"><span class="cen">I think technology will change our lives completely.</span><span class="cfr">Prédiction = WILL</span></div><div class="cex"><span class="cen">She is going to visit her grandparents next weekend.</span><span class="cfr">Plan prévu = GOING TO</span></div></div>';
+COURSE_DATA['en_b1_2']='<div class="cs"><div class="ct">🎯 Le Present Perfect — pourquoi c\'est difficile</div><div class="crule">Sujet + have/has + participe passé<br>Relier une action passée au présent — pas de date précise!</div></div><div class="cs"><div class="ct">📊 Quand utiliser le Present Perfect</div><div class="ctw"><table class="ctb"><tr><th>Situation</th><th>Marqueur</th><th>Exemple</th></tr><tr><td>Expérience de vie</td><td>ever / never</td><td>Have you ever eaten sushi?</td></tr><tr><td>Action récente</td><td>just</td><td>I have just finished.</td></tr><tr><td>Résultat présent</td><td>already / yet</td><td>She has already left.</td></tr><tr><td>Depuis combien de temps</td><td>for / since</td><td>He has lived here for 3 years.</td></tr></table></div><div class="ctip">⚠️ For = durée (for 3 years) / Since = point de départ (since 2020)<br>⚠️ Avec une date précise → Past Simple : I saw him yesterday (pas have seen)</div></div>';
+COURSE_DATA['es_a1_1']='<div class="cs"><div class="ct">🔄 Rappel — Tu sais déjà</div><div class="ctw"><table class="ctb"><tr><th>Espagnol</th><th>Français</th></tr><tr><td>Hola / Buenos días</td><td>Salut / Bonjour</td></tr><tr><td>Adiós / Hasta luego</td><td>Au revoir / À plus</td></tr><tr><td>Me llamo...</td><td>Je m appelle...</td></tr><tr><td>Tengo ... años</td><td>J ai ... ans</td></tr></table></div></div><div class="cs"><div class="ct">🎯 Niveau 3ème — Présentation complète</div><div class="crule">Me llamo... Tengo ... años. Soy de... Vivo en...<br>Me gusta(n)... Quiero ser... En mi tiempo libre...</div><div class="ctw"><table class="ctb"><tr><th>Expression</th><th>Traduction</th><th>Exemple</th></tr><tr><td>Soy de / Vivo en</td><td>Je suis de / J habite à</td><td>Soy de Francia</td></tr><tr><td>Me gusta + singulier</td><td>J aime + nom sing.</td><td>Me gusta el manga</td></tr><tr><td>Me gustan + pluriel</td><td>J aime + nom plur.</td><td>Me gustan los deportes</td></tr><tr><td>Quiero ser + métier</td><td>Je veux être...</td><td>Quiero ser programador</td></tr><tr><td>En mi tiempo libre</td><td>Dans mon temps libre</td><td>En mi tiempo libre, leo</td></tr></table></div><div class="ctip">💡 Me gusta + singulier / Me gustan + pluriel — erreur classique au brevet !</div></div>';
+COURSE_DATA['es_a1_2']='<div class="cs"><div class="ct">🔄 Rappel — 1 à 10</div><div class="ctw"><table class="ctb"><tr><th>1-5</th><th>6-10</th></tr><tr><td>uno, dos, tres, cuatro, cinco</td><td>seis, siete, ocho, nueve, diez</td></tr></table></div></div><div class="cs"><div class="ct">🎯 Nombres 11-100 — les règles</div><div class="ctw"><table class="ctb"><tr><th>Nombre</th><th>Espagnol</th><th>Formation</th></tr><tr><td>21</td><td>veintiuno</td><td>veinti + uno (soudé)</td></tr><tr><td>31</td><td>treinta y uno</td><td>dizaine + y + unité</td></tr><tr><td>40 / 50</td><td>cuarenta / cincuenta</td><td>base</td></tr><tr><td>100</td><td>cien</td><td>exact 100</td></tr><tr><td>101</td><td>ciento uno</td><td>ciento + unité</td></tr></table></div><div class="ctip">💡 21-29 : veinti + chiffre soudé<br>31-99 : dizaine + y + chiffre séparé</div></div><div class="cs"><div class="ct">🎨 Couleurs — accord obligatoire</div><div class="ctw"><table class="ctb"><tr><th>Fr</th><th>Masc.</th><th>Fém.</th></tr><tr><td>rouge</td><td>rojo</td><td>roja</td></tr><tr><td>bleu</td><td>azul</td><td>azul</td></tr><tr><td>vert</td><td>verde</td><td>verde</td></tr><tr><td>blanc</td><td>blanco</td><td>blanca</td></tr><tr><td>noir</td><td>negro</td><td>negra</td></tr></table></div><div class="ctip">⚠️ Les couleurs s accordent en genre ET en nombre avec le nom : una mochila roja, libros rojos</div></div>';
+COURSE_DATA['es_a2_1']='<div class="cs"><div class="ct">🔄 Rappel — 3 groupes</div><div class="crule">-AR (hablar) / -ER (comer) / -IR (vivir)</div></div><div class="cs"><div class="ct">📊 Pr&eacute;sent indicatif complet</div><div class="ctw"><table class="ctb"><tr><th>Pronom</th><th>-AR hablar</th><th>-ER comer</th><th>-IR vivir</th></tr><tr><td>Yo</td><td>habl<strong>o</strong></td><td>com<strong>o</strong></td><td>viv<strong>o</strong></td></tr><tr><td>T&uacute;</td><td>habl<strong>as</strong></td><td>com<strong>es</strong></td><td>viv<strong>es</strong></td></tr><tr><td>El/Ella</td><td>habl<strong>a</strong></td><td>com<strong>e</strong></td><td>viv<strong>e</strong></td></tr><tr><td>Nosotros</td><td>habl<strong>amos</strong></td><td>com<strong>emos</strong></td><td>viv<strong>imos</strong></td></tr><tr><td>Ellos</td><td>habl<strong>an</strong></td><td>com<strong>en</strong></td><td>viv<strong>en</strong></td></tr></table></div></div><div class="cs"><div class="ct">⚡ Irr&eacute;guliers indispensables</div><div class="ctw"><table class="ctb"><tr><th>Infinitif</th><th>Yo</th><th>El/Ella</th><th>Fr</th></tr><tr><td>ser</td><td>soy</td><td>es</td><td>&ecirc;tre (perm.)</td></tr><tr><td>estar</td><td>estoy</td><td>est&aacute;</td><td>&ecirc;tre (temp.)</td></tr><tr><td>tener</td><td>tengo</td><td>tiene</td><td>avoir</td></tr><tr><td>ir</td><td>voy</td><td>va</td><td>aller</td></tr><tr><td>hacer</td><td>hago</td><td>hace</td><td>faire</td></tr><tr><td>poder</td><td>puedo</td><td>puede</td><td>pouvoir</td></tr></table></div></div><div class="cs"><div class="ct">⚡ SER vs ESTAR</div><div class="ctw"><table class="ctb"><tr><th>SER (permanent)</th><th>ESTAR (temporaire)</th></tr><tr><td>Nationalit&eacute; : Soy franc&eacute;s</td><td>Humeur : Estoy contento</td></tr><tr><td>Profession : Es m&eacute;dico</td><td>Lieu : Est&aacute; en casa</td></tr><tr><td>Caract&egrave;re : Es simp&aacute;tico</td><td>Sant&eacute; : Estoy enfermo</td></tr></table></div><div class="ctip">💡 SER = ce que tu ES pour toujours. ESTAR = comment tu ES en ce moment.</div></div>';
+COURSE_DATA['es_a2_2']='<div class="cs"><div class="ct">🎯 Pret&eacute;rito indefinido — actions ponctuelles pass&eacute;es</div><div class="crule">Terminaisons r&eacute;guli&egrave;res -AR : &eacute;, aste, &oacute;, amos, aron<br>Terminaisons -ER/-IR : &iacute;, iste, i&oacute;, imos, ieron</div><div class="ctip">⚠️ Les accents sont OBLIGATOIRES : hable (subjonctif) ≠ habl&oacute; (pret&eacute;rito yo)</div></div><div class="cs"><div class="ct">⚡ Irréguliers fréquents au preterit</div><div class="ctw"><table class="ctb"><tr><th>Infinitif</th><th>Yo</th><th>El/Ella</th><th>Ellos</th><th>Fr</th></tr><tr><td>ser / ir</td><td>fui</td><td>fue</td><td>fueron</td><td>être / aller</td></tr><tr><td>tener</td><td>tuve</td><td>tuvo</td><td>tuvieron</td><td>avoir</td></tr><tr><td>hacer</td><td>hice</td><td>hizo</td><td>hicieron</td><td>faire</td></tr><tr><td>decir</td><td>dije</td><td>dijo</td><td>dijeron</td><td>dire</td></tr><tr><td>venir</td><td>vine</td><td>vino</td><td>vinieron</td><td>venir</td></tr></table></div></div><div class="cs"><div class="ct">🕐 Marqueurs</div><div class="ctw"><table class="ctb"><tr><th>Marqueur</th><th>Traduction</th></tr><tr><td>ayer / anoche</td><td>hier / hier soir</td></tr><tr><td>la semana pasada</td><td>la semaine derniere</td></tr><tr><td>hace + duree</td><td>il y a + duree</td></tr></table></div></div>';
+COURSE_DATA['es_b1_1']='<div class="cs"><div class="ct">🎯 Futur simple — infinitif + terminaisons</div><div class="crule">Infinitif + &eacute;, &aacute;s, &aacute;, emos, &eacute;is, &aacute;n (m&ecirc;mes terminaisons pour -AR/-ER/-IR)</div></div><div class="cs"><div class="ct">📊 HABLAR au futur</div><div class="ctw"><table class="ctb"><tr><th>Pronom</th><th>Forme</th><th>Traduction</th></tr><tr><td>Yo</td><td>hablar<strong>&eacute;</strong></td><td>je parlerai</td></tr><tr><td>T&uacute;</td><td>hablar<strong>&aacute;s</strong></td><td>tu parleras</td></tr><tr><td>El/Ella</td><td>hablar<strong>&aacute;</strong></td><td>il/elle parlera</td></tr><tr><td>Nosotros</td><td>hablar<strong>emos</strong></td><td>nous parlerons</td></tr><tr><td>Ellos</td><td>hablar<strong>&aacute;n</strong></td><td>ils parleront</td></tr></table></div></div><div class="cs"><div class="ct">⚡ Radicaux irr&eacute;guliers au futur</div><div class="ctw"><table class="ctb"><tr><th>Infinitif</th><th>Radical</th><th>Yo</th><th>Fr</th></tr><tr><td>tener</td><td>tendr-</td><td>tendr&eacute;</td><td>j aurai</td></tr><tr><td>hacer</td><td>har-</td><td>har&eacute;</td><td>je ferai</td></tr><tr><td>poder</td><td>podr-</td><td>podr&eacute;</td><td>je pourrai</td></tr><tr><td>saber</td><td>sabr-</td><td>sabr&eacute;</td><td>je saurai</td></tr><tr><td>venir</td><td>vendr-</td><td>vendr&eacute;</td><td>je viendrai</td></tr><tr><td>decir</td><td>dir-</td><td>dir&eacute;</td><td>je dirai</td></tr></table></div><div class="ctip">💡 Les irr&eacute;guliers gardent les m&ecirc;mes terminaisons, seul le radical change.</div></div>';
+COURSE_DATA['es_b1_2']='<div class="cs"><div class="ct">🎯 Le subjonctif — exprimer ce qui est subjectif</div><div class="crule">Quiero que + SUBJONCTIF / Es importante que + SUBJONCTIF</div></div><div class="cs"><div class="ct">📊 Formation subjonctif pr&eacute;sent</div><div class="ctw"><table class="ctb"><tr><th>Pronom</th><th>-AR hablar</th><th>-ER comer</th><th>-IR vivir</th></tr><tr><td>Yo</td><td>habl<strong>e</strong></td><td>com<strong>a</strong></td><td>viv<strong>a</strong></td></tr><tr><td>T&uacute;</td><td>habl<strong>es</strong></td><td>com<strong>as</strong></td><td>viv<strong>as</strong></td></tr><tr><td>El/Ella</td><td>habl<strong>e</strong></td><td>com<strong>a</strong></td><td>viv<strong>a</strong></td></tr><tr><td>Nosotros</td><td>habl<strong>emos</strong></td><td>com<strong>amos</strong></td><td>viv<strong>amos</strong></td></tr><tr><td>Ellos</td><td>habl<strong>en</strong></td><td>com<strong>an</strong></td><td>viv<strong>an</strong></td></tr></table></div><div class="ctip">💡 -AR prend les terminaisons de -ER et vice-versa !</div></div><div class="cs"><div class="ct">🗣 Expressions qui d&eacute;clenchent le subjonctif</div><div class="ctw"><table class="ctb"><tr><th>Expression</th><th>Traduction</th><th>Exemple</th></tr><tr><td>querer que</td><td>vouloir que</td><td>Quiero que vengas</td></tr><tr><td>esperar que</td><td>esp&eacute;rer que</td><td>Espero que llegues</td></tr><tr><td>es importante que</td><td>il est important que</td><td>Es importante que estudies</td></tr><tr><td>ojal&aacute;</td><td>pourvu que</td><td>Ojal&aacute; haga sol</td></tr><tr><td>para que</td><td>pour que</td><td>Te lo digo para que lo sepas</td></tr></table></div></div>';
+
+function e(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function gP(){try{return JSON.parse(localStorage.getItem('sk_lang')||'{}')}catch(x){return {}}}
+function sP(d){try{localStorage.setItem('sk_lang',JSON.stringify(d))}catch(x){}}
+function markDone(lid,xp){var p=gP();if(!p.d)p.d={};if(!p.d[lid]){p.d[lid]=1;p.xp=(p.xp||0)+xp;p.les=(p.les||0)+1;}sP(p);}
+function isDone(lid){return !!(gP().d||{})[lid];}
+function getXP(){return gP().xp||0;}
+function getLvl(xp){if(xp<100)return{l:'D\u00e9butant',n:100,c:0};if(xp<300)return{l:'Interm\u00e9diaire',n:300,c:100};if(xp<600)return{l:'Avanc\u00e9',n:600,c:300};return{l:'Expert',n:1000,c:600};}
+function wc(){var p=gP();return p.d?Object.keys(p.d).length*4:0;}
+var CL='en',CU=null,CD=null,LS=0,SC=0,MS=null,MP=[],MD=[],OP=[];
+var SECS=['accueil','cours','parcours','chat','profil'];
+function goSec(s){
+  SECS.forEach(function(x){
+    var el=document.getElementById('s-'+x);if(el)el.classList.toggle('on',x===s);
+    var nb=document.getElementById('ni-'+x);if(nb)nb.classList.toggle('on',x===s);
+  });
+  if(s==='accueil')rAcc();
+  if(s==='cours')rCours();
+  if(s==='parcours')rParcours();
+  if(s==='profil')rProfil();
+}
+function switchLang(l){
+  CL=l;
+  ['en','es'].forEach(function(c){
+    ['b-','lc-','lp-'].forEach(function(p){
+      var b=document.getElementById(p+c);if(b)b.classList.toggle('on',c===l);
+    });
+  });
+  rAcc();rCours();rParcours();updXP();
+}
+function updXP(){
+  var xp=getXP();var lv=getLvl(xp);
+  var pct=Math.min(100,Math.round((xp-lv.c)/(lv.n-lv.c)*100));
+  document.getElementById('xpb').style.width=pct+'%';
+  document.getElementById('hxp').textContent=xp+' XP';
+}
+function toast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('on');setTimeout(function(){t.classList.remove('on');},2500);}
+function g(id){return document.getElementById(id);}
+function rAcc(){
+  var xp=getXP();var lv=getLvl(xp);var p=gP();
+  var pct=Math.min(100,Math.round((xp-lv.c)/(lv.n-lv.c)*100));
+  if(g('axp'))g('axp').textContent=xp+' XP';
+  if(g('alv'))g('alv').textContent=lv.l;
+  if(g('ab'))g('ab').style.width=pct+'%';
+  if(g('an'))g('an').textContent=lv.n;
+  if(g('al'))g('al').textContent=p.les||0;
+  if(g('as'))g('as').textContent=parseInt(localStorage.getItem('sk_s')||'0');
+  if(g('statStrk'))g('statStrk').textContent=parseInt(localStorage.getItem('sk_s')||'0');
+  if(g('aw'))g('aw').textContent=wc();
+  // Hero quote
+  var quotes=['Une langue ouvre une fen\u00eatre sur le monde.','Apprendre une langue, c\u2019est vivre deux fois.','La pratique rend parfait !','Chaque mot appris est une victoire.','La r\u00e9gularit\u00e9 est la cl\u00e9 du succ\u00e8s.'];
+  if(g('heroQuote'))g('heroQuote').textContent=quotes[Math.floor(Math.random()*quotes.length)];
+  var lang=LANG_COURSES[CL];var nx=null;
+  if(lang)for(var ui=0;ui<lang.units.length;ui++){var u=lang.units[ui];for(var li=0;li<u.lessons.length;li++){if(!isDone(u.lessons[li].id)){nx={u:u,l:u.lessons[li]};break;}}if(nx)break;}
+  var btn=g('bcont');var txt=g('ctxt');
+  if(btn&&txt&&nx){btn.style.display='block';txt.textContent=nx.u.emoji+' '+nx.l.title+' \u2014 '+nx.u.title;}
+  else if(btn)btn.style.display='none';
+  updXP();
+}
+function langContinue(){
+  var lang=LANG_COURSES[CL];if(!lang)return;
+  for(var ui=0;ui<lang.units.length;ui++){var u=lang.units[ui];for(var li=0;li<u.lessons.length;li++){if(!isDone(u.lessons[li].id)){openLesson(u,u.lessons[li]);return;}}}
+}
+function rCours(){
+  var lang=LANG_COURSES[CL];var el=g('clist');if(!el||!lang)return;
+  ['en','es'].forEach(function(c){var b=g('lc-'+c);if(b)b.classList.toggle('on',c===CL);});
+  el.innerHTML=lang.units.map(function(u){
+    var dn=u.lessons.filter(function(l){return isDone(l.id);}).length;
+    var tot=u.lessons.length;var pct=Math.round(dn/tot*100);var all=dn===tot;
+    return '<div class="cc'+(all?' done':'')+'" data-uid="'+u.id+'" onclick="openCM(this.dataset.uid)">'
+      +'<div class="cci" style="background:'+u.color+'22">'+u.emoji+'</div>'
+      +'<div class="ccin"><div class="cct">'+e(u.title)+'</div><div class="ccs">'+e(u.desc||'')+'</div>'
+      +'<div class="ccm"><span class="ccb" style="background:'+u.color+'22;color:'+u.color+'">'+u.level+'</span>'
+      +'<div class="ccp"><div class="ccpf" style="width:'+pct+'%;background:'+u.color+'"></div></div>'
+      +'<span style="font-size:10px;color:var(--mu)">'+dn+'/'+tot+'</span>'
+      +(all?'<span style="color:var(--a3)">&#10003;</span>':'')+'</div></div></div>';
+  }).join('');
+}
+function openCM(uid){
+  var lang=LANG_COURSES[CL];var u=null;
+  for(var i=0;i<lang.units.length;i++){if(lang.units[i].id===uid){u=lang.units[i];break;}}
+  if(!u)return;
+  g('cmtit').textContent=u.emoji+' '+u.title;
+  var bdg=g('cmbdg');bdg.textContent=u.level;bdg.style.background=u.color+'22';bdg.style.color=u.color;
+  var html=COURSE_DATA[uid]||buildCoursAuto(u);
+  g('cmbd').innerHTML=html;
+  g('cmst').onclick=function(){closeCM();startUnit(uid);};
+  g('cm').classList.add('on');
+}
+function closeCM(){g('cm').classList.remove('on');}
+function buildCoursAuto(u){
+  var h='<div style="background:linear-gradient(135deg,'+u.color+'22,'+u.color+'11);border:1px solid '+u.color+'33;border-radius:16px;padding:16px;margin-bottom:20px"><div style="font-size:22px">'+u.emoji+'</div><div style="font-family:var(--fd);font-size:17px;font-weight:800;color:var(--tx);margin-top:4px">'+e(u.title)+'</div><div style="font-size:12px;color:var(--mu);margin-top:4px">'+e(u.desc||'')+'</div></div>';
+  u.lessons.forEach(function(lesson){
+    h+='<div class="cs"><div class="ct">'+e(lesson.title)+'</div>';
+    if(lesson.type==='vocab'&&lesson.pairs){
+      h+='<div class="ctw"><table class="ctb"><tr><th>'+(CL==='en'?'Anglais':'Espagnol')+'</th><th>Fran\u00e7ais</th></tr>';
+      lesson.pairs.forEach(function(p){h+='<tr><td><strong>'+e(p[0])+'</strong></td><td>'+e(p[1])+'</td></tr>';});
+      h+='</table></div>';
+    }
+    if(lesson.type==='grammar'&&lesson.rule){
+      h+='<div class="crule">'+e(lesson.rule)+'</div>';
+      if(lesson.examples&&lesson.examples.length){
+        lesson.examples.forEach(function(ex){h+='<div class="cex"><span class="cen">'+e(ex[0])+'</span><span class="cfr">'+e(ex[1])+'</span></div>';});
+      }
+    }
+    h+='</div>';
+  });
+  return h+'<div class="ctip">Lis ce cours puis clique sur Commencer.</div>';
+}
+function startUnit(uid){
+  var lang=LANG_COURSES[CL];var u=null;
+  for(var i=0;i<lang.units.length;i++){if(lang.units[i].id===uid){u=lang.units[i];break;}}
+  if(!u)return;
+  var t=null;for(var i=0;i<u.lessons.length;i++){if(!isDone(u.lessons[i].id)){t=u.lessons[i];break;}}
+  if(!t)t=u.lessons[0];
+  openLesson(u,t);
+}
+function rParcours(){
+  var lang=LANG_COURSES[CL];var el=g('ppath');if(!el||!lang)return;
+  ['en','es'].forEach(function(c){var b=g('lp-'+c);if(b)b.classList.toggle('on',c===CL);});
+  var chapters={};
+  lang.units.forEach(function(u){if(!chapters[u.level])chapters[u.level]=[];chapters[u.level].push(u);});
+  var POS=['left','center','right','center'];
+  var html='';var unlk=true;var ni=0;
+  Object.keys(chapters).forEach(function(level){
+    var units=chapters[level];
+    var allCh=units.every(function(u){return u.lessons.every(function(l){return isDone(l.id);});});
+    html+='<div class="pc"><div class="phd"><div class="phl"></div><span class="phb'+(allCh?' done':'')+'">'+(allCh?'&#10003; ':'')+level+'</span><div class="phl"></div></div><div class="pp">';
+    units.forEach(function(u,ui){
+      u.lessons.forEach(function(lesson,li){
+        var dn=isDone(lesson.id);var cur=unlk&&!dn;var lck=!unlk&&!dn;
+        if(cur)unlk=false;
+        var p=POS[ni%POS.length];ni++;
+        var icons=['&#128218;','&#9999;','&#127919;','&#129504;','&#9889;','&#128288;','&#128161;','&#127922;'];
+        var icon=dn?'&#10003;':lck?'&#128274;':icons[li%icons.length];
+        var cls='pn'+(dn?' done':cur?' cur':lck?' lock':'');
+        var clk=lck?'':' data-uid="'+u.id+'" data-lid="'+lesson.id+'" onclick="clickNode(this)"';
+        if(li>0||ui>0){
+          var pp=POS[(ni-2+POS.length)%POS.length];
+          var d='M 150 0 Q 150 30 150 60';
+          if(pp==='left'&&p==='center')d='M 60 0 Q 120 30 150 60';
+          else if(pp==='center'&&p==='right')d='M 150 0 Q 200 30 240 60';
+          else if(pp==='right'&&p==='center')d='M 240 0 Q 200 30 150 60';
+          else if(pp==='center'&&p==='left')d='M 150 0 Q 100 30 60 60';
+          var col=dn?'#4fd6a0':cur?'rgba(14,165,233,.5)':'rgba(255,255,255,.06)';
+          html+='<svg class="pzig" viewBox="0 0 300 60" preserveAspectRatio="none"><path d="'+d+'" fill="none" stroke="'+col+'" stroke-width="3" stroke-dasharray="'+(dn?'none':'6 4')+'"/></svg>';
+        }
+        html+='<div class="pr '+p+'"><div style="display:flex;flex-direction:column;align-items:center"><div class="'+cls+'"'+clk+'><div class="pe">'+icon+'</div><div class="pl">'+e(lesson.title.slice(0,10))+'</div></div><div class="pxp">'+e(u.title.slice(0,8))+'</div></div></div>';
+      });
+      if(u.lessons.every(function(l){return isDone(l.id);}))unlk=true;
+    });
+    html+='</div>';
+    if(allCh)html+='<div class="pcd">Chapitre '+level+' compl\u00e9t\u00e9 !</div>';
+    html+='</div>';
+  });
+  el.innerHTML=html;
+}
+function clickNode(el){
+  var uid=el.dataset.uid;var lid=el.dataset.lid;
+  var lang=LANG_COURSES[CL];var u=null;
+  for(var i=0;i<lang.units.length;i++){if(lang.units[i].id===uid){u=lang.units[i];break;}}
+  if(!u)return;
+  var lesson=null;for(var i=0;i<u.lessons.length;i++){if(u.lessons[i].id===lid){lesson=u.lessons[i];break;}}
+  if(!lesson)return;
+  openLesson(u,lesson);
+}
+function getSteps(l){
+  if(l.type==='vocab')return['intro','vocab','done'];
+  if(l.type==='grammar'){var s=['rule'];for(var i=0;i<l.examples.length;i++)s.push('ex_'+i);s.push('exercise','done');return s;}
+  if(l.type==='qcm'){var s=[];for(var i=0;i<l.questions.length;i++)s.push('q_'+i);s.push('done');return s;}
+  if(l.type==='match')return['mintr','match','done'];
+  if(l.type==='order'){var s=[];for(var i=0;i<l.sentences.length;i++)s.push('ord_'+i);s.push('done');return s;}
+  if(l.type==='fill'){var s=[];for(var i=0;i<l.items.length;i++)s.push('fil_'+i);s.push('done');return s;}
+  return['done'];
+}
+function openLesson(u,lesson){
+  CU=u;CD=lesson;LS=0;SC=0;MS=null;MD=[];OP=[];
+  g('lo').classList.add('on');
+  g('lxp').textContent='+'+u.xp+' XP';
+  rStep();
+}
+function closeLesson(){g('lo').classList.remove('on');CD=null;}
+function rStep(){
+  if(!CD)return;
+  var steps=getSteps(CD);var body=g('lbd');var btn=g('lbtn');var prog=g('lpf');
+  var pct=Math.round(LS/Math.max(steps.length-1,1)*100);
+  if(prog)prog.style.width=pct+'%';
+  if(LS>=steps.length){rResult();return;}
+  var step=steps[LS];
+  if(btn){btn.onclick=nextStep;btn.className='lbtn';btn.disabled=false;btn.textContent='Continuer';btn.style.display='block';}
+  if(step==='intro'){
+    body.innerHTML='<div class="lty">Vocabulaire</div><div class="lti">'+e(CD.title)+'</div><p style="font-size:13px;color:var(--mu);margin-top:8px">Appuie sur chaque carte pour voir la traduction.</p>';
+    if(btn)btn.textContent='Commencer';
+  }else if(step==='vocab'){
+    var h='<div class="lty">Vocabulaire</div><div class="lti">'+e(CD.title)+'</div><div class="vg">';
+    CD.pairs.forEach(function(p){h+='<div class="vc" onclick="toggleVC(this)"><div class="vf">'+e(p[0])+'</div><div class="vb">'+e(p[1])+'</div></div>';});
+    body.innerHTML=h+'</div>';
+  }else if(step==='mintr'){
+    body.innerHTML='<div class="lty">Association</div><div class="lti">'+e(CD.title)+'</div><p style="font-size:13px;color:var(--mu);margin-top:8px">Associe chaque mot avec sa traduction.</p>';
+    if(btn)btn.textContent='Commencer';
+  }else if(step==='match'){
+    MS=null;MD=[];
+    var pairs=CD.pairs.slice(0,4);MP=pairs;
+    var rts=pairs.map(function(p,i){return{v:p[1],i:i};}).sort(function(){return Math.random()-.5;});
+    var h='<div class="lty">Association</div><div class="mg">';
+    pairs.forEach(function(p,i){var r=rts[i];
+      h+='<div class="mi" id="mL'+i+'" data-s="L" data-i="'+i+'" onclick="mClick(this)">'+e(p[0])+'</div>';
+      h+='<div class="mi" id="mR'+r.i+'" data-s="R" data-i="'+r.i+'" onclick="mClick(this)">'+e(r.v)+'</div>';
+    });
+    body.innerHTML=h+'</div>';
+    if(btn){btn.textContent='Continuer';btn.disabled=true;}
+  }else if(step==='rule'){
+    body.innerHTML='<div class="lty">Grammaire</div><div class="lti">'+e(CD.title)+'</div><div class="rb">'+e(CD.rule)+'</div><p style="font-size:12px;color:var(--mu)">M\u00e9morise cette r\u00e8gle.</p>';
+    if(btn)btn.textContent='Exemples';
+  }else if(step.slice(0,3)==='ex_'){
+    var idx=parseInt(step.slice(3));var ex=CD.examples[idx];
+    body.innerHTML='<div class="lty">Exemple '+(idx+1)+'/'+CD.examples.length+'</div><div class="ei" style="margin-top:12px"><span class="een">'+e(ex[0])+'</span><span class="efr">'+e(ex[1])+'</span></div>';
+    if(btn)btn.textContent=idx<CD.examples.length-1?'Suivant':'Exercice';
+  }else if(step==='exercise'){
+    var item=CD.exercise.items[0];var ln=CL==='en'?'anglais':'espagnol';
+    body.innerHTML='<div class="lty">Traduction</div><div style="background:var(--card);border:1px solid var(--bord);border-radius:14px;padding:16px"><p style="font-size:14px;font-weight:700;color:var(--tx)">En '+ln+' :<br><strong style="color:var(--a1)">'+e(item[0])+'</strong></p><input class="ti" id="ti" type="text" placeholder="Ta traduction..." autocorrect="off" spellcheck="false"><div class="tf" id="tf"></div></div>';
+    if(btn){btn.textContent='V\u00e9rifier';btn.onclick=chkTx;}
+    setTimeout(function(){var t=g('ti');if(t)t.focus();},300);return;
+  }else if(step.slice(0,2)==='q_'){
+    var idx=parseInt(step.slice(2));var q=CD.questions[idx];
+    var h='<div class="lty">Quiz '+(idx+1)+'/'+CD.questions.length+'</div><div class="qq">'+e(q.q)+'</div><div class="qo">';
+    q.opts.forEach(function(o,i){h+='<button class="qb" data-i="'+i+'" onclick="ansQ(this,'+i+','+q.a+')">'+e(o)+'</button>';});
+    body.innerHTML=h+'</div>';if(btn)btn.disabled=true;return;
+  }else if(step.slice(0,4)==='ord_'){
+    var idx=parseInt(step.slice(4));var s=CD.sentences[idx];OP=[];
+    var sh=s.words.slice().sort(function(){return Math.random()-.5;});
+    var h='<div class="lty">Ordre '+(idx+1)+'/'+CD.sentences.length+'</div><div class="ws" id="wsl"></div><div class="wb" id="wbk">';
+    sh.forEach(function(w,i){h+='<div class="wc" id="wc'+i+'" data-w="'+e(w)+'" data-i="'+i+'" onclick="pickW(this)">'+e(w)+'</div>';});
+    body.innerHTML=h+'</div><div id="ofb" style="margin-top:8px;font-size:12px;font-weight:600;display:none"></div>';
+    if(btn){btn.textContent='V\u00e9rifier';btn.onclick=chkOrd;}return;
+  }else if(step.slice(0,4)==='fil_'){
+    var idx=parseInt(step.slice(4));var item=CD.items[idx];
+    var h='<div class="lty">Complete '+(idx+1)+'/'+CD.items.length+'</div><p style="font-size:15px;font-weight:600;color:var(--tx);margin:12px 0;line-height:1.8">'+e(item.sentence.replace(item.blank,'___'))+'</p><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">';
+    item.opts.slice().sort(function(){return Math.random()-.5;}).forEach(function(o){h+='<button class="fo" data-o="'+e(o)+'" onclick="ansF(this,this.dataset.o)" data-blank="'+e(item.blank)+'" ">'+e(o)+'</button>';});
+    body.innerHTML=h+'</div><div id="ffb" style="margin-top:10px;display:none"></div>';
+    if(btn)btn.disabled=true;return;
+  }else if(step==='done'){rResult();return;}
+  if(btn)btn.onclick=nextStep;
+}
+function nextStep(){LS++;rStep();}
+function toggleVC(el){el.classList.toggle("on");}
+function mClick(el){
+  if(el.classList.contains('mat'))return;
+  if(!MS){MS={el:el,s:el.dataset.s,i:parseInt(el.dataset.i)};el.classList.add('sel');}
+  else{
+    var pv=MS;if(pv.el===el){el.classList.remove('sel');MS=null;return;}
+    if(pv.s!==el.dataset.s&&pv.i===parseInt(el.dataset.i)){
+      el.classList.add('mat');pv.el.classList.add('mat');el.classList.remove('sel');MD.push(pv.i);SC++;
+      if(MD.length>=MP.length){var b=g('lbtn');if(b){b.disabled=false;b.onclick=nextStep;}}
+    }else{el.classList.add('bad');pv.el.classList.add('bad');setTimeout(function(){el.classList.remove('bad','sel');pv.el.classList.remove('bad','sel');},700);}
+    MS=null;
+  }
+}
+function pickW(el){
+  if(el.classList.contains('used'))return;
+  el.classList.add('used');OP.push({w:el.dataset.w,i:el.dataset.i});
+  var sl=g('wsl');if(sl){var c=document.createElement('div');c.className='wc used';c.textContent=el.dataset.w;c.dataset.bi=el.dataset.i;c.onclick=function(){OP=OP.filter(function(p){return p.i!==this.dataset.bi;}.bind(this));var b=g('wc'+this.dataset.bi);if(b)b.classList.remove('used');this.remove();};sl.appendChild(c);}
+}
+function chkOrd(){
+  var steps=getSteps(CD);var idx=parseInt(steps[LS].slice(4));var s=CD.sentences[idx];
+  var ans=OP.map(function(p){return p.w;}).join(' ');var fb=g('ofb');var btn=g('lbtn');
+  var ok=ans.toLowerCase()===s.answer.toLowerCase();
+  if(fb){fb.style.display='block';fb.style.color=ok?'var(--a3)':'#fc5c7d';fb.textContent=ok?'Parfait !':'Correct : '+s.answer;}
+  if(ok)SC++;if(btn){btn.textContent='Continuer';btn.onclick=nextStep;btn.disabled=false;}
+}
+function chkTx(){
+  var inp=g('ti');var fb=g('tf');var btn=g('lbtn');if(!inp)return;
+  var ans=inp.value.trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+  var exp=CD.exercise.items[0][1].toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+  var ok=ans===exp||ans.indexOf(exp.split(' ').slice(0,2).join(' '))>=0;
+  inp.className='ti '+(ok?'ok':'ko');
+  if(fb){fb.className='tf '+(ok?'ok':'ko');fb.textContent=ok?'Parfait !':'R\u00e9ponse : '+CD.exercise.items[0][1];}
+  if(ok)SC++;if(btn){btn.textContent='Continuer';btn.disabled=false;btn.onclick=nextStep;}
+}
+function ansQ(el,chosen,correct){
+  document.querySelectorAll('.qb').forEach(function(b){b.onclick=null;});
+  el.classList.add(chosen===correct?'ok':'ko');
+  if(chosen!==correct){var bs=document.querySelectorAll('.qb');if(bs[correct])bs[correct].classList.add('ok');}else SC++;
+  var btn=g('lbtn');if(btn){btn.disabled=false;btn.onclick=nextStep;}
+}
+function ansF(el){var blank=el.dataset.blank;
+  document.querySelectorAll('.fo').forEach(function(b){b.onclick=null;});
+  var ok=el.dataset.o===blank;el.classList.add(ok?'ok':'ko');
+  if(!ok){var b=document.querySelector('.fo[data-o="'+blank+'"]');if(b)b.classList.add('ok');}else SC++;
+  var fb=g('ffb');var btn=g('lbtn');
+  if(fb){fb.style.display='block';fb.style.color=ok?'var(--a3)':'#fc5c7d';fb.textContent=ok?'Parfait !':'R\u00e9ponse : '+blank;}
+  if(btn){btn.disabled=false;btn.onclick=nextStep;}
+}
+function rResult(){
+  if(!CU||!CD)return;markDone(CD.id,CU.xp);
+  var body=g('lbd');var btn=g('lbtn');var prog=g('lpf');
+  if(prog)prog.style.width='100%';
+  var ok=SC>=2;
+  body.innerHTML='<div class="rw"><div class="re">'+(ok?'&#127775;':'&#10003;')+'</div><div class="rt">'+(ok?'Parfait !':'Le\u00e7on termin\u00e9e !')+'</div><div class="rx">+'+CU.xp+' XP</div><div style="font-size:12px;color:var(--mu)">'+e(CD.title)+'</div></div>';
+  if(btn){btn.textContent='Terminer';btn.disabled=false;btn.onclick=function(){closeLesson();rAcc();rParcours();updXP();};}
+}
+async function sendChat(){
+  var inp=g('cia');var res=g('cres');if(!inp||!res)return;
+  var txt=inp.value.trim();if(!txt)return;
+  inp.value='';inp.style.height='auto';
+  res.innerHTML='<div style="background:var(--card);border:1px solid var(--bord);border-radius:14px;padding:14px;font-size:13px;color:var(--mu)">R\u00e9flexion...</div>';
+  try{
+    var ln=LANG_COURSES[CL]?LANG_COURSES[CL].name:'anglais';
+    var resp=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:'Tu es un professeur de '+ln+' expert pour coll\u00e9giens fran\u00e7ais niveau 3eme. Reponds clairement avec tableaux si utiles.',messages:[{role:'user',content:txt}]})});
+    var data=await resp.json();
+    var reply=data.content&&data.content[0]?data.content[0].text:'Erreur';
+    res.innerHTML='<div style="background:var(--card);border:1px solid var(--bord);border-radius:14px;padding:14px;font-size:13px;line-height:1.7;color:var(--tx);white-space:pre-wrap">'+e(reply)+'</div>';
+  }catch(ex){res.innerHTML='<div style="background:var(--card);border:1px solid var(--bord);border-radius:14px;padding:14px;font-size:13px;color:#fc5c7d">Erreur API - v\u00e9rifie ta cl\u00e9 dans ScolarIA.</div>';}
+}
+function askAI(prompt){g('cia').value=prompt;goSec('chat');}
+function rProfil(){
+  var p=gP();var xp=getXP();var lv=getLvl(xp);
+  g('pnm').textContent=localStorage.getItem('sk_prenom')||'Apprenant';
+  g('psb').textContent=lv.l+' . '+xp+' XP';
+  var sg=g('psg');
+  if(sg)sg.innerHTML=[{n:xp,l:'XP total'},{n:p.les||0,l:'Le\u00e7ons'},{n:wc(),l:'Mots'},{n:parseInt(localStorage.getItem('sk_s')||'0'),l:'S\u00e9rie'}]
+    .map(function(s){return '<div style="background:var(--card);border:1px solid var(--bord);border-radius:12px;padding:10px;text-align:center"><div style="font-family:var(--fm);font-size:22px;font-weight:700;color:var(--a1)">'+s.n+'</div><div style="font-size:10px;color:var(--mu);margin-top:2px">'+s.l+'</div></div>';}).join('');
+}
+document.addEventListener('DOMContentLoaded',function(){rAcc();rCours();rParcours();updXP();});
+
+</script>
+</body>
+</html>

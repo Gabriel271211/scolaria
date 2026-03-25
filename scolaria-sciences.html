@@ -1,0 +1,2542 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>ScolarIA — Sciences</title>
+<meta name="theme-color" content="#10b981">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#020f0a;--surf:#041409;--card:#071e10;--bord:#0d3320;
+  --a1:#10b981;--a2:#34d399;--a3:#6ee7b7;--a4:#f59e0b;
+  --tx:#d1fae5;--mu:#3d6b52;
+  --svt:#10b981;--phy:#3b82f6;--chi:#f59e0b;--mat:#8b5cf6;
+  --nav:62px;--hdr:52px;
+  --fb:'IBM Plex Sans',sans-serif;
+  --fd:'IBM Plex Serif',serif;
+  --fm:'IBM Plex Mono',monospace;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;height:100dvh;background:var(--bg);color:var(--tx);font-family:var(--fb);overflow:hidden;-webkit-font-smoothing:antialiased}
+#app{display:flex;flex-direction:column;height:100dvh;max-width:480px;margin:0 auto;overflow:hidden;padding-top:env(safe-area-inset-top,0px);position:relative}
+/* DOT GRID */
+#dotgrid{position:fixed;inset:0;pointer-events:none;z-index:0;max-width:480px;left:50%;transform:translateX(-50%)}
+/* HEADER */
+#hdr{height:var(--hdr);background:var(--bg);border-bottom:1px solid var(--bord);display:flex;align-items:center;padding:0 12px;gap:10px;flex-shrink:0;z-index:50;position:relative}
+.hdr-back{width:34px;height:34px;border-radius:10px;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2);color:var(--a1);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;line-height:1;font-family:sans-serif;border:1px solid rgba(16,185,129,.2)}
+.hdr-logo{font-family:var(--fd);font-size:15px;font-weight:700;color:var(--tx);flex:1;letter-spacing:-.3px}
+.hdr-logo span{color:var(--a1)}
+.hdr-xp{font-family:var(--fm);font-size:11px;color:var(--a4);background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.2);border-radius:20px;padding:3px 10px;flex-shrink:0}
+/* XP BAR */
+#xpw{height:3px;background:var(--bord);flex-shrink:0;position:relative;z-index:50;overflow:hidden}
+#xpb{height:100%;background:linear-gradient(90deg,var(--a1),var(--a2));width:0%;transition:width .6s;position:relative}
+#xpb::after{content:'';position:absolute;top:0;right:-20px;width:30px;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.5));animation:shimmer 2s infinite}
+@keyframes shimmer{0%,100%{opacity:0}50%{opacity:1}}
+/* CONTENT */
+#content{flex:1;overflow:hidden;position:relative;margin-bottom:calc(var(--nav) + env(safe-area-inset-bottom,0px));z-index:1}
+.sec{position:absolute;inset:0;overflow-y:auto;padding:16px;padding-bottom:calc(var(--nav) + 42px + env(safe-area-inset-bottom,0px));display:none;scrollbar-width:thin;scrollbar-color:rgba(16,185,129,.4) transparent}
+.sec::-webkit-scrollbar{width:5px}
+.sec::-webkit-scrollbar-thumb{background:rgba(16,185,129,.4);border-radius:3px}
+.sec.on{display:block}
+/* ANIMATIONS */
+@keyframes slideUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+@keyframes flashGreen{0%,100%{background:var(--card)}50%{background:rgba(16,185,129,.22)}}
+@keyframes flashRed{0%,100%{background:var(--card)}50%{background:rgba(239,68,68,.16)}}
+@keyframes glowPulse{0%,100%{box-shadow:0 6px 20px rgba(16,185,129,.3)}50%{box-shadow:0 8px 30px rgba(16,185,129,.6)}}
+@keyframes navPulse{0%,100%{box-shadow:0 4px 16px rgba(16,185,129,.4)}50%{box-shadow:0 6px 24px rgba(16,185,129,.65)}}
+@keyframes typewr{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+/* HERO */
+.hero-card{background:linear-gradient(135deg,rgba(16,185,129,.18),rgba(52,211,153,.06));border:1px solid rgba(16,185,129,.18);border-radius:24px;padding:20px;margin-bottom:14px;position:relative;overflow:hidden;animation:slideUp .4s ease both}
+.hero-card::before{content:'';position:absolute;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(16,185,129,.1),transparent);top:-40px;right:-40px;pointer-events:none}
+.hero-row{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.hero-avatar{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--a1),var(--a2));display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;border:2px solid rgba(16,185,129,.35)}
+.hero-name{font-family:var(--fd);font-size:18px;font-weight:700;color:var(--tx);letter-spacing:-.3px}
+.hero-sub{font-size:10px;color:rgba(209,250,229,.55);margin-top:2px;text-transform:uppercase;letter-spacing:1.2px}
+.streak-row{display:flex;align-items:center;gap:6px}
+.streak-val{font-family:var(--fm);font-size:15px;font-weight:700;color:var(--a4)}
+.streak-lbl{font-size:10px;color:rgba(209,250,229,.55);margin-left:2px}
+.hero-quote{font-family:var(--fd);font-size:12px;font-style:italic;color:rgba(209,250,229,.5);margin-top:10px;line-height:1.5;border-top:1px solid rgba(16,185,129,.12);padding-top:10px}
+/* XP CARD */
+.xp-card{background:var(--card);border:1px solid rgba(16,185,129,.18);border-radius:20px;padding:16px;margin-bottom:12px;animation:slideUp .4s .06s ease both}
+.xp-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.xp-level{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--a1);background:rgba(16,185,129,.08);padding:3px 10px;border-radius:20px;border:1px solid rgba(16,185,129,.18)}
+.xp-val{font-family:var(--fm);font-size:20px;font-weight:700;color:var(--a4)}
+.xp-sub{font-size:9px;color:var(--mu)}
+.xp-bar-wrap{height:6px;background:var(--bord);border-radius:3px;overflow:hidden}
+.xp-bar-fill{height:100%;background:linear-gradient(90deg,var(--a1),var(--a2));border-radius:3px;transition:width .6s}
+/* STATS */
+.stats-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px;animation:slideUp .4s .12s ease both}
+.stat-card{background:var(--card);border:1px solid var(--bord);border-radius:16px;padding:12px 8px;text-align:center}
+.stat-n{font-family:var(--fm);font-size:22px;font-weight:700;color:var(--a1)}
+.stat-l{font-size:9px;color:var(--mu);margin-top:3px;line-height:1.3}
+/* CTA */
+.cta-btn{width:100%;padding:15px;background:linear-gradient(135deg,var(--a1),var(--a2));border:none;color:#fff;border-radius:18px;font-size:15px;font-family:var(--fd);font-weight:700;cursor:pointer;box-shadow:0 6px 20px rgba(16,185,129,.35);margin-bottom:14px;animation:glowPulse 3s infinite,slideUp .4s .18s ease both;letter-spacing:-.2px}
+.cta-btn:active{transform:scale(.97)}
+/* SECTION LABELS */
+.sec-sep{height:1px;background:linear-gradient(90deg,transparent,rgba(16,185,129,.3),transparent);margin:16px 0}
+.sec-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.8px;color:var(--mu);margin-bottom:10px}
+/* ACTION CARDS */
+.actions-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;animation:slideUp .4s .24s ease both}
+.act-card{background:var(--card);border:1px solid var(--bord);border-radius:20px;padding:14px;min-height:96px;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer;transition:transform .15s,border-color .15s}
+.act-card:active{transform:scale(.95)}
+.act-icon{width:36px;height:36px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:17px;margin-bottom:6px}
+.act-title{font-size:12px;font-weight:700;color:var(--tx)}
+.act-sub{font-size:10px;color:var(--mu);margin-top:1px}
+/* LABO CARDS */
+.lab-card{background:var(--card);border:1px solid var(--bord);border-radius:22px;padding:18px;margin-bottom:12px;cursor:pointer;transition:all .2s}
+.lab-card:active{transform:scale(.97);border-color:var(--a1)}
+.lab-card:nth-child(2){animation:slideUp .4s 0ms ease both}
+.lab-card:nth-child(3){animation:slideUp .4s 60ms ease both}
+.lab-card:nth-child(4){animation:slideUp .4s 120ms ease both}
+.lab-card:nth-child(5){animation:slideUp .4s 180ms ease both}
+.lab-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px}
+.lab-emoji{font-size:30px;line-height:1}
+.lab-diff{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:1px;padding:3px 8px;border-radius:10px}
+.diff-easy{background:rgba(16,185,129,.12);color:var(--a1);border:1px solid rgba(16,185,129,.2)}
+.diff-med{background:rgba(59,130,246,.12);color:#60a5fa;border:1px solid rgba(59,130,246,.2)}
+.diff-hard{background:rgba(245,158,11,.12);color:var(--a4);border:1px solid rgba(245,158,11,.2)}
+.lab-title{font-family:var(--fd);font-size:15px;font-weight:700;color:var(--tx);margin-bottom:4px;letter-spacing:-.2px}
+.lab-desc{font-size:11px;color:var(--mu);line-height:1.5}
+.lab-meta{display:flex;align-items:center;gap:6px;margin-top:10px}
+.lab-dot{width:6px;height:6px;border-radius:50%}
+.lab-subj{font-size:9.5px;font-weight:600;color:var(--mu);text-transform:uppercase;letter-spacing:.8px;flex:1}
+.lab-arrow{font-size:16px;color:var(--a1);opacity:.7}
+/* EXPERIMENT OVERLAY */
+#expOvl{position:fixed;inset:0;z-index:100000;background:var(--bg);display:none;flex-direction:column;max-width:100%;width:100%}
+#expOvl.on{display:flex}
+#expHdr{display:flex;align-items:center;gap:10px;padding:14px 16px;background:var(--surf);border-bottom:1px solid var(--bord);flex-shrink:0}
+#expClose{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.05);border:1px solid var(--bord);color:var(--mu);font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+#expTitle{font-family:var(--fd);font-size:15px;font-weight:700;color:var(--tx);flex:1}
+#expBody{flex:1;overflow-y:auto;padding:18px 16px;scrollbar-width:thin;scrollbar-color:rgba(16,185,129,.4) transparent}
+#expBody::-webkit-scrollbar{width:5px}
+#expBody::-webkit-scrollbar-thumb{background:rgba(16,185,129,.4);border-radius:3px}
+/* FORMULA BLOCK */
+.formula-block{background:#010a06;border-left:3px solid var(--a1);border-radius:0 14px 14px 0;padding:14px 16px;margin-bottom:14px}
+.formula-name{font-size:8.5px;text-transform:uppercase;letter-spacing:1.5px;color:var(--mu);margin-bottom:5px}
+.formula-text{font-family:var(--fm);font-size:20px;font-weight:700;color:var(--a2);display:block;animation:typewr .8s steps(15) both}
+.formula-vars{font-size:11px;color:var(--mu);margin-top:6px;line-height:1.7}
+/* SLIDERS */
+.slider-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.slider-lbl{font-family:var(--fm);font-size:12px;font-weight:700;width:16px;flex-shrink:0;color:var(--a2)}
+.slider-unit{font-family:var(--fm);font-size:9px;color:var(--mu);width:16px;flex-shrink:0}
+.slider-input{flex:1;-webkit-appearance:none;height:4px;background:var(--bord);border-radius:2px;outline:none;cursor:pointer}
+.slider-input::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--a1);box-shadow:0 0 8px rgba(16,185,129,.5);cursor:pointer}
+.slider-val{font-family:var(--fm);font-size:12px;font-weight:700;color:var(--tx);width:56px;text-align:right;flex-shrink:0}
+.slider-val.calc{color:var(--a2)}
+/* FORMULA CARDS */
+.formula-card{background:var(--card);border:1px solid var(--bord);border-radius:20px;padding:16px;margin-bottom:12px}
+.formula-card:nth-child(2){animation:slideUp .4s 0ms ease both}
+.formula-card:nth-child(3){animation:slideUp .4s 70ms ease both}
+.formula-card:nth-child(4){animation:slideUp .4s 140ms ease both}
+.formula-card:nth-child(5){animation:slideUp .4s 210ms ease both}
+.fc-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.fc-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+.fc-title{font-family:var(--fd);font-size:14px;font-weight:700;color:var(--tx);flex:1}
+.fc-btns{display:flex;gap:8px;margin-top:12px}
+.fc-btn{flex:1;padding:8px 6px;border:1px solid var(--bord);border-radius:10px;background:transparent;color:var(--mu);font-size:10.5px;font-weight:600;cursor:pointer;font-family:var(--fb);transition:all .15s}
+.fc-btn:active{transform:scale(.95);border-color:var(--a1);color:var(--a1)}
+.fc-extra{display:none;margin-top:8px}
+.fc-extra.on{display:block}
+.tip-box{background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.18);border-radius:12px;padding:10px 14px;font-size:11.5px;color:rgba(209,250,229,.75);line-height:1.6}
+.concret-box{background:#010a06;border-left:3px solid var(--phy);border-radius:0 12px 12px 0;padding:10px 14px;font-family:var(--fm);font-size:11.5px;color:#93c5fd;line-height:1.7}
+/* SCHEMAS */
+.schema-card{background:var(--card);border:1px solid var(--bord);border-radius:22px;overflow:hidden;margin-bottom:14px}
+.schema-card:nth-child(2){animation:slideUp .4s 0ms ease both}
+.schema-card:nth-child(3){animation:slideUp .4s 80ms ease both}
+.schema-header{padding:14px 16px;display:flex;align-items:center;justify-content:space-between}
+.schema-title{font-family:var(--fd);font-size:14px;font-weight:700;color:var(--tx)}
+.schema-score{font-family:var(--fm);font-size:11px;color:var(--a4);background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.18);padding:2px 8px;border-radius:10px}
+.schema-svg-wrap{padding:0 16px}
+.schema-inputs{padding:10px 16px}
+.schema-input-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.schema-num{width:22px;height:22px;border-radius:50%;background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.25);color:var(--a1);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--fm)}
+.schema-inp{flex:1;background:var(--surf);border:1px solid var(--bord);border-radius:10px;padding:7px 12px;color:var(--tx);font-family:var(--fb);font-size:12px;outline:none;transition:border-color .15s}
+.schema-inp:focus{border-color:var(--a1)}
+.schema-inp.ok{border-color:var(--a1);background:rgba(16,185,129,.07);color:var(--a2)}
+.schema-inp.err{border-color:#ef4444;background:rgba(239,68,68,.06)}
+.schema-btns{display:flex;gap:8px;padding:0 16px 14px}
+.schema-btn{flex:1;padding:9px;border-radius:12px;border:1px solid var(--bord);background:transparent;color:var(--mu);font-size:11.5px;font-weight:600;cursor:pointer;font-family:var(--fb)}
+.schema-btn.primary{background:linear-gradient(135deg,var(--a1),var(--a2));border:none;color:#fff;font-weight:700}
+.schema-btn:active{transform:scale(.96)}
+/* PROFIL */
+.prof-hero{background:linear-gradient(135deg,rgba(16,185,129,.2),rgba(52,211,153,.08));border:1px solid rgba(16,185,129,.18);border-radius:24px;padding:22px;margin-bottom:14px;text-align:center;animation:slideUp .4s ease both}
+.prof-avatar-big{width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,var(--a1),var(--a2));display:flex;align-items:center;justify-content:center;font-size:34px;margin:0 auto 12px;border:3px solid rgba(16,185,129,.35)}
+.prof-name{font-family:var(--fd);font-size:20px;font-weight:700;color:var(--tx);letter-spacing:-.3px}
+.prof-lvl{font-size:10px;color:var(--a1);text-transform:uppercase;letter-spacing:1.5px;margin-top:4px}
+.prof-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;animation:slideUp .4s .08s ease both}
+.ps-card{background:var(--card);border:1px solid var(--bord);border-radius:18px;padding:14px;text-align:center}
+.ps-n{font-family:var(--fm);font-size:24px;font-weight:700;color:var(--a1)}
+.ps-l{font-size:10px;color:var(--mu);margin-top:3px}
+.pref-card{background:var(--card);border:1px solid var(--bord);border-radius:18px;padding:16px;margin-bottom:10px;animation:slideUp .4s .16s ease both}
+.pref-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0}
+.pref-row+.pref-row{border-top:1px solid var(--bord)}
+.pref-info{flex:1}
+.pref-lbl{font-size:13px;font-weight:600;color:var(--tx)}
+.pref-sub{font-size:10px;color:var(--mu);margin-top:1px}
+.tog{width:42px;height:24px;border-radius:12px;background:var(--bord);position:relative;cursor:pointer;transition:background .2s;border:none;flex-shrink:0}
+.tog.on{background:var(--a1)}
+.tog::after{content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:transform .2s}
+.tog.on::after{transform:translateX(18px)}
+.danger-btn{width:100%;padding:13px;border-radius:14px;border:1px solid rgba(239,68,68,.28);background:rgba(239,68,68,.05);color:#f87171;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--fb);transition:all .15s;margin-top:6px;animation:slideUp .4s .24s ease both}
+.danger-btn:active{background:rgba(239,68,68,.1);transform:scale(.97)}
+/* NAV */
+#nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;height:calc(var(--nav) + 22px + env(safe-area-inset-bottom,20px));background:transparent;border:none;display:flex;align-items:flex-end;padding:0 4px calc(8px + env(safe-area-inset-bottom,16px)) 4px;z-index:99990;overflow:visible}
+#nav::before{content:"";position:absolute;left:0;right:0;bottom:0;height:calc(var(--nav) + env(safe-area-inset-bottom,20px));background:rgba(2,15,10,.92);border-top:1px solid var(--bord);z-index:-1;pointer-events:none;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+.ni{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;border:none;background:transparent;color:var(--mu);padding:6px 2px;cursor:pointer;font-size:9.5px;font-weight:600;font-family:var(--fb);transition:color .22s;-webkit-tap-highlight-color:transparent}
+.ni.on{color:var(--a1)}
+.niw{width:44px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:14px;transition:all .22s}
+.ni.on .niw{background:rgba(16,185,129,.14);transform:translateY(-3px)}
+.nic{flex:0 0 64px;position:relative;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;align-self:flex-start}
+.nic .niw{width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,var(--a1),var(--a2));color:#fff;box-shadow:0 4px 16px rgba(16,185,129,.45);margin-top:0;font-size:22px;animation:navPulse 3s infinite}
+.nic.on .niw{box-shadow:0 6px 24px rgba(16,185,129,.7)}
+/* TOAST */
+#toast{position:fixed;bottom:calc(var(--nav) + env(safe-area-inset-bottom,0px) + 72px);left:50%;transform:translateX(-50%) translateY(8px);background:var(--surf);border:1px solid var(--bord);border-radius:14px;padding:10px 18px;font-size:12px;font-weight:600;color:var(--tx);z-index:9999;opacity:0;transition:all .25s;pointer-events:none;white-space:nowrap;max-width:calc(100% - 32px);text-align:center}
+#toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+/* ELEMENT SHEET */
+#ptSheet{position:fixed;bottom:0;left:50%;transform:translateX(-50%) translateY(100%);width:100%;max-width:480px;z-index:1000;background:var(--surf);border-top:1px solid var(--bord);border-radius:24px 24px 0 0;padding:20px 20px max(20px,env(safe-area-inset-bottom));transition:transform .3s cubic-bezier(.4,0,.2,1)}
+#ptSheet.on{transform:translateX(-50%) translateY(0)}
+#ptSheetOverlay{position:fixed;inset:0;z-index:999;background:rgba(0,0,0,.6);display:none}
+#ptSheetOverlay.on{display:block}
+.pt-sym{font-family:var(--fm);font-size:56px;font-weight:700;color:var(--a1);text-align:center;margin-bottom:4px;line-height:1}
+.pt-name{font-family:var(--fd);font-size:22px;font-weight:700;color:var(--tx);text-align:center;margin-bottom:14px}
+.pt-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.pt-info{background:var(--card);border:1px solid var(--bord);border-radius:12px;padding:10px 12px}
+.pt-info-lbl{font-size:9px;text-transform:uppercase;letter-spacing:1.2px;color:var(--mu);margin-bottom:2px}
+.pt-info-val{font-family:var(--fm);font-size:14px;font-weight:700;color:var(--tx)}
+.pt-fact{background:rgba(16,185,129,.05);border:1px solid rgba(16,185,129,.14);border-radius:14px;padding:12px 14px;font-size:12px;color:rgba(209,250,229,.65);line-height:1.6;margin-bottom:14px;font-family:var(--fd);font-style:italic}
+.pt-close{width:100%;padding:12px;border-radius:14px;background:var(--card);border:1px solid var(--bord);color:var(--mu);font-size:13px;font-weight:600;cursor:pointer;font-family:var(--fb)}
+.pt-close:active{transform:scale(.97)}
+/* PERIODIC TABLE GRID */
+.ptable-wrap{overflow-x:auto;margin-bottom:14px;-webkit-overflow-scrolling:touch}
+.ptable-inner{display:grid;grid-template-columns:repeat(18,1fr);gap:2px;min-width:320px;padding:4px 0}
+.pe{border-radius:4px;padding:3px 2px;text-align:center;cursor:pointer;transition:all .15s;border:1px solid transparent;min-height:34px;display:flex;flex-direction:column;justify-content:center}
+.pe:active{transform:scale(.88)}
+.pe .pn{font-size:5.5px;color:rgba(255,255,255,.45);font-family:var(--fm);line-height:1}
+.pe .ps{font-size:10px;font-weight:700;font-family:var(--fm);color:#fff;line-height:1.1}
+.pe .pm{font-size:5px;color:rgba(255,255,255,.4);line-height:1;font-family:var(--fm)}
+.pe.alkali{background:#3b0f08}
+.pe.alkaline{background:#0a1f3b}
+.pe.transition{background:#0a1a30}
+.pe.other{background:#0f2030}
+.pe.metalloid{background:#1a0e38}
+.pe.nonmetal{background:#08271a}
+.pe.halogen{background:#0d1e2a}
+.pe.noble{background:#0d1525}
+/* CIRCUIT GRID BUILDER */
+.cg-wrap{background:var(--surf);border:1px solid var(--bord);border-radius:16px;padding:4px;margin-bottom:10px;overflow:hidden}
+.cg-svg{touch-action:none}
+.cg-svg{width:100%;display:block;border-radius:10px;background:#010a06}
+.cg-toolbar{display:flex;gap:5px;margin-bottom:10px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.cg-toolbar::-webkit-scrollbar{display:none}
+.cg-tool{min-width:52px;padding:8px 4px;border:1.5px solid var(--bord);border-radius:14px;background:var(--card);color:var(--mu);font-size:10px;font-weight:600;cursor:pointer;font-family:var(--fb);text-align:center;transition:all .15s;line-height:1.3;flex-shrink:0}
+.cg-tool.on{border-color:var(--a1);color:var(--a1);background:rgba(16,185,129,.12)}
+.cg-tool:active{transform:scale(.93)}
+.cg-tool .cg-ico{font-size:18px;display:block;margin-bottom:2px}
+.cg-readings{background:#010a06;border-left:3px solid var(--a1);border-radius:0 12px 12px 0;padding:10px 14px;font-family:var(--fm);font-size:12px;color:var(--a2);margin:10px 0;line-height:1.8}
+.cg-ctrl{display:flex;align-items:center;gap:8px;margin:8px 0}
+.cg-ctrl-lbl{font-family:var(--fm);font-size:12px;font-weight:700;color:var(--a4);width:14px;flex-shrink:0}
+.cg-ctrl-val{font-family:var(--fm);font-size:12px;font-weight:700;color:var(--tx);width:44px;text-align:right;flex-shrink:0}
+.sw-btn{padding:10px 20px;border-radius:14px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--fb);transition:all .15s}
+.sw-open{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#f87171}
+.sw-closed{background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);color:var(--a1)}
+.sw-btn:active{transform:scale(.95)}
+.cg-sw-row{display:flex;justify-content:center;gap:10px;margin:6px 0}
+/* EQUATION */
+.eq-wrap{background:var(--surf);border:1px solid var(--bord);border-radius:16px;padding:16px;margin-bottom:14px}
+.eq-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:12px}
+.eq-coef{width:34px;height:34px;border-radius:8px;background:#010a06;border:1.5px solid rgba(245,158,11,.4);color:var(--a4);font-family:var(--fm);font-size:15px;font-weight:700;text-align:center;outline:none;display:block;padding:0}
+.eq-coef:focus{border-color:var(--a4);box-shadow:0 0 8px rgba(245,158,11,.3)}
+.eq-mol{font-family:var(--fm);font-size:14px;font-weight:700;color:var(--tx)}
+.eq-op{font-size:18px;color:var(--mu);padding:0 2px}
+.eq-res{border-radius:12px;padding:10px 14px;font-size:12px;font-family:var(--fm);margin-bottom:10px;display:none;line-height:1.8}
+.eq-res.ok{background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);color:var(--a2);display:block}
+.eq-res.err{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.18);color:#fca5a5;display:block}
+/* OPTICS */
+.optics-wrap{background:var(--surf);border:1px solid var(--bord);border-radius:16px;padding:16px;margin-bottom:14px}
+.optics-svg{width:100%;max-width:300px;display:block;margin:0 auto}
+.optics-data{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.opt-val{background:#010a06;border-left:3px solid var(--phy);border-radius:0 10px 10px 0;padding:8px 12px}
+.opt-lbl{font-size:8.5px;text-transform:uppercase;letter-spacing:1px;color:var(--mu);margin-bottom:2px}
+.opt-num{font-family:var(--fm);font-size:15px;font-weight:700;color:#93c5fd}
+/* exp action btn */
+.exp-btn{width:100%;padding:13px;border-radius:14px;background:linear-gradient(135deg,var(--a1),var(--a2));border:none;color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--fb);margin-bottom:10px;box-shadow:0 4px 14px rgba(16,185,129,.3)}
+.exp-btn:active{transform:scale(.97)}
+.exp-btn.secondary{background:transparent;border:1px solid var(--bord);color:var(--mu);box-shadow:none}
+/* planet buttons */
+.planet-btn{flex:1;padding:8px 4px;border:1px solid var(--bord);border-radius:10px;background:transparent;color:var(--mu);font-size:11px;font-weight:600;cursor:pointer;font-family:var(--fb);transition:all .15s;text-align:center}
+.planet-btn.on{border-color:var(--a1);color:var(--a1);background:rgba(16,185,129,.08)}
+.planet-btn:active{transform:scale(.94)}
+/* (circuit builder CSS moved to .cg-* classes above) */
+/* result box */
+.res-box{border-radius:14px;padding:14px;margin-bottom:12px;text-align:center;display:none}
+.res-box.ok{background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2);display:block}
+.res-box.err{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.18);display:block}
+.res-emoji{font-size:36px;margin-bottom:6px}
+.res-title{font-family:var(--fd);font-size:16px;font-weight:700;margin-bottom:4px}
+.res-title.ok{color:var(--a1)}
+.res-title.err{color:#f87171}
+.res-txt{font-size:12px;color:rgba(209,250,229,.6);line-height:1.6}
+/* gph header */
+.gph{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.gpt{font-family:var(--fd);font-size:18px;font-weight:700;color:var(--tx);letter-spacing:-.3px}
+.gps{font-size:11px;color:var(--mu)}
+/* SCALE OF UNIVERSE — Cary Huang style */
+.su-wrap{position:relative;width:100%;height:72vh;min-height:380px;border:1px solid var(--bord);border-radius:18px;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none;transition:background .6s}
+.su-viewport{position:absolute;inset:0;bottom:88px;overflow:hidden}
+.su-bottom{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.5);z-index:10;padding:6px 10px 8px}
+.su-obj{position:absolute;display:flex;flex-direction:column;align-items:center;pointer-events:none;transition:none;will-change:transform,opacity}
+.su-circle{border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;opacity:.8;box-shadow:0 0 8px rgba(0,0,0,.3)}
+.su-emoji{line-height:1;filter:drop-shadow(0 1px 2px rgba(0,0,0,.5))}
+.su-name{font-family:var(--fd);font-weight:700;color:#fff;text-align:center;white-space:nowrap;text-shadow:0 1px 4px rgba(0,0,0,.9);margin-top:3px;line-height:1.1;font-size:11px}
+.su-size{font-family:var(--fm);color:rgba(255,255,255,.55);text-align:center;white-space:nowrap;text-shadow:0 1px 3px rgba(0,0,0,.7);margin-top:1px;font-size:9px}
+.su-indicator{position:absolute;top:10px;left:50%;transform:translateX(-50%);font-family:var(--fm);font-size:22px;font-weight:700;color:rgba(255,255,255,.9);z-index:5;text-shadow:0 2px 10px rgba(0,0,0,.8);pointer-events:none;white-space:nowrap}
+.su-cat{position:absolute;top:38px;left:50%;transform:translateX(-50%);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.8px;color:rgba(255,255,255,.5);z-index:5;pointer-events:none;white-space:nowrap}
+.su-slider-wrap{display:flex;align-items:center;gap:8px;margin-top:4px}
+.su-slider{-webkit-appearance:none;appearance:none;flex:1;height:6px;border-radius:3px;background:rgba(255,255,255,.15);outline:none;cursor:pointer}
+.su-slider::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--a1);box-shadow:0 0 8px rgba(16,185,129,.6);cursor:pointer}
+.su-slider::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--a1);box-shadow:0 0 8px rgba(16,185,129,.6);cursor:pointer;border:none}
+.su-lbl{font-family:var(--fm);font-size:10px;color:rgba(255,255,255,.5);flex-shrink:0;white-space:nowrap}
+.su-nav{display:flex;gap:4px}
+.su-nav button{flex:1;padding:5px 2px;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.25);border-radius:8px;color:var(--tx);font-size:10px;font-family:var(--fb);cursor:pointer;white-space:nowrap}
+.su-nav button:active{background:rgba(16,185,129,.25)}
+@media(max-width:500px){.su-wrap{height:calc(100vh - 200px);min-height:300px;max-height:460px}.su-name{font-size:10px}.su-size{font-size:8px}.su-indicator{font-size:18px}.su-cat{font-size:9px;top:34px}.su-nav button{font-size:9px;padding:4px 1px}.su-bottom{padding:4px 6px 6px}}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- DOT GRID SVG BACKGROUND -->
+<svg id="dotgrid" preserveAspectRatio="none">
+  <defs>
+    <pattern id="dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1" fill="#10b981" opacity="0.4"/>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#dots)" opacity="0.04"/>
+</svg>
+
+<!-- HEADER -->
+<div id="hdr">
+  <button class="hdr-back" onclick="goBack()">‹</button>
+  <div class="hdr-logo">ScolarIA <span>Sciences</span></div>
+  <div class="hdr-xp" id="xpDisplay">0 XP</div>
+</div>
+<div id="xpw"><div id="xpb"></div></div>
+
+<!-- CONTENT -->
+<div id="content">
+
+  <!-- ── ACCUEIL ── -->
+  <div class="sec on" id="s-acc">
+    <div class="hero-card">
+      <div class="hero-row">
+        <div class="hero-avatar" id="heroAvatar">🎓</div>
+        <div>
+          <div class="hero-name" id="heroName">Gabriel</div>
+          <div class="hero-sub">Sciences · 3ème</div>
+        </div>
+      </div>
+      <div class="streak-row">
+        <span style="font-size:18px">🔥</span>
+        <span class="streak-val" id="heroStreak">0</span>
+        <span class="streak-lbl">jour(s) de streak</span>
+      </div>
+      <div class="hero-quote" id="heroQuote">La science, c'est la curiosité organisée.</div>
+    </div>
+
+    <div class="xp-card">
+      <div class="xp-row">
+        <div class="xp-level" id="xpLevel">Débutant</div>
+        <div>
+          <div class="xp-val" id="xpValAcc">0 XP</div>
+          <div class="xp-sub">/ 500 XP prochain niveau</div>
+        </div>
+      </div>
+      <div class="xp-bar-wrap"><div class="xp-bar-fill" id="xpBarAcc" style="width:0%"></div></div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-n" id="statAct">0</div>
+        <div class="stat-l">Activités Sciences</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n" id="statStrk">0</div>
+        <div class="stat-l">🔥 Streak</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n" id="statForm">0</div>
+        <div class="stat-l">Formules apprises</div>
+      </div>
+    </div>
+
+    <button class="cta-btn" onclick="goSec('lab')">🧪 Aller au labo</button>
+
+    <div class="sec-sep"></div>
+    <div class="sec-lbl">⚡ ACTIONS RAPIDES</div>
+    <div class="actions-grid">
+      <div class="act-card" onclick="showToast('📷 Scanner bientôt dispo !')">
+        <div class="act-icon" style="background:rgba(16,185,129,.12)">📷</div>
+        <div>
+          <div class="act-title">Scanner cours</div>
+          <div class="act-sub">Photo → Fiche IA</div>
+        </div>
+      </div>
+      <div class="act-card" onclick="showToast('⏰ Veille bientôt dispo !')">
+        <div class="act-icon" style="background:rgba(244,63,94,.12)">⏰</div>
+        <div>
+          <div class="act-title">Veille contrôle</div>
+          <div class="act-sub">Plan de révision</div>
+        </div>
+      </div>
+      <div class="act-card" onclick="showToast('🎤 Quiz vocal bientôt dispo !')">
+        <div class="act-icon" style="background:rgba(16,185,129,.12)">🎤</div>
+        <div>
+          <div class="act-title">Quiz vocal</div>
+          <div class="act-sub">Réponds à voix haute</div>
+        </div>
+      </div>
+      <div class="act-card" onclick="showToast('⏱ Focus bientôt dispo !')">
+        <div class="act-icon" style="background:rgba(245,158,11,.12)">⏱</div>
+        <div>
+          <div class="act-title">Focus</div>
+          <div class="act-sub">25 min Pomodoro</div>
+        </div>
+      </div>
+      <div class="act-card" onclick="showToast('📊 Moyennes bientôt dispo !')">
+        <div class="act-icon" style="background:rgba(59,130,246,.12)">📊</div>
+        <div>
+          <div class="act-title">Moyenne</div>
+          <div class="act-sub">Notes et coefficients</div>
+        </div>
+      </div>
+      <div class="act-card" onclick="showToast('⚡ Combo bientôt dispo !')">
+        <div class="act-icon" style="background:rgba(245,158,11,.12)">⚡</div>
+        <div>
+          <div class="act-title">Fiche + Flash</div>
+          <div class="act-sub">Générer en 1 clic</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec-sep"></div>
+    <div class="sec-lbl">🎯 OUTILS SCIENCES</div>
+    <div class="actions-grid">
+      <div class="act-card" onclick="goSec('form')">
+        <div class="act-icon" style="background:rgba(59,130,246,.12)">🧮</div>
+        <div>
+          <div class="act-title">Calculer formule</div>
+          <div class="act-sub">U=RI, v=d/t, n=m/M</div>
+        </div>
+      </div>
+      <div class="act-card" onclick="goSec('sch')">
+        <div class="act-icon" style="background:rgba(16,185,129,.12)">📐</div>
+        <div>
+          <div class="act-title">Légender schéma</div>
+          <div class="act-sub">Cellule, \u0153il, circuit</div>
+        </div>
+      </div>
+      <div class="act-card" onclick="openRandomExp()">
+        <div class="act-icon" style="background:rgba(245,158,11,.12)">⚗️</div>
+        <div>
+          <div class="act-title">Expérience aléatoire</div>
+          <div class="act-sub">Surprise du labo !</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── LABO ── -->
+  <div class="sec" id="s-lab">
+    <div class="gph">
+      <div class="gpt">⚗️ Laboratoire</div>
+      <div class="gps">8 expériences</div>
+    </div>
+
+    <div class="lab-card" onclick="openExp(1)">
+      <div class="lab-top">
+        <div class="lab-emoji">⚡</div>
+        <div class="lab-diff diff-easy">Facile</div>
+      </div>
+      <div class="lab-title">Circuit électrique</div>
+      <div class="lab-desc">Ferme le circuit et observe la loi d'Ohm en action. U = R × I</div>
+      <div class="lab-meta">
+        <div class="lab-dot" style="background:var(--phy)"></div>
+        <div class="lab-subj">Physique</div>
+        <div class="lab-arrow">›</div>
+      </div>
+    </div>
+
+    <div class="lab-card" onclick="openExp(2)">
+      <div class="lab-top">
+        <div class="lab-emoji">⚗️</div>
+        <div class="lab-diff diff-med">Moyen</div>
+      </div>
+      <div class="lab-title">Équation chimique</div>
+      <div class="lab-desc">Équilibre la combustion de l'hydrogène. Entre les bons coefficients !</div>
+      <div class="lab-meta">
+        <div class="lab-dot" style="background:var(--chi)"></div>
+        <div class="lab-subj">Chimie</div>
+        <div class="lab-arrow">›</div>
+      </div>
+    </div>
+
+    <div class="lab-card" onclick="openExp(3)">
+      <div class="lab-top">
+        <div class="lab-emoji">🧪</div>
+        <div class="lab-diff diff-easy">Facile</div>
+      </div>
+      <div class="lab-title">Tableau périodique</div>
+      <div class="lab-desc">Explore les éléments chimiques. Tape pour voir les détails et lance le quiz !</div>
+      <div class="lab-meta">
+        <div class="lab-dot" style="background:var(--chi)"></div>
+        <div class="lab-subj">Chimie</div>
+        <div class="lab-arrow">›</div>
+      </div>
+    </div>
+
+    <div class="lab-card" onclick="openExp(4)">
+      <div class="lab-top">
+        <div class="lab-emoji">🔆</div>
+        <div class="lab-diff diff-hard">Avancé</div>
+      </div>
+      <div class="lab-title">Réfraction optique</div>
+      <div class="lab-desc">Modifie l'angle d'incidence et observe la réfraction. Loi de Snell-Descartes.</div>
+      <div class="lab-meta">
+        <div class="lab-dot" style="background:var(--phy)"></div>
+        <div class="lab-subj">Physique — Optique</div>
+        <div class="lab-arrow">›</div>
+      </div>
+    </div>
+
+    <div class="lab-card" onclick="openExp(5)">
+      <div class="lab-top">
+        <div class="lab-emoji">📐</div>
+        <div class="lab-diff diff-easy">Facile</div>
+      </div>
+      <div class="lab-title">Théorème de Pythagore</div>
+      <div class="lab-desc">Triangle rectangle interactif. Modifie a et b, observe que a² + b² = c² en temps réel.</div>
+      <div class="lab-meta">
+        <div class="lab-dot" style="background:var(--mat)"></div>
+        <div class="lab-subj">Maths</div>
+        <div class="lab-arrow">›</div>
+      </div>
+    </div>
+
+    <div class="lab-card" onclick="openExp(6)">
+      <div class="lab-top">
+        <div class="lab-emoji">⚖️</div>
+        <div class="lab-diff diff-easy">Facile</div>
+      </div>
+      <div class="lab-title">Poids et masse</div>
+      <div class="lab-desc">P = m × g. Calcule le poids d'un objet et visualise le vecteur force. Terre vs Lune.</div>
+      <div class="lab-meta">
+        <div class="lab-dot" style="background:var(--phy)"></div>
+        <div class="lab-subj">Physique — Mécanique</div>
+        <div class="lab-arrow">›</div>
+      </div>
+    </div>
+
+    <div class="lab-card" onclick="openExp(7)">
+      <div class="lab-top">
+        <div class="lab-emoji">⚛️</div>
+        <div class="lab-diff diff-med">Moyen</div>
+      </div>
+      <div class="lab-title">Structure de l'atome</div>
+      <div class="lab-desc">Sélectionne un atome et explore sa configuration : protons, neutrons, électrons, couches.</div>
+      <div class="lab-meta">
+        <div class="lab-dot" style="background:var(--chi)"></div>
+        <div class="lab-subj">Chimie — Atome</div>
+        <div class="lab-arrow">›</div>
+      </div>
+    </div>
+
+    <div class="lab-card" onclick="openExp(8)">
+      <div class="lab-top">
+        <div class="lab-emoji">🔭</div>
+        <div class="lab-diff diff-hard">Avancé</div>
+      </div>
+      <div class="lab-title">Échelle de l&#8217;Univers</div>
+      <div class="lab-desc">Du quark à l&#8217;univers observable : explore 62 ordres de grandeur en zoomant !</div>
+      <div class="lab-meta">
+        <div class="lab-dot" style="background:var(--phy)"></div>
+        <div class="lab-subj">Physique — Cosmologie</div>
+        <div class="lab-arrow">›</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── FORMULES ── -->
+  <div class="sec" id="s-form">
+    <div class="gph">
+      <div class="gpt">📐 Formules</div>
+      <div class="gps">Calcul interactif</div>
+    </div>
+
+    <!-- Loi d'Ohm -->
+    <div class="formula-card">
+      <div class="fc-header">
+        <div class="fc-dot" style="background:var(--phy)"></div>
+        <div class="fc-title">Loi d'Ohm · Physique</div>
+      </div>
+      <div class="formula-block">
+        <div class="formula-name">ÉLECTRICITÉ</div>
+        <span class="formula-text">U = R × I</span>
+        <div class="formula-vars">U : tension (V) · R : résistance (Ω) · I : intensité (A)</div>
+      </div>
+      <div class="slider-row">
+        <div class="slider-lbl">R</div>
+        <input type="range" class="slider-input" id="ohm-r" min="1" max="100" value="30" oninput="updateOhm()">
+        <div class="slider-val" id="ohm-r-val">30 Ω</div>
+      </div>
+      <div class="slider-row">
+        <div class="slider-lbl">I</div>
+        <input type="range" class="slider-input" id="ohm-i" min="1" max="30" value="3" oninput="updateOhm()">
+        <div class="slider-val" id="ohm-i-val">0.3 A</div>
+      </div>
+      <div class="slider-row">
+        <div class="slider-lbl" style="color:var(--a2)">U</div>
+        <input type="range" class="slider-input" id="ohm-u" min="0" max="200" value="9" disabled style="opacity:.4">
+        <div class="slider-val calc" id="ohm-u-val">9 V</div>
+      </div>
+      <div class="fc-btns">
+        <button class="fc-btn" onclick="toggleExtra('ohm-concret')">💡 Cas concret</button>
+        <button class="fc-btn" onclick="toggleExtra('ohm-mnemo')">🧠 Mnémo</button>
+      </div>
+      <div class="fc-extra" id="ohm-concret">
+        <div class="concret-box">Ampoule 60 W sous 220 V :<br>I = P/U = 60/220 ≈ 0,27 A<br>Si R = 817 Ω → U = 817 × 0,27 ≈ 220 V ✓</div>
+      </div>
+      <div class="fc-extra" id="ohm-mnemo">
+        <div class="tip-box">Retiens "URL" 🏝️<br><strong>U</strong>lysse <strong>R</strong>ésiste à l'<strong>I</strong>le → U = R × I</div>
+      </div>
+    </div>
+
+    <!-- Puissance -->
+    <div class="formula-card">
+      <div class="fc-header">
+        <div class="fc-dot" style="background:var(--phy)"></div>
+        <div class="fc-title">Puissance · Physique</div>
+      </div>
+      <div class="formula-block">
+        <div class="formula-name">ÉLECTRICITÉ</div>
+        <span class="formula-text">P = U × I</span>
+        <div class="formula-vars">P : puissance (W) · U : tension (V) · I : intensité (A)</div>
+      </div>
+      <div class="slider-row">
+        <div class="slider-lbl">U</div>
+        <input type="range" class="slider-input" id="pw-u" min="1" max="230" value="12" oninput="updatePower()">
+        <div class="slider-val" id="pw-u-val">12 V</div>
+      </div>
+      <div class="slider-row">
+        <div class="slider-lbl">I</div>
+        <input type="range" class="slider-input" id="pw-i" min="1" max="50" value="10" oninput="updatePower()">
+        <div class="slider-val" id="pw-i-val">1.0 A</div>
+      </div>
+      <div class="slider-row">
+        <div class="slider-lbl" style="color:var(--a2)">P</div>
+        <input type="range" class="slider-input" id="pw-p" min="0" max="1000" value="12" disabled style="opacity:.4">
+        <div class="slider-val calc" id="pw-p-val">12 W</div>
+      </div>
+      <div class="fc-btns">
+        <button class="fc-btn" onclick="toggleExtra('pw-concret')">💡 Cas concret</button>
+        <button class="fc-btn" onclick="toggleExtra('pw-mnemo')">🧠 Mnémo</button>
+      </div>
+      <div class="fc-extra" id="pw-concret">
+        <div class="concret-box">Ton chargeur USB :<br>U = 5 V, I = 2 A<br>P = 5 × 2 = 10 W → charge rapide !</div>
+      </div>
+      <div class="fc-extra" id="pw-mnemo">
+        <div class="tip-box">🎤 "PUI" → <strong>P</strong>uissance = <strong>U</strong> × <strong>I</strong><br>Comme "puis" on calcule !</div>
+      </div>
+    </div>
+
+    <!-- Vitesse -->
+    <div class="formula-card">
+      <div class="fc-header">
+        <div class="fc-dot" style="background:var(--phy)"></div>
+        <div class="fc-title">Vitesse · Physique</div>
+      </div>
+      <div class="formula-block">
+        <div class="formula-name">MÉCANIQUE</div>
+        <span class="formula-text">v = d ÷ t</span>
+        <div class="formula-vars">v : vitesse (m/s) · d : distance (m) · t : durée (s)</div>
+      </div>
+      <div class="slider-row">
+        <div class="slider-lbl">d</div>
+        <input type="range" class="slider-input" id="sp-d" min="1" max="200" value="100" oninput="updateSpeed()">
+        <div class="slider-val" id="sp-d-val">100 m</div>
+      </div>
+      <div class="slider-row">
+        <div class="slider-lbl">t</div>
+        <input type="range" class="slider-input" id="sp-t" min="1" max="60" value="10" oninput="updateSpeed()">
+        <div class="slider-val" id="sp-t-val">10 s</div>
+      </div>
+      <div class="slider-row">
+        <div class="slider-lbl" style="color:var(--a2)">v</div>
+        <input type="range" class="slider-input" id="sp-v" min="0" max="50" value="10" disabled style="opacity:.4">
+        <div class="slider-val calc" id="sp-v-val">10 m/s</div>
+      </div>
+      <div class="fc-btns">
+        <button class="fc-btn" onclick="toggleExtra('sp-concret')">💡 Cas concret</button>
+        <button class="fc-btn" onclick="toggleExtra('sp-mnemo')">🧠 Mnémo</button>
+      </div>
+      <div class="fc-extra" id="sp-concret">
+        <div class="concret-box">À vélo, 100 m en 10 s :<br>v = 100/10 = 10 m/s = 36 km/h<br>(× 3,6 pour convertir en km/h)</div>
+      </div>
+      <div class="fc-extra" id="sp-mnemo">
+        <div class="tip-box">🏃 <strong>D</strong>iane <strong>V</strong>isit <strong>T</strong>oulouse<br>d = v × t → v = d/t → t = d/v</div>
+      </div>
+    </div>
+
+    <!-- Quantité de matière -->
+    <div class="formula-card">
+      <div class="fc-header">
+        <div class="fc-dot" style="background:var(--chi)"></div>
+        <div class="fc-title">Quantité de matière · Chimie</div>
+      </div>
+      <div class="formula-block">
+        <div class="formula-name">CHIMIE</div>
+        <span class="formula-text">n = m ÷ M</span>
+        <div class="formula-vars">n : nb de moles (mol) · m : masse (g) · M : masse molaire (g/mol)</div>
+      </div>
+      <div class="slider-row">
+        <div class="slider-lbl">m</div>
+        <input type="range" class="slider-input" id="mol-m" min="1" max="100" value="18" oninput="updateMoles()">
+        <div class="slider-val" id="mol-m-val">18 g</div>
+      </div>
+      <div class="slider-row">
+        <div class="slider-lbl" style="color:var(--a2)">n</div>
+        <input type="range" class="slider-input" id="mol-n" min="0" max="10" value="1" disabled style="opacity:.4">
+        <div class="slider-val calc" id="mol-n-val">1.00 mol</div>
+      </div>
+      <div style="font-size:10px;color:var(--mu);margin-bottom:4px">M (eau H₂O) = 18 g/mol fixé</div>
+      <div class="fc-btns">
+        <button class="fc-btn" onclick="toggleExtra('mol-concret')">💡 Cas concret</button>
+        <button class="fc-btn" onclick="toggleExtra('mol-mnemo')">🧠 Mnémo</button>
+      </div>
+      <div class="fc-extra" id="mol-concret">
+        <div class="concret-box">18 g d'eau = 1 mol<br>= 6,02 × 10²³ molécules !<br>C'est le nombre d'Avogadro.</div>
+      </div>
+      <div class="fc-extra" id="mol-mnemo">
+        <div class="tip-box">🧪 n = m/M<br>"N'aie pas peur de la Masse Molaire"<br>n = moles, m = masse, M = Molaire</div>
+      </div>
+    </div>
+
+    <!-- Pythagore -->
+    <div class="formula-card">
+      <div class="fc-header">
+        <div class="fc-dot" style="background:var(--mat)"></div>
+        <div class="fc-title">Théorème de Pythagore · Maths</div>
+      </div>
+      <div class="formula-block">
+        <div class="formula-name">GÉOMÉTRIE — TRIANGLE RECTANGLE</div>
+        <span class="formula-text" style="color:#a78bfa">c² = a² + b²</span>
+        <div class="formula-vars">c : hypoténuse · a, b : côtés de l'angle droit</div>
+      </div>
+      <div class="slider-row">
+        <div class="slider-lbl" style="color:#a78bfa">a</div>
+        <input type="range" class="slider-input" id="py-a" min="1" max="12" value="3" oninput="updatePyF()">
+        <div class="slider-val" id="py-a-val">3 cm</div>
+      </div>
+      <div class="slider-row">
+        <div class="slider-lbl" style="color:#a78bfa">b</div>
+        <input type="range" class="slider-input" id="py-b" min="1" max="12" value="4" oninput="updatePyF()">
+        <div class="slider-val" id="py-b-val">4 cm</div>
+      </div>
+      <div class="slider-row">
+        <div class="slider-lbl" style="color:var(--a2)">c</div>
+        <input type="range" class="slider-input" id="py-c" min="0" max="20" value="5" disabled style="opacity:.4">
+        <div class="slider-val calc" id="py-c-val" style="color:#a78bfa">5.00 cm</div>
+      </div>
+      <div class="fc-btns">
+        <button class="fc-btn" onclick="toggleExtra('py-concret')">💡 Cas concret</button>
+        <button class="fc-btn" onclick="toggleExtra('py-mnemo')">🧠 Mnémo</button>
+      </div>
+      <div class="fc-extra" id="py-concret">
+        <div class="concret-box" style="border-left-color:var(--mat)">Triangle 3-4-5 : le triangle magique des maçons !<br>3² + 4² = 9 + 16 = 25 = 5² ✓<br>Utilisé pour vérifier l'angle droit d'un mur.</div>
+      </div>
+      <div class="fc-extra" id="py-mnemo">
+        <div class="tip-box">🏛️ Attention : Pythagore s'applique UNIQUEMENT dans un triangle rectangle.<br>L'hypoténuse est toujours en face de l'angle droit — c'est le plus grand côté.</div>
+      </div>
+    </div>
+
+    <!-- Trigonométrie -->
+    <div class="formula-card">
+      <div class="fc-header">
+        <div class="fc-dot" style="background:var(--mat)"></div>
+        <div class="fc-title">Trigonométrie · Maths</div>
+      </div>
+      <div class="formula-block">
+        <div class="formula-name">GÉOMÉTRIE — SOH CAH TOA</div>
+        <span class="formula-text" style="color:#a78bfa">tan(α) = opp / adj</span>
+        <div class="formula-vars">sin(α) = opp/hyp · cos(α) = adj/hyp · tan(α) = opp/adj</div>
+      </div>
+      <div class="slider-row">
+        <div class="slider-lbl" style="color:#a78bfa">α</div>
+        <input type="range" class="slider-input" id="trig-a" min="1" max="89" value="45" oninput="updateTrig()">
+        <div class="slider-val" id="trig-a-val">45°</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin:8px 0">
+        <div class="formula-block" style="padding:8px;text-align:center;margin:0">
+          <div class="formula-name">sin(α)</div>
+          <div style="font-family:var(--fm);color:var(--a2);font-size:14px;font-weight:700" id="trig-sin-val">0.707</div>
+        </div>
+        <div class="formula-block" style="padding:8px;text-align:center;margin:0">
+          <div class="formula-name">cos(α)</div>
+          <div style="font-family:var(--fm);color:var(--a2);font-size:14px;font-weight:700" id="trig-cos-val">0.707</div>
+        </div>
+        <div class="formula-block" style="padding:8px;text-align:center;margin:0">
+          <div class="formula-name">tan(α)</div>
+          <div style="font-family:var(--fm);color:#a78bfa;font-size:14px;font-weight:700" id="trig-tan-val">1.000</div>
+        </div>
+      </div>
+      <div class="fc-btns">
+        <button class="fc-btn" onclick="toggleExtra('trig-concret')">💡 Cas concret</button>
+        <button class="fc-btn" onclick="toggleExtra('trig-mnemo')">🧠 Mnémo</button>
+      </div>
+      <div class="fc-extra" id="trig-concret">
+        <div class="concret-box" style="border-left-color:var(--mat)">Arbre à 20 m, angle de vue 30° :<br>tan(30°) = 0,577 → hauteur = 20 × 0,577 ≈ 11,5 m</div>
+      </div>
+      <div class="fc-extra" id="trig-mnemo">
+        <div class="tip-box">SOH-CAH-TOA 🎯<br><strong>S</strong>in = <strong>O</strong>pp/<strong>H</strong>yp · <strong>C</strong>os = <strong>A</strong>dj/<strong>H</strong>yp · <strong>T</strong>an = <strong>O</strong>pp/<strong>A</strong>dj</div>
+      </div>
+    </div>
+
+    <!-- Poids -->
+    <div class="formula-card">
+      <div class="fc-header">
+        <div class="fc-dot" style="background:var(--phy)"></div>
+        <div class="fc-title">Poids · Physique</div>
+      </div>
+      <div class="formula-block">
+        <div class="formula-name">MÉCANIQUE</div>
+        <span class="formula-text">P = m × g</span>
+        <div class="formula-vars">P : poids (N) · m : masse (kg) · g = 9,8 N/kg sur Terre</div>
+      </div>
+      <div class="slider-row">
+        <div class="slider-lbl">m</div>
+        <input type="range" class="slider-input" id="wt-m" min="1" max="200" value="70" oninput="updateWeightF()">
+        <div class="slider-val" id="wt-m-val">70 kg</div>
+      </div>
+      <div class="slider-row">
+        <div class="slider-lbl" style="color:var(--a2)">P</div>
+        <input type="range" class="slider-input" id="wt-p" min="0" max="2000" value="686" disabled style="opacity:.4">
+        <div class="slider-val calc" id="wt-p-val">686 N</div>
+      </div>
+      <div style="font-size:10px;color:var(--mu);margin-bottom:6px">g Lune = 1,6 N/kg → <span id="wt-lune" style="color:#93c5fd;font-family:var(--fm)">112 N</span> sur la Lune</div>
+      <div class="fc-btns">
+        <button class="fc-btn" onclick="toggleExtra('wt-concret')">💡 Cas concret</button>
+        <button class="fc-btn" onclick="toggleExtra('wt-mnemo')">🧠 Mnémo</button>
+      </div>
+      <div class="fc-extra" id="wt-concret">
+        <div class="concret-box">60 kg sur Terre → P = 60 × 9,8 = 588 N<br>Sur la Lune → P = 60 × 1,6 = 96 N<br>Même masse, poids ÷ 6 !</div>
+      </div>
+      <div class="fc-extra" id="wt-mnemo">
+        <div class="tip-box">⚠️ Masse (kg) ≠ Poids (N)<br>La masse ne change jamais. Le poids dépend de la planète.<br>Newton (N) = unité de force, pas de masse !</div>
+      </div>
+    </div>
+
+    <!-- Énergie cinétique -->
+    <div class="formula-card">
+      <div class="fc-header">
+        <div class="fc-dot" style="background:var(--phy)"></div>
+        <div class="fc-title">Énergie cinétique · Physique</div>
+      </div>
+      <div class="formula-block">
+        <div class="formula-name">MÉCANIQUE — MOUVEMENT</div>
+        <span class="formula-text">Ec = ½ × m × v²</span>
+        <div class="formula-vars">Ec : énergie cinétique (J) · m : masse (kg) · v : vitesse (m/s)</div>
+      </div>
+      <div class="slider-row">
+        <div class="slider-lbl">m</div>
+        <input type="range" class="slider-input" id="ec-m" min="1" max="2000" value="1000" oninput="updateEc()">
+        <div class="slider-val" id="ec-m-val">1000 kg</div>
+      </div>
+      <div class="slider-row">
+        <div class="slider-lbl">v</div>
+        <input type="range" class="slider-input" id="ec-v" min="0" max="50" value="14" oninput="updateEc()">
+        <div class="slider-val" id="ec-v-val">14 m/s</div>
+      </div>
+      <div class="slider-row">
+        <div class="slider-lbl" style="color:var(--a2)">Ec</div>
+        <input type="range" class="slider-input" id="ec-e" min="0" max="1500000" value="98000" disabled style="opacity:.4">
+        <div class="slider-val calc" id="ec-e-val">98 kJ</div>
+      </div>
+      <div class="fc-btns">
+        <button class="fc-btn" onclick="toggleExtra('ec-concret')">💡 Cas concret</button>
+        <button class="fc-btn" onclick="toggleExtra('ec-mnemo')">🧠 Mnémo</button>
+      </div>
+      <div class="fc-extra" id="ec-concret">
+        <div class="concret-box">Voiture 1000 kg à 50 km/h (14 m/s) :<br>Ec = 0,5 × 1000 × 196 = 98 000 J<br>À 100 km/h → Ec × 4 ! (v double = Ec × 4)</div>
+      </div>
+      <div class="fc-extra" id="ec-mnemo">
+        <div class="tip-box">🚗 Si la vitesse double → Ec multipliée par 4 (v²)<br>C'est pourquoi les accidents sont bien plus graves à grande vitesse.</div>
+      </div>
+    </div>
+
+    <!-- Concentration massique -->
+    <div class="formula-card">
+      <div class="fc-header">
+        <div class="fc-dot" style="background:var(--chi)"></div>
+        <div class="fc-title">Concentration massique · Chimie</div>
+      </div>
+      <div class="formula-block">
+        <div class="formula-name">SOLUTIONS</div>
+        <span class="formula-text">Cm = m ÷ V</span>
+        <div class="formula-vars">Cm : concentration (g/L) · m : masse soluté (g) · V : volume (L)</div>
+      </div>
+      <div class="slider-row">
+        <div class="slider-lbl">m</div>
+        <input type="range" class="slider-input" id="cm-m" min="1" max="100" value="10" oninput="updateCm()">
+        <div class="slider-val" id="cm-m-val">10 g</div>
+      </div>
+      <div class="slider-row">
+        <div class="slider-lbl">V</div>
+        <input type="range" class="slider-input" id="cm-v" min="1" max="10" value="2" oninput="updateCm()">
+        <div class="slider-val" id="cm-v-val">2.0 L</div>
+      </div>
+      <div class="slider-row">
+        <div class="slider-lbl" style="color:var(--a2)">Cm</div>
+        <input type="range" class="slider-input" id="cm-c" min="0" max="100" value="5" disabled style="opacity:.4">
+        <div class="slider-val calc" id="cm-c-val">5.0 g/L</div>
+      </div>
+      <div class="fc-btns">
+        <button class="fc-btn" onclick="toggleExtra('cm-concret')">💡 Cas concret</button>
+        <button class="fc-btn" onclick="toggleExtra('cm-mnemo')">🧠 Mnémo</button>
+      </div>
+      <div class="fc-extra" id="cm-concret">
+        <div class="concret-box">Sérum physiologique : Cm = 9 g/L (NaCl dans eau)<br>Eau de mer : Cm ≈ 35 g/L de sel<br>Eau douce : Cm &lt; 1 g/L</div>
+      </div>
+      <div class="fc-extra" id="cm-mnemo">
+        <div class="tip-box">Cm = m/V → "la masse par litre"<br>Plus tu dilues (V grand) → solution moins concentrée</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SCHÉMAS ── -->
+  <div class="sec" id="s-sch">
+    <div class="gph">
+      <div class="gpt">🔬 Schémas</div>
+      <div class="gps">Légender sans regarder</div>
+    </div>
+
+    <!-- Cellule animale -->
+    <div class="schema-card">
+      <div class="schema-header">
+        <div class="schema-title">La cellule animale</div>
+        <div class="schema-score" id="score-cell">—</div>
+      </div>
+      <div class="schema-svg-wrap">
+        <svg class="schema-svg" viewBox="0 0 280 180" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="140" cy="90" rx="120" ry="75" fill="rgba(16,185,129,.06)" stroke="rgba(16,185,129,.4)" stroke-width="2"/>
+          <ellipse cx="140" cy="90" rx="38" ry="30" fill="rgba(59,130,246,.12)" stroke="rgba(59,130,246,.5)" stroke-width="1.5"/>
+          <ellipse cx="70" cy="70" rx="18" ry="12" fill="rgba(245,158,11,.1)" stroke="rgba(245,158,11,.45)" stroke-width="1.5"/>
+          <ellipse cx="195" cy="110" rx="15" ry="10" fill="rgba(245,158,11,.1)" stroke="rgba(245,158,11,.45)" stroke-width="1.5"/>
+          <!-- numbered arrows -->
+          <circle cx="255" cy="40" r="10" fill="#10b981" opacity=".9"/>
+          <text x="255" y="44" text-anchor="middle" fill="#fff" font-size="11" font-family="IBM Plex Mono, monospace" font-weight="700">1</text>
+          <line x1="245" y1="46" x2="220" y2="75" stroke="#10b981" stroke-width="1.5" opacity=".6"/>
+          <circle cx="180" cy="40" r="10" fill="#3b82f6" opacity=".9"/>
+          <text x="180" y="44" text-anchor="middle" fill="#fff" font-size="11" font-family="IBM Plex Mono, monospace" font-weight="700">2</text>
+          <line x1="180" y1="50" x2="155" y2="76" stroke="#3b82f6" stroke-width="1.5" opacity=".6"/>
+          <circle cx="50" cy="145" r="10" fill="#f59e0b" opacity=".9"/>
+          <text x="50" y="149" text-anchor="middle" fill="#fff" font-size="11" font-family="IBM Plex Mono, monospace" font-weight="700">3</text>
+          <line x1="58" y1="138" x2="68" y2="115" stroke="#f59e0b" stroke-width="1.5" opacity=".6"/>
+          <circle cx="230" cy="150" r="10" fill="#f59e0b" opacity=".9"/>
+          <text x="230" y="154" text-anchor="middle" fill="#fff" font-size="11" font-family="IBM Plex Mono, monospace" font-weight="700">4</text>
+          <line x1="222" y1="143" x2="205" y2="118" stroke="#f59e0b" stroke-width="1.5" opacity=".6"/>
+          <circle cx="110" cy="145" r="10" fill="#8b5cf6" opacity=".9"/>
+          <text x="110" y="149" text-anchor="middle" fill="#fff" font-size="11" font-family="IBM Plex Mono, monospace" font-weight="700">5</text>
+          <line x1="112" y1="135" x2="118" y2="110" stroke="#8b5cf6" stroke-width="1.5" opacity=".6"/>
+        </svg>
+      </div>
+      <div class="schema-inputs" id="inp-cell">
+        <div class="schema-input-row"><div class="schema-num">1</div><input class="schema-inp" placeholder="Structure externe..." id="cell-1"></div>
+        <div class="schema-input-row"><div class="schema-num">2</div><input class="schema-inp" placeholder="Centre de la cellule..." id="cell-2"></div>
+        <div class="schema-input-row"><div class="schema-num">3</div><input class="schema-inp" placeholder="Usine à énergie..." id="cell-3"></div>
+        <div class="schema-input-row"><div class="schema-num">4</div><input class="schema-inp" placeholder="Autre usine à énergie..." id="cell-4"></div>
+        <div class="schema-input-row"><div class="schema-num">5</div><input class="schema-inp" placeholder="Liquide intérieur..." id="cell-5"></div>
+      </div>
+      <div class="schema-btns">
+        <button class="schema-btn" onclick="toggleMemo('cell')">👁 Mode mémo</button>
+        <button class="schema-btn primary" onclick="checkSchema('cell')">✓ Vérifier</button>
+      </div>
+    </div>
+
+    <!-- L'\u0153il -->
+    <div class="schema-card">
+      <div class="schema-header">
+        <div class="schema-title">L'œil humain</div>
+        <div class="schema-score" id="score-eye">—</div>
+      </div>
+      <div class="schema-svg-wrap">
+        <svg class="schema-svg" viewBox="0 0 280 180" xmlns="http://www.w3.org/2000/svg">
+          <!-- Sclère (blanc) -->
+          <ellipse cx="140" cy="90" rx="100" ry="70" fill="rgba(209,250,229,.04)" stroke="rgba(16,185,129,.35)" stroke-width="2"/>
+          <!-- Cornée -->
+          <path d="M 50 90 Q 40 90 40 90 Q 40 70 55 60 Q 40 110 50 90" fill="none" stroke="rgba(52,211,153,.6)" stroke-width="2.5"/>
+          <ellipse cx="55" cy="90" rx="20" ry="30" fill="rgba(52,211,153,.06)" stroke="rgba(52,211,153,.5)" stroke-width="2"/>
+          <!-- Iris + pupille -->
+          <circle cx="90" cy="90" r="28" fill="rgba(59,130,246,.12)" stroke="rgba(59,130,246,.5)" stroke-width="1.5"/>
+          <circle cx="90" cy="90" r="14" fill="rgba(0,0,0,.6)" stroke="rgba(255,255,255,.1)" stroke-width="1"/>
+          <!-- Cristallin -->
+          <ellipse cx="125" cy="90" rx="12" ry="24" fill="rgba(245,158,11,.1)" stroke="rgba(245,158,11,.5)" stroke-width="1.5"/>
+          <!-- Rétine -->
+          <path d="M 200 40 Q 240 90 200 140" fill="none" stroke="rgba(239,68,68,.5)" stroke-width="2.5"/>
+          <!-- Nerf optique -->
+          <line x1="220" y1="90" x2="260" y2="90" stroke="rgba(168,85,247,.6)" stroke-width="3"/>
+          <!-- Labels -->
+          <circle cx="20" cy="35" r="10" fill="#34d399" opacity=".9"/>
+          <text x="20" y="39" text-anchor="middle" fill="#fff" font-size="11" font-family="IBM Plex Mono, monospace" font-weight="700">1</text>
+          <line x1="28" y1="42" x2="52" y2="70" stroke="#34d399" stroke-width="1.5" opacity=".6"/>
+          <circle cx="85" cy="20" r="10" fill="#3b82f6" opacity=".9"/>
+          <text x="85" y="24" text-anchor="middle" fill="#fff" font-size="11" font-family="IBM Plex Mono, monospace" font-weight="700">2</text>
+          <line x1="85" y1="30" x2="88" y2="62" stroke="#3b82f6" stroke-width="1.5" opacity=".6"/>
+          <circle cx="135" cy="20" r="10" fill="#f59e0b" opacity=".9"/>
+          <text x="135" y="24" text-anchor="middle" fill="#fff" font-size="11" font-family="IBM Plex Mono, monospace" font-weight="700">3</text>
+          <line x1="130" y1="30" x2="126" y2="66" stroke="#f59e0b" stroke-width="1.5" opacity=".6"/>
+          <circle cx="205" cy="20" r="10" fill="#ef4444" opacity=".9"/>
+          <text x="205" y="24" text-anchor="middle" fill="#fff" font-size="11" font-family="IBM Plex Mono, monospace" font-weight="700">4</text>
+          <line x1="205" y1="30" x2="205" y2="48" stroke="#ef4444" stroke-width="1.5" opacity=".6"/>
+          <circle cx="262" cy="55" r="10" fill="#a855f7" opacity=".9"/>
+          <text x="262" y="59" text-anchor="middle" fill="#fff" font-size="11" font-family="IBM Plex Mono, monospace" font-weight="700">5</text>
+          <line x1="254" y1="62" x2="240" y2="88" stroke="#a855f7" stroke-width="1.5" opacity=".6"/>
+        </svg>
+      </div>
+      <div class="schema-inputs" id="inp-eye">
+        <div class="schema-input-row"><div class="schema-num">1</div><input class="schema-inp" placeholder="Protection transparente..." id="eye-1"></div>
+        <div class="schema-input-row"><div class="schema-num">2</div><input class="schema-inp" placeholder="Couleur de l'\u0153il..." id="eye-2"></div>
+        <div class="schema-input-row"><div class="schema-num">3</div><input class="schema-inp" placeholder="Fait la mise au point..." id="eye-3"></div>
+        <div class="schema-input-row"><div class="schema-num">4</div><input class="schema-inp" placeholder="Reçoit la lumière..." id="eye-4"></div>
+        <div class="schema-input-row"><div class="schema-num">5</div><input class="schema-inp" placeholder="Transmet au cerveau..." id="eye-5"></div>
+      </div>
+      <div class="schema-btns">
+        <button class="schema-btn" onclick="toggleMemo('eye')">👁 Mode mémo</button>
+        <button class="schema-btn primary" onclick="checkSchema('eye')">✓ Vérifier</button>
+      </div>
+    </div>
+
+    <!-- Le neurone -->
+    <div class="schema-card">
+      <div class="schema-header">
+        <div class="schema-title">Le neurone</div>
+        <div class="schema-score" id="score-neur">—</div>
+      </div>
+      <div class="schema-svg-wrap">
+        <svg class="schema-svg" viewBox="0 0 280 140" xmlns="http://www.w3.org/2000/svg">
+          <!-- Dendrites -->
+          <line x1="60" y1="70" x2="12" y2="32" stroke="rgba(16,185,129,.5)" stroke-width="2"/>
+          <line x1="60" y1="70" x2="8" y2="70" stroke="rgba(16,185,129,.5)" stroke-width="2"/>
+          <line x1="60" y1="70" x2="12" y2="108" stroke="rgba(16,185,129,.5)" stroke-width="2"/>
+          <line x1="28" y1="48" x2="10" y2="34" stroke="rgba(16,185,129,.35)" stroke-width="1.5"/>
+          <line x1="28" y1="92" x2="10" y2="106" stroke="rgba(16,185,129,.35)" stroke-width="1.5"/>
+          <!-- Corps cellulaire -->
+          <ellipse cx="78" cy="70" rx="22" ry="18" fill="rgba(16,185,129,.1)" stroke="rgba(16,185,129,.5)" stroke-width="2"/>
+          <circle cx="78" cy="70" r="8" fill="rgba(59,130,246,.18)" stroke="rgba(59,130,246,.4)" stroke-width="1.5"/>
+          <!-- Axone -->
+          <line x1="100" y1="70" x2="244" y2="70" stroke="rgba(245,158,11,.65)" stroke-width="3"/>
+          <!-- Gaine de myéline -->
+          <rect x="107" y="64" width="30" height="12" rx="4" fill="rgba(139,92,246,.15)" stroke="rgba(139,92,246,.5)" stroke-width="1.5"/>
+          <rect x="148" y="64" width="30" height="12" rx="4" fill="rgba(139,92,246,.15)" stroke="rgba(139,92,246,.5)" stroke-width="1.5"/>
+          <rect x="189" y="64" width="30" height="12" rx="4" fill="rgba(139,92,246,.15)" stroke="rgba(139,92,246,.5)" stroke-width="1.5"/>
+          <!-- Bouton synaptique -->
+          <ellipse cx="258" cy="70" rx="14" ry="11" fill="rgba(239,68,68,.12)" stroke="rgba(239,68,68,.45)" stroke-width="2"/>
+          <!-- Labels -->
+          <circle cx="18" cy="20" r="10" fill="#10b981" opacity=".9"/>
+          <text x="18" y="24" text-anchor="middle" fill="#fff" font-size="11" font-family="IBM Plex Mono, monospace" font-weight="700">1</text>
+          <line x1="18" y1="30" x2="28" y2="48" stroke="#10b981" stroke-width="1.5" opacity=".6"/>
+          <circle cx="78" cy="18" r="10" fill="#3b82f6" opacity=".9"/>
+          <text x="78" y="22" text-anchor="middle" fill="#fff" font-size="11" font-family="IBM Plex Mono, monospace" font-weight="700">2</text>
+          <line x1="78" y1="28" x2="78" y2="52" stroke="#3b82f6" stroke-width="1.5" opacity=".6"/>
+          <circle cx="165" cy="18" r="10" fill="#f59e0b" opacity=".9"/>
+          <text x="165" y="22" text-anchor="middle" fill="#fff" font-size="11" font-family="IBM Plex Mono, monospace" font-weight="700">3</text>
+          <line x1="165" y1="28" x2="165" y2="64" stroke="#f59e0b" stroke-width="1.5" opacity=".6"/>
+          <circle cx="200" cy="120" r="10" fill="#a855f7" opacity=".9"/>
+          <text x="200" y="124" text-anchor="middle" fill="#fff" font-size="11" font-family="IBM Plex Mono, monospace" font-weight="700">4</text>
+          <line x1="200" y1="110" x2="200" y2="76" stroke="#a855f7" stroke-width="1.5" opacity=".6"/>
+          <circle cx="258" cy="120" r="10" fill="#ef4444" opacity=".9"/>
+          <text x="258" y="124" text-anchor="middle" fill="#fff" font-size="11" font-family="IBM Plex Mono, monospace" font-weight="700">5</text>
+          <line x1="258" y1="110" x2="258" y2="81" stroke="#ef4444" stroke-width="1.5" opacity=".6"/>
+        </svg>
+      </div>
+      <div class="schema-inputs" id="inp-neur">
+        <div class="schema-input-row"><div class="schema-num">1</div><input class="schema-inp" placeholder="Reçoit les signaux..." id="neur-1"></div>
+        <div class="schema-input-row"><div class="schema-num">2</div><input class="schema-inp" placeholder="Centre de la cellule..." id="neur-2"></div>
+        <div class="schema-input-row"><div class="schema-num">3</div><input class="schema-inp" placeholder="Transmet le signal..." id="neur-3"></div>
+        <div class="schema-input-row"><div class="schema-num">4</div><input class="schema-inp" placeholder="Isole et accélère..." id="neur-4"></div>
+        <div class="schema-input-row"><div class="schema-num">5</div><input class="schema-inp" placeholder="Libère les neurotransmetteurs..." id="neur-5"></div>
+      </div>
+      <div class="schema-btns">
+        <button class="schema-btn" onclick="toggleMemo('neur')">👁 Mode mémo</button>
+        <button class="schema-btn primary" onclick="checkSchema('neur')">✓ Vérifier</button>
+      </div>
+    </div>
+
+    <!-- La fleur -->
+    <div class="schema-card">
+      <div class="schema-header">
+        <div class="schema-title">La fleur</div>
+        <div class="schema-score" id="score-fleur">—</div>
+      </div>
+      <div class="schema-svg-wrap">
+        <svg class="schema-svg" viewBox="0 0 280 180" xmlns="http://www.w3.org/2000/svg">
+          <!-- Tige -->
+          <line x1="140" y1="178" x2="140" y2="125" stroke="rgba(16,185,129,.6)" stroke-width="3"/>
+          <!-- Sépales -->
+          <ellipse cx="140" cy="123" rx="28" ry="10" fill="rgba(16,185,129,.1)" stroke="rgba(16,185,129,.4)" stroke-width="1.5"/>
+          <!-- Pétales -->
+          <ellipse cx="140" cy="72" rx="16" ry="32" fill="rgba(244,114,182,.1)" stroke="rgba(244,114,182,.4)" stroke-width="1.5"/>
+          <ellipse cx="108" cy="85" rx="16" ry="32" fill="rgba(244,114,182,.1)" stroke="rgba(244,114,182,.4)" stroke-width="1.5" transform="rotate(-55,108,85)"/>
+          <ellipse cx="118" cy="55" rx="16" ry="32" fill="rgba(244,114,182,.1)" stroke="rgba(244,114,182,.4)" stroke-width="1.5" transform="rotate(-25,118,55)"/>
+          <ellipse cx="162" cy="55" rx="16" ry="32" fill="rgba(244,114,182,.1)" stroke="rgba(244,114,182,.4)" stroke-width="1.5" transform="rotate(25,162,55)"/>
+          <ellipse cx="172" cy="85" rx="16" ry="32" fill="rgba(244,114,182,.1)" stroke="rgba(244,114,182,.4)" stroke-width="1.5" transform="rotate(55,172,85)"/>
+          <!-- Étamines -->
+          <line x1="140" y1="95" x2="140" y2="70" stroke="rgba(245,158,11,.6)" stroke-width="1.5"/>
+          <circle cx="140" cy="68" r="3" fill="rgba(245,158,11,.85)"/>
+          <line x1="140" y1="95" x2="128" y2="74" stroke="rgba(245,158,11,.6)" stroke-width="1.5"/>
+          <circle cx="126" cy="72" r="3" fill="rgba(245,158,11,.85)"/>
+          <line x1="140" y1="95" x2="152" y2="74" stroke="rgba(245,158,11,.6)" stroke-width="1.5"/>
+          <circle cx="154" cy="72" r="3" fill="rgba(245,158,11,.85)"/>
+          <!-- Pistil -->
+          <ellipse cx="140" cy="95" rx="10" ry="14" fill="rgba(239,68,68,.1)" stroke="rgba(239,68,68,.4)" stroke-width="1.5"/>
+          <!-- Labels -->
+          <circle cx="140" cy="22" r="10" fill="#f472b6" opacity=".9"/>
+          <text x="140" y="26" text-anchor="middle" fill="#fff" font-size="11" font-family="IBM Plex Mono, monospace" font-weight="700">1</text>
+          <line x1="140" y1="32" x2="140" y2="52" stroke="#f472b6" stroke-width="1.5" opacity=".6"/>
+          <circle cx="212" cy="65" r="10" fill="#f59e0b" opacity=".9"/>
+          <text x="212" y="69" text-anchor="middle" fill="#fff" font-size="11" font-family="IBM Plex Mono, monospace" font-weight="700">2</text>
+          <line x1="202" y1="68" x2="157" y2="72" stroke="#f59e0b" stroke-width="1.5" opacity=".6"/>
+          <circle cx="212" cy="96" r="10" fill="#ef4444" opacity=".9"/>
+          <text x="212" y="100" text-anchor="middle" fill="#fff" font-size="11" font-family="IBM Plex Mono, monospace" font-weight="700">3</text>
+          <line x1="202" y1="96" x2="150" y2="96" stroke="#ef4444" stroke-width="1.5" opacity=".6"/>
+          <circle cx="58" cy="120" r="10" fill="#10b981" opacity=".9"/>
+          <text x="58" y="124" text-anchor="middle" fill="#fff" font-size="11" font-family="IBM Plex Mono, monospace" font-weight="700">4</text>
+          <line x1="68" y1="120" x2="112" y2="122" stroke="#10b981" stroke-width="1.5" opacity=".6"/>
+          <circle cx="58" cy="155" r="10" fill="#10b981" opacity=".9"/>
+          <text x="58" y="159" text-anchor="middle" fill="#fff" font-size="11" font-family="IBM Plex Mono, monospace" font-weight="700">5</text>
+          <line x1="68" y1="155" x2="132" y2="158" stroke="#10b981" stroke-width="1.5" opacity=".6"/>
+        </svg>
+      </div>
+      <div class="schema-inputs" id="inp-fleur">
+        <div class="schema-input-row"><div class="schema-num">1</div><input class="schema-inp" placeholder="Attire les insectes..." id="fleur-1"></div>
+        <div class="schema-input-row"><div class="schema-num">2</div><input class="schema-inp" placeholder="Produit le pollen..." id="fleur-2"></div>
+        <div class="schema-input-row"><div class="schema-num">3</div><input class="schema-inp" placeholder="Organe femelle..." id="fleur-3"></div>
+        <div class="schema-input-row"><div class="schema-num">4</div><input class="schema-inp" placeholder="Protège le bouton..." id="fleur-4"></div>
+        <div class="schema-input-row"><div class="schema-num">5</div><input class="schema-inp" placeholder="Soutient la fleur..." id="fleur-5"></div>
+      </div>
+      <div class="schema-btns">
+        <button class="schema-btn" onclick="toggleMemo('fleur')">👁 Mode mémo</button>
+        <button class="schema-btn primary" onclick="checkSchema('fleur')">✓ Vérifier</button>
+      </div>
+    </div>
+
+    <!-- L'atome de carbone -->
+    <div class="schema-card">
+      <div class="schema-header">
+        <div class="schema-title">L&#39;atome de carbone (C)</div>
+        <div class="schema-score" id="score-schatom">—</div>
+      </div>
+      <div class="schema-svg-wrap">
+        <svg class="schema-svg" viewBox="0 0 280 180" xmlns="http://www.w3.org/2000/svg">
+          <!-- Shell K -->
+          <circle cx="140" cy="90" r="38" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="1.5" stroke-dasharray="5,4"/>
+          <!-- Shell L -->
+          <circle cx="140" cy="90" r="70" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="1.5" stroke-dasharray="5,4"/>
+          <!-- Nucleus -->
+          <circle cx="140" cy="90" r="22" fill="rgba(245,158,11,.1)" stroke="rgba(245,158,11,.5)" stroke-width="2"/>
+          <!-- Protons (rouge) -->
+          <circle cx="133" cy="83" r="5" fill="#ef4444" opacity=".9"/>
+          <circle cx="147" cy="83" r="5" fill="#ef4444" opacity=".9"/>
+          <circle cx="140" cy="96" r="5" fill="#ef4444" opacity=".9"/>
+          <!-- Neutrons (gris) -->
+          <circle cx="133" cy="96" r="4.5" fill="#64748b" opacity=".9"/>
+          <circle cx="147" cy="96" r="4.5" fill="#64748b" opacity=".9"/>
+          <circle cx="140" cy="83" r="4.5" fill="#64748b" opacity=".9"/>
+          <!-- K : 2 electrons -->
+          <circle cx="140" cy="52" r="5.5" fill="#60a5fa" stroke="rgba(96,165,250,.5)" stroke-width="1"/>
+          <circle cx="140" cy="128" r="5.5" fill="#60a5fa" stroke="rgba(96,165,250,.5)" stroke-width="1"/>
+          <!-- L : 4 electrons -->
+          <circle cx="210" cy="90" r="5.5" fill="#60a5fa" stroke="rgba(96,165,250,.5)" stroke-width="1"/>
+          <circle cx="70" cy="90" r="5.5" fill="#60a5fa" stroke="rgba(96,165,250,.5)" stroke-width="1"/>
+          <circle cx="189" cy="41" r="5.5" fill="#60a5fa" stroke="rgba(96,165,250,.5)" stroke-width="1"/>
+          <circle cx="91" cy="139" r="5.5" fill="#60a5fa" stroke="rgba(96,165,250,.5)" stroke-width="1"/>
+          <!-- Labels -->
+          <circle cx="20" cy="40" r="10" fill="#ef4444" opacity=".9"/>
+          <text x="20" y="44" text-anchor="middle" fill="#fff" font-size="11" font-family="IBM Plex Mono, monospace" font-weight="700">1</text>
+          <line x1="28" y1="46" x2="132" y2="87" stroke="#ef4444" stroke-width="1.5" opacity=".5"/>
+          <circle cx="20" cy="75" r="10" fill="#64748b" opacity=".9"/>
+          <text x="20" y="79" text-anchor="middle" fill="#fff" font-size="11" font-family="IBM Plex Mono, monospace" font-weight="700">2</text>
+          <line x1="30" y1="75" x2="135" y2="90" stroke="#64748b" stroke-width="1.5" opacity=".5"/>
+          <circle cx="140" cy="18" r="10" fill="#f59e0b" opacity=".9"/>
+          <text x="140" y="22" text-anchor="middle" fill="#fff" font-size="11" font-family="IBM Plex Mono, monospace" font-weight="700">3</text>
+          <line x1="140" y1="28" x2="140" y2="68" stroke="#f59e0b" stroke-width="1.5" opacity=".6"/>
+          <circle cx="258" cy="52" r="10" fill="#60a5fa" opacity=".9"/>
+          <text x="258" y="56" text-anchor="middle" fill="#fff" font-size="11" font-family="IBM Plex Mono, monospace" font-weight="700">4</text>
+          <line x1="249" y1="56" x2="215" y2="90" stroke="#60a5fa" stroke-width="1.5" opacity=".6"/>
+          <circle cx="258" cy="128" r="10" fill="#a855f7" opacity=".9"/>
+          <text x="258" y="132" text-anchor="middle" fill="#fff" font-size="11" font-family="IBM Plex Mono, monospace" font-weight="700">5</text>
+          <line x1="250" y1="128" x2="210" y2="92" stroke="#a855f7" stroke-width="1.5" opacity=".6"/>
+        </svg>
+      </div>
+      <div class="schema-inputs" id="inp-schatom">
+        <div class="schema-input-row"><div class="schema-num">1</div><input class="schema-inp" placeholder="Charge positive dans le noyau..." id="schatom-1"></div>
+        <div class="schema-input-row"><div class="schema-num">2</div><input class="schema-inp" placeholder="Charge nulle dans le noyau..." id="schatom-2"></div>
+        <div class="schema-input-row"><div class="schema-num">3</div><input class="schema-inp" placeholder="Partie centrale..." id="schatom-3"></div>
+        <div class="schema-input-row"><div class="schema-num">4</div><input class="schema-inp" placeholder="Charge négative..." id="schatom-4"></div>
+        <div class="schema-input-row"><div class="schema-num">5</div><input class="schema-inp" placeholder="Orbite autour du noyau..." id="schatom-5"></div>
+      </div>
+      <div class="schema-btns">
+        <button class="schema-btn" onclick="toggleMemo('schatom')">👁 Mode mémo</button>
+        <button class="schema-btn primary" onclick="checkSchema('schatom')">✓ Vérifier</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PROFIL ── -->
+  <div class="sec" id="s-prof">
+    <div class="prof-hero">
+      <div class="prof-avatar-big" id="profAvatar">🎓</div>
+      <div class="prof-name" id="profName">Gabriel</div>
+      <div class="prof-lvl" id="profLvl">Débutant · Sciences</div>
+    </div>
+    <div class="prof-stats">
+      <div class="ps-card"><div class="ps-n" id="psXP">0</div><div class="ps-l">XP total</div></div>
+      <div class="ps-card"><div class="ps-n" id="psAct">0</div><div class="ps-l">Activités</div></div>
+      <div class="ps-card"><div class="ps-n" id="psStrk">0</div><div class="ps-l">🔥 Streak</div></div>
+      <div class="ps-card"><div class="ps-n" id="psForm">0</div><div class="ps-l">Formules</div></div>
+    </div>
+    <div class="pref-card">
+      <div class="pref-row">
+        <div class="pref-info">
+          <div class="pref-lbl">🔊 Son</div>
+          <div class="pref-sub">Effets sonores</div>
+        </div>
+        <button class="tog on" id="tog-sound" onclick="togglePref('sound')"></button>
+      </div>
+      <div class="pref-row">
+        <div class="pref-info">
+          <div class="pref-lbl">📳 Vibrations</div>
+          <div class="pref-sub">Retour haptique</div>
+        </div>
+        <button class="tog on" id="tog-vib" onclick="togglePref('vib')"></button>
+      </div>
+    </div>
+    <button class="danger-btn" onclick="confirmReset()">🗑 Réinitialiser la progression</button>
+  </div>
+
+</div><!-- #content -->
+
+<!-- EXPERIMENT OVERLAY -->
+<div id="expOvl">
+  <div id="expHdr">
+    <button id="expClose" onclick="closeExp()">✕</button>
+    <div id="expTitle">Expérience</div>
+  </div>
+  <div id="expBody"></div>
+</div>
+
+<!-- PERIODIC TABLE OVERLAY -->
+<div id="ptSheetOverlay" onclick="closePtSheet()"></div>
+<div id="ptSheet">
+  <div id="ptContent"></div>
+  <button class="pt-close" onclick="closePtSheet()">Fermer</button>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <button class="ni" id="ni-lab" onclick="goSec('lab')">
+    <div class="niw"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6"/><path d="M10 3v7l-4 9h12l-4-9V3"/></svg></div>
+    <span>Labo</span>
+  </button>
+  <button class="ni" id="ni-form" onclick="goSec('form')">
+    <div class="niw"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="7" y1="8" x2="17" y2="8"/><line x1="7" y1="12" x2="11" y2="12"/><line x1="7" y1="16" x2="17" y2="16"/></svg></div>
+    <span>Formules</span>
+  </button>
+  <button class="ni nic on" id="ni-acc" onclick="goSec('acc')">
+    <div class="niw"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+    <span>Accueil</span>
+  </button>
+  <button class="ni" id="ni-sch" onclick="goSec('sch')">
+    <div class="niw"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
+    <span>Schémas</span>
+  </button>
+  <button class="ni" id="ni-prof" onclick="goSec('prof')">
+    <div class="niw"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+    <span>Profil</span>
+  </button>
+</nav>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+</div><!-- #app -->
+
+<script>
+/* ── DATA ── */
+var QUOTES = [
+  'La science, c\'est la curiosit\u00e9 organis\u00e9e.',
+  'Observer, comprendre, expliquer : la m\u00e9thode scientifique.',
+  'Chaque exp\u00e9rience est une r\u00e9ponse de la nature.',
+  'Les math\u00e9matiques sont le langage de l\'univers.',
+  'La chimie est partout, m\u00eame dans ton assiette !'
+];
+
+var SCHEMA_ANSWERS = {
+  'cell': {
+    '1': ['membrane', 'membrane cellulaire'],
+    '2': ['noyau'],
+    '3': ['mitochondrie', 'mitochondries'],
+    '4': ['mitochondrie', 'mitochondries'],
+    '5': ['cytoplasme']
+  },
+  'eye': {
+    '1': ['corn\u00e9e', 'cornee'],
+    '2': ['iris'],
+    '3': ['cristallin'],
+    '4': ['r\u00e9tine', 'retine'],
+    '5': ['nerf optique', 'nerf']
+  },
+  'neur': {
+    '1': ['dendrite', 'dendrites'],
+    '2': ['corps cellulaire', 'soma'],
+    '3': ['axone'],
+    '4': ['gaine de my\u00e9line', 'gaine de mye\u0301line', 'gaine', 'my\u00e9line', 'myeline', 'gaine de mye\u0301line'],
+    '5': ['bouton synaptique', 'bouton terminal', 'synapse']
+  },
+  'fleur': {
+    '1': ['petale', 'p\u00e9tale', 'petales', 'p\u00e9tales'],
+    '2': ['etamine', '\u00e9tamine', 'etamines', '\u00e9tamines'],
+    '3': ['pistil'],
+    '4': ['sepale', 's\u00e9pale', 'sepales', 's\u00e9pales'],
+    '5': ['tige', 'pedoncule', 'p\u00e9doncule']
+  },
+  'schatom': {
+    '1': ['proton', 'protons'],
+    '2': ['neutron', 'neutrons'],
+    '3': ['noyau'],
+    '4': ['electron', '\u00e9lectron', 'electrons', '\u00e9lectrons'],
+    '5': ['couche electronique', 'couche \u00e9lectronique', 'couche', 'orbite']
+  }
+};
+
+var PT_ELEMENTS = [
+  {n:1, s:'H', name:'Hydrog\u00e8ne', m:'1.008', cat:'nonmetal', col:1, row:1, fact:'Gaz le plus l\u00e9ger de l\'univers, compose les \u00e9toiles.'},
+  {n:2, s:'He', name:'H\u00e9lium', m:'4.003', cat:'noble', col:18, row:1, fact:'Inerte, utilis\u00e9 dans les ballons et la plong\u00e9e.'},
+  {n:3, s:'Li', name:'Lithium', m:'6.941', cat:'alkali', col:1, row:2, fact:'M\u00e9tal tr\u00e8s l\u00e9ger, utilis\u00e9 dans les batteries.'},
+  {n:4, s:'Be', name:'B\u00e9ryllium', m:'9.012', cat:'alkaline', col:2, row:2, fact:'M\u00e9tal l\u00e9ger, utilis\u00e9 dans l\'a\u00e9rospatiale.'},
+  {n:5, s:'B', name:'Bore', m:'10.81', cat:'metalloid', col:13, row:2, fact:'Semi-conducteur, pr\u00e9sent dans le verre pyrex.'},
+  {n:6, s:'C', name:'Carbone', m:'12.01', cat:'nonmetal', col:14, row:2, fact:'Base de toute vie. Diamant et graphite = carbone pur !'},
+  {n:7, s:'N', name:'Azote', m:'14.01', cat:'nonmetal', col:15, row:2, fact:'78% de l\'air que tu respires.'},
+  {n:8, s:'O', name:'Oxyg\u00e8ne', m:'16.00', cat:'nonmetal', col:16, row:2, fact:'Indispensable \u00e0 la respiration et \u00e0 la combustion.'},
+  {n:9, s:'F', name:'Fluor', m:'19.00', cat:'halogen', col:17, row:2, fact:'\u00c9l\u00e9ment le plus r\u00e9actif, pr\u00e9sent dans le dentifrice.'},
+  {n:10, s:'Ne', name:'N\u00e9on', m:'20.18', cat:'noble', col:18, row:2, fact:'Gaz noble, cr\u00e9e les enseignes lumineuses rouges.'},
+  {n:11, s:'Na', name:'Sodium', m:'22.99', cat:'alkali', col:1, row:3, fact:'R\u00e9agit violemment avec l\'eau. Pr\u00e9sent dans le sel.'},
+  {n:12, s:'Mg', name:'Magn\u00e9sium', m:'24.31', cat:'alkaline', col:2, row:3, fact:'Br\u00fble avec une flamme blanche brillante.'},
+  {n:13, s:'Al', name:'Aluminium', m:'26.98', cat:'other', col:13, row:3, fact:'M\u00e9tal le plus abondant dans la cro\u00fbte terrestre.'},
+  {n:14, s:'Si', name:'Silicium', m:'28.09', cat:'metalloid', col:14, row:3, fact:'Semi-conducteur, base des puces \u00e9lectroniques.'},
+  {n:15, s:'P', name:'Phosphore', m:'30.97', cat:'nonmetal', col:15, row:3, fact:'Essentiel pour les os et les ADN.'},
+  {n:16, s:'S', name:'Soufre', m:'32.07', cat:'nonmetal', col:16, row:3, fact:'Solide jaune, odeur de volcans. Pluies acides.'},
+  {n:17, s:'Cl', name:'Chlore', m:'35.45', cat:'halogen', col:17, row:3, fact:'Gaz jaune-vert, d\u00e9sinfecte les piscines.'},
+  {n:18, s:'Ar', name:'Argon', m:'39.95', cat:'noble', col:18, row:3, fact:'Remplit les ampoules \u00e9lectriques pour les prot\u00e9ger.'},
+  {n:19, s:'K', name:'Potassium', m:'39.10', cat:'alkali', col:1, row:4, fact:'Vital pour les nerfs. Pr\u00e9sent dans les bananes.'},
+  {n:20, s:'Ca', name:'Calcium', m:'40.08', cat:'alkaline', col:2, row:4, fact:'Constituant principal des os et des dents.'},
+  {n:26, s:'Fe', name:'Fer', m:'55.85', cat:'transition', col:8, row:4, fact:'M\u00e9tal le plus utilis\u00e9, porte l\'oxyg\u00e8ne dans le sang.'},
+  {n:29, s:'Cu', name:'Cuivre', m:'63.55', cat:'transition', col:11, row:4, fact:'Conducteur \u00e9lectrique, fils \u00e9lectriques.'},
+  {n:30, s:'Zn', name:'Zinc', m:'65.38', cat:'transition', col:12, row:4, fact:'Prot\u00e8ge l\'acier de la rouille (galvanisation).'},
+  {n:47, s:'Ag', name:'Argent', m:'107.9', cat:'transition', col:11, row:5, fact:'Meilleur conducteur \u00e9lectrique et thermique.'},
+  {n:79, s:'Au', name:'Or', m:'197.0', cat:'transition', col:11, row:6, fact:'M\u00e9tal noble, ne s\'oxyde jamais. Symbole \'Au\'.'},
+  {n:82, s:'Pb', name:'Plomb', m:'207.2', cat:'other', col:14, row:6, fact:'Tr\u00e8s dense, utilis\u00e9 comme protection aux rayons X.'}
+];
+
+/* ── STATE ── */
+var currentSec = 'acc';
+var ptQuizMode = false;
+var CIRC = {grid:[], rows:6, cols:8, V:9, closed:false, selectedTool:null, nextId:1, dragId:null, dragRC:null, cellPx:46};
+function circInit(){CIRC.grid=[];for(var r=0;r<CIRC.rows;r++){CIRC.grid[r]=[];for(var c=0;c<CIRC.cols;c++)CIRC.grid[r][c]=null;}CIRC.nextId=1;CIRC.closed=false;CIRC.selectedTool=null;CIRC.dragId=null;CIRC.V=9;}
+circInit();
+var memoMode = {cell: false, eye: false, neur: false, fleur: false, schatom: false};
+
+/* ── STORAGE ── */
+function gP() {
+  try { var d = localStorage.getItem('sk_sci'); return d ? JSON.parse(d) : {}; } catch(e) { return {}; }
+}
+function sP(d) {
+  try { localStorage.setItem('sk_sci', JSON.stringify(d)); } catch(e) {}
+}
+
+/* ── INIT ── */
+function init() {
+  var d = gP();
+  var prof = {};
+  try { prof = JSON.parse(localStorage.getItem('sk_profile') || '{}'); } catch(e) {}
+  var name = prof.name || 'Gabriel';
+  var avatar = prof.avatar || '\uD83C\uDF93';
+  var xp = d.xp || 0;
+  var streak = d.streak || 0;
+  var acts = d.acts || 0;
+  var formulas = d.formulas || 0;
+  var sound = d.sound !== false;
+  var vib = d.vib !== false;
+
+  document.getElementById('heroAvatar').textContent = avatar;
+  document.getElementById('heroName').textContent = name;
+  document.getElementById('heroStreak').textContent = streak;
+  document.getElementById('heroQuote').textContent = QUOTES[Math.floor(Math.random() * QUOTES.length)];
+
+  var lvl = getLevel(xp);
+  document.getElementById('xpLevel').textContent = lvl;
+  document.getElementById('xpValAcc').textContent = xp + ' XP';
+  document.getElementById('xpDisplay').textContent = xp + ' XP';
+
+  var nextXP = 500;
+  if (xp >= 1500) { nextXP = 3000; }
+  else if (xp >= 500) { nextXP = 1500; }
+  var pct = Math.min(100, Math.round((xp % nextXP) / nextXP * 100));
+  document.getElementById('xpBarAcc').style.width = pct + '%';
+  document.getElementById('xpb').style.width = pct + '%';
+
+  document.getElementById('statAct').textContent = acts;
+  document.getElementById('statStrk').textContent = streak;
+  document.getElementById('statForm').textContent = formulas;
+  document.getElementById('profAvatar').textContent = avatar;
+  document.getElementById('profName').textContent = name;
+  document.getElementById('profLvl').textContent = lvl + ' · Sciences';
+  document.getElementById('psXP').textContent = xp;
+  document.getElementById('psAct').textContent = acts;
+  document.getElementById('psStrk').textContent = streak;
+  document.getElementById('psForm').textContent = formulas;
+
+  if (!sound) { document.getElementById('tog-sound').classList.remove('on'); }
+  if (!vib) { document.getElementById('tog-vib').classList.remove('on'); }
+}
+
+function getLevel(xp) {
+  if (xp >= 1500) return 'Expert';
+  if (xp >= 500) return 'Avancé';
+  if (xp >= 100) return 'Intermédiaire';
+  return 'Débutant';
+}
+
+function addXP(n) {
+  var d = gP();
+  d.xp = (d.xp || 0) + n;
+  d.acts = (d.acts || 0) + 1;
+  sP(d);
+  init();
+  showToast('+' + n + ' XP 🎉');
+}
+
+/* ── NAVIGATION ── */
+function goSec(id) {
+  document.querySelectorAll('.sec').forEach(function(s) { s.classList.remove('on'); });
+  document.getElementById('s-' + id).classList.add('on');
+  document.querySelectorAll('.ni, .nic').forEach(function(b) { b.classList.remove('on'); });
+  var btn = document.getElementById('ni-' + id);
+  if (btn) btn.classList.add('on');
+  currentSec = id;
+  if (id === 'form') animateFormulas();
+}
+
+function goBack() {
+  if (window.parent !== window) {
+    try { window.parent.postMessage('sciBack', '*'); } catch(e) {}
+  }
+  window.history.back();
+}
+
+/* ── EXPERIMENTS ── */
+var EXP_TITLES = ['', 'Circuit \u00e9lectrique', '\u00c9quation chimique', 'Tableau p\u00e9riodique', 'R\u00e9fraction optique', 'Pythagore', 'Poids & masse', 'Atome', '\u00c9chelle de l\u2019Univers'];
+
+function openExp(n) {
+  var ovl = document.getElementById('expOvl');
+  document.getElementById('expTitle').textContent = EXP_TITLES[n];
+  document.getElementById('expBody').innerHTML = buildExp(n);
+  ovl.classList.add('on');
+  if (n === 1) { circInit(); cgBindEvents(); }
+  if (n === 3) buildPTable();
+  if (n === 4) updateOptics();
+  if (n === 5) updatePythExp();
+  if (n === 6) { currentPlanetIdx = 0; updateWeightExp(); }
+  if (n === 7) renderAtomDisplay();
+  if (n === 8) initScale();
+}
+
+function closeExp() {
+  document.getElementById('expOvl').classList.remove('on');
+  document.getElementById('expBody').innerHTML = '';
+  circInit();
+}
+
+function openRandomExp() {
+  openExp(Math.floor(Math.random() * 8) + 1);
+}
+
+function buildExp(n) {
+  if (n === 1) return buildCircuit();
+  if (n === 2) return buildEquation();
+  if (n === 3) return buildPTableHTML();
+  if (n === 4) return buildOptics();
+  if (n === 5) return buildPyth();
+  if (n === 6) return buildWeight();
+  if (n === 7) return buildAtom();
+  if (n === 8) return buildScale();
+  return '';
+}
+
+/* EXP 1 — CIRCUIT GRID BUILDER */
+/* helpers */
+function cgCell(r,c){if(r<0||r>=CIRC.rows||c<0||c>=CIRC.cols)return null;return CIRC.grid[r][c];}
+function cgSet(r,c,obj){CIRC.grid[r][c]=obj;}
+function cgAdj(r,c){var a=[];if(r>0&&CIRC.grid[r-1][c])a.push('u');if(r<CIRC.rows-1&&CIRC.grid[r+1][c])a.push('d');if(c>0&&CIRC.grid[r][c-1])a.push('l');if(c<CIRC.cols-1&&CIRC.grid[r][c+1])a.push('r');return a;}
+/* BFS loop detection */
+function cgCheckLoop(){
+  var bat=null;
+  for(var r=0;r<CIRC.rows;r++)for(var c=0;c<CIRC.cols;c++){var g=CIRC.grid[r][c];if(g&&g.type==='battery'){bat={r:r,c:c};break;}if(bat)break;}
+  if(!bat)return false;
+  var vis={};var q=[bat.r+','+bat.c];vis[bat.r+','+bat.c]=true;var cnt=0;
+  var dirs=[[0,1],[0,-1],[1,0],[-1,0]];
+  while(q.length){var k=q.shift();cnt++;var p=k.split(',');var cr=+p[0],cc=+p[1];
+    for(var d=0;d<4;d++){var nr=cr+dirs[d][0],nc=cc+dirs[d][1];var nk=nr+','+nc;
+      if(nr<0||nr>=CIRC.rows||nc<0||nc>=CIRC.cols||vis[nk])continue;
+      var ng=CIRC.grid[nr][nc];if(!ng)continue;if(ng.type==='switch'&&!ng.on)continue;
+      vis[nk]=true;q.push(nk);}}
+  /* all non-null cells must be visited for closed loop */
+  var total=0;for(var r=0;r<CIRC.rows;r++)for(var c=0;c<CIRC.cols;c++)if(CIRC.grid[r][c])total++;
+  return total>=3&&cnt===total;
+}
+function cgSimulate(){
+  var loop=cgCheckLoop();CIRC.closed=loop;
+  if(!loop)return{I:0,Rt:0,P:0};
+  var Rt=0;
+  for(var r=0;r<CIRC.rows;r++)for(var c=0;c<CIRC.cols;c++){var g=CIRC.grid[r][c];if(!g)continue;
+    if(g.type==='lamp'||g.type==='res')Rt+=g.R;
+    if(g.type==='switch'&&!g.on)return{I:0,Rt:0,P:0};}
+  if(Rt===0)Rt=0.1;
+  var I=CIRC.V/Rt;var P=CIRC.V*I;
+  for(var r=0;r<CIRC.rows;r++)for(var c=0;c<CIRC.cols;c++){var g=CIRC.grid[r][c];if(g&&(g.type==='lamp'||g.type==='res'))g._U=I*g.R;}
+  return{I:I,Rt:Rt,P:P};
+}
+/* Draw component symbol */
+function cgSym(g,cx,cy,cp,sim){
+  var h='',hs=cp/2,t=g.type,glow=sim.I>0;
+  if(t==='battery'){
+    h+='<rect x="'+(cx-14)+'" y="'+(cy-14)+'" width="28" height="28" rx="5" fill="#071e10" stroke="#f59e0b" stroke-width="1.5"/>';
+    h+='<line x1="'+(cx-4)+'" y1="'+(cy-7)+'" x2="'+(cx-4)+'" y2="'+(cy+7)+'" stroke="#f59e0b" stroke-width="3"/>';
+    h+='<line x1="'+(cx+4)+'" y1="'+(cy-4)+'" x2="'+(cx+4)+'" y2="'+(cy+4)+'" stroke="#f59e0b" stroke-width="1.5"/>';
+  }else if(t==='lamp'){
+    var lc=glow?'#fbbf24':'#3d6b52',fl=glow?'filter:drop-shadow(0 0 10px rgba(251,191,36,.8))':'';
+    h+='<circle cx="'+cx+'" cy="'+cy+'" r="14" fill="#071e10" stroke="'+lc+'" stroke-width="2" style="'+fl+'"/>';
+    h+='<circle cx="'+cx+'" cy="'+cy+'" r="7" fill="'+lc+'" opacity="'+(glow?'.9':'.15')+'" style="'+fl+'"/>';
+    h+='<line x1="'+(cx-5)+'" y1="'+(cy-5)+'" x2="'+(cx+5)+'" y2="'+(cy+5)+'" stroke="#071e10" stroke-width="1.2"/>';
+    h+='<line x1="'+(cx+5)+'" y1="'+(cy-5)+'" x2="'+(cx-5)+'" y2="'+(cy+5)+'" stroke="#071e10" stroke-width="1.2"/>';
+  }else if(t==='res'){
+    h+='<rect x="'+(cx-14)+'" y="'+(cy-8)+'" width="28" height="16" rx="3" fill="#071e10" stroke="'+(glow?'#10b981':'#3d6b52')+'" stroke-width="1.5"/>';
+    var zx=cx-10;
+    h+='<polyline points="'+zx+','+cy+' '+(zx+4)+','+(cy-5)+' '+(zx+8)+','+(cy+5)+' '+(zx+12)+','+(cy-5)+' '+(zx+16)+','+(cy+5)+' '+(zx+20)+','+cy+'" fill="none" stroke="'+(glow?'#10b981':'#3d6b52')+'" stroke-width="1"/>';
+  }else if(t==='switch'){
+    var on=!!g.on,sc=on?(glow?'#10b981':'#3d6b52'):'#f87171';
+    h+='<circle cx="'+(cx-8)+'" cy="'+cy+'" r="3" fill="'+sc+'"/><circle cx="'+(cx+8)+'" cy="'+cy+'" r="3" fill="'+sc+'"/>';
+    if(on)h+='<line x1="'+(cx-8)+'" y1="'+cy+'" x2="'+(cx+8)+'" y2="'+cy+'" stroke="'+sc+'" stroke-width="2.5"/>';
+    else h+='<line x1="'+(cx-8)+'" y1="'+cy+'" x2="'+(cx+4)+'" y2="'+(cy-12)+'" stroke="'+sc+'" stroke-width="2.5"/>';
+  }else if(t==='ammeter'){
+    h+='<circle cx="'+cx+'" cy="'+cy+'" r="13" fill="#071e10" stroke="'+(glow?'#60a5fa':'#3d6b52')+'" stroke-width="1.5"/>';
+    h+='<text x="'+cx+'" y="'+(cy+5)+'" text-anchor="middle" fill="'+(glow?'#60a5fa':'#3d6b52')+'" font-size="13" font-family="IBM Plex Mono" font-weight="700">A</text>';
+  }else if(t==='voltmeter'){
+    h+='<circle cx="'+cx+'" cy="'+cy+'" r="13" fill="#071e10" stroke="'+(glow?'#93c5fd':'#3d6b52')+'" stroke-width="1.5"/>';
+    h+='<text x="'+cx+'" y="'+(cy+5)+'" text-anchor="middle" fill="'+(glow?'#93c5fd':'#3d6b52')+'" font-size="13" font-family="IBM Plex Mono" font-weight="700">V</text>';
+  }
+  return h;
+}
+/* Draw wires edge-to-edge between adjacent occupied cells */
+function cgDrawWires(sim){
+  var h='',cp=CIRC.cellPx,wc=sim.I>0?'#10b981':'#265e3f',ws=sim.I>0?3:2.5;
+  for(var r=0;r<CIRC.rows;r++)for(var c=0;c<CIRC.cols;c++){
+    var g=CIRC.grid[r][c];if(!g)continue;
+    var cx=c*cp+cp/2,cy=r*cp+cp/2;
+    /* wire to right neighbor */
+    if(c<CIRC.cols-1&&CIRC.grid[r][c+1]){
+      h+='<line x1="'+cx+'" y1="'+cy+'" x2="'+(cx+cp)+'" y2="'+cy+'" stroke="'+wc+'" stroke-width="'+ws+'"/>';}
+    /* wire to bottom neighbor */
+    if(r<CIRC.rows-1&&CIRC.grid[r+1][c]){
+      h+='<line x1="'+cx+'" y1="'+cy+'" x2="'+cx+'" y2="'+(cy+cp)+'" stroke="'+wc+'" stroke-width="'+ws+'"/>';}
+    /* junction dot if 3+ neighbors */
+    var nb=cgAdj(r,c);
+    if(nb.length>=3&&g.type==='wire')h+='<circle cx="'+cx+'" cy="'+cy+'" r="4" fill="'+wc+'"/>';
+  }
+  return h;
+}
+function buildCircuit(){
+  var sim=cgSimulate();
+  var cp=CIRC.cellPx,W=CIRC.cols*cp,H=CIRC.rows*cp;
+  var svg='<rect width="'+W+'" height="'+H+'" fill="#010a06" rx="8"/>';
+  /* subtle grid dots */
+  for(var r=0;r<CIRC.rows;r++)for(var c=0;c<CIRC.cols;c++){
+    svg+='<circle cx="'+(c*cp+cp/2)+'" cy="'+(r*cp+cp/2)+'" r="1.5" fill="#0d3320" opacity=".6"/>';}
+  /* wires (edge-to-edge, behind components) */
+  svg+=cgDrawWires(sim);
+  /* components */
+  for(var r=0;r<CIRC.rows;r++)for(var c=0;c<CIRC.cols;c++){
+    var g=CIRC.grid[r][c];if(!g||g.type==='wire')continue;
+    var cx=c*cp+cp/2,cy=r*cp+cp/2;
+    svg+=cgSym(g,cx,cy,cp,sim);
+    /* labels */
+    if((g.type==='lamp'||g.type==='res')&&g.R)
+      svg+='<text x="'+cx+'" y="'+(cy+20)+'" text-anchor="middle" fill="'+(sim.I>0?'#10b981':'#3d6b52')+'" font-size="8" font-family="IBM Plex Mono">'+g.R+'\u03a9</text>';
+    if(g.type==='battery')
+      svg+='<text x="'+cx+'" y="'+(cy+22)+'" text-anchor="middle" fill="#f59e0b" font-size="8" font-family="IBM Plex Mono">'+CIRC.V+'V</text>';
+    if(g.type==='ammeter'&&sim.I>0)
+      svg+='<text x="'+cx+'" y="'+(cy-16)+'" text-anchor="middle" fill="#60a5fa" font-size="9" font-family="IBM Plex Mono" font-weight="700">'+sim.I.toFixed(2)+'A</text>';
+    if(g.type==='voltmeter'&&sim.I>0)
+      svg+='<text x="'+cx+'" y="'+(cy-16)+'" text-anchor="middle" fill="#93c5fd" font-size="9" font-family="IBM Plex Mono" font-weight="700">'+CIRC.V.toFixed(1)+'V</text>';
+    if((g.type==='lamp'||g.type==='res')&&sim.I>0&&g._U)
+      svg+='<text x="'+cx+'" y="'+(cy-18)+'" text-anchor="middle" fill="#93c5fd" font-size="8" font-family="IBM Plex Mono">'+g._U.toFixed(1)+'V</text>';
+  }
+  /* tap targets */
+  for(var r=0;r<CIRC.rows;r++)for(var c=0;c<CIRC.cols;c++)
+    svg+='<rect x="'+(c*cp)+'" y="'+(r*cp)+'" width="'+cp+'" height="'+cp+'" fill="transparent" data-r="'+r+'" data-c="'+c+'"/>';
+  /* readings */
+  var rdg=sim.I>0
+    ?'R<sub>tot</sub> = '+sim.Rt.toFixed(0)+' \u03a9 &nbsp;|&nbsp; I = '+sim.I.toFixed(2)+' A &nbsp;|&nbsp; P = '+sim.P.toFixed(1)+' W'
+    :'Place les composants pour construire ton circuit';
+  /* toolbar - simplified: 6 tools */
+  var tools=[
+    {t:'wire',ico:'\u2014',lbl:'Fil'},
+    {t:'battery',ico:'\uD83D\uDD0B',lbl:'Pile'},
+    {t:'lamp',ico:'\uD83D\uDCA1',lbl:'Lampe'},
+    {t:'res',ico:'\u26A1',lbl:'R\u00e9sist.'},
+    {t:'switch',ico:'\u23FB',lbl:'Inter.'},
+    {t:'ammeter',ico:'A',lbl:'Amp\u00e8re'},
+    {t:'eraser',ico:'\u2715',lbl:'Suppr.'}
+  ];
+  var tb='';
+  for(var i=0;i<tools.length;i++){
+    var sel=CIRC.selectedTool===tools[i].t?' on':'';
+    tb+='<button class="cg-tool'+sel+'" onclick="cgSelTool(\''+tools[i].t+'\')">'
+      +'<span class="cg-ico">'+tools[i].ico+'</span>'+tools[i].lbl+'</button>';}
+  /* switch button */
+  var swBtn='';
+  for(var r=0;r<CIRC.rows;r++)for(var c=0;c<CIRC.cols;c++){var g=CIRC.grid[r][c];
+    if(g&&g.type==='switch'){swBtn=g.on
+      ?'<button class="sw-btn sw-closed" onclick="cgToggleSwitch()">\u26a1 Ouvrir le circuit</button>'
+      :'<button class="sw-btn sw-open" onclick="cgToggleSwitch()">\u26a1 Fermer le circuit</button>';break;}}
+  return '<p style="font-size:11px;color:var(--mu);margin-bottom:6px;line-height:1.5">S\u00e9lectionne un outil, puis tape sur la grille. Glisse pour d\u00e9placer. Appui long = supprimer.</p>'
+    +'<div class="cg-toolbar">'+tb+'</div>'
+    +'<div class="cg-wrap"><svg class="cg-svg" id="cgSvg" viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg">'+svg+'</svg></div>'
+    +'<div class="cg-readings">'+rdg+'</div>'
+    +'<div class="cg-ctrl"><span class="cg-ctrl-lbl">\uD83D\uDD0B</span><input type="range" class="slider-input" min="1" max="24" value="'+CIRC.V+'" oninput="setCircV(parseInt(this.value))"><span class="cg-ctrl-val">'+CIRC.V+' V</span></div>'
+    +(swBtn?'<div class="cg-sw-row">'+swBtn+'</div>':'')
+    +'<div style="background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.14);border-radius:14px;padding:10px 12px;font-size:11px;color:rgba(209,250,229,.6);line-height:1.7;margin-top:10px">'
+    +'<strong style="color:var(--a2)">Formules :</strong> U = R \u00d7 I &nbsp;|&nbsp; P = U \u00d7 I &nbsp;|&nbsp; R<sub>s\u00e9rie</sub> = R\u2081 + R\u2082 + ...</div>';
+}
+function renderCircuitUI(){
+  var body=document.getElementById('expBody');if(!body)return;
+  body.innerHTML=buildCircuit();
+  cgBindEvents();
+}
+function cgRCFromPt(svg,ex,ey){
+  var cp=CIRC.cellPx,rect=svg.getBoundingClientRect();
+  var sx=(ex-rect.left)/rect.width,sy=(ey-rect.top)/rect.height;
+  var vb=svg.viewBox.baseVal;
+  var px=sx*vb.width,py=sy*vb.height;
+  var c=Math.floor(px/cp),r=Math.floor(py/cp);
+  if(r<0)r=0;if(r>=CIRC.rows)r=CIRC.rows-1;
+  if(c<0)c=0;if(c>=CIRC.cols)c=CIRC.cols-1;
+  return{r:r,c:c};
+}
+function cgBindEvents(){
+  var svg=document.getElementById('cgSvg');if(!svg)return;
+  var lt=null,dr=null,ghost=null;
+  svg.addEventListener('pointerdown',function(e){
+    e.preventDefault();svg.setPointerCapture(e.pointerId);
+    var rc=cgRCFromPt(svg,e.clientX,e.clientY);
+    var r=rc.r,c=rc.c,g=cgCell(r,c);
+    lt=setTimeout(function(){lt=null;if(g){cgSet(r,c,null);renderCircuitUI();showToast('Supprim\u00e9');}},500);
+    if(g&&CIRC.selectedTool!=='eraser')dr={r:r,c:c,id:g.id};
+  });
+  svg.addEventListener('pointermove',function(e){
+    if(!dr)return;clearTimeout(lt);lt=null;
+    var rc=cgRCFromPt(svg,e.clientX,e.clientY);
+    /* show ghost highlight */
+    var old=svg.querySelector('.cg-ghost');if(old)old.remove();
+    if(rc.r!==dr.r||rc.c!==dr.c){
+      var cp=CIRC.cellPx;
+      var gh=document.createElementNS('http://www.w3.org/2000/svg','rect');
+      gh.setAttribute('x',rc.c*cp);gh.setAttribute('y',rc.r*cp);
+      gh.setAttribute('width',cp);gh.setAttribute('height',cp);
+      gh.setAttribute('rx','6');gh.setAttribute('fill','rgba(16,185,129,.18)');
+      gh.setAttribute('stroke','rgba(16,185,129,.4)');gh.setAttribute('stroke-width','1.5');
+      gh.setAttribute('class','cg-ghost');gh.style.pointerEvents='none';
+      svg.appendChild(gh);
+    }
+  });
+  svg.addEventListener('pointerup',function(e){
+    var wasLong=!lt;clearTimeout(lt);lt=null;
+    var old=svg.querySelector('.cg-ghost');if(old)old.remove();
+    var rc=cgRCFromPt(svg,e.clientX,e.clientY);
+    var r=rc.r,c=rc.c;
+    if(wasLong){dr=null;return;}
+    /* drag move */
+    if(dr&&(dr.r!==r||dr.c!==c)){
+      var og=cgCell(dr.r,dr.c);
+      if(og&&!cgCell(r,c)){cgSet(dr.r,dr.c,null);cgSet(r,c,og);dr=null;renderCircuitUI();return;}}
+    dr=null;
+    var g=cgCell(r,c);var tool=CIRC.selectedTool;
+    if(tool==='eraser'){if(g){cgSet(r,c,null);renderCircuitUI();}return;}
+    /* tap existing: cycle R or toggle switch */
+    if(g&&!tool){
+      if(g.type==='lamp'||g.type==='res'){var v=[10,20,30,50,100];g.R=v[(v.indexOf(g.R)+1)%v.length];renderCircuitUI();}
+      else if(g.type==='switch'){g.on=!g.on;renderCircuitUI();}
+      return;}
+    if(!tool||g)return;
+    /* place */
+    var obj={type:tool,id:CIRC.nextId++};
+    if(tool==='lamp')obj.R=30;if(tool==='res')obj.R=50;if(tool==='switch')obj.on=false;
+    cgSet(r,c,obj);renderCircuitUI();addXP(3);
+  });
+  svg.addEventListener('pointerleave',function(){clearTimeout(lt);lt=null;dr=null;
+    var old=svg.querySelector('.cg-ghost');if(old)old.remove();});
+  svg.addEventListener('pointercancel',function(){clearTimeout(lt);lt=null;dr=null;
+    var old=svg.querySelector('.cg-ghost');if(old)old.remove();});
+}
+function cgSelTool(t){CIRC.selectedTool=CIRC.selectedTool===t?null:t;renderCircuitUI();}
+function cgToggleSwitch(){
+  for(var r=0;r<CIRC.rows;r++)for(var c=0;c<CIRC.cols;c++){var g=CIRC.grid[r][c];if(g&&g.type==='switch')g.on=!g.on;}
+  renderCircuitUI();if(cgCheckLoop())addXP(5);
+}
+function setCircV(v){CIRC.V=v;renderCircuitUI();}
+function toggleCircSwitch(){cgToggleSwitch();}
+function buildCircSvgContent(){return '';}
+function addCircPart(){}function removeCircPart(){}function setPartR(){}function toggleCircAmm(){}function toggleCircVolt(){}
+
+/* EXP 2 — EQUATION */
+function buildEquation() {
+  return '<p style="font-size:12px;color:var(--mu);margin-bottom:14px;line-height:1.6">Entre les coefficients pour équilibrer la combustion de l\'hydrogène. Assure-toi que les atomes sont en nombre égal des deux côtés !</p>'
+    + '<div class="eq-wrap">'
+    + '<div style="text-align:center;font-size:10px;color:var(--mu);margin-bottom:8px;letter-spacing:1px;text-transform:uppercase">Combustion de l\'hydrogène</div>'
+    + '<div class="eq-row">'
+    + '<input class="eq-coef" type="number" id="eq-a" min="1" max="9" value="1"/>'
+    + '<span class="eq-mol">H&#8322;</span>'
+    + '<span class="eq-op">+</span>'
+    + '<input class="eq-coef" type="number" id="eq-b" min="1" max="9" value="1"/>'
+    + '<span class="eq-mol">O&#8322;</span>'
+    + '<span class="eq-op">→</span>'
+    + '<input class="eq-coef" type="number" id="eq-c" min="1" max="9" value="1"/>'
+    + '<span class="eq-mol">H&#8322;O</span>'
+    + '</div>'
+    + '</div>'
+    + '<div class="eq-res" id="eq-res"></div>'
+    + '<button class="exp-btn" onclick="checkEquation()">⚗️ Vérifier l\'équilibre</button>'
+    + '<button class="exp-btn secondary" onclick="resetEquation()">🔄 Réinitialiser</button>'
+    + '<div style="background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.14);border-radius:14px;padding:12px 14px;font-size:12px;color:rgba(209,250,229,.6);line-height:1.7;margin-top:4px">'
+    + '<strong style="color:var(--a4)">Rappel :</strong> Dans H₂, il y a 2 atomes d\'hydrogène. Dans O₂, 2 atomes d\'oxygène. Dans H₂O, 2H et 1O.'
+    + '</div>';
+}
+
+function checkEquation() {
+  var a = parseInt(document.getElementById('eq-a').value) || 0;
+  var b = parseInt(document.getElementById('eq-b').value) || 0;
+  var c = parseInt(document.getElementById('eq-c').value) || 0;
+  var leftH = a * 2, leftO = b * 2;
+  var rightH = c * 2, rightO = c * 1;
+  var res = document.getElementById('eq-res');
+  if (leftH === rightH && leftO === rightO) {
+    res.className = 'eq-res ok';
+    res.innerHTML = '✅ Équation équilibrée !<br>'
+      + 'H gauche : ' + leftH + ' = H droite : ' + rightH + '<br>'
+      + 'O gauche : ' + leftO + ' = O droite : ' + rightO + '<br>'
+      + '<strong>Réponse correcte : 2 H₂ + 1 O₂ → 2 H₂O</strong>';
+    addXP(15);
+  } else {
+    res.className = 'eq-res err';
+    res.innerHTML = '❌ Déséquilibré !<br>'
+      + 'H gauche : ' + leftH + ' ≠ H droite : ' + rightH + '<br>'
+      + 'O gauche : ' + leftO + ' ≠ O droite : ' + rightO + '<br>'
+      + 'Indice : essaie a=2, b=1, c=2';
+  }
+  res.style.display = 'block';
+}
+
+function resetEquation() {
+  document.getElementById('eq-a').value = 1;
+  document.getElementById('eq-b').value = 1;
+  document.getElementById('eq-c').value = 1;
+  document.getElementById('eq-res').style.display = 'none';
+}
+
+/* EXP 3 — PERIODIC TABLE */
+function buildPTableHTML() {
+  return '<p style="font-size:12px;color:var(--mu);margin-bottom:12px;line-height:1.6">Tape sur un élément pour voir ses propriétés. Lance le quiz pour masquer les noms !</p>'
+    + '<div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">'
+    + '<span style="font-size:10px;color:var(--mu)"><span style="display:inline-block;width:10px;height:10px;background:#3b0f08;border-radius:2px;margin-right:4px"></span>Alcalins</span>'
+    + '<span style="font-size:10px;color:var(--mu)"><span style="display:inline-block;width:10px;height:10px;background:#0a1f3b;border-radius:2px;margin-right:4px"></span>Alcalino-terreux</span>'
+    + '<span style="font-size:10px;color:var(--mu)"><span style="display:inline-block;width:10px;height:10px;background:#0a1a30;border-radius:2px;margin-right:4px"></span>Transition</span>'
+    + '<span style="font-size:10px;color:var(--mu)"><span style="display:inline-block;width:10px;height:10px;background:#08271a;border-radius:2px;margin-right:4px"></span>Non-métaux</span>'
+    + '</div>'
+    + '<div class="ptable-wrap"><div class="ptable-inner" id="pt-inner"></div></div>'
+    + '<button class="exp-btn secondary" id="ptQuizBtn" onclick="togglePTQuiz()">🎯 Mode Quiz — masquer les noms</button>';
+}
+
+function buildPTable() {
+  var inner = document.getElementById('pt-inner');
+  if (!inner) return;
+  var html = '';
+  PT_ELEMENTS.forEach(function(el) {
+    html += '<div class="pe ' + el.cat + '" style="grid-column:' + el.col + ';grid-row:' + el.row + '" onclick="showElement(\'' + el.s + '\')">';
+    html += '<div class="pn">' + el.n + '</div>';
+    html += '<div class="ps" id="ps-' + el.s + '">' + el.s + '</div>';
+    html += '<div class="pm">' + el.m + '</div>';
+    html += '</div>';
+  });
+  inner.innerHTML = html;
+}
+
+function togglePTQuiz() {
+  ptQuizMode = !ptQuizMode;
+  PT_ELEMENTS.forEach(function(el) {
+    var sym = document.getElementById('ps-' + el.s);
+    if (sym) sym.style.visibility = ptQuizMode ? 'hidden' : 'visible';
+  });
+  var btn = document.getElementById('ptQuizBtn');
+  if (btn) btn.textContent = ptQuizMode ? '👁 Afficher les symboles' : '🎯 Mode Quiz — masquer les noms';
+  if (ptQuizMode) showToast('Quiz actif ! Retrouve les éléments.');
+}
+
+var currentElement = null;
+function showElement(sym) {
+  var el = null;
+  PT_ELEMENTS.forEach(function(e) { if (e.s === sym) el = e; });
+  if (!el) return;
+  currentElement = el;
+  var content = document.getElementById('ptContent');
+  content.innerHTML = '<div class="pt-sym">' + el.s + '</div>'
+    + '<div class="pt-name">' + el.name + '</div>'
+    + '<div class="pt-grid">'
+    + '<div class="pt-info"><div class="pt-info-lbl">Numéro atomique</div><div class="pt-info-val">' + el.n + '</div></div>'
+    + '<div class="pt-info"><div class="pt-info-lbl">Masse molaire</div><div class="pt-info-val">' + el.m + ' g/mol</div></div>'
+    + '</div>'
+    + '<div class="pt-fact">' + el.fact + '</div>';
+  var atomIdx = -1;
+  ATOMS_MINI.forEach(function(a, i) { if (a.s === el.s) atomIdx = i; });
+  if (atomIdx >= 0) {
+    content.innerHTML += '<button class="exp-btn" style="margin-top:10px" onclick="viewAtomFromPT(' + atomIdx + ')">\u269b\ufe0f Voir la structure atomique</button>';
+  }
+  document.getElementById('ptSheet').classList.add('on');
+  document.getElementById('ptSheetOverlay').classList.add('on');
+}
+
+function viewAtomFromPT(idx) {
+  currentAtomIdx = idx;
+  closePtSheet();
+  closeExp();
+  setTimeout(function() { openExp(7); }, 200);
+}
+
+function closePtSheet() {
+  document.getElementById('ptSheet').classList.remove('on');
+  document.getElementById('ptSheetOverlay').classList.remove('on');
+}
+
+/* EXP 4 — OPTICS */
+function buildOptics() {
+  return '<p style="font-size:12px;color:var(--mu);margin-bottom:12px;line-height:1.6">Modifie l\'angle d\'incidence θ₁. Le rayon passe de l\'air (n=1.0) au verre (n=1.5). Loi : n₁·sin(θ₁) = n₂·sin(θ₂)</p>'
+    + '<div class="optics-wrap">'
+    + '<svg class="optics-svg" viewBox="0 0 300 220" id="opticsSvg"></svg>'
+    + '</div>'
+    + '<div class="slider-row" style="margin:0 0 14px">'
+    + '<div class="slider-lbl">θ₁</div>'
+    + '<input type="range" class="slider-input" id="opt-angle" min="0" max="60" value="30" oninput="updateOptics()">'
+    + '<div class="slider-val" id="opt-a-val">30°</div>'
+    + '</div>'
+    + '<div class="optics-data">'
+    + '<div class="opt-val"><div class="opt-lbl">Angle incident θ₁</div><div class="opt-num" id="opt-t1">30.0°</div></div>'
+    + '<div class="opt-val" style="border-left-color:var(--chi)"><div class="opt-lbl">Angle réfracté θ₂</div><div class="opt-num" id="opt-t2" style="color:var(--a4)">19.5°</div></div>'
+    + '</div>'
+    + '<div style="background:rgba(59,130,246,.06);border:1px solid rgba(59,130,246,.14);border-radius:14px;padding:12px 14px;font-size:12px;color:rgba(209,250,229,.6);line-height:1.7;margin-top:10px">'
+    + '<strong style="color:#93c5fd">Loi de Snell-Descartes :</strong><br>'
+    + 'n₁ × sin(θ₁) = n₂ × sin(θ₂)<br>'
+    + 'Le rayon se rapproche de la normale en entrant dans un milieu plus dense.'
+    + '</div>';
+}
+
+function updateOptics() {
+  var slider = document.getElementById('opt-angle');
+  if (!slider) return;
+  var t1 = parseInt(slider.value);
+  var n1 = 1.0, n2 = 1.5;
+  var t1r = t1 * Math.PI / 180;
+  var sinT2 = n1 / n2 * Math.sin(t1r);
+  var t2 = Math.asin(sinT2) * 180 / Math.PI;
+  var t2r = Math.asin(sinT2);
+  document.getElementById('opt-a-val').textContent = t1 + '\u00b0';
+  document.getElementById('opt-t1').textContent = t1.toFixed(1) + '\u00b0';
+  document.getElementById('opt-t2').textContent = t2.toFixed(1) + '\u00b0';
+  drawOpticsSVG(t1r, t2r);
+}
+
+function drawOpticsSVG(t1r, t2r) {
+  var svg = document.getElementById('opticsSvg');
+  if (!svg) return;
+  var cx = 150, cy = 110;
+  var len = 90;
+  var x1 = cx - Math.sin(t1r) * len;
+  var y1 = cy - Math.cos(t1r) * len;
+  var x2 = cx + Math.sin(t2r) * len;
+  var y2 = cy + Math.cos(t2r) * len;
+  svg.innerHTML = '<defs><marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 z" fill="#10b981"/></marker>'
+    + '<marker id="arr2" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 z" fill="#f59e0b"/></marker></defs>'
+    + '<rect x="0" y="110" width="300" height="110" fill="rgba(59,130,246,.04)" rx="0"/>'
+    + '<text x="8" y="90" fill="rgba(209,250,229,.45)" font-size="10" font-family="IBM Plex Sans">Air (n = 1.0)</text>'
+    + '<text x="8" y="140" fill="#60a5fa" font-size="10" font-family="IBM Plex Sans">Verre (n = 1.5)</text>'
+    + '<line x1="0" y1="110" x2="300" y2="110" stroke="rgba(59,130,246,.35)" stroke-width="1.5"/>'
+    + '<line x1="150" y1="15" x2="150" y2="205" stroke="rgba(100,100,100,.4)" stroke-width="1" stroke-dasharray="5,4"/>'
+    + '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + cx + '" y2="' + cy + '" stroke="#10b981" stroke-width="2.5" marker-end="url(#arr)"/>'
+    + '<line x1="' + cx + '" y1="' + cy + '" x2="' + x2 + '" y2="' + y2 + '" stroke="#f59e0b" stroke-width="2.5" marker-end="url(#arr2)"/>'
+    + '<circle cx="' + cx + '" cy="' + cy + '" r="5" fill="var(--a1)" opacity=".8"/>'
+    + '<text x="' + (x1 - 8) + '" y="' + (y1 + 4) + '" fill="#10b981" font-size="9" font-family="IBM Plex Mono">θ₁</text>'
+    + '<text x="' + (x2 + 4) + '" y="' + (y2 - 4) + '" fill="#f59e0b" font-size="9" font-family="IBM Plex Mono">θ₂</text>';
+}
+
+/* EXP 5 — PYTHAGORE */
+function buildPyth() {
+  return '<p style="font-size:12px;color:var(--mu);margin-bottom:12px;line-height:1.6">Modifie a et b pour voir c = \u221a(a\u00b2 + b\u00b2). Triangle rectangle interactif !</p>'
+    + '<svg id="pythSvg" viewBox="0 0 280 190" style="width:100%;height:auto;margin-bottom:10px" xmlns="http://www.w3.org/2000/svg"></svg>'
+    + '<div class="slider-row"><div class="slider-lbl" style="color:var(--a1)">a</div><input type="range" class="slider-input" id="pyth-a" min="3" max="12" value="3" oninput="updatePythExp()"><div class="slider-val" id="pyth-a-val">3</div></div>'
+    + '<div class="slider-row"><div class="slider-lbl" style="color:#60a5fa">b</div><input type="range" class="slider-input" id="pyth-b" min="3" max="12" value="4" oninput="updatePythExp()"><div class="slider-val" id="pyth-b-val">4</div></div>'
+    + '<div class="slider-row"><div class="slider-lbl" style="color:#a78bfa">c</div><input type="range" class="slider-input" id="pyth-c" min="0" max="20" value="5" disabled style="opacity:.4"><div class="slider-val calc" id="pyth-c-val" style="color:#a78bfa">5.00</div></div>'
+    + '<div class="ohm-result" id="pyth-check" style="display:block">a\u00b2 + b\u00b2 = 9 + 16 = 25 = 5\u00b2 \u2713</div>'
+    + '<div style="background:rgba(139,92,246,.06);border:1px solid rgba(139,92,246,.14);border-radius:14px;padding:12px;font-size:12px;color:rgba(209,250,229,.6);line-height:1.7;margin-top:10px"><strong style="color:#a78bfa">Rappel :</strong> S\u2019applique uniquement dans un triangle rectangle. L\u2019hypot\u00e9nuse est le c\u00f4t\u00e9 oppos\u00e9 \u00e0 l\u2019angle droit.</div>';}
+
+function updatePythExp() {
+  var aEl = document.getElementById('pyth-a');
+  var bEl = document.getElementById('pyth-b');
+  if (!aEl || !bEl) return;
+  var a = parseInt(aEl.value);
+  var b = parseInt(bEl.value);
+  var c = Math.sqrt(a * a + b * b);
+  document.getElementById('pyth-a-val').textContent = a;
+  document.getElementById('pyth-b-val').textContent = b;
+  document.getElementById('pyth-c-val').textContent = c.toFixed(2);
+  var sl = document.getElementById('pyth-c');
+  if (sl) sl.value = c;
+  var chk = document.getElementById('pyth-check');
+  if (chk) chk.innerHTML = 'a\u00b2+b\u00b2 = ' + (a*a) + '+' + (b*b) + ' = ' + (a*a+b*b) + ' \u2248 c\u00b2 (' + c.toFixed(2) + '\u00b2) \u2713';
+  drawPythSvg(a, b, c);
+}
+
+function drawPythSvg(a, b, c) {
+  var svg = document.getElementById('pythSvg');
+  if (!svg) return;
+  var sc = 11, ox = 40, oy = 165;
+  var ax = ox + a * sc, by = oy - b * sc;
+  svg.innerHTML = ''
+    + '<polygon points="' + ox + ',' + oy + ' ' + ax + ',' + oy + ' ' + ox + ',' + by + '" fill="rgba(139,92,246,.07)" stroke="none"/>'
+    + '<line x1="' + ox + '" y1="' + oy + '" x2="' + ax + '" y2="' + oy + '" stroke="var(--a1)" stroke-width="3"/>'
+    + '<line x1="' + ox + '" y1="' + oy + '" x2="' + ox + '" y2="' + by + '" stroke="#60a5fa" stroke-width="3"/>'
+    + '<line x1="' + ax + '" y1="' + oy + '" x2="' + ox + '" y2="' + by + '" stroke="#a78bfa" stroke-width="3"/>'
+    + '<rect x="' + ox + '" y="' + (oy-12) + '" width="12" height="12" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="1.5"/>'
+    + '<text x="' + (ox + a*sc/2) + '" y="' + (oy+16) + '" text-anchor="middle" fill="var(--a1)" font-size="13" font-family="IBM Plex Mono" font-weight="700">a = ' + a + '</text>'
+    + '<text x="' + (ox-28) + '" y="' + (oy-b*sc/2) + '" text-anchor="middle" fill="#60a5fa" font-size="13" font-family="IBM Plex Mono" font-weight="700">b = ' + b + '</text>'
+    + '<text x="' + ((ax+ox)/2+22) + '" y="' + ((oy+by)/2-4) + '" text-anchor="middle" fill="#a78bfa" font-size="12" font-family="IBM Plex Mono" font-weight="700">c = ' + c.toFixed(1) + '</text>'
+    + '<circle cx="' + ox + '" cy="' + oy + '" r="5" fill="var(--a1)"/>'
+    + '<circle cx="' + ax + '" cy="' + oy + '" r="5" fill="var(--a1)"/>'
+    + '<circle cx="' + ox + '" cy="' + by + '" r="5" fill="#60a5fa"/>';}
+
+/* EXP 6 — POIDS & MASSE */
+var PLANETS_DATA = [
+  {g:9.8, name:'Terre', emoji:'\uD83C\uDF0D', color:'#10b981'},
+  {g:1.6, name:'Lune', emoji:'\uD83C\uDF11', color:'#94a3b8'},
+  {g:3.7, name:'Mars', emoji:'\uD83D\uDD34', color:'#ef4444'},
+  {g:24.8, name:'Jupiter', emoji:'\uD83D\uDFE0', color:'#f59e0b'}];
+var currentPlanetIdx = 0;
+
+function buildWeight() {
+  var btns = '';
+  PLANETS_DATA.forEach(function(p, i) {
+    btns += '<button class="planet-btn' + (i === 0 ? ' on' : '') + '" id="pb-' + i + '" onclick="setPlanetIdx(' + i + ')">' + p.emoji + ' ' + p.name + '</button>';
+  });
+  return '<p style="font-size:12px;color:var(--mu);margin-bottom:12px;line-height:1.6">P = m \u00d7 g. Change de plan\u00e8te et observe la diff\u00e9rence de poids !</p>'
+    + '<div class="slider-row"><div class="slider-lbl">m</div><input type="range" class="slider-input" id="wexp-m" min="1" max="150" value="70" oninput="updateWeightExp()"><div class="slider-val" id="wexp-m-val">70 kg</div></div>'
+    + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px">' + btns + '</div>'
+    + '<svg id="weightSvg" viewBox="0 0 280 140" style="width:100%;height:auto;margin-bottom:10px" xmlns="http://www.w3.org/2000/svg"></svg>'
+    + '<div class="ohm-result" id="weight-result" style="display:block">P = 70 \u00d7 9.8 = <strong style="color:var(--a4)">686 N</strong> (Terre)</div>'
+    + '<div style="background:rgba(59,130,246,.06);border:1px solid rgba(59,130,246,.14);border-radius:14px;padding:12px;font-size:12px;color:rgba(209,250,229,.6);line-height:1.7;margin-top:10px"><strong style="color:#93c5fd">Masse \u2260 Poids :</strong> La masse (kg) est la m\u00eame partout. Le poids (N) d\u00e9pend du champ de gravit\u00e9 g de la plan\u00e8te.</div>';
+}
+
+function setPlanetIdx(i) {
+  currentPlanetIdx = i;
+  document.querySelectorAll('.planet-btn').forEach(function(b) { b.classList.remove('on'); });
+  var btn = document.getElementById('pb-' + i);
+  if (btn) btn.classList.add('on');
+  updateWeightExp();
+}
+
+function updateWeightExp() {
+  var mEl = document.getElementById('wexp-m');
+  if (!mEl) return;
+  var m = parseInt(mEl.value);
+  var planet = PLANETS_DATA[currentPlanetIdx];
+  var P = m * planet.g;
+  document.getElementById('wexp-m-val').textContent = m + ' kg';
+  var res = document.getElementById('weight-result');
+  if (res) res.innerHTML = 'P = ' + m + ' \u00d7 ' + planet.g + ' = <strong style="color:' + planet.color + '">' + P.toFixed(0) + ' N</strong> (' + planet.name + ')';
+  drawWeightSvg(m, P, planet);
+}
+
+function drawWeightSvg(m, P, planet) {
+  var svg = document.getElementById('weightSvg');
+  if (!svg) return;
+  var maxP = 150 * 24.8;
+  var barH = Math.max(8, Math.min(100, P / maxP * 100));
+  var cx = 140, barW = 60, top = 120 - barH;
+  svg.innerHTML = ''
+    + '<rect x="' + (cx-barW/2) + '" y="' + top + '" width="' + barW + '" height="' + barH + '" rx="6" fill="' + planet.color + '" opacity=".7"/>'
+    + '<polygon points="' + cx + ',' + (top+barH+12) + ' ' + (cx-10) + ',' + (top+barH) + ' ' + (cx+10) + ',' + (top+barH) + '" fill="' + planet.color + '"/>'
+    + '<text x="' + cx + '" y="' + (top-6) + '" text-anchor="middle" fill="' + planet.color + '" font-size="13" font-family="IBM Plex Mono" font-weight="700">' + P.toFixed(0) + ' N</text>'
+    + '<text x="' + cx + '" y="135" text-anchor="middle" fill="rgba(209,250,229,.45)" font-size="9" font-family="IBM Plex Sans">' + m + ' kg \u00b7 ' + planet.emoji + ' ' + planet.name + ' (g=' + planet.g + ' N/kg)</text>';}
+
+/* EXP 7 — ATOME */
+var ATOMS_MINI = [
+  {n:1,s:'H',name:'Hydrog\u00e8ne',p:1,ne:0,shells:[1]},
+  {n:2,s:'He',name:'H\u00e9lium',p:2,ne:2,shells:[2]},
+  {n:3,s:'Li',name:'Lithium',p:3,ne:4,shells:[2,1]},
+  {n:4,s:'Be',name:'B\u00e9ryllium',p:4,ne:5,shells:[2,2]},
+  {n:5,s:'B',name:'Bore',p:5,ne:6,shells:[2,3]},
+  {n:6,s:'C',name:'Carbone',p:6,ne:6,shells:[2,4]},
+  {n:7,s:'N',name:'Azote',p:7,ne:7,shells:[2,5]},
+  {n:8,s:'O',name:'Oxyg\u00e8ne',p:8,ne:8,shells:[2,6]},
+  {n:9,s:'F',name:'Fluor',p:9,ne:10,shells:[2,7]},
+  {n:10,s:'Ne',name:'N\u00e9on',p:10,ne:10,shells:[2,8]},
+  {n:11,s:'Na',name:'Sodium',p:11,ne:12,shells:[2,8,1]},
+  {n:12,s:'Mg',name:'Magn\u00e9sium',p:12,ne:12,shells:[2,8,2]},
+  {n:13,s:'Al',name:'Aluminium',p:13,ne:14,shells:[2,8,3]},
+  {n:14,s:'Si',name:'Silicium',p:14,ne:14,shells:[2,8,4]},
+  {n:15,s:'P',name:'Phosphore',p:15,ne:16,shells:[2,8,5]},
+  {n:16,s:'S',name:'Soufre',p:16,ne:16,shells:[2,8,6]},
+  {n:17,s:'Cl',name:'Chlore',p:17,ne:18,shells:[2,8,7]},
+  {n:18,s:'Ar',name:'Argon',p:18,ne:22,shells:[2,8,8]},
+  {n:19,s:'K',name:'Potassium',p:19,ne:20,shells:[2,8,8,1]},
+  {n:20,s:'Ca',name:'Calcium',p:20,ne:20,shells:[2,8,8,2]}];
+var currentAtomIdx = 5;
+
+function buildAtom() {
+  var opts = '';
+  ATOMS_MINI.forEach(function(el, i) {
+    opts += '<option value="' + i + '"' + (i === 5 ? ' selected' : '') + '>' + el.s + ' \u2014 ' + el.name + ' (Z=' + el.n + ')</option>';
+  });
+  return '<p style="font-size:12px;color:var(--mu);margin-bottom:12px;line-height:1.6">S\u00e9lectionne un atome pour explorer sa structure : noyau, couches et \u00e9lectrons de valence (Z = 1 \u00e0 20).</p>'
+    + '<select id="atom-select" style="width:100%;padding:10px;background:var(--card);color:var(--tx);border:1px solid var(--bord);border-radius:12px;font-size:13px;margin-bottom:12px;font-family:var(--fm)" onchange="selectAtomEl(this.value)">' + opts + '</select>'
+    + '<svg id="atomSvg" viewBox="0 0 280 200" style="width:100%;height:auto;margin-bottom:10px" xmlns="http://www.w3.org/2000/svg"></svg>'
+    + '<div id="atom-info" style="background:var(--card);border:1px solid var(--bord);border-radius:14px;padding:12px;font-size:12px;line-height:1.9"></div>';}
+
+function selectAtomEl(val) {
+  currentAtomIdx = parseInt(val);
+  renderAtomDisplay();
+  addXP(5);
+}
+
+function renderAtomDisplay() {
+  var el = ATOMS_MINI[currentAtomIdx];
+  if (!el) return;
+  var svg = document.getElementById('atomSvg');
+  if (!svg) return;
+  var cx = 140, cy = 100;
+  var radii = [32, 60, 88, 112];
+  var html = '';
+  el.shells.forEach(function(count, si) {
+    var r = radii[si];
+    html += '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="1.5" stroke-dasharray="4,3"/>';
+    for (var ei = 0; ei < count; ei++) {
+      var angle = (2 * Math.PI * ei / count) - Math.PI / 2;
+      var ex = cx + r * Math.cos(angle);
+      var ey = cy + r * Math.sin(angle);
+      html += '<circle cx="' + ex.toFixed(1) + '" cy="' + ey.toFixed(1) + '" r="5" fill="#60a5fa" stroke="rgba(96,165,250,.4)" stroke-width="1"/>';
+    }
+  });
+  html += '<circle cx="' + cx + '" cy="' + cy + '" r="22" fill="rgba(245,158,11,.12)" stroke="rgba(245,158,11,.5)" stroke-width="2"/>';
+  var pShow = Math.min(el.p, 6);
+  for (var pi = 0; pi < pShow; pi++) {
+    var pa = 2 * Math.PI * pi / pShow;
+    var px = cx + 11 * Math.cos(pa);
+    var py = cy + 11 * Math.sin(pa);
+    html += '<circle cx="' + px.toFixed(1) + '" cy="' + py.toFixed(1) + '" r="3.5" fill="var(--a4)" opacity=".9"/>';
+  }
+  html += '<text x="' + cx + '" y="' + (cy+4) + '" text-anchor="middle" fill="var(--tx)" font-size="11" font-family="IBM Plex Mono" font-weight="700">' + el.s + '</text>';
+  svg.innerHTML = html;
+  var valence = el.shells[el.shells.length - 1];
+  var info = document.getElementById('atom-info');
+  if (info) {
+    info.innerHTML = '<span style="font-family:var(--fm);color:var(--a1);font-size:18px;font-weight:700">' + el.s + '</span> <span style="font-size:14px">' + el.name + ' (Z=' + el.n + ')</span><br>'
+      + '<span style="color:var(--a4)">&#9679; Protons :</span> ' + el.p + ' &nbsp;&nbsp; <span style="color:#64748b">&#9679; Neutrons :</span> ' + el.ne + '<br>'
+      + '<span style="color:#60a5fa">&#9679; \u00c9lectrons :</span> ' + el.p + ' &nbsp;&nbsp; <span style="color:var(--mu)">Couches : ' + el.shells.join(' / ') + '</span><br>'
+      + '<span style="color:#fbbf24">&#9733; \u00c9lectrons de valence :</span> <strong style="color:#fbbf24">' + valence + '</strong>' + (valence === 8 ? ' <em>(gaz noble \u2014 stable !)</em>' : '');
+  }
+}
+
+/* EXP 8 — ECHELLE DE L'UNIVERS */
+var SCALE_DATA=[
+{name:'Longueur de Planck',size:-35,emoji:'\u2733\ufe0f',desc:'Plus petite longueur physique',sizeLabel:'10\u207b\u00b3\u2075 m',x:.5,col:'#6b21a8'},
+{name:'Corde (th\u00e9orie)',size:-34,emoji:'\u3030\ufe0f',desc:'Vibration fondamentale',sizeLabel:'10\u207b\u00b3\u2074 m',x:.3,col:'#7c3aed'},
+{name:'\u00c9cume quantique',size:-33,emoji:'\uD83C\uDF0A',desc:'Fluctuations de l\u2019espace-temps',sizeLabel:'10\u207b\u00b3\u00b3 m',x:.7,col:'#5b21b6'},
+{name:'Quark up',size:-18,emoji:'\u26aa',desc:'Constituant du proton',sizeLabel:'~10\u207b\u00b9\u2078 m',x:.35,col:'#4a90d9'},
+{name:'Quark down',size:-18.2,emoji:'\u26ab',desc:'Constituant du neutron',sizeLabel:'~10\u207b\u00b9\u2078 m',x:.65,col:'#3b82f6'},
+{name:'\u00c9lectron',size:-22,emoji:'\u26a1',desc:'Particule \u00e9l\u00e9mentaire l\u00e9g\u00e8re',sizeLabel:'<10\u207b\u00b2\u00b2 m',x:.5,col:'#60a5fa'},
+{name:'Neutrino',size:-24,emoji:'\uD83D\uDCA8',desc:'Particule quasi sans masse',sizeLabel:'<10\u207b\u00b2\u2074 m',x:.4,col:'#818cf8'},
+{name:'Proton',size:-15,emoji:'\uD83D\uDD34',desc:'Particule + du noyau',sizeLabel:'~10\u207b\u00b9\u2075 m',x:.4,col:'#ef4444'},
+{name:'Neutron',size:-15.1,emoji:'\u26ab',desc:'Particule neutre du noyau',sizeLabel:'~10\u207b\u00b9\u2075 m',x:.6,col:'#6b7280'},
+{name:'Noyau atomique',size:-14,emoji:'\uD83D\uDFE1',desc:'Protons + neutrons',sizeLabel:'10\u207b\u00b9\u2074 m',x:.5,col:'#f59e0b'},
+{name:'Atome d\u2019hydrog\u00e8ne',size:-10.1,emoji:'\u269b\ufe0f',desc:'Atome le plus simple',sizeLabel:'~1 \u00c5',x:.3,col:'#06b6d4'},
+{name:'Atome de carbone',size:-10.05,emoji:'\u26ab',desc:'Base de la chimie organique',sizeLabel:'~1,5 \u00c5',x:.55,col:'#475569'},
+{name:'Atome d\u2019or',size:-10,emoji:'\uD83D\uDFE1',desc:'79 protons, m\u00e9tal noble',sizeLabel:'~1,4 \u00c5',x:.75,col:'#eab308'},
+{name:'Mol\u00e9cule d\u2019eau',size:-9.7,emoji:'\uD83D\uDCA7',desc:'H\u2082O, essentielle \u00e0 la vie',sizeLabel:'~2,75 \u00c5',x:.4,col:'#0ea5e9'},
+{name:'Full\u00e8rene C60',size:-9,emoji:'\u26bd',desc:'Cage de 60 carbones',sizeLabel:'~1 nm',x:.65,col:'#64748b'},
+{name:'ADN (largeur)',size:-8.7,emoji:'\uD83E\uDDEC',desc:'Double h\u00e9lice g\u00e9n\u00e9tique',sizeLabel:'~2 nm',x:.35,col:'#8b5cf6'},
+{name:'Prot\u00e9ine',size:-8,emoji:'\uD83E\uDD69',desc:'Machine mol\u00e9culaire',sizeLabel:'~10 nm',x:.55,col:'#d946ef'},
+{name:'Membrane cellulaire',size:-8.1,emoji:'\uD83C\uDF00',desc:'Bicouche lipidique',sizeLabel:'~8 nm',x:.2,col:'#f97316'},
+{name:'Ribosome',size:-7.6,emoji:'\uD83D\uDD2C',desc:'Fabrique des prot\u00e9ines',sizeLabel:'~25 nm',x:.75,col:'#a855f7'},
+{name:'Virus (grippe)',size:-7,emoji:'\uD83E\uDDA0',desc:'Agent infectieux',sizeLabel:'~100 nm',x:.45,col:'#22c55e'},
+{name:'Bact\u00e9rie E. coli',size:-6,emoji:'\uD83E\uDDA0',desc:'Micro-organisme procaryote',sizeLabel:'~1 \u00b5m',x:.6,col:'#84cc16'},
+{name:'Mitochondrie',size:-5.8,emoji:'\u26a1',desc:'Centrale \u00e9nerg\u00e9tique',sizeLabel:'~1\u20132 \u00b5m',x:.3,col:'#f97316'},
+{name:'Globule rouge',size:-5.15,emoji:'\uD83D\uDD34',desc:'Transporte l\u2019O\u2082',sizeLabel:'~7 \u00b5m',x:.5,col:'#dc2626'},
+{name:'Globule blanc',size:-5,emoji:'\u26aa',desc:'D\u00e9fenseur immunitaire',sizeLabel:'~10 \u00b5m',x:.7,col:'#e2e8f0'},
+{name:'Cellule humaine',size:-4.7,emoji:'\uD83E\uDDE0',desc:'Unit\u00e9 de base du corps',sizeLabel:'~20 \u00b5m',x:.4,col:'#f472b6'},
+{name:'Cheveu (diam\u00e8tre)',size:-4.15,emoji:'\uD83D\uDC87',desc:'Fibre de k\u00e9ratine',sizeLabel:'~70 \u00b5m',x:.6,col:'#92400e'},
+{name:'Ovule humain',size:-4,emoji:'\uD83E\uDD5A',desc:'Plus grande cellule humaine',sizeLabel:'~0,1 mm',x:.25,col:'#fbbf24'},
+{name:'Grain de sable',size:-3.7,emoji:'\uD83C\uDFD6\ufe0f',desc:'Silice ou calcaire',sizeLabel:'~0,2 mm',x:.5,col:'#d4a574'},
+{name:'Param\u00e9cie',size:-3.7,emoji:'\uD83E\uDDA0',desc:'Protiste unicellulaire',sizeLabel:'~0,2 mm',x:.8,col:'#4ade80'},
+{name:'Puce \u00e9lectronique',size:-3,emoji:'\uD83D\uDCBB',desc:'Circuit int\u00e9gr\u00e9',sizeLabel:'~1 mm',x:.35,col:'#0f766e'},
+{name:'Fourmi',size:-2.7,emoji:'\uD83D\uDC1C',desc:'Insecte social',sizeLabel:'~2 mm',x:.65,col:'#78350f'},
+{name:'Grain de riz',size:-2.3,emoji:'\uD83C\uDF5A',desc:'C\u00e9r\u00e9ale de base',sizeLabel:'~5 mm',x:.45,col:'#fef3c7'},
+{name:'Pi\u00e8ce de 1\u20ac',size:-1.7,emoji:'\uD83E\uDE99',desc:'Monnaie europ\u00e9enne',sizeLabel:'~2 cm',x:.55,col:'#ca8a04'},
+{name:'Balle de tennis',size:-1.2,emoji:'\uD83C\uDFBE',desc:'Diam\u00e8tre standard',sizeLabel:'~6,5 cm',x:.3,col:'#a3e635'},
+{name:'Ballon de foot',size:-0.65,emoji:'\u26bd',desc:'Diam\u00e8tre standard',sizeLabel:'~22 cm',x:.7,col:'#f5f5f5'},
+{name:'Nouveau-n\u00e9',size:-0.3,emoji:'\uD83D\uDC76',desc:'Taille \u00e0 la naissance',sizeLabel:'~50 cm',x:.2,col:'#fda4af'},
+{name:'\u00catre humain',size:0.23,emoji:'\uD83E\uDDCD',desc:'Taille adulte moyenne',sizeLabel:'~1,7 m',x:.5,col:'#f59e0b'},
+{name:'Girafe',size:0.7,emoji:'\uD83E\uDD92',desc:'Plus grand animal terrestre',sizeLabel:'~5 m',x:.35,col:'#d97706'},
+{name:'Baleine bleue',size:1.48,emoji:'\uD83D\uDC33',desc:'Plus grand animal jamais',sizeLabel:'~30 m',x:.6,col:'#2563eb'},
+{name:'S\u00e9quoia g\u00e9ant',size:2,emoji:'\uD83C\uDF32',desc:'Arbre le plus volumineux',sizeLabel:'~100 m',x:.4,col:'#15803d'},
+{name:'Tour Eiffel',size:2.48,emoji:'\uD83D\uDDFC',desc:'324 m, ic\u00f4ne de Paris',sizeLabel:'~324 m',x:.7,col:'#78716c'},
+{name:'Burj Khalifa',size:2.9,emoji:'\uD83C\uDFD9\ufe0f',desc:'Plus haut gratte-ciel',sizeLabel:'~828 m',x:.25,col:'#94a3b8'},
+{name:'Mont Blanc',size:3.68,emoji:'\uD83C\uDFD4\ufe0f',desc:'Plus haut sommet des Alpes',sizeLabel:'~4,8 km',x:.55,col:'#e2e8f0'},
+{name:'Everest',size:3.95,emoji:'\u26f0\ufe0f',desc:'8 849 m, toit du monde',sizeLabel:'~8,8 km',x:.3,col:'#d1d5db'},
+{name:'\u00cele-de-France',size:5,emoji:'\uD83D\uDDFA\ufe0f',desc:'R\u00e9gion la plus peupl\u00e9e',sizeLabel:'~100 km',x:.5,col:'#3b82f6'},
+{name:'France',size:6,emoji:'\uD83C\uDDEB\uD83C\uDDF7',desc:'Du nord au sud',sizeLabel:'~1 000 km',x:.4,col:'#2563eb'},
+{name:'Lune',size:6.54,emoji:'\uD83C\uDF15',desc:'Satellite naturel',sizeLabel:'~3 474 km',x:.65,col:'#9ca3af'},
+{name:'Terre',size:7.1,emoji:'\uD83C\uDF0D',desc:'Notre plan\u00e8te bleue',sizeLabel:'~12 742 km',x:.45,col:'#0ea5e9'},
+{name:'Jupiter',size:8.15,emoji:'\uD83E\uDE90',desc:'Plus grosse plan\u00e8te',sizeLabel:'~140 000 km',x:.35,col:'#d97706'},
+{name:'Saturne + anneaux',size:8.48,emoji:'\uD83E\uDE90',desc:'Anneaux spectaculaires',sizeLabel:'~300 000 km',x:.65,col:'#ca8a04'},
+{name:'Soleil',size:9.14,emoji:'\u2600\ufe0f',desc:'Notre \u00e9toile',sizeLabel:'~1,4 M km',x:.5,col:'#fbbf24'},
+{name:'Dist. Terre\u2014Soleil',size:11.18,emoji:'\u2604\ufe0f',desc:'1 unit\u00e9 astronomique',sizeLabel:'~150 M km',x:.4,col:'#f97316'},
+{name:'Orbite de Neptune',size:12.95,emoji:'\uD83D\uDD35',desc:'Fronti\u00e8re plan\u00e9taire',sizeLabel:'~9 G km',x:.6,col:'#1d4ed8'},
+{name:'Syst\u00e8me solaire',size:13,emoji:'\u2b50',desc:'H\u00e9liosph\u00e8re',sizeLabel:'~10\u00b9\u00b3 m',x:.3,col:'#f59e0b'},
+{name:'Nuage d\u2019Oort',size:16.15,emoji:'\u2604\ufe0f',desc:'R\u00e9servoir de com\u00e8tes',sizeLabel:'~1,5 a.l.',x:.55,col:'#475569'},
+{name:'Ann\u00e9e-lumi\u00e8re',size:16,emoji:'\uD83D\uDCA1',desc:'Dist. lumi\u00e8re en 1 an',sizeLabel:'~9,46\u00d710\u00b9\u2075 m',x:.7,col:'#fcd34d'},
+{name:'Proxima Centauri',size:16.6,emoji:'\u2b50',desc:'\u00c9toile la plus proche',sizeLabel:'~4,2 a.l.',x:.4,col:'#ef4444'},
+{name:'N\u00e9buleuse d\u2019Orion',size:17.3,emoji:'\uD83C\uDF0C',desc:'P\u00e9pini\u00e8re d\u2019\u00e9toiles',sizeLabel:'~24 a.l.',x:.25,col:'#a855f7'},
+{name:'Bras d\u2019Orion',size:19.48,emoji:'\uD83C\uDF1F',desc:'Notre bras spiral',sizeLabel:'~3 000 a.l.',x:.6,col:'#6366f1'},
+{name:'Voie lact\u00e9e',size:21,emoji:'\uD83C\uDF0C',desc:'200\u2013400 Md d\u2019\u00e9toiles',sizeLabel:'~100 000 a.l.',x:.45,col:'#8b5cf6'},
+{name:'Androm\u00e8de',size:21.3,emoji:'\uD83C\uDF0C',desc:'Galaxie voisine',sizeLabel:'~220 000 a.l.',x:.7,col:'#7c3aed'},
+{name:'Groupe local',size:23,emoji:'\u2728',desc:'~80 galaxies',sizeLabel:'~10 M a.l.',x:.35,col:'#6d28d9'},
+{name:'Superamas Vierge',size:24,emoji:'\uD83C\uDF0C',desc:'Super-structure cosmique',sizeLabel:'~110 M a.l.',x:.55,col:'#5b21b6'},
+{name:'Grande Muraille',size:24.7,emoji:'\uD83E\uDDF1',desc:'Filament de galaxies',sizeLabel:'~500 M a.l.',x:.4,col:'#4c1d95'},
+{name:'Univers observable',size:26.95,emoji:'\uD83C\uDF0D',desc:'93 Md a.l. de diam\u00e8tre',sizeLabel:'~8,8\u00d710\u00b2\u2076 m',x:.5,col:'#1e1b4b'}
+];
+SCALE_DATA.sort(function(a,b){return a.size-b.size;});
+var scaleMin=-35,scaleMax=27,scaleVal=0,suAnim=null,suTarget=0;
+
+function scaleCategory(s){
+  if(s<-15)return 'Subatomique';if(s<-10)return 'Nucl\u00e9aire';if(s<-7)return 'Mol\u00e9culaire';
+  if(s<-4)return 'Cellulaire';if(s<-1)return '\u00c9chelle humaine';if(s<3)return 'Humain / B\u00e2timents';
+  if(s<8)return 'Terrestre';if(s<13)return 'Syst\u00e8me solaire';if(s<15)return 'Stellaire';
+  if(s<21)return 'Galactique';return 'Cosmique';
+}
+
+function suBgColor(s){
+  if(s>15)return '#020a1a';if(s>8)return '#051530';if(s>3)return '#0a2520';
+  if(s>-1)return '#1a1510';if(s>-6)return '#150a20';if(s>-10)return '#0d0520';
+  if(s>-15)return '#050a20';return '#020205';
+}
+
+function formatSup(n){
+  if(n===0)return '\u2070';
+  var s='',neg=n<0;if(neg){s='\u207b';n=-n;}
+  var digits=String(n);
+  var sups={0:'\u2070',1:'\u00b9',2:'\u00b2',3:'\u00b3',4:'\u2074',5:'\u2075',6:'\u2076',7:'\u2077',8:'\u2078',9:'\u2079'};
+  for(var i=0;i<digits.length;i++)s+=sups[digits[i]]||digits[i];
+  return s;
+}
+
+function buildScale(){
+  return '<div class="su-wrap" id="suWrap" style="background:#1a1510">'
+    +'<div class="su-indicator" id="suInd">10\u2070 m</div>'
+    +'<div class="su-cat" id="suCat">\u00c9chelle humaine</div>'
+    +'<div class="su-viewport" id="suVp"></div>'
+    +'<div class="su-bottom">'
+    +'<div class="su-nav">'
+    +'<button onclick="suGoTo(-35)">\u2733\ufe0f Planck</button>'
+    +'<button onclick="suGoTo(-10)">\u269b\ufe0f Atome</button>'
+    +'<button onclick="suGoTo(0)">\uD83E\uDDCD Humain</button>'
+    +'<button onclick="suGoTo(9)">\u2600\ufe0f Soleil</button>'
+    +'<button onclick="suGoTo(27)">\uD83C\uDF0D Cosmos</button>'
+    +'</div>'
+    +'<div class="su-slider-wrap">'
+    +'<span class="su-lbl">10\u207b\u00b3\u2075</span>'
+    +'<input type="range" class="su-slider" id="suSlider" min="-35" max="27" step="0.1" value="0">'
+    +'<span class="su-lbl">10\u00b2\u2077</span>'
+    +'</div>'
+    +'</div></div>';
+}
+
+function initScale(){
+  scaleVal=0;
+  var wrap=document.getElementById('suWrap');if(!wrap)return;
+  var slider=document.getElementById('suSlider');
+  renderSU();
+  /* slider input */
+  slider.addEventListener('input',function(){
+    scaleVal=parseFloat(this.value);renderSU();
+  });
+  /* mouse wheel */
+  wrap.addEventListener('wheel',function(e){
+    e.preventDefault();
+    scaleVal-=e.deltaY*0.04;
+    if(scaleVal<scaleMin)scaleVal=scaleMin;if(scaleVal>scaleMax)scaleVal=scaleMax;
+    renderSU();
+  },{passive:false});
+  /* touch: vertical swipe to zoom, horizontal to pan (future) */
+  var ty=null,pinchD0=null;
+  wrap.addEventListener('touchstart',function(e){
+    if(e.touches.length===2){
+      var dx=e.touches[0].clientX-e.touches[1].clientX;
+      var dy=e.touches[0].clientY-e.touches[1].clientY;
+      pinchD0=Math.sqrt(dx*dx+dy*dy);ty=null;
+    }else if(e.touches.length===1){
+      ty=e.touches[0].clientY;pinchD0=null;
+    }
+  },{passive:true});
+  wrap.addEventListener('touchmove',function(e){
+    if(e.touches.length===2&&pinchD0!==null){
+      var dx=e.touches[0].clientX-e.touches[1].clientX;
+      var dy2=e.touches[0].clientY-e.touches[1].clientY;
+      var d=Math.sqrt(dx*dx+dy2*dy2);
+      var delta=(d-pinchD0)*0.05;
+      scaleVal+=delta;pinchD0=d;
+      if(scaleVal<scaleMin)scaleVal=scaleMin;if(scaleVal>scaleMax)scaleVal=scaleMax;
+      renderSU();e.preventDefault();
+    }else if(e.touches.length===1&&ty!==null){
+      var dy=e.touches[0].clientY-ty;ty=e.touches[0].clientY;
+      scaleVal+=dy*0.12;
+      if(scaleVal<scaleMin)scaleVal=scaleMin;if(scaleVal>scaleMax)scaleVal=scaleMax;
+      renderSU();e.preventDefault();
+    }
+  },{passive:false});
+  wrap.addEventListener('touchend',function(){ty=null;pinchD0=null;});
+  addXP(5);
+}
+
+function renderSU(){
+  var vp=document.getElementById('suVp');
+  if(!vp)return;
+  var html='';
+  var vpW=vp.offsetWidth,vpH=vp.offsetHeight;
+  if(!vpW)vpW=360;if(!vpH)vpH=300;
+  var isMobile=vpW<500;
+  var range=isMobile?2:3;
+  var pad=isMobile?50:60;
+  var usableH=vpH-pad*2;
+  var maxCircle=isMobile?32:44;
+  var minCircle=isMobile?18:24;
+  /* collect visible objects */
+  var visible=[];
+  for(var i=0;i<SCALE_DATA.length;i++){
+    var obj=SCALE_DATA[i];
+    var diff=obj.size-scaleVal;
+    if(Math.abs(diff)>range)continue;
+    visible.push({obj:obj,diff:diff});
+  }
+  /* sort by diff: bigger on top, smaller below */
+  visible.sort(function(a,b){return b.diff-a.diff;});
+  var n=visible.length;
+  /* layout: place each object in a row, alternate left/right */
+  for(var vi=0;vi<n;vi++){
+    var v=visible[vi];
+    var obj=v.obj;
+    var diff=v.diff;
+    var absDiff=Math.abs(diff);
+    var rel=1-absDiff/range;
+    /* vertical: spread evenly */
+    var yRatio=(n>1)?vi/(n-1):0.5;
+    var y=pad+yRatio*usableH;
+    /* circle: small circles, center ones slightly bigger */
+    var circleSize=Math.round(minCircle+rel*(maxCircle-minCircle));
+    var opacity=(0.15+rel*0.85).toFixed(2);
+    var emojiSize=Math.round(circleSize*0.5);
+    /* horizontal: zigzag left/right on mobile, 3-col on desktop */
+    var col=isMobile?vi%2:vi%3;
+    var xZone;
+    if(isMobile){
+      if(col===0)xZone=0.05+obj.x*0.3;
+      else xZone=0.55+obj.x*0.3;
+    }else{
+      if(col===0)xZone=0.15+obj.x*0.15;
+      else if(col===1)xZone=0.4+obj.x*0.2;
+      else xZone=0.7+obj.x*0.15;
+    }
+    var x=Math.round(xZone*(vpW-circleSize)-10);
+    if(x<5)x=5;if(x>vpW-circleSize-60)x=vpW-circleSize-60;
+    var top=Math.round(y-circleSize/2);
+    html+='<div class="su-obj" style="left:'+x+'px;top:'+top+'px;opacity:'+opacity+'">'
+      +'<div class="su-circle" style="width:'+circleSize+'px;height:'+circleSize+'px;background:'+obj.col+'">'
+      +'<span class="su-emoji" style="font-size:'+emojiSize+'px">'+obj.emoji+'</span></div>'
+      +'<div class="su-name">'+obj.name+'</div>'
+      +'<div class="su-size">'+obj.sizeLabel+'</div></div>';
+  }
+  vp.innerHTML=html;
+  /* update indicator */
+  var ind=document.getElementById('suInd');
+  var cat=document.getElementById('suCat');
+  var slider=document.getElementById('suSlider');
+  if(ind)ind.innerHTML='10'+formatSup(Math.round(scaleVal))+' m';
+  if(cat)cat.textContent=scaleCategory(scaleVal);
+  if(slider)slider.value=scaleVal;
+  /* update background */
+  var wrap=document.getElementById('suWrap');
+  if(wrap)wrap.style.background=suBgColor(scaleVal);
+}
+
+function suGoTo(v){
+  suTarget=v;
+  if(suAnim)cancelAnimationFrame(suAnim);
+  function step(){
+    var diff=suTarget-scaleVal;
+    if(Math.abs(diff)<0.05){scaleVal=suTarget;renderSU();suAnim=null;return;}
+    scaleVal+=diff*0.08;
+    renderSU();
+    suAnim=requestAnimationFrame(step);
+  }
+  suAnim=requestAnimationFrame(step);
+}
+
+/* ── FORMULA SLIDERS ── */
+function animateFormulas() {
+  document.querySelectorAll('.formula-text').forEach(function(el) {
+    el.style.animation = 'none';
+    el.offsetHeight;
+    el.style.animation = 'typewr .8s steps(15) both';
+  });
+}
+
+function updateOhm() {
+  var R = parseInt(document.getElementById('ohm-r').value);
+  var Ix = parseInt(document.getElementById('ohm-i').value);
+  var I = Ix / 10;
+  var U = R * I;
+  document.getElementById('ohm-r-val').textContent = R + ' \u03a9';
+  document.getElementById('ohm-i-val').textContent = I.toFixed(1) + ' A';
+  document.getElementById('ohm-u-val').textContent = U.toFixed(1) + ' V';
+  var sl = document.getElementById('ohm-u');
+  if (sl) { sl.max = 200; sl.value = Math.min(200, U); }
+}
+
+function updatePower() {
+  var U = parseInt(document.getElementById('pw-u').value);
+  var Ix = parseInt(document.getElementById('pw-i').value);
+  var I = Ix / 10;
+  var P = U * I;
+  document.getElementById('pw-u-val').textContent = U + ' V';
+  document.getElementById('pw-i-val').textContent = I.toFixed(1) + ' A';
+  document.getElementById('pw-p-val').textContent = P.toFixed(1) + ' W';
+  var sl = document.getElementById('pw-p');
+  if (sl) { sl.max = 1200; sl.value = Math.min(1200, P); }
+}
+
+function updateSpeed() {
+  var d = parseInt(document.getElementById('sp-d').value);
+  var t = parseInt(document.getElementById('sp-t').value);
+  var v = d / t;
+  document.getElementById('sp-d-val').textContent = d + ' m';
+  document.getElementById('sp-t-val').textContent = t + ' s';
+  document.getElementById('sp-v-val').textContent = v.toFixed(1) + ' m/s';
+  var sl = document.getElementById('sp-v');
+  if (sl) { sl.max = 50; sl.value = Math.min(50, v); }
+}
+
+function updateMoles() {
+  var m = parseInt(document.getElementById('mol-m').value);
+  var M = 18;
+  var n = m / M;
+  document.getElementById('mol-m-val').textContent = m + ' g';
+  document.getElementById('mol-n-val').textContent = n.toFixed(2) + ' mol';
+  var sl = document.getElementById('mol-n');
+  if (sl) { sl.max = 10; sl.value = Math.min(10, n); }
+}
+
+function updatePyF() {
+  var aEl = document.getElementById('py-a');
+  var bEl = document.getElementById('py-b');
+  if (!aEl || !bEl) return;
+  var a = parseInt(aEl.value);
+  var b = parseInt(bEl.value);
+  var c = Math.sqrt(a * a + b * b);
+  document.getElementById('py-a-val').textContent = a + ' cm';
+  document.getElementById('py-b-val').textContent = b + ' cm';
+  document.getElementById('py-c-val').textContent = c.toFixed(2) + ' cm';
+  var sc = document.getElementById('py-c');
+  if (sc) { sc.value = Math.min(20, c); }
+}
+
+function updateTrig() {
+  var aEl = document.getElementById('trig-a');
+  if (!aEl) return;
+  var deg = parseInt(aEl.value);
+  var rad = deg * Math.PI / 180;
+  document.getElementById('trig-a-val').textContent = deg + '\u00b0';
+  document.getElementById('trig-sin-val').textContent = Math.sin(rad).toFixed(3);
+  document.getElementById('trig-cos-val').textContent = Math.cos(rad).toFixed(3);
+  document.getElementById('trig-tan-val').textContent = Math.tan(rad).toFixed(3);
+}
+
+function updateWeightF() {
+  var mEl = document.getElementById('wt-m');
+  if (!mEl) return;
+  var m = parseInt(mEl.value);
+  var P = m * 9.8;
+  var Pl = m * 1.6;
+  document.getElementById('wt-m-val').textContent = m + ' kg';
+  document.getElementById('wt-p-val').textContent = P.toFixed(0) + ' N';
+  document.getElementById('wt-lune').textContent = Pl.toFixed(0) + ' N';
+  var sp = document.getElementById('wt-p');
+  if (sp) { sp.value = Math.min(2000, P); }
+}
+
+function updateEc() {
+  var mEl = document.getElementById('ec-m');
+  var vEl = document.getElementById('ec-v');
+  if (!mEl || !vEl) return;
+  var m = parseInt(mEl.value);
+  var v = parseInt(vEl.value);
+  var Ec = 0.5 * m * v * v;
+  document.getElementById('ec-m-val').textContent = m + ' kg';
+  document.getElementById('ec-v-val').textContent = v + ' m/s';
+  var kj = Ec >= 1000;
+  document.getElementById('ec-e-val').textContent = kj ? (Ec/1000).toFixed(1) + ' kJ' : Ec.toFixed(0) + ' J';
+  var se = document.getElementById('ec-e');
+  if (se) { se.value = Math.min(1500000, Ec); }
+}
+
+function updateCm() {
+  var mEl = document.getElementById('cm-m');
+  var vEl = document.getElementById('cm-v');
+  if (!mEl || !vEl) return;
+  var m = parseInt(mEl.value);
+  var v = parseInt(vEl.value);
+  var Cm = m / v;
+  document.getElementById('cm-m-val').textContent = m + ' g';
+  document.getElementById('cm-v-val').textContent = v + '.0 L';
+  document.getElementById('cm-c-val').textContent = Cm.toFixed(1) + ' g/L';
+  var sc2 = document.getElementById('cm-c');
+  if (sc2) { sc2.value = Math.min(100, Cm); }
+}
+
+function toggleExtra(id) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  el.classList.toggle('on');
+}
+
+/* ── SCHEMAS ── */
+var MEMO_ANSWERS = {
+  'cell':    ['Membrane cellulaire', 'Noyau', 'Mitochondrie', 'Mitochondrie', 'Cytoplasme'],
+  'eye':     ['Corn\u00e9e', 'Iris', 'Cristallin', 'R\u00e9tine', 'Nerf optique'],
+  'neur':    ['Dendrites', 'Corps cellulaire', 'Axone', 'Gaine de my\u00e9line', 'Bouton synaptique'],
+  'fleur':   ['P\u00e9tale', '\u00c9tamine', 'Pistil', 'S\u00e9pale', 'Tige'],
+  'schatom': ['Proton', 'Neutron', 'Noyau', '\u00c9lectron', 'Couche \u00e9lectronique']
+};
+
+function checkSchema(id) {
+  var answers = SCHEMA_ANSWERS[id];
+  var correct = 0, total = 0;
+  for (var k in answers) {
+    total++;
+    var inp = document.getElementById(id + '-' + k);
+    if (!inp) continue;
+    var val = inp.value.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    var ok = answers[k].some(function(a) {
+      return val === a.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    });
+    inp.className = 'schema-inp ' + (ok ? 'ok' : 'err');
+    if (ok) correct++;
+  }
+  var score = document.getElementById('score-' + id);
+  if (score) score.textContent = correct + '/' + total;
+  if (correct === total) {
+    showToast('Parfait ! ' + correct + '/' + total + ' 🎉');
+    addXP(20);
+  } else {
+    showToast(correct + '/' + total + ' — réessaie !');
+  }
+}
+
+function toggleMemo(id) {
+  memoMode[id] = !memoMode[id];
+  var inps = document.querySelectorAll('#inp-' + id + ' .schema-inp');
+  var answers = MEMO_ANSWERS[id];
+  inps.forEach(function(inp, i) {
+    inp.value = memoMode[id] ? (answers[i] || '') : '';
+    inp.disabled = memoMode[id];
+    inp.className = 'schema-inp';
+  });
+  showToast(memoMode[id] ? '👁 Mode mémo : 30s pour mémoriser !' : '📝 Retour en mode test');
+  if (memoMode[id]) {
+    setTimeout(function() {
+      if (memoMode[id]) {
+        memoMode[id] = false;
+        var inps2 = document.querySelectorAll('#inp-' + id + ' .schema-inp');
+        inps2.forEach(function(inp) { inp.value = ''; inp.disabled = false; inp.className = 'schema-inp'; });
+        showToast('\u23f1 Temps \u00e9coul\u00e9 ! L\u00e9gende maintenant.');
+      }
+    }, 30000);
+  }
+}
+
+/* ── PROFILE ── */
+function togglePref(key) {
+  var d = gP();
+  d[key] = !(d[key] !== false);
+  sP(d);
+  var tog = document.getElementById('tog-' + key);
+  if (tog) tog.classList.toggle('on', d[key]);
+}
+
+function confirmReset() {
+  if (confirm('Réinitialiser toute ta progression Sciences ?')) {
+    sP({});
+    init();
+    showToast('Progression réinitialisée.');
+  }
+}
+
+/* ── TOAST ── */
+var toastTimer = null;
+function showToast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('on');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function() { t.classList.remove('on'); }, 2500);
+}
+
+/* ── RUN ── */
+init();
+updateOhm();
+updatePower();
+updateSpeed();
+updateMoles();
+updatePyF();
+updateTrig();
+updateWeightF();
+updateEc();
+updateCm();
+</script>
+</body>
+</html>

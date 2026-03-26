@@ -102,7 +102,7 @@ html,body{height:100%;height:100dvh;background:var(--bg);color:var(--tx);font-fa
 .pn.done .pl{color:var(--a3)}
 .pxp{font-family:var(--fm);font-size:9px;color:var(--a4);margin-top:4px}
 .pcd{margin:8px 16px 16px;padding:10px;background:rgba(79,214,160,.08);border:1px solid rgba(79,214,160,.2);border-radius:14px;font-size:11.5px;font-weight:700;color:var(--a3);text-align:center}
-#lo{position:fixed;inset:0;z-index:800;background:var(--bg);display:none;flex-direction:column}
+#lo{position:fixed;inset:0;z-index:99999;background:var(--bg);display:none;flex-direction:column}
 #lo.on{display:flex}
 .lh{display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--surf);border-bottom:1px solid var(--bord);flex-shrink:0}
 .lc{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid var(--bord);color:var(--mu);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
@@ -116,7 +116,7 @@ html,body{height:100%;height:100dvh;background:var(--bg);color:var(--tx);font-fa
 .lb2::-webkit-scrollbar-thumb:hover{background:rgba(14,165,233,.75)}
 .lty{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--mu)}
 .lti{font-family:var(--fd);font-size:20px;font-weight:700;color:var(--tx);line-height:1.3}
-.lft{padding:14px 18px;background:var(--surf);border-top:1px solid var(--bord);flex-shrink:0;padding-bottom:max(14px,env(safe-area-inset-bottom))}
+.lft{padding:14px 18px;background:var(--surf);border-top:1px solid var(--bord);flex-shrink:0;padding-bottom:max(24px,env(safe-area-inset-bottom,20px))}
 .lbtn{width:100%;padding:14px;border:none;border-radius:16px;font-size:15px;font-family:var(--fb);font-weight:700;cursor:pointer;background:var(--a1);color:#fff;box-shadow:0 4px 16px rgba(14,165,233,.3)}
 .lbtn:disabled{opacity:.4;cursor:not-allowed}
 .vg{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
@@ -454,8 +454,7 @@ const LANG_COURSES={
         {words:['I','am','going','to','study','tonight'],answer:'I am going to study tonight'},
         {words:['She','will','probably','pass','the','exam'],answer:'She will probably pass the exam'},
         {words:['We','are','going','to','travel','to','Paris'],answer:'We are going to travel to Paris'}
-       ]}
-     ]},
+       ]},
     {id:'en_b1_2',level:'B1',title:'Present Perfect',emoji:'🔄',xp:110,color:'#8b5cf6',
      desc:'Relier le passe au present — have + participe passe',
      lessons:[
@@ -470,6 +469,7 @@ const LANG_COURSES={
         {q:'Forme correcte :',opts:['I have saw','I have seen','I saw him yesterday','I am seen'],a:1},
         {q:'for ou since avec une date ?',opts:['for 2020','since 2020','since 3 years','for last Monday'],a:1}
        ]}
+     ]}
      ]}
   ]},
   es:{name:'Espagnol',flag:'🇪🇸',color:'#f59e0b',units:[
@@ -887,7 +887,7 @@ async function sendChat(){
   res.innerHTML='<div style="background:var(--card);border:1px solid var(--bord);border-radius:14px;padding:14px;font-size:13px;color:var(--mu)">R\u00e9flexion...</div>';
   try{
     var ln=LANG_COURSES[CL]?LANG_COURSES[CL].name:'anglais';
-    var resp=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:'Tu es un professeur de '+ln+' expert pour coll\u00e9giens fran\u00e7ais niveau 3eme. Reponds clairement avec tableaux si utiles.',messages:[{role:'user',content:txt}]})});
+    var resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:'Tu es un professeur de '+ln+' expert pour coll\u00e9giens fran\u00e7ais niveau 3eme. Reponds clairement avec tableaux si utiles.',messages:[{role:'user',content:txt}]})});
     var data=await resp.json();
     var reply=data.content&&data.content[0]?data.content[0].text:'Erreur';
     res.innerHTML='<div style="background:var(--card);border:1px solid var(--bord);border-radius:14px;padding:14px;font-size:13px;line-height:1.7;color:var(--tx);white-space:pre-wrap">'+e(reply)+'</div>';

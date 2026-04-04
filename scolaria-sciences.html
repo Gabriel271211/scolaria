@@ -319,9 +319,14 @@ html,body{height:100%;height:100dvh;background:var(--bg);color:var(--tx);font-fa
 
 <!-- HEADER -->
 <div id="hdr">
-  <button class="hdr-back" onclick="goBack()">‹</button>
+  <button class="hdr-back" id="hdr-menu-btn" onclick="toggleHdrMenu()" title="Menu" style="border:none;cursor:pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
   <div class="hdr-logo">ScolarIA <span>Sciences</span></div>
   <div class="hdr-xp" id="xpDisplay">0 XP</div>
+</div>
+<div id="hdr-menu" style="display:none;position:absolute;top:52px;left:10px;background:var(--bg);border:1px solid var(--bord);border-radius:16px;padding:6px;z-index:200;min-width:200px;box-shadow:0 8px 32px rgba(0,0,0,.3)">
+  <button onclick="window.open('scolaria-home.html','_self')" style="width:100%;display:flex;align-items:center;gap:10px;padding:10px 12px;border:none;background:rgba(139,111,255,.12);color:#f5f3ff;font-size:12.5px;font-family:'Space Grotesk',sans-serif;font-weight:700;cursor:pointer;border-radius:10px;text-align:left;margin-bottom:4px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7c5cfc" stroke-width="2" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span style="flex:1">ScolarIA</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6b6890" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+  <button onclick="window.open('scolaria-langues.html','_self')" style="width:100%;display:flex;align-items:center;gap:10px;padding:10px 12px;border:none;background:rgba(14,165,233,.15);color:#f5f3ff;font-size:12.5px;font-family:'Space Grotesk',sans-serif;font-weight:700;cursor:pointer;border-radius:10px;text-align:left;margin-bottom:4px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span style="flex:1">Langues</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6b6890" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+  <button onclick="toggleHdrMenu()" style="width:100%;display:flex;align-items:center;gap:10px;padding:10px 12px;border:none;background:rgba(52,211,153,.15);color:#f5f3ff;font-size:12.5px;font-family:'Space Grotesk',sans-serif;font-weight:700;cursor:pointer;border-radius:10px;text-align:left;margin-bottom:4px;border:1.5px solid #34d399"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg><span style="flex:1">Sciences</span><span style="font-size:9px;color:#34d399;background:rgba(52,211,153,.15);padding:2px 6px;border-radius:6px">Actif</span></button>
 </div>
 <div id="xpw"><div id="xpb"></div></div>
 
@@ -1353,6 +1358,12 @@ var PT_ELEMENTS = [
 var currentSec = 'acc';
 var ptQuizMode = false;
 var CIRC = {grid:[], rows:6, cols:8, V:9, closed:false, selectedTool:null, nextId:1, dragId:null, dragRC:null, cellPx:46};
+function toggleHdrMenu(){
+  var m=document.getElementById('hdr-menu');if(!m)return;
+  var isOpen=m.style.display!=='none';
+  m.style.display=isOpen?'none':'block';
+  if(!isOpen){setTimeout(function(){document.addEventListener('click',function close(e){if(!document.getElementById('hdr-menu-btn').contains(e.target)){m.style.display='none';document.removeEventListener('click',close);}},{once:false});},10);}
+}
 function circInit(){CIRC.grid=[];for(var r=0;r<CIRC.rows;r++){CIRC.grid[r]=[];for(var c=0;c<CIRC.cols;c++)CIRC.grid[r][c]=null;}CIRC.nextId=1;CIRC.closed=false;CIRC.selectedTool=null;CIRC.dragId=null;CIRC.V=9;}
 circInit();
 var memoMode = {cell: false, eye: false, neur: false, fleur: false, schatom: false};

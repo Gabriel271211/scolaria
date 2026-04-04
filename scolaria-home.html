@@ -652,6 +652,22 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fb)
 #gen-fs-body{padding:12px;padding-top:max(56px,calc(env(safe-area-inset-top) + 50px));padding-bottom:max(20px,env(safe-area-inset-bottom));max-width:100%;overflow-x:hidden}
 #gen-fs-body .fiche-wrap{max-width:100%;width:100%}
 #gen-fs-body .fiche-wrap table{table-layout:fixed;word-wrap:break-word}
+#tool-modal{position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(8px);z-index:300;display:none;align-items:flex-end;justify-content:center}
+#tool-modal.open{display:flex}
+#tool-box{background:var(--surf);border:1px solid var(--bord);border-radius:28px 28px 0 0;padding:20px;width:100%;max-width:480px;animation:su .3s ease;max-height:85vh;overflow-y:auto}
+.tool-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.tool-title{font-family:var(--fd);font-size:16px;font-weight:800}
+.tool-close{background:transparent;border:none;color:var(--mu);font-size:16px;cursor:pointer;width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:8px}
+.tool-input{width:100%;padding:12px;background:var(--card);border:1px solid var(--bord);border-radius:12px;color:var(--tx);font-size:14px;font-family:var(--fb);outline:none;box-sizing:border-box;margin-bottom:10px}
+.tool-input:focus{border-color:var(--a1)}
+.tool-btn{width:100%;padding:12px;background:var(--a1);border:none;color:#fff;border-radius:12px;font-size:14px;font-family:var(--fb);font-weight:700;cursor:pointer;margin-bottom:12px}
+.tool-btn:active{transform:scale(.98)}
+.tool-result{background:var(--card);border:1px solid var(--bord);border-radius:14px;padding:14px;min-height:40px;font-size:13px;line-height:1.6;color:var(--tx);display:none}
+.tool-result.show{display:block}
+.tool-result strong{color:var(--a1)}
+.tool-result table{width:100%;border-collapse:collapse;margin:6px 0;font-size:12px}
+.tool-result th,.tool-result td{border:1px solid var(--bord);padding:5px 8px;text-align:left}
+.tool-result th{background:rgba(124,92,252,.08);font-weight:700}
 #gen-modal{position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(8px);z-index:300;display:none;align-items:flex-end;justify-content:center}
 #gen-modal.open{display:flex}
 #gen-box{background:var(--surf);border:1px solid var(--bord);border-radius:28px 28px 0 0;padding:20px;width:100%;max-width:480px;animation:su .3s ease;max-height:90vh;overflow-y:auto}
@@ -1729,6 +1745,7 @@ button:active{opacity:.85}
 
 <!-- HEADER -->
 <div id="hdr">
+  <button class="hdr-btn" id="hdr-menu-btn" onclick="toggleHdrMenu()" title="Menu"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
   <div class="logo">
     <span class="logo-emoji">🎒</span>
     <span class="logo-t">ScolarIA</span>
@@ -1739,10 +1756,10 @@ button:active{opacity:.85}
     <div id="lvl-badge" style="display:none;background:rgba(139,111,255,.12);border:1px solid rgba(139,111,255,.25);border-radius:20px;padding:3px 8px;font-size:10px;font-weight:700;color:var(--a1);font-family:var(--fm)"></div>
     <button class="hdr-btn" onclick="toggleTheme()" id="theme-btn" title="Thème"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
     <button class="hdr-btn" id="sound-btn" onclick="toggleSound()" title="Son"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></button>
-    <button class="hdr-btn" id="hdr-menu-btn" onclick="toggleHdrMenu()" title="Plus"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg></button>
   </div>
   <!-- Menu déroulant header -->
-  <div id="hdr-menu" style="display:none;position:absolute;top:calc(var(--hdr) + 4px);right:10px;background:var(--surf);border:1px solid var(--bord);border-radius:16px;padding:6px;z-index:200;min-width:200px;box-shadow:0 8px 32px rgba(0,0,0,.3)">
+  <div id="hdr-menu" style="display:none;position:absolute;top:calc(var(--hdr) + 4px);left:10px;background:var(--surf);border:1px solid var(--bord);border-radius:16px;padding:6px;z-index:200;min-width:200px;box-shadow:0 8px 32px rgba(0,0,0,.3)">
+    <button onclick="toggleHdrMenu()" style="width:100%;display:flex;align-items:center;gap:10px;padding:10px 12px;border:none;background:rgba(139,111,255,.18);color:var(--tx);font-size:12.5px;font-family:var(--fb);font-weight:700;cursor:pointer;border-radius:10px;text-align:left;margin-bottom:4px;border:1.5px solid var(--a1)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--a1)" stroke-width="2" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span style="flex:1">ScolarIA</span><span style="font-size:9px;color:var(--a1);background:rgba(139,111,255,.15);padding:2px 6px;border-radius:6px">Actif</span></button>
     <button onclick="window.open('scolaria-langues.html','_self');toggleHdrMenu()" style="width:100%;display:flex;align-items:center;gap:10px;padding:10px 12px;border:none;background:rgba(124,92,252,.12);color:var(--tx);font-size:12.5px;font-family:var(--fb);font-weight:700;cursor:pointer;border-radius:10px;text-align:left;margin-bottom:4px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--a1)" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span style="flex:1">Langues</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--mu)" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></button>
     <button onclick="window.open('scolaria-sciences.html','_self');toggleHdrMenu()" style="width:100%;display:flex;align-items:center;gap:10px;padding:10px 12px;border:none;background:rgba(52,211,153,.1);color:var(--tx);font-size:12.5px;font-family:var(--fb);font-weight:700;cursor:pointer;border-radius:10px;text-align:left;margin-bottom:4px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--a3)" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg><span style="flex:1">Sciences</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--mu)" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></button>
     <div style="height:1px;background:var(--bord);margin:4px 8px"></div>
@@ -3125,10 +3142,10 @@ button:active{opacity:.85}
     <div class="dash-section">
       <div class="dash-title">Outils</div>
       <div class="dash-tools-grid">
-        <button class="dash-tool-btn" onclick="goTo('chat');pf('Calcule : ')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="11" y2="14"/></svg>Calculatrice</button>
-        <button class="dash-tool-btn" onclick="goTo('chat');pf('Convertis : ')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>Convertir</button>
-        <button class="dash-tool-btn" onclick="goTo('chat');pf('Conjugue le verbe : ')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>Conjuguer</button>
-        <button class="dash-tool-btn" onclick="goTo('chat');pf('Épelle et explique le mot : ')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7V4h16v3"/><path d="M9 20h6"/><path d="M12 4v16"/></svg>Épeler</button>
+        <button class="dash-tool-btn" onclick="openTool('calc')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="11" y2="14"/></svg>Calculatrice</button>
+        <button class="dash-tool-btn" onclick="openTool('conv')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>Convertir</button>
+        <button class="dash-tool-btn" onclick="openTool('conj')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>Conjuguer</button>
+        <button class="dash-tool-btn" onclick="openTool('spell')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7V4h16v3"/><path d="M9 20h6"/><path d="M12 4v16"/></svg>Épeler</button>
       </div>
     </div>
   </div>
@@ -3364,6 +3381,17 @@ button:active{opacity:.85}
 <div id="gen-fullscreen" onclick="if(event.target===this)closeGenFS()">
   <button id="gen-fs-close" onclick="closeGenFS()">&#x2715;</button>
   <div id="gen-fs-body"></div>
+</div>
+
+<!-- TOOL MODALS -->
+<div id="tool-modal" onclick="if(event.target===this)closeTool()">
+  <div id="tool-box">
+    <div class="tool-hdr">
+      <div class="tool-title" id="tool-title">Outil</div>
+      <button class="tool-close" onclick="closeTool()">&#10005;</button>
+    </div>
+    <div id="tool-body"></div>
+  </div>
 </div>
 
 <div id="gen-modal" onclick="if(event.target===this)closeGenModal()">
@@ -4274,6 +4302,172 @@ function pf(t){
 }
 function sendCombo(){closeLib();closeHist();pf('Génère une FICHE DE RÉVISION et des FLASHCARDS sur : ');}
 // ═══ GENERATION HUB ═══
+// ═══ OUTILS STANDALONE ═══
+function openTool(type){
+  var titles={calc:'Calculatrice',conv:'Convertisseur',conj:'Conjugaison',spell:'Épeler'};
+  document.getElementById('tool-title').textContent=titles[type]||'Outil';
+  var body=document.getElementById('tool-body');
+  if(type==='calc'){
+    body.innerHTML='<input class="tool-input" id="tool-calc-input" placeholder="Ex : 25*4+10, sqrt(144), 2^8..." onkeydown="if(event.key===\'Enter\')runCalc()"><button class="tool-btn" onclick="runCalc()">Calculer</button><div class="tool-result" id="tool-calc-result"></div>';
+  } else if(type==='conv'){
+    body.innerHTML='<input class="tool-input" id="tool-conv-input" placeholder="Ex : 5 km en m, 100 F en C, 2.5 kg en g..." onkeydown="if(event.key===\'Enter\')runConv()"><button class="tool-btn" onclick="runConv()">Convertir</button><div class="tool-result" id="tool-conv-result"></div>';
+  } else if(type==='conj'){
+    body.innerHTML='<input class="tool-input" id="tool-conj-input" placeholder="Ex : manger, aller, prendre..." onkeydown="if(event.key===\'Enter\')runConj()"><select class="tool-input" id="tool-conj-temps" style="margin-bottom:10px"><option value="present">Présent</option><option value="imparfait">Imparfait</option><option value="futur">Futur simple</option><option value="passe_compose">Passé composé</option><option value="passe_simple">Passé simple</option><option value="subjonctif">Subjonctif présent</option><option value="conditionnel">Conditionnel présent</option><option value="imperatif">Impératif</option></select><button class="tool-btn" onclick="runConj()">Conjuguer</button><div class="tool-result" id="tool-conj-result"></div>';
+  } else if(type==='spell'){
+    body.innerHTML='<input class="tool-input" id="tool-spell-input" placeholder="Ex : accueil, occurence, évenement..." onkeydown="if(event.key===\'Enter\')runSpell()"><button class="tool-btn" onclick="runSpell()">Vérifier</button><div class="tool-result" id="tool-spell-result"></div>';
+  }
+  document.getElementById('tool-modal').classList.add('open');
+  setTimeout(function(){var inp=body.querySelector('input');if(inp)inp.focus();},200);
+}
+function closeTool(){document.getElementById('tool-modal').classList.remove('open');}
+
+function runCalc(){
+  var input=document.getElementById('tool-calc-input').value.trim();
+  if(!input)return;
+  var res=document.getElementById('tool-calc-result');
+  try{
+    var expr=input.replace(/×/g,'*').replace(/÷/g,'/').replace(/\^/g,'**').replace(/sqrt\(/gi,'Math.sqrt(').replace(/pi/gi,'Math.PI').replace(/abs\(/gi,'Math.abs(').replace(/,/g,'.');
+    var val=Function('"use strict";return ('+expr+')')();
+    res.innerHTML='<strong>'+esc(input)+'</strong> = <span style="font-size:20px;font-weight:800;color:var(--a3)">'+val+'</span>';
+    res.classList.add('show');
+  }catch(e){
+    res.innerHTML='<span style="color:var(--a2)">Expression invalide. Essaie : 25*4+10, sqrt(144), 2^8</span>';
+    res.classList.add('show');
+  }
+}
+
+function runConv(){
+  var input=document.getElementById('tool-conv-input').value.trim().toLowerCase();
+  if(!input)return;
+  var res=document.getElementById('tool-conv-result');
+  var conversions={
+    'km_m':1000,'m_km':0.001,'m_cm':100,'cm_m':0.01,'cm_mm':10,'mm_cm':0.1,
+    'km_mi':0.621371,'mi_km':1.60934,'m_ft':3.28084,'ft_m':0.3048,
+    'kg_g':1000,'g_kg':0.001,'kg_lb':2.20462,'lb_kg':0.453592,'g_mg':1000,'mg_g':0.001,
+    'l_ml':1000,'ml_l':0.001,'l_cl':100,'cl_l':0.01,
+    'h_min':60,'min_h':1/60,'min_s':60,'s_min':1/60,'h_s':3600,'s_h':1/3600
+  };
+  var match=input.match(/^([\d.,]+)\s*([a-zé°]+)\s+(?:en|to|vers|in)\s+([a-zé°]+)$/i);
+  if(match){
+    var val=parseFloat(match[1].replace(',','.'));
+    var from=match[2].replace('°','');
+    var to=match[3].replace('°','');
+    if((from==='f'||from==='fahrenheit')&&(to==='c'||to==='celsius')){
+      var r=((val-32)*5/9).toFixed(2);
+      res.innerHTML='<strong>'+val+' °F</strong> = <span style="font-size:20px;font-weight:800;color:var(--a3)">'+r+' °C</span>';
+      res.classList.add('show');return;
+    }
+    if((from==='c'||from==='celsius')&&(to==='f'||to==='fahrenheit')){
+      var r=(val*9/5+32).toFixed(2);
+      res.innerHTML='<strong>'+val+' °C</strong> = <span style="font-size:20px;font-weight:800;color:var(--a3)">'+r+' °F</span>';
+      res.classList.add('show');return;
+    }
+    var key=from+'_'+to;
+    if(conversions[key]){
+      var r=(val*conversions[key]);
+      r=r===Math.floor(r)?r:parseFloat(r.toFixed(4));
+      res.innerHTML='<strong>'+val+' '+from+'</strong> = <span style="font-size:20px;font-weight:800;color:var(--a3)">'+r+' '+to+'</span>';
+      res.classList.add('show');return;
+    }
+  }
+  res.innerHTML='<span style="color:var(--a2)">Format : <em>5 km en m</em>, <em>100 F en C</em>, <em>2.5 kg en g</em></span>';
+  res.classList.add('show');
+}
+
+var CONJ_DATA={
+  'manger':{g:1,aux:'avoir',pp:'mangé',radical:'mang',present:['mange','manges','mange','mangeons','mangez','mangent'],imparfait:['mangeais','mangeais','mangeait','mangions','mangiez','mangeaient'],futur:['mangerai','mangeras','mangera','mangerons','mangerez','mangeront'],passe_simple:['mangeai','mangeas','mangea','mangeâmes','mangeâtes','mangèrent'],subjonctif:['mange','manges','mange','mangions','mangiez','mangent'],conditionnel:['mangerais','mangerais','mangerait','mangerions','mangeriez','mangeraient'],imperatif:['mange','mangeons','mangez']},
+  'aller':{g:3,aux:'être',pp:'allé',radical:'',present:['vais','vas','va','allons','allez','vont'],imparfait:['allais','allais','allait','allions','alliez','allaient'],futur:['irai','iras','ira','irons','irez','iront'],passe_simple:['allai','allas','alla','allâmes','allâtes','allèrent'],subjonctif:['aille','ailles','aille','allions','alliez','aillent'],conditionnel:['irais','irais','irait','irions','iriez','iraient'],imperatif:['va','allons','allez']},
+  'être':{g:3,aux:'avoir',pp:'été',radical:'',present:['suis','es','est','sommes','êtes','sont'],imparfait:['étais','étais','était','étions','étiez','étaient'],futur:['serai','seras','sera','serons','serez','seront'],passe_simple:['fus','fus','fut','fûmes','fûtes','furent'],subjonctif:['sois','sois','soit','soyons','soyez','soient'],conditionnel:['serais','serais','serait','serions','seriez','seraient'],imperatif:['sois','soyons','soyez']},
+  'avoir':{g:3,aux:'avoir',pp:'eu',radical:'',present:['ai','as','a','avons','avez','ont'],imparfait:['avais','avais','avait','avions','aviez','avaient'],futur:['aurai','auras','aura','aurons','aurez','auront'],passe_simple:['eus','eus','eut','eûmes','eûtes','eurent'],subjonctif:['aie','aies','ait','ayons','ayez','aient'],conditionnel:['aurais','aurais','aurait','aurions','auriez','auraient'],imperatif:['aie','ayons','ayez']},
+  'faire':{g:3,aux:'avoir',pp:'fait',radical:'',present:['fais','fais','fait','faisons','faites','font'],imparfait:['faisais','faisais','faisait','faisions','faisiez','faisaient'],futur:['ferai','feras','fera','ferons','ferez','feront'],passe_simple:['fis','fis','fit','fîmes','fîtes','firent'],subjonctif:['fasse','fasses','fasse','fassions','fassiez','fassent'],conditionnel:['ferais','ferais','ferait','ferions','feriez','feraient'],imperatif:['fais','faisons','faites']},
+  'prendre':{g:3,aux:'avoir',pp:'pris',radical:'',present:['prends','prends','prend','prenons','prenez','prennent'],imparfait:['prenais','prenais','prenait','prenions','preniez','prenaient'],futur:['prendrai','prendras','prendra','prendrons','prendrez','prendront'],passe_simple:['pris','pris','prit','prîmes','prîtes','prirent'],subjonctif:['prenne','prennes','prenne','prenions','preniez','prennent'],conditionnel:['prendrais','prendrais','prendrait','prendrions','prendriez','prendraient'],imperatif:['prends','prenons','prenez']},
+  'pouvoir':{g:3,aux:'avoir',pp:'pu',radical:'',present:['peux','peux','peut','pouvons','pouvez','peuvent'],imparfait:['pouvais','pouvais','pouvait','pouvions','pouviez','pouvaient'],futur:['pourrai','pourras','pourra','pourrons','pourrez','pourront'],passe_simple:['pus','pus','put','pûmes','pûtes','purent'],subjonctif:['puisse','puisses','puisse','puissions','puissiez','puissent'],conditionnel:['pourrais','pourrais','pourrait','pourrions','pourriez','pourraient'],imperatif:[]},
+  'vouloir':{g:3,aux:'avoir',pp:'voulu',radical:'',present:['veux','veux','veut','voulons','voulez','veulent'],imparfait:['voulais','voulais','voulait','voulions','vouliez','voulaient'],futur:['voudrai','voudras','voudra','voudrons','voudrez','voudront'],passe_simple:['voulus','voulus','voulut','voulûmes','voulûtes','voulurent'],subjonctif:['veuille','veuilles','veuille','voulions','vouliez','veuillent'],conditionnel:['voudrais','voudrais','voudrait','voudrions','voudriez','voudraient'],imperatif:['veuille','voulons','veuillez']},
+  'dire':{g:3,aux:'avoir',pp:'dit',radical:'',present:['dis','dis','dit','disons','dites','disent'],imparfait:['disais','disais','disait','disions','disiez','disaient'],futur:['dirai','diras','dira','dirons','direz','diront'],passe_simple:['dis','dis','dit','dîmes','dîtes','dirent'],subjonctif:['dise','dises','dise','disions','disiez','disent'],conditionnel:['dirais','dirais','dirait','dirions','diriez','diraient'],imperatif:['dis','disons','dites']},
+  'voir':{g:3,aux:'avoir',pp:'vu',radical:'',present:['vois','vois','voit','voyons','voyez','voient'],imparfait:['voyais','voyais','voyait','voyions','voyiez','voyaient'],futur:['verrai','verras','verra','verrons','verrez','verront'],passe_simple:['vis','vis','vit','vîmes','vîtes','virent'],subjonctif:['voie','voies','voie','voyions','voyiez','voient'],conditionnel:['verrais','verrais','verrait','verrions','verriez','verraient'],imperatif:['vois','voyons','voyez']}
+};
+
+function runConj(){
+  var verb=document.getElementById('tool-conj-input').value.trim().toLowerCase();
+  var temps=document.getElementById('tool-conj-temps').value;
+  if(!verb)return;
+  var res=document.getElementById('tool-conj-result');
+  var data=CONJ_DATA[verb];
+  if(!data){
+    if(verb.endsWith('er')&&verb.length>2){
+      var rad=verb.slice(0,-2);
+      var endings={present:['e','es','e','ons','ez','ent'],imparfait:['ais','ais','ait','ions','iez','aient'],futur:[verb+'ai',verb+'as',verb+'a',verb+'ons',verb+'ez',verb+'ont'],passe_simple:[rad+'ai',rad+'as',rad+'a',rad+'âmes',rad+'âtes',rad+'èrent'],subjonctif:['e','es','e','ions','iez','ent'],conditionnel:[verb+'ais',verb+'ais',verb+'ait',verb+'ions',verb+'iez',verb+'aient'],imperatif:['e','ons','ez'],passe_compose:['é']};
+      var t=endings[temps];
+      if(temps==='futur'||temps==='conditionnel'){
+        var forms=t;
+      } else if(temps==='passe_compose'){
+        var auxP=['ai','as','a','avons','avez','ont'];
+        var forms=auxP.map(function(a){return a+' '+rad+'é';});
+      } else {
+        var forms=t.map(function(e){return rad+e;});
+      }
+      var pronoms=temps==='imperatif'?['(tu)','(nous)','(vous)']:['je','tu','il/elle','nous','vous','ils/elles'];
+      var tempsNames={present:'Présent',imparfait:'Imparfait',futur:'Futur simple',passe_compose:'Passé composé',passe_simple:'Passé simple',subjonctif:'Subjonctif présent',conditionnel:'Conditionnel présent',imperatif:'Impératif'};
+      var html='<div style="font-weight:700;margin-bottom:8px;color:var(--a1)">'+esc(verb.charAt(0).toUpperCase()+verb.slice(1))+' — '+tempsNames[temps]+'</div>';
+      html+='<div style="font-size:10px;color:var(--mu);margin-bottom:8px">1er groupe (conjugaison automatique)</div>';
+      html+='<table>';
+      pronoms.forEach(function(p,i){if(i<forms.length)html+='<tr><td style="color:var(--mu);width:80px">'+p+'</td><td><strong>'+forms[i]+'</strong></td></tr>';});
+      html+='</table>';
+      res.innerHTML=html;res.classList.add('show');return;
+    }
+    res.innerHTML='<span style="color:var(--a2)">Verbe non trouvé. Essaie : être, avoir, aller, faire, prendre, pouvoir, vouloir, dire, voir, manger, ou un verbe en -er.</span>';
+    res.classList.add('show');return;
+  }
+  var tempsNames={present:'Présent',imparfait:'Imparfait',futur:'Futur simple',passe_compose:'Passé composé',passe_simple:'Passé simple',subjonctif:'Subjonctif présent',conditionnel:'Conditionnel présent',imperatif:'Impératif'};
+  var forms;
+  if(temps==='passe_compose'){
+    var auxForms=data.aux==='être'?['suis','es','est','sommes','êtes','sont']:['ai','as','a','avons','avez','ont'];
+    forms=auxForms.map(function(a){return a+' '+data.pp;});
+  } else {
+    forms=data[temps];
+  }
+  if(!forms||!forms.length){res.innerHTML='<span style="color:var(--mu)">Ce temps n\'existe pas pour ce verbe.</span>';res.classList.add('show');return;}
+  var pronoms=temps==='imperatif'?['(tu)','(nous)','(vous)']:['je','tu','il/elle','nous','vous','ils/elles'];
+  var html='<div style="font-weight:700;margin-bottom:8px;color:var(--a1)">'+esc(verb.charAt(0).toUpperCase()+verb.slice(1))+' — '+tempsNames[temps]+'</div>';
+  html+='<div style="font-size:10px;color:var(--mu);margin-bottom:8px">'+data.g+'e groupe · auxiliaire : '+data.aux+'</div>';
+  html+='<table>';
+  pronoms.forEach(function(p,i){if(i<forms.length)html+='<tr><td style="color:var(--mu);width:80px">'+p+'</td><td><strong>'+forms[i]+'</strong></td></tr>';});
+  html+='</table>';
+  res.innerHTML=html;res.classList.add('show');
+}
+
+function runSpell(){
+  var word=document.getElementById('tool-spell-input').value.trim();
+  if(!word)return;
+  var res=document.getElementById('tool-spell-result');
+  var corrections={
+    'occurence':'occurrence','aceuil':'accueil','acceuil':'accueil','évenement':'événement','evenement':'événement',
+    'aparament':'apparemment','aparemment':'apparemment','developement':'développement','developpement':'développement',
+    'language':'langage','parmis':'parmi','malgres':'malgré','malgrés':'malgré',
+    'quatres':'quatre','addresses':'adresse','addresse':'adresse','excercice':'exercice',
+    'dificcile':'difficile','difficille':'difficile','neanmoins':'néanmoins','neanmoin':'néanmoins',
+    'abscence':'absence','enssemble':'ensemble','ensembles':'ensemble',
+    'independant':'indépendant','indépendament':'indépendamment','independamment':'indépendamment',
+    'reussir':'réussir','echouer':'échouer','succes':'succès','echec':'échec',
+    'differant':'différent','diferent':'différent','differement':'différemment',
+    'exellent':'excellent','excelent':'excellent','sufisant':'suffisant','suffisant':'suffisant',
+    'commencement':'commencement','comencement':'commencement','intéligent':'intelligent','inteligent':'intelligent',
+    'consciance':'conscience','consience':'conscience','absoluement':'absolument','absolument':'absolument'
+  };
+  var lower=word.toLowerCase();
+  var letters=word.split('').join(' — ');
+  var correction=corrections[lower];
+  var html='<div style="font-weight:700;margin-bottom:8px;color:var(--a1);font-size:18px">'+esc(word)+'</div>';
+  html+='<div style="margin-bottom:10px;font-size:14px;letter-spacing:3px;color:var(--mu)">'+esc(letters)+'</div>';
+  html+='<div style="font-size:12px;margin-bottom:6px"><strong>'+word.length+'</strong> lettres</div>';
+  if(correction&&correction!==lower){
+    html+='<div style="background:rgba(244,114,182,.1);border:1px solid rgba(244,114,182,.3);border-radius:8px;padding:8px;margin-top:8px;font-size:12px"><span style="color:var(--a2)">⚠️ Orthographe incorrecte</span><br>Correction : <strong style="color:var(--a3)">'+esc(correction)+'</strong></div>';
+  } else {
+    html+='<div style="background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.3);border-radius:8px;padding:8px;margin-top:8px;font-size:12px;color:var(--a3)">✓ Orthographe correcte</div>';
+  }
+  res.innerHTML=html;res.classList.add('show');
+}
+
 var genHubMode=null;
 function selectGenType(type,el){
   document.querySelectorAll('.gen-type-btn').forEach(b=>b.classList.remove('on'));

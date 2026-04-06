@@ -45,7 +45,8 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fb)
 #app{display:flex;flex-direction:column;height:100%;max-width:480px;margin:0 auto;position:relative;overflow:hidden}
 
 /* HEADER */
-#hdr{height:calc(52px + env(safe-area-inset-top,0px));background:var(--bg);border-bottom:1px solid var(--bord);display:flex;align-items:center;justify-content:space-between;padding:env(safe-area-inset-top,0px) max(14px,env(safe-area-inset-right)) 0 max(14px,env(safe-area-inset-left));flex-shrink:0;z-index:100;position:relative}
+#hdr{height:calc(52px + env(safe-area-inset-top,0px));background:var(--bg);border-bottom:1px solid var(--bord);display:flex;align-items:center;justify-content:space-between;padding:env(safe-area-inset-top,0px) max(14px,env(safe-area-inset-right)) 0 max(14px,env(safe-area-inset-left));flex-shrink:0;z-index:100;position:relative;transition:height .2s,padding .2s}
+#app.fs-on #hdr{height:52px;padding-top:0}
 #hdr::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--a1),var(--a2),var(--a3));opacity:.4}
 .logo{display:flex;align-items:center;gap:6px;font-family:var(--fd);font-size:18px;font-weight:800;letter-spacing:-.5px;min-width:0;flex-shrink:0}
 .logo-emoji{font-size:20px;line-height:1;display:inline}
@@ -343,8 +344,8 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fb)
 .fc-ibtn{flex:1;padding:6px;background:rgba(92,216,252,.1);border:1px solid var(--a5);color:var(--a5);border-radius:7px;cursor:pointer;font-size:10px;font-family:var(--fb);font-weight:600}
 
 /* GLASS PAGES */
-.gp{position:absolute;inset:0;z-index:10;background:var(--bg);overflow-y:auto;transform:translateY(100%);transition:transform .35s cubic-bezier(.32,1.26,.6,1);will-change:transform;padding-bottom:42px;pointer-events:none}
-.gp.open{transform:translateY(0);pointer-events:auto;touch-action:pan-y}
+.gp{position:absolute;inset:0;z-index:10;background:var(--bg);overflow-y:auto;transform:translateY(100%);transition:transform .3s cubic-bezier(.4,0,.2,1),opacity .25s ease;opacity:0;will-change:transform;padding-bottom:42px;pointer-events:none}
+.gp.open{transform:translateY(0);opacity:1;pointer-events:auto;touch-action:pan-y}
 .gp::-webkit-scrollbar{width:6px}
 .gp::-webkit-scrollbar-track{background:rgba(255,255,255,.03);border-radius:3px}
 .gp::-webkit-scrollbar-thumb{background:rgba(124,92,252,.45);border-radius:3px}
@@ -1953,6 +1954,7 @@ button:active{opacity:.85}
         <div class="mof"><label>Chapitre / Sujet</label><input type="text" id="gen-hub-sujet" placeholder="Ex : Pythagore, WW2, Photosynthèse..."></div>
         <div class="mof"><label>Matière</label><select id="gen-hub-mat"><option>Maths</option><option>Français</option><option>Histoire-Géo</option><option>Physique-Chimie</option><option>SVT</option><option>Anglais</option><option>Espagnol</option><option>NSI</option><option>Philosophie</option><option>SES</option></select></div>
         <div class="mof"><label>Cours (optionnel)</label><textarea id="gen-hub-cours" rows="3" placeholder="Colle ici ton cours pour une génération basée dessus..." style="resize:vertical"></textarea></div>
+        <div class="mof"><label>Photo de cours (optionnel)</label><div class="ph-area" onclick="document.getElementById('gen-hub-photo').click()" id="gen-photo-area"><img id="gen-photo-prev" class="ph-prev"><span id="gen-photo-lbl" style="font-size:10.5px;color:var(--mu)">📸 Photo de cours ou exercice</span></div><input type="file" id="gen-hub-photo" accept="image/*" style="display:none" onchange="genHubPhotoPrev(event)"></div>
         <button class="gen-go-btn" onclick="submitGenHub()">Générer</button>
       </div>
       <div id="gen-loading-hub" style="display:none;margin-top:12px">
@@ -3059,25 +3061,21 @@ button:active{opacity:.85}
 </div>
 
 <!-- ═══ MODAL SCAN COURS ═══ -->
-<div id="scan-modal" style="position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.85);backdrop-filter:blur(12px);display:none;align-items:flex-end;justify-content:center" onclick="if(event.target===this)closeScanCours()">
-  <div style="background:var(--surf);border-radius:24px 24px 0 0;padding:20px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;padding-bottom:max(20px,env(safe-area-inset-bottom))">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
-      <div style="font-family:var(--fd);font-size:17px;font-weight:800">📸 Scanner un cours</div>
+<div id="scan-modal" style="position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.88);backdrop-filter:blur(14px);display:none;align-items:flex-end;justify-content:center" onclick="if(event.target===this)closeScanCours()">
+  <div style="background:var(--surf);border-radius:24px 24px 0 0;padding:20px;width:100%;max-width:480px;max-height:92vh;overflow-y:auto;padding-bottom:max(20px,env(safe-area-inset-bottom))">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+      <div style="font-family:var(--fd);font-size:17px;font-weight:800">✍️ Scanner un cours</div>
       <button onclick="closeScanCours()" style="background:rgba(255,255,255,.06);border:1px solid var(--bord);color:var(--mu);width:30px;height:30px;border-radius:10px;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center">✕</button>
     </div>
-    <p style="font-size:12px;color:var(--mu);line-height:1.6;margin-bottom:14px">Prends en photo une page de cours, un exercice ou une feuille de révision. L'IA génère automatiquement une fiche et des flashcards.</p>
+    <p style="font-size:12px;color:var(--mu);line-height:1.6;margin-bottom:14px">Prends en photo ton cours écrit à la main. L'IA le lit et le retranscrit proprement dans une présentation claire et structurée.</p>
     <img id="scan-preview-img" class="scan-preview">
     <input type="file" id="scan-input" accept="image/*" capture="environment" style="display:none" onchange="handleScanPhoto(event)">
+    <input type="file" id="scan-gallery" accept="image/*" style="display:none" onchange="handleScanPhoto(event)">
     <div style="display:flex;gap:8px;margin-bottom:12px">
-      <button onclick="document.getElementById('scan-input').click()" style="flex:1;padding:12px;background:var(--a1);border:none;color:#fff;border-radius:12px;font-size:13px;font-family:var(--fb);font-weight:700;cursor:pointer">📷 Prendre une photo</button>
+      <button onclick="document.getElementById('scan-input').click()" style="flex:1;padding:12px;background:var(--a1);border:none;color:#fff;border-radius:12px;font-size:13px;font-family:var(--fb);font-weight:700;cursor:pointer">📷 Appareil photo</button>
       <button onclick="document.getElementById('scan-gallery').click()" style="flex:1;padding:12px;background:var(--card);border:1px solid var(--bord);color:var(--tx);border-radius:12px;font-size:13px;font-family:var(--fb);font-weight:600;cursor:pointer">🖼️ Galerie</button>
     </div>
-    <input type="file" id="scan-gallery" accept="image/*" style="display:none" onchange="handleScanPhoto(event)">
-    <div style="display:flex;gap:8px">
-      <button id="scan-fiche-btn" onclick="scanGenerate('fiche')" style="flex:1;padding:10px;background:rgba(139,111,255,.12);border:1px solid rgba(139,111,255,.25);color:var(--a1);border-radius:10px;font-size:12px;font-family:var(--fb);font-weight:700;cursor:pointer;display:none">📝 Générer Fiche</button>
-      <button id="scan-flash-btn" onclick="scanGenerate('flash')" style="flex:1;padding:10px;background:rgba(79,214,160,.1);border:1px solid rgba(79,214,160,.25);color:var(--a3);border-radius:10px;font-size:12px;font-family:var(--fb);font-weight:700;cursor:pointer;display:none">🃏 Générer Flashcards</button>
-      <button id="scan-both-btn" onclick="scanGenerate('both')" style="flex:1;padding:10px;background:rgba(255,190,92,.1);border:1px solid rgba(255,190,92,.25);color:var(--a4);border-radius:10px;font-size:12px;font-family:var(--fb);font-weight:700;cursor:pointer;display:none">✨ Les deux</button>
-    </div>
+    <button id="scan-trans-btn" onclick="scanTranscribe()" style="width:100%;padding:13px;background:linear-gradient(135deg,var(--a1),var(--a2));border:none;color:#fff;border-radius:14px;font-size:14px;font-family:var(--fd);font-weight:800;cursor:pointer;display:none;margin-bottom:4px">✍️ Transcrire le cours</button>
     <div id="scan-result" style="margin-top:12px"></div>
   </div>
 </div>
@@ -4478,6 +4476,20 @@ function selectGenType(type,el){
   var sj=document.getElementById('gen-hub-sujet');
   setTimeout(function(){sj.focus();},150);
 }
+var genHubPhotoData=null;
+function genHubPhotoPrev(e){
+  const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    const p=document.getElementById('gen-photo-prev');
+    const lbl=document.getElementById('gen-photo-lbl');
+    if(p){p.src=ev.target.result;p.style.display='block';}
+    if(lbl)lbl.textContent='Photo ajoutée ✓';
+    genHubPhotoData={b64:ev.target.result.split(',')[1],mime:f.type||'image/jpeg'};
+  };
+  r.readAsDataURL(f);
+  e.target.value='';
+}
 async function submitGenHub(){
   var sujet=document.getElementById('gen-hub-sujet').value.trim();
   if(!sujet){document.getElementById('gen-hub-sujet').style.borderColor='var(--a2)';return;}
@@ -4497,7 +4509,11 @@ async function submitGenHub(){
   try{
     var isFiche=genHubMode==='fiche'||genHubMode==='combo'||genHubMode==='resume';
     var maxTok=isFiche?(ficheLongueur==='LONGUE'?9000:ficheLongueur==='COURTE'?3500:6000):3000;
-    var result=await callAI({system:buildSys(),messages:[{role:'user',content:prompt}],maxTokens:maxTok});
+    var msgContent=genHubPhotoData
+      ?[{type:'image',source:{type:'base64',media_type:genHubPhotoData.mime,data:genHubPhotoData.b64}},{type:'text',text:prompt+'\n\nUtilise le contenu de la photo pour baser ta génération dessus.'}]
+      :prompt;
+    var result=await callAI({system:buildSys(),messages:[{role:'user',content:msgContent}],maxTokens:maxTok});
+    genHubPhotoData=null;
     chatHist.push({role:'user',content:prompt});
     chatHist.push({role:'assistant',content:result});
     saveChatHistory();markTodayActive();
@@ -7452,12 +7468,14 @@ document.addEventListener('fullscreenchange', ()=>{
   const btn = document.getElementById('fs-btn');
   if(btn) btn.textContent = isFS ? '⛷' : '⛶';
   localStorage.setItem('sk_fs', isFS ? '1' : '0');
+  document.getElementById('app')?.classList.toggle('fs-on', isFS);
 });
 document.addEventListener('webkitfullscreenchange', ()=>{
   const isFS = !!document.webkitFullscreenElement;
   const btn = document.getElementById('fs-btn');
   if(btn) btn.textContent = isFS ? '⛷' : '⛶';
   localStorage.setItem('sk_fs', isFS ? '1' : '0');
+  document.getElementById('app')?.classList.toggle('fs-on', isFS);
 });
 
 
@@ -8536,11 +8554,65 @@ function openScanCours(){
 function closeScanCours(){
   document.getElementById('scan-modal').style.display='none';
   scanImageData=null;
-  document.getElementById('scan-preview-img').style.display='none';
+  const prev=document.getElementById('scan-preview-img');if(prev){prev.style.display='none';prev.src='';}
   document.getElementById('scan-result').innerHTML='';
-  ['scan-fiche-btn','scan-flash-btn','scan-both-btn'].forEach(id=>{
-    const el=document.getElementById(id);if(el)el.style.display='none';
-  });
+  const btn=document.getElementById('scan-trans-btn');if(btn)btn.style.display='none';
+}
+var lastScanText='';
+function copyScanText(){if(navigator.clipboard&&lastScanText)navigator.clipboard.writeText(lastScanText).then(()=>toast('📋 Copié !')).catch(()=>{});}
+async function scanTranscribe(){
+  if(!scanImageData){toast('❌ Prends une photo avant');return;}
+  const resultEl=document.getElementById('scan-result');
+  const btn=document.getElementById('scan-trans-btn');
+  if(btn){btn.disabled=true;btn.textContent='⚡ Lecture...';}
+  resultEl.innerHTML='<div style="text-align:center;padding:24px;color:var(--mu);font-size:13px"><div style="font-size:22px;margin-bottom:8px">🔍</div>Transcription en cours...</div>';
+  try{
+    const msgs=[{role:'user',content:[
+      {type:'image',source:{type:'base64',media_type:scanImageData.mime,data:scanImageData.b64}},
+      {type:'text',text:'Transcris intégralement ce cours manuscrit. Retourne UNIQUEMENT ce JSON (sans balises markdown) :\n{"titre":"titre du cours","matiere":"matière détectée","sections":[{"t":"titre de la section","items":["ligne 1","ligne 2"]}]}\nPour les formules préfixe avec 📐, pour les exemples avec ➤, pour les définitions avec 📖. Ne résume pas — transcris tout le contenu visible.'}
+    ]}];
+    const reply=await callAI({system:'Tu lis et transcris des cours manuscrits. Réponds UNIQUEMENT en JSON valide, sans markdown ni backticks.',messages:msgs,maxTokens:4000});
+    let data;
+    try{const clean=reply.replace(/```json\n?/g,'').replace(/```\n?/g,'').trim();data=JSON.parse(clean);}catch(e){data=null;}
+    if(!data){
+      lastScanText=reply;
+      resultEl.innerHTML='<div style="background:var(--card);border-radius:14px;padding:16px;font-size:13px;line-height:1.7;color:var(--tx);white-space:pre-wrap;border:1px solid var(--bord)">'+esc(reply)+'</div><button onclick="copyScanText()" style="width:100%;margin-top:8px;padding:10px;background:rgba(139,111,255,.1);border:1px solid rgba(139,111,255,.2);color:var(--a1);border-radius:12px;font-size:12px;font-family:var(--fb);font-weight:700;cursor:pointer">📋 Copier</button>';
+      return;
+    }
+    let textLines=[];
+    if(data.sections)data.sections.forEach(s=>{if(s.t)textLines.push(s.t);if(s.items)s.items.forEach(i=>textLines.push(i));});
+    lastScanText=(data.titre||'')+'\n'+(data.matiere||'')+'\n\n'+textLines.join('\n');
+    let html='<div style="border-radius:18px;overflow:hidden;border:1px solid var(--bord)">';
+    html+='<div style="background:linear-gradient(135deg,var(--a1),var(--a2));padding:14px 16px">';
+    html+='<div style="font-family:var(--fd);font-size:16px;font-weight:800;color:#fff">'+esc(data.titre||'Cours transcrit')+'</div>';
+    if(data.matiere)html+='<div style="font-size:11px;color:rgba(255,255,255,.75);margin-top:2px;text-transform:uppercase;letter-spacing:.8px">'+esc(data.matiere)+'</div>';
+    html+='</div>';
+    if(data.sections&&data.sections.length){
+      data.sections.forEach(sec=>{
+        html+='<div style="padding:12px 16px;border-top:1px solid var(--bord)">';
+        if(sec.t)html+='<div style="font-size:11px;font-weight:800;color:var(--a1);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">'+esc(sec.t)+'</div>';
+        if(sec.items&&sec.items.length){
+          sec.items.forEach(item=>{
+            const s=String(item||'');
+            const isF=s.startsWith('📐'),isE=s.startsWith('➤'),isD=s.startsWith('📖');
+            const bg=isF?'rgba(139,111,255,.08)':isE?'rgba(79,214,160,.07)':isD?'rgba(56,189,248,.07)':'transparent';
+            const br=isF||isE||isD?'8px':'0';
+            const pad=isF||isE||isD?'7px 10px':'3px 0';
+            const brd=isF?'1px solid rgba(139,111,255,.2)':isE?'1px solid rgba(79,214,160,.18)':isD?'1px solid rgba(56,189,248,.18)':'none';
+            html+='<div style="font-size:12.5px;color:var(--tx);line-height:1.65;background:'+bg+';border:'+brd+';border-radius:'+br+';padding:'+pad+';margin-bottom:4px">'+esc(s)+'</div>';
+          });
+        }
+        html+='</div>';
+      });
+    }
+    html+='</div>';
+    html+='<button onclick="copyScanText()" style="width:100%;margin-top:10px;padding:11px;background:rgba(139,111,255,.1);border:1px solid rgba(139,111,255,.2);color:var(--a1);border-radius:14px;font-size:13px;font-family:var(--fb);font-weight:700;cursor:pointer">📋 Copier le texte</button>';
+    resultEl.innerHTML=html;
+    toast('✅ Cours transcrit !');
+  }catch(err){
+    resultEl.innerHTML='<div style="color:var(--a2);font-size:12px;padding:10px">❌ '+esc(err.message.slice(0,100))+'</div>';
+  }
+  if(btn){btn.disabled=false;btn.textContent='✍️ Transcrire le cours';}
 }
 function handleScanPhoto(e){
   const file=e.target.files[0];if(!file)return;
@@ -8552,10 +8624,10 @@ function handleScanPhoto(e){
     const preview=document.getElementById('scan-preview-img');
     preview.src=ev.target.result;
     preview.style.display='block';
-    ['scan-fiche-btn','scan-flash-btn','scan-both-btn'].forEach(id=>{
-      const el=document.getElementById(id);if(el)el.style.display='inline-block';
-    });
-    toast('📸 Photo chargée ! Choisis ce que tu veux générer.');
+    const btn=document.getElementById('scan-trans-btn');
+    if(btn)btn.style.display='block';
+    document.getElementById('scan-result').innerHTML='';
+    toast('📸 Photo chargée !');
   };
   reader.readAsDataURL(file);
   e.target.value='';

@@ -45,7 +45,7 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fb)
 #app{display:flex;flex-direction:column;height:100%;max-width:480px;margin:0 auto;position:relative;overflow:hidden;padding-top:env(safe-area-inset-top,0px)}
 
 /* HEADER */
-#hdr{height:52px;background:var(--bg);border-bottom:1px solid var(--bord);display:flex;align-items:center;justify-content:space-between;padding:0 14px;flex-shrink:0;z-index:100;position:relative;padding-left:max(14px,env(safe-area-inset-left));padding-right:max(14px,env(safe-area-inset-right))}
+#hdr{height:52px;background:var(--bg);border-bottom:1px solid var(--bord);display:flex;align-items:center;justify-content:space-between;padding:0 14px;flex-shrink:0;z-index:200;position:sticky;top:0;padding-left:max(14px,env(safe-area-inset-left));padding-right:max(14px,env(safe-area-inset-right))}
 #hdr::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--a1),var(--a2),var(--a3));opacity:.4}
 .logo{display:flex;align-items:center;gap:6px;font-family:var(--fd);font-size:18px;font-weight:800;letter-spacing:-.5px;min-width:0;flex-shrink:0}
 .logo-emoji{font-size:20px;line-height:1;display:inline}
@@ -358,6 +358,10 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fb)
 .dr-r{background:#fc5c5c;box-shadow:0 0 5px #fc5c5c}
 .dr-y{background:var(--a4);box-shadow:0 0 5px var(--a4)}
 .dr-g{background:var(--a3);box-shadow:0 0 5px var(--a3)}
+.dv-day-group{margin-bottom:4px}
+.dv-day-hdr{display:flex;align-items:center;gap:8px;margin:14px 0 6px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--mu)}
+.dv-day-line{flex:1;height:1px;background:var(--bord)}
+.dv-day-lbl{white-space:nowrap;background:var(--bg);padding:0 6px;border-radius:20px;border:1px solid var(--bord)}
 
 /* LIBRARY */
 #gp-lib,#gp-hist{z-index:20}
@@ -1577,9 +1581,13 @@ button:active{opacity:.85}
 .dash-info{background:rgba(139,111,255,.15);color:var(--a1)}
 .dash-card-sub{font-size:11.5px;color:var(--mu);line-height:1.6}
 .dash-progress-row{display:flex;align-items:center;gap:8px;margin-top:8px}
-.dash-prog-bar{flex:1;height:5px;background:var(--bord);border-radius:3px;overflow:hidden}
-.dash-prog-fill{height:100%;border-radius:3px;transition:width .5s cubic-bezier(.4,0,.2,1)}
-.dash-prog-pct{font-family:var(--fm);font-size:11px;font-weight:700;color:var(--a1);min-width:28px;text-align:right}
+.dash-prog-bar{flex:1;height:8px;background:var(--bord);border-radius:6px;overflow:hidden}
+.dash-prog-fill{height:100%;border-radius:6px;transition:width .6s cubic-bezier(.4,0,.2,1)}
+.dash-prog-pct{font-family:var(--fm);font-size:12px;font-weight:800;min-width:32px;text-align:right}
+.dash-mat-card{background:var(--surf);border:1px solid var(--bord);border-radius:14px;padding:12px 14px;margin-bottom:8px}
+.dash-mat-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.dash-mat-name{font-size:12px;font-weight:700;color:var(--tx)}
+.dash-mat-count{font-family:var(--fm);font-size:10px;color:var(--mu)}
 .dash-stat-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px}
 .dash-stat{background:var(--card);border:1px solid var(--bord);border-radius:14px;padding:12px 8px;text-align:center}
 .dash-stat-n{font-family:var(--fm);font-size:22px;font-weight:700;line-height:1;color:var(--a1)}
@@ -1898,12 +1906,7 @@ button:active{opacity:.85}
         <span class="hcircle-label">Tout</span>
       </div>
     </div>
-    <div class="sl"><div class="dr dr-r"></div><span style="color:#fc5c5c">🔴 Urgent — dans 2 jours</span></div>
-    <div id="dv-urgent"></div>
-    <div class="sl"><div class="dr dr-y"></div><span style="color:var(--a4)">🟡 Cette semaine</span></div>
-    <div id="dv-semaine"></div>
-    <div class="sl"><div class="dr dr-g"></div><span style="color:var(--a3)">🟢 Plus tard</span></div>
-    <div id="dv-plus"></div>
+    <div id="dv-by-day"></div>
     <div class="tab-ai" id="tai-devoirs">
       <div class="tab-ai-label">✨ Aide IA <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--mu);font-size:9px">• photo acceptée</span></div>
       <div class="tab-ai-row">
@@ -2128,103 +2131,7 @@ button:active{opacity:.85}
 <div class="gp" id="gp-moy">
   <div class="gpi">
     <div class="gph"><div class="gpt">Mes notes</div></div>
-    <!-- Cercles outils -->
-    <div class="hscroll" style="margin-bottom:14px">
-      <div class="hcircle" onclick="toggleNotesTool('calc')">
-        <div class="hcircle-icon" id="hc-calc"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="8.01" y2="10"/><line x1="12" y1="10" x2="12.01" y2="10"/><line x1="16" y1="10" x2="16.01" y2="10"/><line x1="8" y1="14" x2="8.01" y2="14"/><line x1="12" y1="14" x2="12.01" y2="14"/><line x1="16" y1="14" x2="16.01" y2="14"/><line x1="8" y1="18" x2="8.01" y2="18"/><line x1="12" y1="18" x2="12.01" y2="18"/><line x1="16" y1="18" x2="16.01" y2="18"/></svg></div>
-        <span class="hcircle-label">Calculette</span>
-      </div>
-      <div class="hcircle" onclick="toggleNotesTool('conv')">
-        <div class="hcircle-icon" id="hc-conv"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></div>
-        <span class="hcircle-label">Convertir</span>
-      </div>
-      <div class="hcircle" onclick="toggleNotesTool('conj')">
-        <div class="hcircle-icon" id="hc-conj"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
-        <span class="hcircle-label">Conjuguer</span>
-      </div>
-      <div class="hcircle" onclick="document.getElementById('ocr-img').click()">
-        <div class="hcircle-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
-        <span class="hcircle-label">Scanner</span>
-      </div>
-    </div>
-    <!-- Panels outils -->
-    <div id="calc-panel">
-      <div class="calc-screen">
-        <div class="calc-expr" id="calc-expr"></div>
-        <div class="calc-result" id="calc-result">0</div>
-      </div>
-      <!-- Fonctions scientifiques -->
-      <div class="calc-row-sci">
-        <button class="cb-sci" onclick="calcSci('sin(')">sin</button>
-        <button class="cb-sci" onclick="calcSci('cos(')">cos</button>
-        <button class="cb-sci" onclick="calcSci('tan(')">tan</button>
-        <button class="cb-sci" onclick="calcSci('sqrt(')">√</button>
-        <button class="cb-sci" onclick="calcSci('**2')">x²</button>
-      </div>
-      <div class="calc-row-sci">
-        <button class="cb-sci" onclick="calcSci('log(')">log</button>
-        <button class="cb-sci" onclick="calcSci('Math.PI')">π</button>
-        <button class="cb-sci" onclick="calcSci('(')"> ( </button>
-        <button class="cb-sci" onclick="calcSci(')')"> ) </button>
-        <button class="cb-sci" onclick="calcSci('%')">%</button>
-      </div>
-      <div class="calc-grid">
-        <button class="calc-btn cb-clr" onclick="calcClear()">C</button>
-        <button class="calc-btn cb-fn" onclick="calcDel()">⌫</button>
-        <button class="calc-btn cb-op" onclick="calcInput('**')">xⁿ</button>
-        <button class="calc-btn cb-op" onclick="calcInput('/')">÷</button>
-        <button class="calc-btn cb-num" onclick="calcInput('7')">7</button>
-        <button class="calc-btn cb-num" onclick="calcInput('8')">8</button>
-        <button class="calc-btn cb-num" onclick="calcInput('9')">9</button>
-        <button class="calc-btn cb-op" onclick="calcInput('*')">×</button>
-        <button class="calc-btn cb-num" onclick="calcInput('4')">4</button>
-        <button class="calc-btn cb-num" onclick="calcInput('5')">5</button>
-        <button class="calc-btn cb-num" onclick="calcInput('6')">6</button>
-        <button class="calc-btn cb-op" onclick="calcInput('-')">−</button>
-        <button class="calc-btn cb-num" onclick="calcInput('1')">1</button>
-        <button class="calc-btn cb-num" onclick="calcInput('2')">2</button>
-        <button class="calc-btn cb-num" onclick="calcInput('3')">3</button>
-        <button class="calc-btn cb-op" onclick="calcInput('+')">+</button>
-        <button class="calc-btn cb-num" onclick="calcInput('0')" style="grid-column:span 2">0</button>
-        <button class="calc-btn cb-num" onclick="calcInput('.')">.</button>
-        <button class="calc-btn cb-eq" onclick="calcEquals()">=</button>
-      </div>
-    </div>
-    <div id="conv-panel">
-      <div class="conv-box">
-        <div class="conv-cats" id="conv-cats">
-          <button class="conv-cat on" onclick="setConvCat('longueur',this)">📏 Longueur</button>
-          <button class="conv-cat" onclick="setConvCat('masse',this)">⚖️ Masse</button>
-          <button class="conv-cat" onclick="setConvCat('temperature',this)">🌡 Temp.</button>
-          <button class="conv-cat" onclick="setConvCat('vitesse',this)">🚀 Vitesse</button>
-          <button class="conv-cat" onclick="setConvCat('aire',this)">▦ Aire</button>
-          <button class="conv-cat" onclick="setConvCat('volume',this)">🧪 Volume</button>
-        </div>
-        <div class="conv-row">
-          <input class="conv-inp" id="conv-val" type="number" placeholder="0" oninput="doConvert()" value="1">
-          <select class="conv-unit" id="conv-from" onchange="doConvert()"></select>
-        </div>
-        <div style="text-align:center;color:var(--mu);font-size:20px;margin:2px 0">↕</div>
-        <div class="conv-row">
-          <div class="conv-result" id="conv-result">—</div>
-          <select class="conv-unit" id="conv-to" onchange="doConvert()"></select>
-        </div>
-      </div>
-    </div>
-    <div id="conj-panel">
-      <div class="conv-box">
-        <div class="conv-row" style="margin-bottom:10px">
-          <input class="conv-inp" id="conj-verb-inp" type="text" placeholder="Ex: aller, avoir..." oninput="doConj(this.value)" style="font-size:16px;font-family:var(--fb)">
-          <select class="conv-unit" id="conj-lang" onchange="doConj(document.getElementById('conj-verb-inp').value)" style="min-width:90px">
-            <option value="fr">🇫🇷 FR</option>
-            <option value="en">🇬🇧 EN</option>
-            <option value="es">🇪🇸 ES</option>
-          </select>
-        </div>
-        <div id="conj-result"></div>
-      </div>
-    </div>
-    <div id="moy-main-content" style="transition:all .25s">
+    <div id="moy-main-content">
     <div class="mres"><div class="mbig" id="mbig" style="color:var(--a1)">—</div><div class="mmsg" id="mmsg">Ajoute tes notes</div></div>
     <div id="nl"></div>
     <button class="madd" onclick="addNR()">＋ Ajouter une note</button>
@@ -3390,6 +3297,85 @@ button:active{opacity:.85}
       <div class="tool-title" id="tool-title">Outil</div>
       <button class="tool-close" onclick="closeTool()">&#10005;</button>
     </div>
+    <!-- Calculatrice -->
+    <div id="calc-panel">
+      <div class="calc-screen">
+        <div class="calc-expr" id="calc-expr"></div>
+        <div class="calc-result" id="calc-result">0</div>
+      </div>
+      <div class="calc-row-sci">
+        <button class="cb-sci" onclick="calcSci('sin(')">sin</button>
+        <button class="cb-sci" onclick="calcSci('cos(')">cos</button>
+        <button class="cb-sci" onclick="calcSci('tan(')">tan</button>
+        <button class="cb-sci" onclick="calcSci('sqrt(')">√</button>
+        <button class="cb-sci" onclick="calcSci('**2')">x²</button>
+      </div>
+      <div class="calc-row-sci">
+        <button class="cb-sci" onclick="calcSci('log(')">log</button>
+        <button class="cb-sci" onclick="calcSci('Math.PI')">π</button>
+        <button class="cb-sci" onclick="calcSci('(')"> ( </button>
+        <button class="cb-sci" onclick="calcSci(')')"> ) </button>
+        <button class="cb-sci" onclick="calcSci('%')">%</button>
+      </div>
+      <div class="calc-grid">
+        <button class="calc-btn cb-clr" onclick="calcClear()">C</button>
+        <button class="calc-btn cb-fn" onclick="calcDel()">⌫</button>
+        <button class="calc-btn cb-op" onclick="calcInput('**')">xⁿ</button>
+        <button class="calc-btn cb-op" onclick="calcInput('/')">÷</button>
+        <button class="calc-btn cb-num" onclick="calcInput('7')">7</button>
+        <button class="calc-btn cb-num" onclick="calcInput('8')">8</button>
+        <button class="calc-btn cb-num" onclick="calcInput('9')">9</button>
+        <button class="calc-btn cb-op" onclick="calcInput('*')">×</button>
+        <button class="calc-btn cb-num" onclick="calcInput('4')">4</button>
+        <button class="calc-btn cb-num" onclick="calcInput('5')">5</button>
+        <button class="calc-btn cb-num" onclick="calcInput('6')">6</button>
+        <button class="calc-btn cb-op" onclick="calcInput('-')">−</button>
+        <button class="calc-btn cb-num" onclick="calcInput('1')">1</button>
+        <button class="calc-btn cb-num" onclick="calcInput('2')">2</button>
+        <button class="calc-btn cb-num" onclick="calcInput('3')">3</button>
+        <button class="calc-btn cb-op" onclick="calcInput('+')">+</button>
+        <button class="calc-btn cb-num" onclick="calcInput('0')" style="grid-column:span 2">0</button>
+        <button class="calc-btn cb-num" onclick="calcInput('.')">.</button>
+        <button class="calc-btn cb-eq" onclick="calcEquals()">=</button>
+      </div>
+    </div>
+    <!-- Convertisseur -->
+    <div id="conv-panel">
+      <div class="conv-box">
+        <div class="conv-cats" id="conv-cats">
+          <button class="conv-cat on" onclick="setConvCat('longueur',this)">📏 Longueur</button>
+          <button class="conv-cat" onclick="setConvCat('masse',this)">⚖️ Masse</button>
+          <button class="conv-cat" onclick="setConvCat('temperature',this)">🌡 Temp.</button>
+          <button class="conv-cat" onclick="setConvCat('vitesse',this)">🚀 Vitesse</button>
+          <button class="conv-cat" onclick="setConvCat('aire',this)">▦ Aire</button>
+          <button class="conv-cat" onclick="setConvCat('volume',this)">🧪 Volume</button>
+        </div>
+        <div class="conv-row">
+          <input class="conv-inp" id="conv-val" type="number" placeholder="0" oninput="doConvert()" value="1">
+          <select class="conv-unit" id="conv-from" onchange="doConvert()"></select>
+        </div>
+        <div style="text-align:center;color:var(--mu);font-size:20px;margin:2px 0">↕</div>
+        <div class="conv-row">
+          <div class="conv-result" id="conv-result">—</div>
+          <select class="conv-unit" id="conv-to" onchange="doConvert()"></select>
+        </div>
+      </div>
+    </div>
+    <!-- Conjugaison -->
+    <div id="conj-panel">
+      <div class="conv-box">
+        <div class="conv-row" style="margin-bottom:10px">
+          <input class="conv-inp" id="conj-verb-inp" type="text" placeholder="Ex: aller, avoir..." oninput="doConj(this.value)" style="font-size:16px;font-family:var(--fb)">
+          <select class="conv-unit" id="conj-lang" onchange="doConj(document.getElementById('conj-verb-inp').value)" style="min-width:90px">
+            <option value="fr">🇫🇷 FR</option>
+            <option value="en">🇬🇧 EN</option>
+            <option value="es">🇪🇸 ES</option>
+          </select>
+        </div>
+        <div id="conj-result"></div>
+      </div>
+    </div>
+    <!-- Épeler / Ortho (texte libre) -->
     <div id="tool-body"></div>
   </div>
 </div>
@@ -4306,20 +4292,33 @@ function sendCombo(){closeLib();closeHist();pf('Génère une FICHE DE RÉVISION 
 function openTool(type){
   var titles={calc:'Calculatrice',conv:'Convertisseur',conj:'Conjugaison',spell:'Épeler'};
   document.getElementById('tool-title').textContent=titles[type]||'Outil';
+  // Cacher tous les panels
+  ['calc','conv','conj'].forEach(function(t){
+    var p=document.getElementById(t+'-panel');
+    if(p)p.classList.remove('show');
+  });
   var body=document.getElementById('tool-body');
-  if(type==='calc'){
-    body.innerHTML='<input class="tool-input" id="tool-calc-input" placeholder="Ex : 25*4+10, sqrt(144), 2^8..." onkeydown="if(event.key===\'Enter\')runCalc()"><button class="tool-btn" onclick="runCalc()">Calculer</button><div class="tool-result" id="tool-calc-result"></div>';
-  } else if(type==='conv'){
-    body.innerHTML='<input class="tool-input" id="tool-conv-input" placeholder="Ex : 5 km en m, 100 F en C, 2.5 kg en g..." onkeydown="if(event.key===\'Enter\')runConv()"><button class="tool-btn" onclick="runConv()">Convertir</button><div class="tool-result" id="tool-conv-result"></div>';
-  } else if(type==='conj'){
-    body.innerHTML='<input class="tool-input" id="tool-conj-input" placeholder="Ex : manger, aller, prendre..." onkeydown="if(event.key===\'Enter\')runConj()"><select class="tool-input" id="tool-conj-temps" style="margin-bottom:10px"><option value="present">Présent</option><option value="imparfait">Imparfait</option><option value="futur">Futur simple</option><option value="passe_compose">Passé composé</option><option value="passe_simple">Passé simple</option><option value="subjonctif">Subjonctif présent</option><option value="conditionnel">Conditionnel présent</option><option value="imperatif">Impératif</option></select><button class="tool-btn" onclick="runConj()">Conjuguer</button><div class="tool-result" id="tool-conj-result"></div>';
+  body.innerHTML='';
+  if(type==='calc'||type==='conv'||type==='conj'){
+    var p=document.getElementById(type+'-panel');
+    if(p){
+      p.classList.add('show');
+      if(type==='conv')setTimeout(initConv,50);
+      if(type==='conj')setTimeout(function(){var i=document.getElementById('conj-verb-inp');if(i)i.focus();},200);
+    }
   } else if(type==='spell'){
     body.innerHTML='<input class="tool-input" id="tool-spell-input" placeholder="Ex : accueil, occurence, évenement..." onkeydown="if(event.key===\'Enter\')runSpell()"><button class="tool-btn" onclick="runSpell()">Vérifier</button><div class="tool-result" id="tool-spell-result"></div>';
+    setTimeout(function(){var i=document.getElementById('tool-spell-input');if(i)i.focus();},200);
   }
   document.getElementById('tool-modal').classList.add('open');
-  setTimeout(function(){var inp=body.querySelector('input');if(inp)inp.focus();},200);
 }
-function closeTool(){document.getElementById('tool-modal').classList.remove('open');}
+function closeTool(){
+  document.getElementById('tool-modal').classList.remove('open');
+  ['calc','conv','conj'].forEach(function(t){
+    var p=document.getElementById(t+'-panel');
+    if(p)p.classList.remove('show');
+  });
+}
 
 function runCalc(){
   var input=document.getElementById('tool-calc-input').value.trim();
@@ -5785,16 +5784,34 @@ function updateDevoirBadge(){
 }
 
 function renderDevoirs(){
-  ['urgent','semaine','plus'].forEach(u=>{
-    const el=document.getElementById('dv-'+u);if(!el)return;
-    const list=devoirs.filter(d=>d.urg===u);
-    const empty = {
-      urgent: emptyState('🎉','Aucun urgent !','Pas de devoir pressant. Profites-en 😎','',''),
-      semaine: emptyState('📅','Cette semaine','Ajoute tes prochains devoirs','＋ Ajouter','openMo()'),
-      plus: emptyState('🌟','Rien pour plus tard','Tu es à jour !','',''),
-    };
-    el.innerHTML=list.length ? list.map(buildDvCard).join('') : (empty[u]||'');
-  });
+  const el=document.getElementById('dv-by-day');
+  if(el){
+    const active=devoirs.filter(d=>!d.done);
+    const done=devoirs.filter(d=>d.done);
+    if(!active.length&&!done.length){
+      el.innerHTML=emptyState('📅','Aucun devoir !','Tout est à jour 🎉','＋ Ajouter','openMo()');
+    } else {
+      const groups={};
+      active.forEach(d=>{
+        const day=d.date||'Sans date';
+        if(!groups[day])groups[day]=[];
+        groups[day].push(d);
+      });
+      const dayOrder=['Aujourd\'hui','Demain','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
+      const days=Object.keys(groups).sort((a,b)=>{
+        const ai=dayOrder.indexOf(a),bi=dayOrder.indexOf(b);
+        if(ai>=0&&bi>=0)return ai-bi;
+        if(ai>=0)return -1;
+        if(bi>=0)return 1;
+        return 0;
+      });
+      let html=days.map(day=>`<div class="dv-day-group"><div class="dv-day-hdr"><div class="dv-day-line"></div><span class="dv-day-lbl">${esc(day)}</span><div class="dv-day-line"></div></div>${groups[day].map(buildDvCard).join('')}</div>`).join('');
+      if(done.length){
+        html+=`<div class="dv-day-group"><div class="dv-day-hdr"><div class="dv-day-line"></div><span class="dv-day-lbl" style="color:var(--a3)">✓ Terminés</span><div class="dv-day-line"></div></div>${done.map(buildDvCard).join('')}</div>`;
+      }
+      el.innerHTML=html||emptyState('📅','Aucun devoir !','Tout est à jour 🎉','＋ Ajouter','openMo()');
+    }
+  }
   updateDevoirBadge();
   scheduleNotifications();
 }
@@ -6563,24 +6580,7 @@ function toggleFlashTool(name){
 // CALCULATRICE SCIENTIFIQUE
 // ════════════════════════════════════════════════════════════════
 let calcExpr='';
-function toggleNotesTool(name){
-  const panels={calc:'calc-panel',conv:'conv-panel',conj:'conj-panel'};
-  const icons={calc:'hc-calc',conv:'hc-conv',conj:'hc-conj'};
-  const p=document.getElementById(panels[name]);
-  const ic=document.getElementById(icons[name]);
-  const isOpen=p&&p.classList.contains('show');
-  // Fermer tous
-  Object.values(panels).forEach(id=>{const el=document.getElementById(id);if(el)el.classList.remove('show');});
-  Object.values(icons).forEach(id=>{const el=document.getElementById(id);if(el)el.classList.remove('active');});
-  // Toggle le panel demandé
-  if(!isOpen&&p){p.classList.add('show');if(ic)ic.classList.add('active');}
-  // Cacher/afficher la section moyenne selon si un outil est ouvert
-  const anyOpen=!isOpen;
-  const moyMain=document.getElementById('moy-main-content');
-  if(moyMain)moyMain.style.display=anyOpen?'none':'block';
-  if(name==='conv'&&!isOpen)initConv();
-  if(name==='conj'&&!isOpen)setTimeout(()=>document.getElementById('conj-verb-inp')?.focus(),200);
-}
+function toggleNotesTool(name){openTool(name);}
 function calcInput(v){
   calcExpr+=v;
   document.getElementById('calc-expr').textContent=calcExpr;
@@ -6817,14 +6817,10 @@ function resetInterro(){
 let dvFilter='all';
 function filterDevoirs(f){
   dvFilter=dvFilter===f?'all':f;
-  ['urgent','semaine','all'].forEach(id=>{
-    const el=document.getElementById('hc-dv-'+id);
-    if(el)el.classList.toggle('active',dvFilter===id);
-  });
+  const el=document.getElementById('hc-dv-all');
+  if(el)el.classList.toggle('active',dvFilter==='all');
   renderDevoirs();
 }
-// Patch renderDevoirs pour tenir compte du filtre
-const _origRenderDv=typeof renderDevoirs==='function'?renderDevoirs:null;
 
 
 function toggleGuide(id){
@@ -7435,8 +7431,8 @@ function toggleFS(){
     if(req){
       req.call(el).then(()=>{
         if(btn) btn.textContent = '⛷';
+        localStorage.setItem('sk_fs','1');
       }).catch(()=>{
-        // Fallback : essaie sur body
         document.body.requestFullscreen?.() || document.body.webkitRequestFullscreen?.();
       });
     } else {
@@ -7446,17 +7442,22 @@ function toggleFS(){
     const exit = document.exitFullscreen || document.webkitExitFullscreen;
     if(exit) exit.call(document);
     if(btn) btn.textContent = '⛶';
+    localStorage.setItem('sk_fs','0');
   }
 }
 
 // Mettre à jour le bouton quand fullscreen change
 document.addEventListener('fullscreenchange', ()=>{
+  const isFS = !!document.fullscreenElement;
   const btn = document.getElementById('fs-btn');
-  if(btn) btn.textContent = document.fullscreenElement ? '⛷' : '⛶';
+  if(btn) btn.textContent = isFS ? '⛷' : '⛶';
+  localStorage.setItem('sk_fs', isFS ? '1' : '0');
 });
 document.addEventListener('webkitfullscreenchange', ()=>{
+  const isFS = !!document.webkitFullscreenElement;
   const btn = document.getElementById('fs-btn');
-  if(btn) btn.textContent = document.webkitFullscreenElement ? '⛷' : '⛶';
+  if(btn) btn.textContent = isFS ? '⛷' : '⛶';
+  localStorage.setItem('sk_fs', isFS ? '1' : '0');
 });
 
 
@@ -8501,16 +8502,22 @@ function refreshDash(){
     });
     const entries=Object.entries(matStats);
     if(!entries.length){
-      mp.innerHTML='<div style="font-size:12px;color:var(--mu);text-align:center;padding:16px">Commence à faire des flashcards pour voir ta progression !</div>';
+      mp.innerHTML='<div style="font-size:12px;color:var(--mu);text-align:center;padding:20px 0">Commence à faire des flashcards pour voir ta progression ici !</div>';
     } else {
-      mp.innerHTML=entries.slice(0,4).map(([name,s])=>{
+      mp.innerHTML=entries.slice(0,5).map(([name,s])=>{
         const pct=s.total>0?Math.round(s.ok/s.total*100):0;
         const col=getMatColor(name)||'var(--a1)';
-        return `<div style="margin-bottom:10px">
-          <div style="display:flex;justify-content:space-between;font-size:11.5px;font-weight:700;color:var(--tx);margin-bottom:4px">
-            <span>${esc(name.slice(0,20))}</span><span style="color:${col}">${pct}%</span>
+        const lvl=pct>=80?'🟢 Maîtrisé':pct>=50?'🟡 En cours':'🔴 À revoir';
+        return `<div class="dash-mat-card">
+          <div class="dash-mat-row">
+            <span class="dash-mat-name">${esc(name.slice(0,22))}</span>
+            <span class="dash-prog-pct" style="color:${col}">${pct}%</span>
           </div>
           <div class="dash-prog-bar"><div class="dash-prog-fill" style="width:${pct}%;background:${col}"></div></div>
+          <div class="dash-mat-row" style="margin-top:5px;margin-bottom:0">
+            <span class="dash-mat-count">${s.ok} / ${s.total} cartes maîtrisées</span>
+            <span style="font-size:10px">${lvl}</span>
+          </div>
         </div>`;
       }).join('');
     }

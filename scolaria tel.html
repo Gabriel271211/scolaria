@@ -1605,96 +1605,153 @@ button:active{opacity:.85}
 .ob-badge-blue{background:rgba(86,200,232,.15);color:var(--a5)}
 
 
-/* ════ SYSTÈME CAHIER VIRTUEL ════ */
+/* ════ CAHIER VIRTUEL v2 ════ */
 #gp-compte{overflow:hidden!important;padding-bottom:0!important;display:flex!important;flex-direction:column!important}
 .cah-views-outer{flex:1;overflow:hidden;min-height:0;position:relative}
 .cah-views-inner{position:absolute;inset:0;display:flex;width:200%;transition:transform .38s cubic-bezier(.32,1.26,.6,1);will-change:transform}
-.cah-view{width:50%;height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px 16px 80px}
-.cah-view::-webkit-scrollbar{width:4px}
-.cah-view::-webkit-scrollbar-thumb{background:rgba(139,111,255,.3);border-radius:2px}
+.cah-view{width:50%;height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0 0 80px}
+.cah-view::-webkit-scrollbar{display:none}
 #cah-view-profil .gpi{padding:0}
-/* Nav duo Cahier + Profil */
-.ni-duo{flex:1;display:flex;align-items:flex-end;gap:0}
-.ni-duo .ni{flex:1;padding:5px 1px}
-.ni-duo .niw{width:32px;height:32px;font-size:14px}
-.ni-duo .nil{font-size:8px}
-.ni-duo-sep{width:1px;height:22px;background:var(--bord);flex-shrink:0;margin-bottom:10px;align-self:flex-end}
-/* Notebooks list */
-.nb-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
-.nb-header-title{font-family:var(--fd);font-size:21px;font-weight:800;letter-spacing:-.5px}
-.nb-add{width:38px;height:38px;border-radius:50%;border:none;background:linear-gradient(135deg,var(--a1),var(--a2));color:#fff;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 14px rgba(139,111,255,.4);transition:transform .15s}
-.nb-add:active{transform:scale(.88)}
-.nb-grid{display:flex;flex-direction:column;gap:12px}
-.nb-card{position:relative;border-radius:18px;padding:0;display:flex;align-items:stretch;cursor:pointer;transition:transform .18s;-webkit-tap-highlight-color:transparent;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.18)}
-.nb-card:active{transform:scale(.96)}
-.nb-card-stripe{width:5px;flex-shrink:0}
-.nb-card-body{flex:1;display:flex;align-items:center;gap:12px;padding:14px 14px;background:var(--card);border:1px solid var(--bord);border-left:none;border-radius:0 18px 18px 0}
-.nb-card-ico{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0}
-.nb-card-info{flex:1;min-width:0}
-.nb-card-name{font-weight:700;font-size:14.5px;margin-bottom:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.nb-card-meta{font-size:11px;color:var(--mu);display:flex;align-items:center;gap:6px}
-.nb-card-del{width:32px;height:32px;border-radius:9px;border:none;background:transparent;color:var(--mu);font-size:16px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s}
-.nb-card-del:active{background:rgba(255,107,157,.15);color:var(--a2)}
-.nb-card-arrow{font-size:18px;color:var(--mu);flex-shrink:0}
-.nb-empty{text-align:center;padding:54px 20px 20px;color:var(--mu)}
-.nb-empty-ico{font-size:56px;margin-bottom:16px;line-height:1}
-.nb-empty-t{font-size:15px;font-weight:700;color:var(--tx);margin-bottom:6px}
-.nb-empty-s{font-size:12px;line-height:1.7}
-.nb-empty-cta{display:inline-flex;align-items:center;gap:6px;margin-top:16px;padding:10px 20px;background:linear-gradient(135deg,var(--a1),var(--a2));color:#fff;border:none;border-radius:12px;font-size:13px;font-family:var(--fb);font-weight:700;cursor:pointer;box-shadow:0 3px 12px rgba(139,111,255,.35)}
-.nb-empty-cta:active{opacity:.85}
-/* Pages list */
-.pg-back{display:flex;align-items:center;gap:6px;color:var(--mu);font-size:12.5px;font-weight:600;cursor:pointer;margin-bottom:14px;-webkit-tap-highlight-color:transparent}
-.pg-back:active{color:var(--a1)}
-.pg-nb-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
-.pg-nb-left{display:flex;align-items:center;gap:8px;min-width:0}
-.pg-nb-ico{font-size:26px;flex-shrink:0}
-.pg-nb-name{font-family:var(--fd);font-size:17px;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.pg-add{width:30px;height:30px;border-radius:50%;border:none;background:linear-gradient(135deg,var(--a1),var(--a2));color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .15s}
-.pg-add:active{transform:scale(.9)}
-.pg-list{display:flex;flex-direction:column;gap:8px}
-.pg-item{background:var(--card);border:1px solid var(--bord);border-radius:13px;padding:11px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:all .18s}
-.pg-item:active{transform:scale(.97)}
-.pg-item-ico{font-size:18px;flex-shrink:0}
-.pg-item-info{flex:1;min-width:0}
-.pg-item-name{font-weight:600;font-size:13px;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.pg-item-meta{font-size:10px;color:var(--mu)}
-.pg-item-del{width:26px;height:26px;border-radius:7px;border:none;background:transparent;color:var(--mu);font-size:14px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center}
-.pg-item-del:active{color:var(--a2)}
-.pg-empty{text-align:center;padding:30px 0;color:var(--mu);font-size:12px}
-/* Page viewer */
-.pv-back{display:flex;align-items:center;gap:6px;color:var(--mu);font-size:12.5px;font-weight:600;cursor:pointer;margin-bottom:14px;-webkit-tap-highlight-color:transparent}
-.pv-back:active{color:var(--a1)}
-.pv-title-inp{width:100%;background:transparent;border:none;border-bottom:2px solid var(--bord);padding:4px 0 6px;font-family:var(--fd);font-size:16px;font-weight:700;color:var(--tx);outline:none;margin-bottom:16px;transition:border-color .2s}
-.pv-title-inp:focus{border-bottom-color:var(--a1)}
-.pv-lbl{font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--mu);margin:16px 0 8px}
-.pv-photos{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.pv-ph-cell{aspect-ratio:1;border-radius:10px;overflow:hidden;position:relative;background:var(--card);border:1px solid var(--bord)}
-.pv-ph-cell img{width:100%;height:100%;object-fit:cover;display:block}
-.pv-ph-del{position:absolute;top:4px;right:4px;width:20px;height:20px;background:rgba(0,0,0,.65);border-radius:50%;border:none;color:#fff;font-size:9px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1}
-.pv-ph-add{aspect-ratio:1;border-radius:10px;background:rgba(139,111,255,.07);border:2px dashed rgba(139,111,255,.3);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;gap:4px;color:var(--a1);font-size:10px;font-weight:600;transition:background .2s}
-.pv-ph-add:active{background:rgba(139,111,255,.15)}
-.pv-ph-add-ico{font-size:22px;line-height:1}
-.pv-notes{width:100%;min-height:120px;background:var(--card);border:1px solid var(--bord);border-radius:12px;padding:12px;color:var(--tx);font-size:13px;font-family:var(--fb);outline:none;resize:vertical;line-height:1.6;transition:border-color .2s}
-.pv-notes:focus{border-color:var(--a1)}
-.pv-btns{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
-.pv-btn{flex:1;min-width:90px;padding:11px 8px;border-radius:12px;border:none;cursor:pointer;font-size:12px;font-family:var(--fb);font-weight:700;transition:all .18s;display:flex;align-items:center;justify-content:center;gap:5px}
-.pv-btn:active{transform:scale(.95)}
-.pv-btn.b-flash{background:rgba(79,214,160,.1);border:1px solid rgba(79,214,160,.25);color:var(--a3)}
-.pv-btn.b-resume{background:rgba(139,111,255,.1);border:1px solid rgba(139,111,255,.25);color:var(--a1)}
-.pv-btn:disabled{opacity:.45;cursor:not-allowed;transform:none!important}
-.pv-result{margin-top:14px;display:none}
-.pv-result.show{display:block}
-/* Inline forms (replace prompt/confirm) */
-.cah-form{padding:20px 16px;display:flex;flex-direction:column;gap:14px}
-.cah-form-title{font-size:16px;font-weight:700;color:var(--tx)}
+/* ── Drum nav ── */
+.ni-drum-slot{flex:1;display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;height:100%;perspective:500px;-webkit-tap-highlight-color:transparent;position:relative}
+.ni-drum{position:relative;width:52px;height:52px;transform-style:preserve-3d;transition:transform .42s cubic-bezier(.4,0,.2,1)}
+.ni-drum-f{position:absolute;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.ni-drum-f:nth-child(1){transform:rotateX(0deg) translateZ(26px)}
+.ni-drum-f:nth-child(2){transform:rotateX(90deg) translateZ(26px)}
+.ni-drum[data-f="1"]{transform:rotateX(-90deg)}
+.ni-drum-slot .niw{width:32px;height:32px;font-size:14px;border-radius:10px;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.ni-drum-slot .nil{font-size:8px;color:var(--mu);transition:color .2s}
+.ni-drum-slot.on .nil{color:var(--a1)}
+.ni-drum-slot.on .niw{background:rgba(139,111,255,.12)}
+/* ── Notebooks list ── */
+.nb2-top{display:flex;align-items:center;padding:18px 16px 10px;gap:10px}
+.nb2-title{font-family:var(--fd);font-size:22px;font-weight:900;letter-spacing:-.6px;flex:1}
+.nb2-add{width:36px;height:36px;border-radius:50%;border:none;background:var(--a1);color:#fff;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 12px rgba(139,111,255,.38);transition:transform .15s}
+.nb2-add:active{transform:scale(.88)}
+.nb2-group-hd{padding:10px 16px 4px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.9px;color:var(--mu)}
+.nb2-card{display:flex;align-items:center;margin:0 12px 8px;background:var(--card);border-radius:14px;border:1px solid var(--bord);overflow:hidden;cursor:pointer;transition:transform .15s;-webkit-tap-highlight-color:transparent}
+.nb2-card:active{transform:scale(.97)}
+.nb2-stripe{width:4px;min-height:62px;flex-shrink:0}
+.nb2-ico{font-size:24px;padding:0 10px 0 12px;flex-shrink:0}
+.nb2-info{flex:1;min-width:0;padding:13px 0}
+.nb2-name{font-weight:700;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:3px}
+.nb2-sub{font-size:11px;color:var(--mu);display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.nb2-dot{display:inline-block;width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.nb2-arr{color:var(--mu);font-size:18px;padding:0 10px;flex-shrink:0}
+.nb2-del{padding:12px 8px;color:var(--mu);font-size:12px;border:none;background:transparent;cursor:pointer;flex-shrink:0}
+.nb2-empty{text-align:center;padding:60px 20px 20px;color:var(--mu)}
+.nb2-empty-ico{font-size:52px;margin-bottom:14px;opacity:.55}
+.nb2-empty-t{font-size:16px;font-weight:700;color:var(--tx);margin-bottom:6px}
+.nb2-empty-s{font-size:12px;line-height:1.8;color:var(--mu)}
+.nb2-empty-cta{margin-top:18px;padding:12px 26px;background:var(--a1);color:#fff;border:none;border-radius:14px;font-size:14px;font-family:var(--fb);font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(139,111,255,.35)}
+/* ── Pages list ── */
+.pg2-topbar{display:flex;align-items:center;gap:8px;padding:10px 14px 10px;background:var(--bg);border-bottom:1px solid var(--bord);flex-shrink:0}
+.pg2-back{width:32px;height:32px;border-radius:9px;border:none;background:var(--card);color:var(--tx);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pg2-nb-ico{font-size:20px;flex-shrink:0}
+.pg2-nb-name{font-family:var(--fd);font-size:16px;font-weight:800;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pg2-add-btn{width:32px;height:32px;border-radius:50%;border:none;background:var(--a1);color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 8px rgba(139,111,255,.3)}
+.pg2-ical-row{display:flex;gap:6px;overflow-x:auto;padding:8px 14px 0;-webkit-overflow-scrolling:touch}
+.pg2-ical-row::-webkit-scrollbar{display:none}
+.pg2-ical-chip{padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;border:none;flex-shrink:0;transition:all .15s}
+.pg2-list{padding:0 14px}
+.pg2-item{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--bord);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.pg2-item:last-child{border-bottom:none}
+.pg2-item-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.pg2-item-info{flex:1;min-width:0}
+.pg2-item-name{font-weight:600;font-size:13.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:2px}
+.pg2-item-meta{font-size:10.5px;color:var(--mu)}
+.pg2-item-del{padding:8px;color:var(--mu);font-size:12px;border:none;background:transparent;cursor:pointer;flex-shrink:0}
+.pg2-empty{text-align:center;padding:36px 0;color:var(--mu);font-size:12px}
+.pg2-add-ical{display:flex;align-items:center;gap:5px;padding:10px 14px;font-size:12px;color:var(--a1);font-weight:600;cursor:pointer;background:none;border:none;width:100%;text-align:left}
+/* ── Page viewer ── */
+.pv2-outer{display:flex;flex-direction:column;height:100%;position:absolute;inset:0}
+.pv2-topbar{display:flex;align-items:center;gap:8px;padding:10px 14px 8px;background:var(--bg);border-bottom:1px solid var(--bord);flex-shrink:0}
+.pv2-back{width:32px;height:32px;border-radius:9px;border:none;background:var(--card);color:var(--tx);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pv2-title-inp{flex:1;background:transparent;border:none;font-family:var(--fd);font-size:15px;font-weight:700;color:var(--tx);outline:none;min-width:0}
+.pv2-pg-nav{display:flex;align-items:center;gap:3px;flex-shrink:0}
+.pv2-pg-btn{width:26px;height:26px;border-radius:7px;border:none;background:var(--card);color:var(--tx);font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.pv2-pg-btn:disabled{opacity:.3;cursor:default}
+.pv2-pg-count{font-size:10px;color:var(--mu);min-width:28px;text-align:center}
+/* Chips strip */
+.pv2-chip-strip{display:flex;gap:5px;overflow-x:auto;padding:6px 14px 0;-webkit-overflow-scrolling:touch;flex-shrink:0}
+.pv2-chip-strip::-webkit-scrollbar{display:none}
+.pv2-pg-chip{padding:4px 10px;border-radius:20px;border:1px solid var(--bord);background:var(--card);font-size:10.5px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .15s;flex-shrink:0;color:var(--mu)}
+.pv2-pg-chip.active{background:var(--a1);color:#fff;border-color:var(--a1)}
+/* Body with intercalaires */
+.pv2-body{flex:1;display:flex;min-height:0;position:relative;overflow:hidden}
+.pv2-icals{position:absolute;right:0;top:0;bottom:0;width:26px;display:flex;flex-direction:column;z-index:10;padding:12px 0;gap:3px;pointer-events:none}
+.pv2-ical{width:26px;height:72px;display:flex;align-items:center;justify-content:center;border-radius:8px 0 0 8px;cursor:pointer;pointer-events:all;box-shadow:-2px 1px 6px rgba(0,0,0,.12);transition:width .15s}
+.pv2-ical:active,.pv2-ical.active{width:30px}
+.pv2-ical-lbl{writing-mode:vertical-rl;transform:rotate(180deg);font-size:8px;font-weight:800;color:#fff;letter-spacing:.4px;text-transform:uppercase;max-height:60px;overflow:hidden}
+/* Page content */
+.pv2-page{flex:1;overflow-y:auto;overflow-x:hidden;padding:12px 36px 130px 14px;-webkit-overflow-scrolling:touch}
+.pv2-page::-webkit-scrollbar{display:none}
+/* Flip animations */
+.pv2-page.fl-out-l{animation:flOutL .28s ease forwards}
+.pv2-page.fl-in-r{animation:flInR .28s ease forwards}
+.pv2-page.fl-out-r{animation:flOutR .28s ease forwards}
+.pv2-page.fl-in-l{animation:flInL .28s ease forwards}
+@keyframes flOutL{to{transform:translateX(-38%) rotateY(12deg);opacity:0}}
+@keyframes flInR{from{transform:translateX(38%) rotateY(-12deg);opacity:0}}
+@keyframes flOutR{to{transform:translateX(38%) rotateY(-12deg);opacity:0}}
+@keyframes flInL{from{transform:translateX(-38%) rotateY(12deg);opacity:0}}
+/* Photos strip */
+.pv2-photos{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;-webkit-overflow-scrolling:touch;margin-bottom:10px}
+.pv2-photos::-webkit-scrollbar{display:none}
+.pv2-ph-thumb{width:68px;height:68px;border-radius:10px;overflow:hidden;flex-shrink:0;position:relative;background:var(--card);border:1px solid var(--bord)}
+.pv2-ph-thumb img{width:100%;height:100%;object-fit:cover;display:block;cursor:zoom-in}
+.pv2-ph-del{position:absolute;top:3px;right:3px;width:17px;height:17px;background:rgba(0,0,0,.65);border-radius:50%;border:none;color:#fff;font-size:8px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.pv2-ph-add{width:68px;height:68px;border-radius:10px;background:rgba(139,111,255,.05);border:2px dashed rgba(139,111,255,.22);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;gap:3px;color:var(--a1);font-size:9px;font-weight:700;flex-shrink:0;transition:background .15s}
+.pv2-ph-add:active{background:rgba(139,111,255,.12)}
+.pv2-ph-add-ico{font-size:20px;line-height:1}
+/* Rich text editor */
+.pv2-editor{min-height:180px;outline:none;line-height:1.8;font-size:14px;color:var(--tx);caret-color:var(--a1);word-break:break-word;white-space:pre-wrap}
+.pv2-editor:empty:before{content:attr(data-ph);color:var(--mu);pointer-events:none;font-style:italic}
+/* Formatting toolbar */
+.pv2-toolbar{position:absolute;bottom:0;left:0;right:0;padding:7px 12px 10px;background:var(--bg);border-top:1px solid var(--bord);display:flex;align-items:center;gap:5px;flex-wrap:wrap;z-index:20}
+.pv2-tb-btn{padding:5px 8px;border-radius:7px;border:1px solid var(--bord);background:var(--card);color:var(--tx);font-size:12px;font-weight:600;cursor:pointer;transition:all .12s;flex-shrink:0;-webkit-tap-highlight-color:transparent;min-height:28px}
+.pv2-tb-btn:active{background:var(--a1);color:#fff;border-color:var(--a1)}
+.pv2-tb-sep{width:1px;height:18px;background:var(--bord);flex-shrink:0}
+.pv2-tb-hl{width:18px;height:18px;border-radius:5px;border:2px solid transparent;cursor:pointer;flex-shrink:0;transition:transform .12s}
+.pv2-tb-hl:active{transform:scale(1.25)}
+.pv2-ai-btn{margin-left:auto;padding:5px 10px;border-radius:9px;border:none;background:var(--a1);color:#fff;font-size:11px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:4px;box-shadow:0 2px 8px rgba(139,111,255,.28);flex-shrink:0}
+/* AI bot sheet */
+.pv2-bot{position:absolute;bottom:0;left:0;right:0;background:var(--bg);border-top:1px solid var(--bord);border-radius:18px 18px 0 0;padding:14px 14px 100px;z-index:30;transform:translateY(100%);transition:transform .32s cubic-bezier(.4,0,.2,1)}
+.pv2-bot.open{transform:translateY(0)}
+.pv2-bot-handle{width:32px;height:3px;background:var(--bord);border-radius:2px;margin:0 auto 12px}
+.pv2-bot-title{font-size:14px;font-weight:700;color:var(--tx);margin-bottom:10px}
+.pv2-bot-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:12px}
+.pv2-bot-btn{padding:10px 8px;border-radius:11px;border:1px solid var(--bord);background:var(--card);color:var(--tx);font-size:12px;font-weight:600;cursor:pointer;font-family:var(--fb);transition:all .12s}
+.pv2-bot-btn:active{transform:scale(.96)}
+.pv2-bot-row{display:flex;gap:8px;margin-bottom:10px}
+.pv2-bot-inp{flex:1;padding:9px 12px;border-radius:11px;border:1.5px solid var(--bord);background:var(--card);color:var(--tx);font-size:13px;font-family:var(--fb);outline:none}
+.pv2-bot-inp:focus{border-color:var(--a1)}
+.pv2-bot-send{width:38px;height:38px;border-radius:11px;border:none;background:var(--a1);color:#fff;font-size:16px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.pv2-bot-reply{background:var(--card);border-radius:11px;padding:11px;font-size:12.5px;line-height:1.7;color:var(--tx);border:1px solid var(--bord);max-height:180px;overflow-y:auto;white-space:pre-wrap}
+.pv2-bot-overlay{position:absolute;inset:0;z-index:29;display:none}
+.pv2-bot-overlay.open{display:block}
+/* Forms */
+.cah-form{padding:18px 16px;display:flex;flex-direction:column;gap:13px}
+.cah-form-title{font-size:17px;font-weight:800;color:var(--tx)}
+.cah-form-lbl{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:var(--mu)}
 .cah-form-inp{background:var(--card);border:1.5px solid var(--bord);border-radius:12px;padding:12px 14px;font-size:15px;color:var(--tx);outline:none;width:100%;box-sizing:border-box;font-family:var(--fb)}
 .cah-form-inp:focus{border-color:var(--a1)}
+.cah-form-emoji{display:flex;gap:8px;flex-wrap:wrap}
+.cah-form-emoji span{font-size:22px;cursor:pointer;padding:5px;border-radius:9px;border:2px solid transparent;transition:all .12s;line-height:1}
+.cah-form-emoji span.sel{border-color:var(--a1);background:rgba(139,111,255,.1)}
+.cah-form-colors{display:flex;gap:9px;flex-wrap:wrap}
+.cah-form-col{width:26px;height:26px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:transform .12s,border-color .12s}
+.cah-form-col.sel{transform:scale(1.18);border-color:var(--tx)}
 .cah-form-btns{display:flex;gap:10px}
 .cah-form-btns button{flex:1;padding:12px;border-radius:12px;font-size:14px;font-weight:600;border:none;cursor:pointer;font-family:var(--fb)}
 .cah-form-cancel{background:var(--card)!important;color:var(--tx)!important;border:1.5px solid var(--bord)!important}
-.cah-form-confirm{background:linear-gradient(135deg,var(--a1),var(--a2))!important;color:#fff!important}
-/* Inline delete confirm */
-.cah-del-confirm{background:var(--card);border:1px solid var(--bord);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px;margin:8px 0}
+.cah-form-confirm{background:var(--a1)!important;color:#fff!important}
+/* Intercalaire form */
+.ical-form-colors{display:flex;gap:8px}
+.ical-form-col{width:24px;height:24px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:transform .12s}
+.ical-form-col.sel{transform:scale(1.2);border-color:var(--tx)}
+/* Delete confirm */
+.cah-del-confirm{background:var(--card);border:1px solid var(--bord);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:11px;margin:8px 16px}
 .cah-del-confirm p{margin:0;font-size:13px;color:var(--tx);line-height:1.5}
 .cah-del-btns{display:flex;gap:8px}
 .cah-del-btns button{flex:1;padding:10px;border-radius:10px;font-size:13px;font-weight:600;border:none;cursor:pointer;font-family:var(--fb)}
@@ -3236,16 +3293,19 @@ button:active{opacity:.85}
     <div class="niw"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
     <span class="nil">Flash</span><span class="ni-badge" id="badge-flash">0</span>
   </button>
-  <div class="ni-duo">
-    <button class="ni" id="ni-compte" onclick="openCahier()">
-      <div class="niw"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
-      <span class="nil">Cahier</span>
-    </button>
-    <div class="ni-duo-sep"></div>
-    <button class="ni" id="ni-profil" onclick="openProfil()">
-      <div class="niw"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
-      <span class="nil">Profil</span>
-    </button>
+  <div class="ni-drum-slot" id="ni-drum-slot" onclick="drumTap()">
+    <div class="ni-drum" id="ni-drum" data-f="0">
+      <!-- Face 0 : Cahier -->
+      <div class="ni-drum-f">
+        <div class="niw"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+        <span class="nil">Cahier</span>
+      </div>
+      <!-- Face 1 : Profil -->
+      <div class="ni-drum-f">
+        <div class="niw"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <span class="nil">Profil</span>
+      </div>
+    </div>
   </div>
 </nav>
 </div>
@@ -3671,7 +3731,7 @@ function goTo(id){
     const gp=document.getElementById('gp-'+id);
     if(gp){gp.classList.add('open');if(gp.scrollTop>0)gp.scrollTop=0;}
     if(id==='compte'){setTimeout(()=>renderCahiersView(),50);}
-    document.getElementById('ni-profil')?.classList.remove('on');
+    document.getElementById('ni-drum-slot')?.classList.remove('on');
     if(id==='dash'){setTimeout(refreshDash,50);}
     if(id==='flash'){setTimeout(checkSRSNotif,100);}
   } else {
@@ -8548,15 +8608,21 @@ function checkFicheURL(){
 }
 
 // ═══════════════════════════════════════════════════════════════
-// CAHIER VIRTUEL — Cahiers de cours avec photos, notes et IA
+// CAHIER VIRTUEL v2 — épuré, intercalaires, bot IA intégré
 // ═══════════════════════════════════════════════════════════════
 
 // ─── State
-let cahierTab = 'cahiers';
-let cahierNbId = null;
-let cahierPgId = null;
-let pvNotesTimer = null;
-let pvTitleTimer = null;
+var cahierTab = 'cahiers';
+var cahierNbId = null;
+var cahierPgId = null;
+var cahierIcalFilter = null;
+var pvSaveTimer = null;
+
+// ─── Constants
+var NB_EMOJIS = ['📔','📒','📓','📕','📗','📘','📙','🗒️','📋','🗂️'];
+var NB_COLORS = ['#8b6fff','#ff6b9d','#4fd6a0','#ffbe5c','#56c8e8','#f472b6','#fb923c','#10b981'];
+var ICAL_COLORS = ['#8b6fff','#ff6b9d','#4fd6a0','#ffbe5c','#56c8e8','#fb923c'];
+var HL_COLORS = ['#fde68a','#bbf7d0','#bfdbfe','#fecaca','#e9d5ff'];
 
 // ─── Storage
 function getCahiers(){
@@ -8567,51 +8633,62 @@ function saveCahiers(d){
   try{ localStorage.setItem('sk_cahiers',JSON.stringify(d)); }catch(e){}
 }
 
-// ─── Tab switching (déclenché depuis la nav du bas)
+// ─── Drum nav (cylindre Cahier / Profil)
+var _drumFace = 0;
+function drumTap(){
+  _drumFace = _drumFace === 0 ? 1 : 0;
+  var drum = document.getElementById('ni-drum');
+  var slot = document.getElementById('ni-drum-slot');
+  if(drum) drum.setAttribute('data-f', String(_drumFace));
+  if(_drumFace === 0){
+    if(slot) slot.classList.add('on');
+    openCahier();
+  } else {
+    if(slot) slot.classList.add('on');
+    openProfil();
+  }
+}
+
+// ─── Panel open/close
+function openCahier(){
+  PAGES.forEach(function(p){
+    document.getElementById('ni-'+p)?.classList.remove('on');
+    if(p!=='chat') document.getElementById('gp-'+p)?.classList.remove('open');
+  });
+  var gp=document.getElementById('gp-compte');
+  if(gp){gp.classList.add('open');}
+  var slot=document.getElementById('ni-drum-slot');
+  if(slot) slot.classList.add('on');
+  switchCahierTab('cahiers');
+  haptic('tick');
+}
+function openProfil(){
+  PAGES.forEach(function(p){
+    document.getElementById('ni-'+p)?.classList.remove('on');
+    if(p!=='chat') document.getElementById('gp-'+p)?.classList.remove('open');
+  });
+  var gp=document.getElementById('gp-compte');
+  if(gp){gp.classList.add('open');}
+  var slot=document.getElementById('ni-drum-slot');
+  if(slot) slot.classList.add('on');
+  switchCahierTab('profil');
+  haptic('tick');
+}
+
+// ─── Tab switch (slide horizontal)
 function switchCahierTab(t){
   cahierTab = t;
-  const inner = document.getElementById('cah-inner');
+  var inner = document.getElementById('cah-inner');
   if(inner) inner.style.transform = t==='profil' ? 'translateX(-50%)' : 'translateX(0)';
-  // Sync état actif des boutons nav
-  document.getElementById('ni-compte')?.classList.toggle('on', t==='cahiers');
-  document.getElementById('ni-profil')?.classList.toggle('on', t==='profil');
   if(t==='cahiers') renderCahiersView();
-  if(t==='profil'){ setTimeout(()=>{renderMatStats();applyProfileToUI();},50); }
+  if(t==='profil'){ setTimeout(function(){renderMatStats();applyProfileToUI();},50); }
 }
 
-// ─── Ouvrir le panel sur le tab Cahiers (depuis nav)
-function openCahier(){
-  PAGES.forEach(p=>{
-    document.getElementById('ni-'+p)?.classList.remove('on');
-    if(p!=='chat') document.getElementById('gp-'+p)?.classList.remove('open');
-  });
-  document.getElementById('ni-profil')?.classList.remove('on');
-  const gp=document.getElementById('gp-compte');
-  if(gp){gp.classList.add('open');if(gp.scrollTop>0)gp.scrollTop=0;}
-  switchCahierTab('cahiers');
-  animateNavItem('compte');
-  haptic('tick');
-}
-
-// ─── Ouvrir le panel sur le tab Profil (depuis nav)
-function openProfil(){
-  PAGES.forEach(p=>{
-    document.getElementById('ni-'+p)?.classList.remove('on');
-    if(p!=='chat') document.getElementById('gp-'+p)?.classList.remove('open');
-  });
-  document.getElementById('ni-compte')?.classList.remove('on');
-  const gp=document.getElementById('gp-compte');
-  if(gp){gp.classList.add('open');if(gp.scrollTop>0)gp.scrollTop=0;}
-  switchCahierTab('profil');
-  animateNavItem('compte');
-  haptic('tick');
-}
-
-// ─── Render dispatcher
+// ─── Main dispatcher
 function renderCahiersView(){
-  const el = document.getElementById('cah-content');
+  var el = document.getElementById('cah-content');
   if(!el) return;
-  const data = getCahiers();
+  var data = getCahiers();
   if(cahierPgId !== null && cahierNbId !== null){
     renderPageView(data, el);
   } else if(cahierNbId !== null){
@@ -8621,68 +8698,120 @@ function renderCahiersView(){
   }
 }
 
-// ─── Notebooks list
-const NB_EMOJIS = ['📔','📒','📓','📕','📗','📘','📙','🗒️','📋','🗂️'];
-const NB_COLORS = ['#8b6fff','#ff6b9d','#4fd6a0','#ffbe5c','#56c8e8','#f472b6','#fb923c','#10b981'];
-
+// ═══════════════════════════════
+// LISTE DES CAHIERS
+// ═══════════════════════════════
 function renderNotebooksList(data, el){
-  const nbs = data.notebooks;
-  let h = '<div class="nb-header"><div class="nb-header-title">📔 Mes cahiers</div>';
-  h += '<button class="nb-add" onclick="addNotebook()">+</button></div>';
+  var nbs = data.notebooks || [];
+  var h = '<div class="nb2-top"><div class="nb2-title">Mes cahiers</div>';
+  h += '<button class="nb2-add" onclick="addNotebook()">+</button></div>';
   if(!nbs.length){
-    h += '<div class="nb-empty"><div class="nb-empty-ico">📒</div>';
-    h += '<div class="nb-empty-t">Aucun cahier pour l\'instant</div>';
-    h += '<div class="nb-empty-s">Cree ton premier cahier pour enregistrer<br>tes cours, photos et notes.</div>';
-    h += '<button class="nb-empty-cta" onclick="addNotebook()">+ Nouveau cahier</button></div>';
-  } else {
-    h += '<div class="nb-grid">';
-    nbs.forEach(nb => {
-      const count = nb.pages ? nb.pages.length : 0;
-      const color = nb.color || '#8b6fff';
-      const bgC = color+'22';
-      h += '<div class="nb-card" onclick="openNotebook('+nb.id+')">';
-      h += '<div class="nb-card-stripe" style="background:'+color+'"></div>';
-      h += '<div class="nb-card-body">';
-      h += '<div class="nb-card-ico" style="background:'+bgC+'">'+(nb.emoji||'📔')+'</div>';
-      h += '<div class="nb-card-info"><div class="nb-card-name">'+esc(nb.title||'Cahier')+'</div>';
-      h += '<div class="nb-card-meta"><span>'+count+' page'+(count!==1?'s':'')+'</span>'+(nb.subject?'<span>\u00b7 '+esc(nb.subject)+'</span>':'')+'</div></div>';
-      h += '<button class="nb-card-del" onclick="event.stopPropagation();deleteNotebook('+nb.id+')">✕</button>';
-      h += '<span class="nb-card-arrow">›</span>';
-      h += '</div></div>';
-    });
+    h += '<div class="nb2-empty">';
+    h += '<div class="nb2-empty-ico">📒</div>';
+    h += '<div class="nb2-empty-t">Aucun cahier</div>';
+    h += '<div class="nb2-empty-s">Crée ton premier cahier pour<br>organiser tes cours.</div>';
+    h += '<button class="nb2-empty-cta" onclick="addNotebook()">+ Nouveau cahier</button>';
     h += '</div>';
+  } else {
+    // Group by subject if present
+    var groups = {};
+    var noGroup = [];
+    nbs.forEach(function(nb){
+      var g = nb.group || '';
+      if(g){ if(!groups[g]) groups[g]=[]; groups[g].push(nb); }
+      else noGroup.push(nb);
+    });
+    function renderNb(nb){
+      var count = nb.pages ? nb.pages.length : 0;
+      var color = nb.color || '#8b6fff';
+      var r = '<div class="nb2-card" onclick="openNotebook('+nb.id+')">';
+      r += '<div class="nb2-stripe" style="background:'+color+'"></div>';
+      r += '<div class="nb2-ico">'+(nb.emoji||'📔')+'</div>';
+      r += '<div class="nb2-info">';
+      r += '<div class="nb2-name">'+esc(nb.title||'Cahier')+'</div>';
+      r += '<div class="nb2-sub">';
+      r += '<span class="nb2-dot" style="background:'+color+'"></span>';
+      r += '<span>'+count+' page'+(count!==1?'s':'')+'</span>';
+      if(nb.subject) r += '<span>· '+esc(nb.subject)+'</span>';
+      r += '</div></div>';
+      r += '<span class="nb2-arr">›</span>';
+      r += '<button class="nb2-del" onclick="event.stopPropagation();deleteNotebook('+nb.id+')">✕</button>';
+      r += '</div>';
+      return r;
+    }
+    Object.keys(groups).forEach(function(g){
+      h += '<div class="nb2-group-hd">📂 '+esc(g)+'</div>';
+      groups[g].forEach(function(nb){ h += renderNb(nb); });
+    });
+    if(noGroup.length){
+      if(Object.keys(groups).length) h += '<div class="nb2-group-hd">Autres</div>';
+      noGroup.forEach(function(nb){ h += renderNb(nb); });
+    }
   }
   el.innerHTML = h;
 }
 
+// ─── Ajout cahier (formulaire inline)
 function addNotebook(){
-  const el = document.getElementById('cah-content');
+  var el = document.getElementById('cah-content');
   if(!el) return;
-  el.innerHTML = '<div class="cah-form">'
-    + '<div class="cah-form-title">📔 Nouveau cahier</div>'
-    + '<input class="cah-form-inp" id="cah-nb-inp" placeholder="Ex: Maths, Histoire, Anglais..." maxlength="40" autocomplete="off" autocorrect="off">'
-    + '<div class="cah-form-btns">'
-    + '<button class="cah-form-cancel" onclick="renderCahiersView()">Annuler</button>'
-    + '<button class="cah-form-confirm" onclick="confirmAddNotebook()">Creer</button>'
-    + '</div></div>';
+  var defaultEmoji = NB_EMOJIS[0];
+  var defaultColor = NB_COLORS[0];
+  var emojiH = '';
+  NB_EMOJIS.forEach(function(em, i){
+    emojiH += '<span data-em="'+em+'" class="'+(i===0?'sel':'')+'" onclick="nbFormEmoji(this,\''+em+'\')">'+em+'</span>';
+  });
+  var colH = '';
+  NB_COLORS.forEach(function(c, i){
+    colH += '<div class="cah-form-col '+(i===0?'sel':'')+'" style="background:'+c+'" data-c="'+c+'" onclick="nbFormColor(this,\''+c+'\')"></div>';
+  });
+  el.innerHTML = '<div class="cah-form" id="nb-new-form">'
+    +'<div class="cah-form-title">Nouveau cahier</div>'
+    +'<div class="cah-form-lbl">Nom</div>'
+    +'<input class="cah-form-inp" id="cah-nb-inp" placeholder="Ex: Maths, Histoire..." maxlength="40" autocomplete="off" autocorrect="off">'
+    +'<div class="cah-form-lbl">Groupe (facultatif)</div>'
+    +'<input class="cah-form-inp" id="cah-nb-grp" placeholder="Ex: Trimestre 1, Sciences..." maxlength="30" autocomplete="off">'
+    +'<div class="cah-form-lbl">Icone</div>'
+    +'<div class="cah-form-emoji" id="nb-form-emoji">'+emojiH+'</div>'
+    +'<div class="cah-form-lbl">Couleur</div>'
+    +'<div class="cah-form-colors" id="nb-form-colors">'+colH+'</div>'
+    +'<div class="cah-form-btns">'
+    +'<button class="cah-form-cancel" onclick="renderCahiersView()">Annuler</button>'
+    +'<button class="cah-form-confirm" onclick="confirmAddNotebook()">Créer</button>'
+    +'</div></div>';
+  window._nbFormEmoji = defaultEmoji;
+  window._nbFormColor = defaultColor;
   setTimeout(function(){ var i=document.getElementById('cah-nb-inp'); if(i)i.focus(); }, 120);
+}
+function nbFormEmoji(el, em){
+  window._nbFormEmoji = em;
+  document.querySelectorAll('#nb-form-emoji span').forEach(function(s){ s.classList.remove('sel'); });
+  el.classList.add('sel');
+}
+function nbFormColor(el, c){
+  window._nbFormColor = c;
+  document.querySelectorAll('#nb-form-colors .cah-form-col').forEach(function(s){ s.classList.remove('sel'); });
+  el.classList.add('sel');
 }
 function confirmAddNotebook(){
   var inp = document.getElementById('cah-nb-inp');
-  var title = inp ? inp.value : '';
-  if(!title || !title.trim()) return;
+  var grpInp = document.getElementById('cah-nb-grp');
+  var title = inp ? inp.value.trim() : '';
+  if(!title) return;
   var data = getCahiers();
   var idx = data.notebooks.length % NB_EMOJIS.length;
   data.notebooks.push({
     id: Date.now(),
-    title: title.trim().slice(0,40),
-    emoji: NB_EMOJIS[idx],
-    color: NB_COLORS[idx % NB_COLORS.length],
+    title: title.slice(0,40),
+    emoji: window._nbFormEmoji || NB_EMOJIS[idx],
+    color: window._nbFormColor || NB_COLORS[idx % NB_COLORS.length],
+    group: grpInp ? grpInp.value.trim().slice(0,30) : '',
     subject: '',
-    pages: []
+    pages: [],
+    intercalaires: []
   });
   saveCahiers(data);
-  toast('📔 Cahier cree !');
+  toast('📔 Cahier créé !');
   renderCahiersView();
 }
 
@@ -8707,77 +8836,136 @@ function doDeleteNotebook(id){
   saveCahiers(data);
   if(cahierNbId === id){ cahierNbId = null; cahierPgId = null; }
   renderCahiersView();
-  toast('🗑 Cahier supprime');
+  toast('🗑 Cahier supprimé');
 }
-
 function openNotebook(id){
   cahierNbId = id;
   cahierPgId = null;
+  cahierIcalFilter = null;
   renderCahiersView();
-  const v = document.getElementById('cah-view-cahiers');
+  var v = document.getElementById('cah-view-cahiers');
   if(v) v.scrollTop = 0;
 }
 
-// ─── Pages list
+// ═══════════════════════════════
+// LISTE DES PAGES
+// ═══════════════════════════════
 function renderPagesList(data, el){
-  const nb = data.notebooks.find(n => n.id === cahierNbId);
+  var nb = data.notebooks.find(function(n){ return n.id === cahierNbId; });
   if(!nb){ cahierNbId = null; renderCahiersView(); return; }
-  const pages = nb.pages || [];
-  let h = '<div class="pg-back" onclick="backToNotebooks()"><span style="font-size:18px">‹</span> Mes cahiers</div>';
-  h += '<div class="pg-nb-header">';
-  h += '<div class="pg-nb-left"><div class="pg-nb-ico">'+(nb.emoji||'📔')+'</div>';
-  h += '<div class="pg-nb-name">'+esc(nb.title)+'</div></div>';
-  h += '<button class="pg-add" onclick="addPage()" title="Nouvelle page">+</button></div>';
-  if(!pages.length){
-    h += '<div class="pg-empty">Aucune page — appuie sur + pour ajouter un cours</div>';
-  } else {
-    h += '<div class="pg-list">';
-    pages.forEach(pg => {
-      const ph = pg.photos ? pg.photos.length : 0;
-      const meta = pg.date + (ph ? ' \u00b7 '+ph+' 📸' : '') + (pg.notes ? ' \u00b7 📝' : '');
-      h += '<div class="pg-item" onclick="openPage('+pg.id+')">';
-      h += '<div class="pg-item-ico">📄</div>';
-      h += '<div class="pg-item-info"><div class="pg-item-name">'+esc(pg.title||'Page sans titre')+'</div>';
-      h += '<div class="pg-item-meta">'+esc(meta)+'</div></div>';
-      h += '<button class="pg-item-del" onclick="event.stopPropagation();deletePage('+pg.id+')">✕</button>';
-      h += '</div>';
+  var icals = nb.intercalaires || [];
+  var pages = nb.pages || [];
+  var color = nb.color || '#8b6fff';
+
+  // Topbar
+  var h = '<div class="pg2-topbar">';
+  h += '<button class="pg2-back" onclick="backToNotebooks()">‹</button>';
+  h += '<span class="pg2-nb-ico">'+(nb.emoji||'📔')+'</span>';
+  h += '<span class="pg2-nb-name">'+esc(nb.title)+'</span>';
+  h += '<button class="pg2-add-btn" onclick="addPage()">+</button>';
+  h += '</div>';
+
+  // Intercalaires filter chips
+  if(icals.length){
+    h += '<div class="pg2-ical-row">';
+    h += '<button class="pg2-ical-chip" style="'+(cahierIcalFilter===null?'background:'+color+';color:#fff;border-color:'+color:'background:var(--card);color:var(--mu);border-color:var(--bord)')+'" onclick="setIcalFilter(null)">Tout</button>';
+    icals.forEach(function(ic){
+      var active = cahierIcalFilter === ic.id;
+      h += '<button class="pg2-ical-chip" style="'+(active?'background:'+ic.color+';color:#fff;border-color:'+ic.color:'background:var(--card);color:var(--mu);border-color:var(--bord)')+'" onclick="setIcalFilter('+ic.id+')">'+esc(ic.label)+'</button>';
     });
     h += '</div>';
   }
+
+  // Pages list
+  var filtered = cahierIcalFilter !== null ? pages.filter(function(p){ return p.icalId === cahierIcalFilter; }) : pages;
+  h += '<div class="pg2-list">';
+  if(!filtered.length){
+    h += '<div class="pg2-empty">Aucune page'+(cahierIcalFilter?' dans cet intercalaire':'')+'</div>';
+  } else {
+    filtered.forEach(function(pg){
+      var ph = pg.photos ? pg.photos.length : 0;
+      var hasNotes = pg.notes && pg.notes.trim();
+      var meta = pg.date+(ph?' · '+ph+' 📸':'')+(hasNotes?' · 📝':'');
+      var ic = icals.find(function(i){ return i.id === pg.icalId; });
+      var dot = ic ? ic.color : color;
+      h += '<div class="pg2-item" onclick="openPage('+pg.id+')">';
+      h += '<div class="pg2-item-dot" style="background:'+dot+'"></div>';
+      h += '<div class="pg2-item-info">';
+      h += '<div class="pg2-item-name">'+esc(pg.title||'Page sans titre')+'</div>';
+      h += '<div class="pg2-item-meta">'+esc(meta)+'</div>';
+      h += '</div>';
+      h += '<button class="pg2-item-del" onclick="event.stopPropagation();deletePage('+pg.id+')">✕</button>';
+      h += '</div>';
+    });
+  }
+  h += '</div>';
+
+  // Bouton ajouter intercalaire
+  h += '<button class="pg2-add-ical" onclick="addIntercalaire()">＋ Intercalaire / Chapitre</button>';
+
   el.innerHTML = h;
+}
+
+function setIcalFilter(id){
+  cahierIcalFilter = id;
+  renderCahiersView();
 }
 
 function backToNotebooks(){
   cahierNbId = null;
   cahierPgId = null;
+  cahierIcalFilter = null;
   renderCahiersView();
 }
 
+// ─── Ajout page
 function addPage(){
   var el = document.getElementById('cah-content');
   if(!el) return;
+  var data = getCahiers();
+  var nb = data.notebooks.find(function(n){ return n.id === cahierNbId; });
+  if(!nb) return;
+  var icals = nb.intercalaires || [];
+  var icalH = '';
+  if(icals.length){
+    icalH = '<div class="cah-form-lbl">Intercalaire</div><div style="display:flex;gap:7px;flex-wrap:wrap" id="pg-ical-pick">';
+    icalH += '<button class="pg2-ical-chip sel" style="background:var(--a1);color:#fff;border-color:var(--a1)" data-ical="" onclick="pgPickIcal(this,\'\')">Aucun</button>';
+    icals.forEach(function(ic){
+      icalH += '<button class="pg2-ical-chip" style="background:var(--card);color:var(--mu);border-color:var(--bord)" data-ical="'+ic.id+'" onclick="pgPickIcal(this,'+ic.id+')">'+esc(ic.label)+'</button>';
+    });
+    icalH += '</div>';
+  }
   el.innerHTML = '<div class="cah-form">'
-    + '<div class="cah-form-title">📄 Nouvelle page</div>'
-    + '<input class="cah-form-inp" id="cah-pg-inp" placeholder="Ex: Chapitre 3, Les fractions..." maxlength="60" autocomplete="off" autocorrect="off">'
-    + '<div class="cah-form-btns">'
-    + '<button class="cah-form-cancel" onclick="renderCahiersView()">Annuler</button>'
-    + '<button class="cah-form-confirm" onclick="confirmAddPage()">Creer</button>'
-    + '</div></div>';
+    +'<div class="cah-form-title">Nouvelle page</div>'
+    +'<div class="cah-form-lbl">Titre</div>'
+    +'<input class="cah-form-inp" id="cah-pg-inp" placeholder="Ex: Ch.3 Les fractions..." maxlength="60" autocomplete="off" autocorrect="off">'
+    +icalH
+    +'<div class="cah-form-btns">'
+    +'<button class="cah-form-cancel" onclick="renderCahiersView()">Annuler</button>'
+    +'<button class="cah-form-confirm" onclick="confirmAddPage()">Créer</button>'
+    +'</div></div>';
+  window._pgIcalId = cahierIcalFilter || null;
   setTimeout(function(){ var i=document.getElementById('cah-pg-inp'); if(i)i.focus(); }, 120);
+}
+function pgPickIcal(el, id){
+  window._pgIcalId = id || null;
+  document.querySelectorAll('#pg-ical-pick .pg2-ical-chip').forEach(function(b){ b.style.background='var(--card)';b.style.color='var(--mu)';b.style.borderColor='var(--bord)'; });
+  el.style.background='var(--a1)'; el.style.color='#fff'; el.style.borderColor='var(--a1)';
 }
 function confirmAddPage(){
   var inp = document.getElementById('cah-pg-inp');
-  var title = inp ? inp.value : '';
-  if(!title || !title.trim()) return;
+  var title = inp ? inp.value.trim() : '';
+  if(!title) return;
   var data = getCahiers();
   var nb = data.notebooks.find(function(n){ return n.id === cahierNbId; });
   if(!nb) return;
   var pg = {
     id: Date.now(),
-    title: title.trim().slice(0,60),
+    title: title.slice(0,60),
     notes: '',
     photos: [],
-    date: new Date().toLocaleDateString('fr-FR')
+    date: new Date().toLocaleDateString('fr-FR'),
+    icalId: window._pgIcalId || null
   };
   if(!nb.pages) nb.pages = [];
   nb.pages.push(pg);
@@ -8796,7 +8984,7 @@ function deletePage(pgId){
   if(!pg) return;
   el.insertAdjacentHTML('afterbegin',
     '<div class="cah-del-confirm" id="cah-del-pg-'+pgId+'">'
-    +'<p>Supprimer la page <strong>'+esc(pg.title||'cette page')+'</strong> ?</p>'
+    +'<p>Supprimer <strong>'+esc(pg.title||'cette page')+'</strong> ?</p>'
     +'<div class="cah-del-btns">'
     +'<button class="cah-del-cancel" onclick="document.getElementById(\'cah-del-pg-'+pgId+'\').remove()">Annuler</button>'
     +'<button class="cah-del-ok" onclick="doDeletePage('+pgId+')">Supprimer</button>'
@@ -8811,89 +8999,434 @@ function doDeletePage(pgId){
   saveCahiers(data);
   if(cahierPgId === pgId) cahierPgId = null;
   renderCahiersView();
-  toast('🗑 Page supprimee');
+  toast('🗑 Page supprimée');
 }
-
 function openPage(pgId){
   cahierPgId = pgId;
   renderCahiersView();
-  const v = document.getElementById('cah-view-cahiers');
-  if(v) v.scrollTop = 0;
 }
 
-// ─── Page viewer
-function renderPageView(data, el){
-  const nb = data.notebooks.find(n => n.id === cahierNbId);
-  if(!nb){ cahierNbId = null; renderCahiersView(); return; }
-  const pg = (nb.pages||[]).find(p => p.id === cahierPgId);
-  if(!pg){ cahierPgId = null; renderCahiersView(); return; }
-  const photos = pg.photos || [];
+// ─── Intercalaires
+function addIntercalaire(){
+  var el = document.getElementById('cah-content');
+  if(!el) return;
+  var colH = '';
+  ICAL_COLORS.forEach(function(c, i){
+    colH += '<div class="ical-form-col '+(i===0?'sel':'')+'" style="background:'+c+'" data-c="'+c+'" onclick="icalFormColor(this,\''+c+'\')"></div>';
+  });
+  el.innerHTML = '<div class="cah-form">'
+    +'<div class="cah-form-title">Nouvel intercalaire</div>'
+    +'<div class="cah-form-lbl">Nom (ex: Chapitre 2)</div>'
+    +'<input class="cah-form-inp" id="cah-ical-inp" placeholder="Chapitre 1, Revision..." maxlength="30" autocomplete="off">'
+    +'<div class="cah-form-lbl">Couleur</div>'
+    +'<div class="ical-form-colors" id="ical-form-colors">'+colH+'</div>'
+    +'<div class="cah-form-btns">'
+    +'<button class="cah-form-cancel" onclick="renderCahiersView()">Annuler</button>'
+    +'<button class="cah-form-confirm" onclick="confirmAddIcal()">Créer</button>'
+    +'</div></div>';
+  window._icalFormColor = ICAL_COLORS[0];
+  setTimeout(function(){ var i=document.getElementById('cah-ical-inp'); if(i)i.focus(); }, 120);
+}
+function icalFormColor(el, c){
+  window._icalFormColor = c;
+  document.querySelectorAll('#ical-form-colors .ical-form-col').forEach(function(s){ s.classList.remove('sel'); });
+  el.classList.add('sel');
+}
+function confirmAddIcal(){
+  var inp = document.getElementById('cah-ical-inp');
+  var label = inp ? inp.value.trim() : '';
+  if(!label) return;
+  var data = getCahiers();
+  var nb = data.notebooks.find(function(n){ return n.id === cahierNbId; });
+  if(!nb) return;
+  if(!nb.intercalaires) nb.intercalaires = [];
+  nb.intercalaires.push({ id: Date.now(), label: label.slice(0,30), color: window._icalFormColor || ICAL_COLORS[0] });
+  saveCahiers(data);
+  toast('🔖 Intercalaire créé !');
+  renderCahiersView();
+}
 
-  let phHtml = '';
-  photos.forEach((src, i) => {
-    phHtml += '<div class="pv-ph-cell">';
-    phHtml += '<img src="'+src+'" onclick="pvZoom('+i+')" style="cursor:zoom-in">';
-    phHtml += '<button class="pv-ph-del" onclick="pvDelPhoto('+i+')">✕</button>';
-    phHtml += '</div>';
+// ═══════════════════════════════
+// PAGE VIEWER v2
+// ═══════════════════════════════
+function renderPageView(data, el){
+  var nb = data.notebooks.find(function(n){ return n.id === cahierNbId; });
+  if(!nb){ cahierNbId = null; renderCahiersView(); return; }
+  var pages = nb.pages || [];
+  var pgIdx = pages.findIndex(function(p){ return p.id === cahierPgId; });
+  if(pgIdx < 0){ cahierPgId = null; renderCahiersView(); return; }
+  var pg = pages[pgIdx];
+  var photos = pg.photos || [];
+  var icals = nb.intercalaires || [];
+  var ic = icals.find(function(i){ return i.id === pg.icalId; });
+  var color = ic ? ic.color : (nb.color || '#8b6fff');
+
+  // Photos strip
+  var phH = '';
+  photos.forEach(function(src, i){
+    phH += '<div class="pv2-ph-thumb"><img src="'+src+'" onclick="pvZoom('+i+')" loading="lazy">';
+    phH += '<button class="pv2-ph-del" onclick="pvDelPhoto('+i+')">✕</button></div>';
   });
   if(photos.length < 9){
-    phHtml += '<label class="pv-ph-add" for="pv-ph-inp" title="Galerie">';
-    phHtml += '<span class="pv-ph-add-ico">🖼️</span><span>Galerie</span></label>';
-    phHtml += '<label class="pv-ph-add" for="pv-ph-cam" style="background:rgba(255,190,92,.08);border-color:rgba(255,190,92,.3);color:var(--a4)" title="Scanner">';
-    phHtml += '<span class="pv-ph-add-ico">📸</span><span>Scanner</span></label>';
+    phH += '<label class="pv2-ph-add" for="pv2-ph-inp"><span class="pv2-ph-add-ico">🖼️</span><span>Galerie</span></label>';
+    phH += '<label class="pv2-ph-add" for="pv2-ph-cam" style="border-color:rgba(255,190,92,.3);color:#f59e0b"><span class="pv2-ph-add-ico">📷</span><span>Photo</span></label>';
   }
 
-  let h = '<div class="pv-back" onclick="backToPages()"><span style="font-size:18px">‹</span> '+esc(nb.title)+'</div>';
-  h += '<input class="pv-title-inp" id="pv-title-inp" placeholder="Titre de la page" oninput="pvSaveTitle(this.value)">';
-  h += '<div class="pv-lbl">📸 Photos du cours</div>';
-  h += '<div class="pv-photos" id="pv-photos">'+phHtml+'</div>';
-  h += '<input type="file" id="pv-ph-inp" accept="image/*" style="display:none" onchange="pvAddPhoto(event)">';
-  h += '<input type="file" id="pv-ph-cam" accept="image/*" capture="environment" style="display:none" onchange="pvScanPhoto(event)">';
-  h += '<div class="pv-lbl">📝 Notes</div>';
-  h += '<textarea class="pv-notes" id="pv-notes" placeholder="Tes notes, resume, points importants..." oninput="pvSaveNotes(this.value)"></textarea>';
-  h += '<div class="pv-btns">';
-  h += '<button class="pv-btn b-flash" id="pv-btn-flash" onclick="pvGenFlash()">🃏 Flashcards</button>';
-  h += '<button class="pv-btn b-resume" id="pv-btn-resume" onclick="pvGenResume()">📋 Resume</button>';
+  // Intercalaire chips (page chips)
+  var chipH = '';
+  if(icals.length){
+    chipH = '<div class="pv2-chip-strip">';
+    icals.forEach(function(ic2){
+      var active = pg.icalId === ic2.id;
+      chipH += '<button class="pv2-pg-chip'+(active?' active':'')+'" style="'+(active?'background:'+ic2.color+';border-color:'+ic2.color:'')+';" onclick="pvSetIcal('+ic2.id+')">'+esc(ic2.label)+'</button>';
+    });
+    chipH += '<button class="pv2-pg-chip'+(pg.icalId===null||pg.icalId===undefined?' active':'')+'" onclick="pvSetIcal(null)">Aucun</button>';
+    chipH += '</div>';
+  }
+
+  // Intercalaire tabs on the right
+  var icalTabsH = '';
+  if(icals.length){
+    ical_tabs_html = '';
+    icals.forEach(function(ic2){
+      var isA = pg.icalId === ic2.id;
+      ical_tabs_html += '<div class="pv2-ical'+(isA?' active':'')+'" style="background:'+ic2.color+(isA?';width:30px':'')+'" onclick="pvSetIcal('+ic2.id+')" title="'+esc(ic2.label)+'">';
+      ical_tabs_html += '<span class="pv2-ical-lbl">'+esc(ic2.label)+'</span></div>';
+    });
+    icalTabsH = ical_tabs_html;
+  }
+
+  // Toolbar highlight colors
+  var hlH = '';
+  HL_COLORS.forEach(function(c){
+    hlH += '<div class="pv2-tb-hl" style="background:'+c+'" onclick="pvHighlight(\''+c+'\')"></div>';
+  });
+
+  var h = '<div class="pv2-outer" id="pv2-outer">';
+  // Topbar
+  h += '<div class="pv2-topbar">';
+  h += '<button class="pv2-back" onclick="backToPages()">‹</button>';
+  h += '<input class="pv2-title-inp" id="pv2-title" placeholder="Titre…" value="" oninput="pvSaveField()">';
+  h += '<div class="pv2-pg-nav">';
+  h += '<button class="pv2-pg-btn" onclick="pvNavPage(-1)" '+(pgIdx===0?'disabled':'')+'>‹</button>';
+  h += '<span class="pv2-pg-count">'+(pgIdx+1)+'/'+pages.length+'</span>';
+  h += '<button class="pv2-pg-btn" onclick="pvNavPage(1)" '+(pgIdx===pages.length-1?'disabled':'')+'>›</button>';
+  h += '</div></div>';
+  // Intercalaire chips
+  h += chipH;
+  // Body
+  h += '<div class="pv2-body">';
+  // Page content
+  h += '<div class="pv2-page" id="pv2-page">';
+  // Photos
+  if(photos.length || true){
+    h += '<div class="pv2-photos" id="pv2-photos">'+phH+'</div>';
+  }
+  h += '<input type="file" id="pv2-ph-inp" accept="image/*" style="display:none" onchange="pvAddPhoto(event)">';
+  h += '<input type="file" id="pv2-ph-cam" accept="image/*" capture="environment" style="display:none" onchange="pvScanPhoto(event)">';
+  // Rich text
+  h += '<div class="pv2-editor" id="pv2-editor" contenteditable="true" data-ph="Tes notes, cours, formules…" oninput="pvSaveField()" onkeydown="pvEditorKey(event)"></div>';
   h += '</div>';
-  h += '<div class="pv-result" id="pv-result"></div>';
+  // Intercalaire side tabs
+  if(icals.length) h += '<div class="pv2-icals">'+icalTabsH+'</div>';
+  // Toolbar
+  h += '<div class="pv2-toolbar" id="pv2-toolbar">';
+  h += '<button class="pv2-tb-btn" onclick="pvFmt(\'bold\')" title="Gras"><strong>G</strong></button>';
+  h += '<button class="pv2-tb-btn" onclick="pvFmt(\'italic\')" title="Italique"><em>I</em></button>';
+  h += '<button class="pv2-tb-btn" onclick="pvFmt(\'underline\')" title="Souligner"><u>S</u></button>';
+  h += '<button class="pv2-tb-btn" onclick="pvFmt(\'strikeThrough\')" title="Barrer"><s>B</s></button>';
+  h += '<div class="pv2-tb-sep"></div>';
+  h += hlH;
+  h += '<div class="pv2-tb-sep"></div>';
+  h += '<button class="pv2-tb-btn" onclick="pvFmt(\'insertUnorderedList\')" title="Liste">·</button>';
+  h += '<button class="pv2-tb-btn" onclick="pvFontBigger()" title="A+">A+</button>';
+  h += '<button class="pv2-tb-btn" onclick="pvFontSmaller()" title="A-">A\u2212</button>';
+  h += '<button class="pv2-ai-btn" onclick="pvBotToggle()">✦ IA</button>';
+  h += '</div>';
+  // Bot sheet
+  h += '<div class="pv2-bot-overlay" id="pv2-bot-ov" onclick="pvBotToggle()"></div>';
+  h += '<div class="pv2-bot" id="pv2-bot">';
+  h += '<div class="pv2-bot-handle"></div>';
+  h += '<div class="pv2-bot-title">Assistant IA</div>';
+  h += '<div class="pv2-bot-grid">';
+  h += '<button class="pv2-bot-btn" onclick="pvBotAction(\'flash\')">🃏 Flashcards</button>';
+  h += '<button class="pv2-bot-btn" onclick="pvBotAction(\'resume\')">📋 Résumé</button>';
+  h += '<button class="pv2-bot-btn" onclick="pvBotAction(\'expliquer\')">💡 Explique le cours</button>';
+  h += '<button class="pv2-bot-btn" onclick="pvBotAction(\'interroger\')">🎯 Interroge-moi</button>';
+  h += '</div>';
+  h += '<div class="pv2-bot-row">';
+  h += '<input class="pv2-bot-inp" id="pv2-bot-inp" placeholder="Pose une question sur ce cours…">';
+  h += '<button class="pv2-bot-send" onclick="pvBotSend()">➤</button>';
+  h += '</div>';
+  h += '<div id="pv2-bot-reply" style="display:none" class="pv2-bot-reply"></div>';
+  h += '</div>';
+  h += '</div></div>';
+
   el.innerHTML = h;
 
-  // Remplir titre et notes en JS (evite problemes encodage)
-  const ti = document.getElementById('pv-title-inp');
+  // Restore title & content
+  var ti = document.getElementById('pv2-title');
   if(ti) ti.value = pg.title || '';
-  const ta = document.getElementById('pv-notes');
-  if(ta) ta.value = pg.notes || '';
+  var ed = document.getElementById('pv2-editor');
+  if(ed){
+    if(pg.notes && pg.notes.trim()){
+      // If plain text, preserve as preformatted; if HTML, use directly
+      if(pg.notes.indexOf('<') !== -1 && pg.notes.indexOf('>') !== -1){
+        ed.innerHTML = pg.notes;
+      } else {
+        ed.innerText = pg.notes;
+      }
+    }
+  }
 }
 
 function backToPages(){
+  pvFlushSave();
   cahierPgId = null;
   renderCahiersView();
-  const v = document.getElementById('cah-view-cahiers');
+  var v = document.getElementById('cah-view-cahiers');
   if(v) v.scrollTop = 0;
 }
 
-function pvSaveTitle(val){
-  clearTimeout(pvTitleTimer);
-  pvTitleTimer = setTimeout(()=>{
-    const data = getCahiers();
-    const nb = data.notebooks.find(n => n.id === cahierNbId);
-    const pg = nb && (nb.pages||[]).find(p => p.id === cahierPgId);
-    if(!pg) return;
-    pg.title = val.slice(0,60);
-    saveCahiers(data);
-  }, 700);
+// ─── Page navigation (prev/next)
+function pvNavPage(dir){
+  pvFlushSave();
+  var data = getCahiers();
+  var nb = data.notebooks.find(function(n){ return n.id === cahierNbId; });
+  if(!nb) return;
+  var pages = nb.pages || [];
+  var idx = pages.findIndex(function(p){ return p.id === cahierPgId; });
+  var newIdx = idx + dir;
+  if(newIdx < 0 || newIdx >= pages.length) return;
+  var outClass = dir > 0 ? 'fl-out-l' : 'fl-out-r';
+  var inClass  = dir > 0 ? 'fl-in-r'  : 'fl-in-l';
+  var pg = document.getElementById('pv2-page');
+  if(pg){
+    pg.classList.add(outClass);
+    setTimeout(function(){
+      cahierPgId = pages[newIdx].id;
+      renderCahiersView();
+      setTimeout(function(){
+        var np = document.getElementById('pv2-page');
+        if(np){ np.classList.add(inClass); setTimeout(function(){ np.classList.remove(inClass); }, 300); }
+      }, 20);
+    }, 260);
+  } else {
+    cahierPgId = pages[newIdx].id;
+    renderCahiersView();
+  }
 }
 
-function pvSaveNotes(val){
-  clearTimeout(pvNotesTimer);
-  pvNotesTimer = setTimeout(()=>{
-    const data = getCahiers();
-    const nb = data.notebooks.find(n => n.id === cahierNbId);
-    const pg = nb && (nb.pages||[]).find(p => p.id === cahierPgId);
+// ─── Set intercalaire on current page
+function pvSetIcal(id){
+  var data = getCahiers();
+  var nb = data.notebooks.find(function(n){ return n.id === cahierNbId; });
+  var pg = nb && (nb.pages||[]).find(function(p){ return p.id === cahierPgId; });
+  if(!pg) return;
+  pg.icalId = id;
+  saveCahiers(data);
+  renderCahiersView();
+}
+
+// ─── Rich text formatting
+function pvFmt(cmd){
+  document.getElementById('pv2-editor')?.focus();
+  document.execCommand(cmd, false, null);
+  pvSaveField();
+}
+function pvHighlight(color){
+  document.getElementById('pv2-editor')?.focus();
+  document.execCommand('hiliteColor', false, color);
+  pvSaveField();
+}
+var _pvFontSize = 14;
+function pvFontBigger(){ _pvFontSize = Math.min(_pvFontSize+2, 24); var ed=document.getElementById('pv2-editor'); if(ed) ed.style.fontSize=_pvFontSize+'px'; }
+function pvFontSmaller(){ _pvFontSize = Math.max(_pvFontSize-2, 10); var ed=document.getElementById('pv2-editor'); if(ed) ed.style.fontSize=_pvFontSize+'px'; }
+function pvEditorKey(e){
+  if(e.key === 'Tab'){ e.preventDefault(); document.execCommand('insertHTML', false, '&nbsp;&nbsp;&nbsp;&nbsp;'); }
+}
+
+// ─── Auto save
+function pvSaveField(){
+  clearTimeout(pvSaveTimer);
+  pvSaveTimer = setTimeout(pvFlushSave, 800);
+}
+function pvFlushSave(){
+  clearTimeout(pvSaveTimer);
+  var data = getCahiers();
+  var nb = data.notebooks.find(function(n){ return n.id === cahierNbId; });
+  var pg = nb && (nb.pages||[]).find(function(p){ return p.id === cahierPgId; });
+  if(!pg) return;
+  var ti = document.getElementById('pv2-title');
+  if(ti) pg.title = ti.value.slice(0,60);
+  var ed = document.getElementById('pv2-editor');
+  if(ed) pg.notes = ed.innerHTML;
+  saveCahiers(data);
+}
+
+// ─── Photos
+function pvAddPhoto(e){
+  var file = e.target.files[0];
+  if(!file) return;
+  e.target.value = '';
+  var reader = new FileReader();
+  reader.onload = function(ev){
+    pvFlushSave();
+    var data = getCahiers();
+    var nb = data.notebooks.find(function(n){ return n.id === cahierNbId; });
+    var pg = nb && (nb.pages||[]).find(function(p){ return p.id === cahierPgId; });
     if(!pg) return;
-    pg.notes = val;
+    if(!pg.photos) pg.photos = [];
+    if(pg.photos.length >= 9){ toast('Maximum 9 photos'); return; }
+    pg.photos.push(ev.target.result);
     saveCahiers(data);
-  }, 700);
+    renderCahiersView();
+    toast('📸 Photo ajoutée !');
+  };
+  reader.readAsDataURL(file);
+}
+async function pvScanPhoto(e){
+  var file = e.target.files[0];
+  if(!file) return;
+  e.target.value = '';
+  var reader = new FileReader();
+  reader.onload = async function(ev){
+    var src = ev.target.result;
+    pvFlushSave();
+    var data = getCahiers();
+    var nb = data.notebooks.find(function(n){ return n.id === cahierNbId; });
+    var pg = nb && (nb.pages||[]).find(function(p){ return p.id === cahierPgId; });
+    if(!pg) return;
+    if(!pg.photos) pg.photos = [];
+    if(pg.photos.length >= 9){ toast('Maximum 9 photos'); return; }
+    pg.photos.push(src);
+    saveCahiers(data);
+    renderCahiersView();
+    toast('📸 Photo ajoutée — analyse IA…');
+    try{
+      var mime = src.startsWith('data:image/png') ? 'image/png' : 'image/jpeg';
+      var b64 = src.split(',')[1];
+      var reply = await callAI({
+        system: buildSys(),
+        messages:[{role:'user',content:[
+          {type:'image',source:{type:'base64',media_type:mime,data:b64}},
+          {type:'text',text:'Transcris ce cours en français avec des puces et emojis. Identifie points clés, formules et définitions.'}
+        ]}],
+        maxTokens: 900
+      });
+      var fresh = getCahiers();
+      var fnb = fresh.notebooks.find(function(n){ return n.id === cahierNbId; });
+      var fpg = fnb && (fnb.pages||[]).find(function(p){ return p.id === cahierPgId; });
+      if(fpg){
+        fpg.notes = (fpg.notes ? fpg.notes + '<br><br>' : '') + reply.replace(/\n/g,'<br>');
+        saveCahiers(fresh);
+        renderCahiersView();
+        toast('✅ Cours transcrit !');
+      }
+    }catch(err){ toast('Photo ajoutée (IA non dispo)'); }
+  };
+  reader.readAsDataURL(file);
+}
+function pvDelPhoto(idx){
+  pvFlushSave();
+  var data = getCahiers();
+  var nb = data.notebooks.find(function(n){ return n.id === cahierNbId; });
+  var pg = nb && (nb.pages||[]).find(function(p){ return p.id === cahierPgId; });
+  if(!pg) return;
+  pg.photos.splice(idx, 1);
+  saveCahiers(data);
+  renderCahiersView();
+}
+
+// ─── Bot IA
+function pvBotToggle(){
+  var bot = document.getElementById('pv2-bot');
+  var ov = document.getElementById('pv2-bot-ov');
+  if(!bot) return;
+  var isOpen = bot.classList.contains('open');
+  if(isOpen){ bot.classList.remove('open'); if(ov) ov.classList.remove('open'); }
+  else { bot.classList.add('open'); if(ov) ov.classList.add('open'); }
+}
+async function pvBotAction(type){
+  var data = getCahiers();
+  var nb = data.notebooks.find(function(n){ return n.id === cahierNbId; });
+  var pg = nb && (nb.pages||[]).find(function(p){ return p.id === cahierPgId; });
+  if(!pg){ toast('Page introuvable'); return; }
+  pvFlushSave();
+  var ed = document.getElementById('pv2-editor');
+  var notes = ed ? (ed.innerText || ed.textContent || '') : (pg.notes||'');
+  var photos = pg.photos || [];
+  if(!notes.trim() && !photos.length){ toast('Ajoute des notes ou une photo'); return; }
+  var repEl = document.getElementById('pv2-bot-reply');
+  if(repEl){ repEl.style.display='block'; repEl.textContent='⚡ En cours…'; }
+  document.querySelectorAll('.pv2-bot-btn').forEach(function(b){ b.disabled=true; });
+  try{
+    var parts = [];
+    if(photos.length){
+      var s = photos[0];
+      parts.push({type:'image',source:{type:'base64',media_type:(s.startsWith('data:image/png')?'image/png':'image/jpeg'),data:s.split(',')[1]}});
+    }
+    var prompt2 = '';
+    if(type==='flash') prompt2 = 'Génère 8 flashcards à partir de ce cours. Format EXACT:\n##FLASH##\nCARTE 1/8\n❓ [question]\n✅ [réponse]\n##FINFLASH##';
+    else if(type==='resume') prompt2 = 'Fais un résumé clair et structuré de ce cours pour un collégien. Utilise des emojis et listes à puces.';
+    else if(type==='expliquer') prompt2 = 'Explique ce cours de façon claire et simple pour un collégien, avec des exemples concrets.';
+    else if(type==='interroger') prompt2 = 'Pose-moi 5 questions sur ce cours pour me préparer à une interrogation. Donne les réponses ensuite.';
+    if(notes) prompt2 += '\n\nNotes du cours : ' + notes.slice(0,2000);
+    parts.push({type:'text',text:prompt2});
+    var reply = await callAI({system:buildSys(),messages:[{role:'user',content:parts}],maxTokens:1500});
+    if(repEl){
+      if(type==='flash'){
+        repEl.innerHTML = buildDeckHTML(reply, true);
+      } else {
+        repEl.innerHTML = '<div style="white-space:pre-wrap">'+fmtMsg(reply)+'</div>';
+      }
+    }
+  }catch(err){
+    if(repEl) repEl.textContent = '❌ '+err.message.slice(0,80);
+  }
+  document.querySelectorAll('.pv2-bot-btn').forEach(function(b){ b.disabled=false; });
+}
+async function pvBotSend(){
+  var inp = document.getElementById('pv2-bot-inp');
+  var q = inp ? inp.value.trim() : '';
+  if(!q) return;
+  if(inp) inp.value = '';
+  var data = getCahiers();
+  var nb = data.notebooks.find(function(n){ return n.id === cahierNbId; });
+  var pg = nb && (nb.pages||[]).find(function(p){ return p.id === cahierPgId; });
+  pvFlushSave();
+  var ed = document.getElementById('pv2-editor');
+  var notes = ed ? (ed.innerText || '') : (pg ? pg.notes||'' : '');
+  var repEl = document.getElementById('pv2-bot-reply');
+  if(repEl){ repEl.style.display='block'; repEl.textContent='⚡ En cours…'; }
+  try{
+    var prompt3 = q + (notes ? '\n\nContenu du cours :\n'+notes.slice(0,2000) : '');
+    var reply = await callAI({system:buildSys(),messages:[{role:'user',content:prompt3}],maxTokens:1200});
+    if(repEl) repEl.innerHTML = '<div style="white-space:pre-wrap">'+fmtMsg(reply)+'</div>';
+  }catch(err){
+    if(repEl) repEl.textContent = '❌ '+err.message.slice(0,80);
+  }
+}
+
+// ─── Zoom photo
+function pvZoom(idx){
+  var data = getCahiers();
+  var nb = data.notebooks.find(function(n){ return n.id === cahierNbId; });
+  var pg = nb && (nb.pages||[]).find(function(p){ return p.id === cahierPgId; });
+  if(!pg || !pg.photos[idx]) return;
+  var ov = document.createElement('div');
+  ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.93);display:flex;align-items:center;justify-content:center;cursor:zoom-out';
+  var img = document.createElement('img');
+  img.src = pg.photos[idx];
+  img.style.cssText = 'max-width:96vw;max-height:90vh;border-radius:12px;object-fit:contain';
+  ov.appendChild(img);
+  ov.onclick = function(){ document.body.removeChild(ov); };
+  document.body.appendChild(ov);
+}
+
+// ─── Stubs kept for scan modal compatibility
+function pvSaveTitle(val){ pvSaveField(); }
+function pvSaveNotes(val){ pvSaveField();
 }
 
 function pvAddPhoto(e){
@@ -8978,79 +9511,7 @@ function pvDelPhoto(idx){
   renderCahiersView();
 }
 
-function pvZoom(idx){
-  const data = getCahiers();
-  const nb = data.notebooks.find(n => n.id === cahierNbId);
-  const pg = nb && (nb.pages||[]).find(p => p.id === cahierPgId);
-  if(!pg || !pg.photos[idx]) return;
-  const ov = document.createElement('div');
-  ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;cursor:zoom-out';
-  const img = document.createElement('img');
-  img.src = pg.photos[idx];
-  img.style.cssText = 'max-width:96vw;max-height:90vh;border-radius:12px;object-fit:contain';
-  ov.appendChild(img);
-  ov.onclick = () => document.body.removeChild(ov);
-  document.body.appendChild(ov);
-}
-
-// ─── Generation IA depuis la page
-async function pvGenFlash(){
-  const data = getCahiers();
-  const nb = data.notebooks.find(n => n.id === cahierNbId);
-  const pg = nb && (nb.pages||[]).find(p => p.id === cahierPgId);
-  if(!pg){ toast('Page introuvable'); return; }
-  const notesEl = document.getElementById('pv-notes');
-  const notes = notesEl ? notesEl.value : (pg.notes||'');
-  const photos = pg.photos || [];
-  if(!notes.trim() && !photos.length){ toast('Ajoute des notes ou une photo'); return; }
-  const resEl = document.getElementById('pv-result');
-  if(resEl){ resEl.className = 'pv-result show'; resEl.innerHTML = '<div style="text-align:center;padding:16px;color:var(--mu)">⚡ Generation en cours...</div>'; }
-  document.querySelectorAll('.pv-btn').forEach(b => b.disabled = true);
-  try{
-    const parts = [];
-    if(photos.length){
-      const src = photos[0];
-      const mime = src.startsWith('data:image/png') ? 'image/png' : 'image/jpeg';
-      parts.push({type:'image',source:{type:'base64',media_type:mime,data:src.split(',')[1]}});
-    }
-    const prompt = 'Genere 8 flashcards a partir de ce cours.'+(notes?' Notes : '+notes:'')+' Utilise CE FORMAT EXACT :\n##FLASH##\nCARTE 1/8\n❓ [question]\n✅ [reponse]\nCARTE 2/8\n❓ ...\n✅ ...\n##FINFLASH##';
-    parts.push({type:'text',text:prompt});
-    const reply = await callAI({system:buildSys(),messages:[{role:'user',content:parts}],maxTokens:1500});
-    if(resEl) resEl.innerHTML = buildDeckHTML(reply, true);
-  }catch(err){
-    if(resEl) resEl.innerHTML = '<div style="color:var(--a2);font-size:12px;padding:8px">❌ '+esc(err.message.slice(0,100))+'</div>';
-  }
-  document.querySelectorAll('.pv-btn').forEach(b => b.disabled = false);
-}
-
-async function pvGenResume(){
-  const data = getCahiers();
-  const nb = data.notebooks.find(n => n.id === cahierNbId);
-  const pg = nb && (nb.pages||[]).find(p => p.id === cahierPgId);
-  if(!pg){ toast('Page introuvable'); return; }
-  const notesEl = document.getElementById('pv-notes');
-  const notes = notesEl ? notesEl.value : (pg.notes||'');
-  const photos = pg.photos || [];
-  if(!notes.trim() && !photos.length){ toast('Ajoute des notes ou une photo'); return; }
-  const resEl = document.getElementById('pv-result');
-  if(resEl){ resEl.className = 'pv-result show'; resEl.innerHTML = '<div style="text-align:center;padding:16px;color:var(--mu)">📋 Resume en cours...</div>'; }
-  document.querySelectorAll('.pv-btn').forEach(b => b.disabled = true);
-  try{
-    const parts = [];
-    if(photos.length){
-      const src = photos[0];
-      const mime = src.startsWith('data:image/png') ? 'image/png' : 'image/jpeg';
-      parts.push({type:'image',source:{type:'base64',media_type:mime,data:src.split(',')[1]}});
-    }
-    const prompt = 'Fais un resume clair et structure de ce cours pour un(e) eleve de college.'+(notes?' Notes : '+notes:'')+' Utilise des emojis, des listes a puces, et mets en valeur les points cles.';
-    parts.push({type:'text',text:prompt});
-    const reply = await callAI({system:buildSys(),messages:[{role:'user',content:parts}],maxTokens:1200});
-    if(resEl) resEl.innerHTML = '<div style="font-size:12.5px;line-height:1.7;white-space:pre-wrap">'+fmtMsg(reply)+'</div>';
-  }catch(err){
-    if(resEl) resEl.innerHTML = '<div style="color:var(--a2);font-size:12px;padding:8px">❌ '+esc(err.message.slice(0,100))+'</div>';
-  }
-  document.querySelectorAll('.pv-btn').forEach(b => b.disabled = false);
-}
+// pvGenFlash / pvGenResume / pvZoom — remplacés par pvBotAction() et pvZoom() dans le bloc cahier v2
 
 </script>
 </body>

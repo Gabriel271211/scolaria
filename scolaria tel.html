@@ -8639,17 +8639,22 @@ function saveCahiers(d){
 }
 
 // ─── Drum nav (cylindre Cahier / Profil)
+// _drumFace : 0 = Cahier (face visible par défaut), 1 = Profil
 var _drumFace = 0;
 function drumTap(){
-  _drumFace = _drumFace === 0 ? 1 : 0;
+  var gp = document.getElementById('gp-compte');
+  var isOpen = gp && gp.classList.contains('open');
+  // Si panel fermé → ouvrir sur la face courante
+  // Si panel ouvert → basculer vers l'autre face
+  if(isOpen){
+    _drumFace = _drumFace === 0 ? 1 : 0;
+  }
+  // Sinon on garde la face courante (ou on repart sur Cahier si première ouverture)
   var drum = document.getElementById('ni-drum');
-  var slot = document.getElementById('ni-drum-slot');
   if(drum) drum.setAttribute('data-f', String(_drumFace));
   if(_drumFace === 0){
-    if(slot) slot.classList.add('on');
     openCahier();
   } else {
-    if(slot) slot.classList.add('on');
     openProfil();
   }
 }

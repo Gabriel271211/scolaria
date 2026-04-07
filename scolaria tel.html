@@ -1613,7 +1613,7 @@ button:active{opacity:.85}
 .cah-view::-webkit-scrollbar{display:none}
 #cah-view-profil .gpi{padding:0}
 /* ── Drum nav ── */
-.ni-drum-slot{flex:1;display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;height:100%;perspective:500px;-webkit-tap-highlight-color:transparent;position:relative}
+.ni-drum-slot{flex:1;display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:visible;height:100%;perspective:500px;-webkit-tap-highlight-color:transparent;position:relative}
 .ni-drum{position:relative;width:52px;height:52px;transform-style:preserve-3d;transition:transform .42s cubic-bezier(.4,0,.2,1)}
 .ni-drum-f{position:absolute;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;backface-visibility:hidden;-webkit-backface-visibility:hidden}
 .ni-drum-f:nth-child(1){transform:rotateX(0deg) translateZ(26px)}
@@ -1623,6 +1623,10 @@ button:active{opacity:.85}
 .ni-drum-slot .nil{font-size:8px;color:var(--mu);transition:color .2s}
 .ni-drum-slot.on .nil{color:var(--a1)}
 .ni-drum-slot.on .niw{background:rgba(139,111,255,.12)}
+/* Hover arrow indicator */
+.ni-drum-arrow{position:absolute;top:-14px;left:50%;transform:translateX(-50%) translateY(4px);font-size:13px;color:var(--a1);opacity:0;pointer-events:none;transition:opacity .18s,transform .18s;line-height:1;user-select:none}
+.ni-drum-slot:hover .ni-drum-arrow{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(hover:none){.ni-drum-arrow{display:none}}
 /* ── Notebooks list ── */
 .nb2-top{display:flex;align-items:center;padding:18px 16px 10px;gap:10px}
 .nb2-title{font-family:var(--fd);font-size:22px;font-weight:900;letter-spacing:-.6px;flex:1}
@@ -3294,6 +3298,7 @@ button:active{opacity:.85}
     <span class="nil">Flash</span><span class="ni-badge" id="badge-flash">0</span>
   </button>
   <div class="ni-drum-slot" id="ni-drum-slot" onclick="drumTap()">
+    <div class="ni-drum-arrow">↻</div>
     <div class="ni-drum" id="ni-drum" data-f="0">
       <!-- Face 0 : Cahier -->
       <div class="ni-drum-f">

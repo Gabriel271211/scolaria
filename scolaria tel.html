@@ -1604,6 +1604,102 @@ button:active{opacity:.85}
 .ob-badge-green{background:rgba(79,214,160,.15);color:var(--a3)}
 .ob-badge-blue{background:rgba(86,200,232,.15);color:var(--a5)}
 
+
+/* ════ SYSTÈME CAHIER VIRTUEL ════ */
+#gp-compte{overflow:hidden!important;padding-bottom:0!important;display:flex!important;flex-direction:column!important}
+.cah-views-outer{flex:1;overflow:hidden;min-height:0;position:relative}
+.cah-views-inner{position:absolute;inset:0;display:flex;width:200%;transition:transform .38s cubic-bezier(.32,1.26,.6,1);will-change:transform}
+.cah-view{width:50%;height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px 16px 80px}
+.cah-view::-webkit-scrollbar{width:4px}
+.cah-view::-webkit-scrollbar-thumb{background:rgba(139,111,255,.3);border-radius:2px}
+#cah-view-profil .gpi{padding:0}
+/* Nav duo Cahier + Profil */
+.ni-duo{flex:1;display:flex;align-items:flex-end;gap:0}
+.ni-duo .ni{flex:1;padding:5px 1px}
+.ni-duo .niw{width:32px;height:32px;font-size:14px}
+.ni-duo .nil{font-size:8px}
+.ni-duo-sep{width:1px;height:22px;background:var(--bord);flex-shrink:0;margin-bottom:10px;align-self:flex-end}
+/* Notebooks list */
+.nb-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.nb-header-title{font-family:var(--fd);font-size:21px;font-weight:800;letter-spacing:-.5px}
+.nb-add{width:38px;height:38px;border-radius:50%;border:none;background:linear-gradient(135deg,var(--a1),var(--a2));color:#fff;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 14px rgba(139,111,255,.4);transition:transform .15s}
+.nb-add:active{transform:scale(.88)}
+.nb-grid{display:flex;flex-direction:column;gap:12px}
+.nb-card{position:relative;border-radius:18px;padding:0;display:flex;align-items:stretch;cursor:pointer;transition:transform .18s;-webkit-tap-highlight-color:transparent;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.18)}
+.nb-card:active{transform:scale(.96)}
+.nb-card-stripe{width:5px;flex-shrink:0}
+.nb-card-body{flex:1;display:flex;align-items:center;gap:12px;padding:14px 14px;background:var(--card);border:1px solid var(--bord);border-left:none;border-radius:0 18px 18px 0}
+.nb-card-ico{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0}
+.nb-card-info{flex:1;min-width:0}
+.nb-card-name{font-weight:700;font-size:14.5px;margin-bottom:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nb-card-meta{font-size:11px;color:var(--mu);display:flex;align-items:center;gap:6px}
+.nb-card-del{width:32px;height:32px;border-radius:9px;border:none;background:transparent;color:var(--mu);font-size:16px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.nb-card-del:active{background:rgba(255,107,157,.15);color:var(--a2)}
+.nb-card-arrow{font-size:18px;color:var(--mu);flex-shrink:0}
+.nb-empty{text-align:center;padding:54px 20px 20px;color:var(--mu)}
+.nb-empty-ico{font-size:56px;margin-bottom:16px;line-height:1}
+.nb-empty-t{font-size:15px;font-weight:700;color:var(--tx);margin-bottom:6px}
+.nb-empty-s{font-size:12px;line-height:1.7}
+.nb-empty-cta{display:inline-flex;align-items:center;gap:6px;margin-top:16px;padding:10px 20px;background:linear-gradient(135deg,var(--a1),var(--a2));color:#fff;border:none;border-radius:12px;font-size:13px;font-family:var(--fb);font-weight:700;cursor:pointer;box-shadow:0 3px 12px rgba(139,111,255,.35)}
+.nb-empty-cta:active{opacity:.85}
+/* Pages list */
+.pg-back{display:flex;align-items:center;gap:6px;color:var(--mu);font-size:12.5px;font-weight:600;cursor:pointer;margin-bottom:14px;-webkit-tap-highlight-color:transparent}
+.pg-back:active{color:var(--a1)}
+.pg-nb-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.pg-nb-left{display:flex;align-items:center;gap:8px;min-width:0}
+.pg-nb-ico{font-size:26px;flex-shrink:0}
+.pg-nb-name{font-family:var(--fd);font-size:17px;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pg-add{width:30px;height:30px;border-radius:50%;border:none;background:linear-gradient(135deg,var(--a1),var(--a2));color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .15s}
+.pg-add:active{transform:scale(.9)}
+.pg-list{display:flex;flex-direction:column;gap:8px}
+.pg-item{background:var(--card);border:1px solid var(--bord);border-radius:13px;padding:11px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:all .18s}
+.pg-item:active{transform:scale(.97)}
+.pg-item-ico{font-size:18px;flex-shrink:0}
+.pg-item-info{flex:1;min-width:0}
+.pg-item-name{font-weight:600;font-size:13px;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pg-item-meta{font-size:10px;color:var(--mu)}
+.pg-item-del{width:26px;height:26px;border-radius:7px;border:none;background:transparent;color:var(--mu);font-size:14px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.pg-item-del:active{color:var(--a2)}
+.pg-empty{text-align:center;padding:30px 0;color:var(--mu);font-size:12px}
+/* Page viewer */
+.pv-back{display:flex;align-items:center;gap:6px;color:var(--mu);font-size:12.5px;font-weight:600;cursor:pointer;margin-bottom:14px;-webkit-tap-highlight-color:transparent}
+.pv-back:active{color:var(--a1)}
+.pv-title-inp{width:100%;background:transparent;border:none;border-bottom:2px solid var(--bord);padding:4px 0 6px;font-family:var(--fd);font-size:16px;font-weight:700;color:var(--tx);outline:none;margin-bottom:16px;transition:border-color .2s}
+.pv-title-inp:focus{border-bottom-color:var(--a1)}
+.pv-lbl{font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--mu);margin:16px 0 8px}
+.pv-photos{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.pv-ph-cell{aspect-ratio:1;border-radius:10px;overflow:hidden;position:relative;background:var(--card);border:1px solid var(--bord)}
+.pv-ph-cell img{width:100%;height:100%;object-fit:cover;display:block}
+.pv-ph-del{position:absolute;top:4px;right:4px;width:20px;height:20px;background:rgba(0,0,0,.65);border-radius:50%;border:none;color:#fff;font-size:9px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1}
+.pv-ph-add{aspect-ratio:1;border-radius:10px;background:rgba(139,111,255,.07);border:2px dashed rgba(139,111,255,.3);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;gap:4px;color:var(--a1);font-size:10px;font-weight:600;transition:background .2s}
+.pv-ph-add:active{background:rgba(139,111,255,.15)}
+.pv-ph-add-ico{font-size:22px;line-height:1}
+.pv-notes{width:100%;min-height:120px;background:var(--card);border:1px solid var(--bord);border-radius:12px;padding:12px;color:var(--tx);font-size:13px;font-family:var(--fb);outline:none;resize:vertical;line-height:1.6;transition:border-color .2s}
+.pv-notes:focus{border-color:var(--a1)}
+.pv-btns{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+.pv-btn{flex:1;min-width:90px;padding:11px 8px;border-radius:12px;border:none;cursor:pointer;font-size:12px;font-family:var(--fb);font-weight:700;transition:all .18s;display:flex;align-items:center;justify-content:center;gap:5px}
+.pv-btn:active{transform:scale(.95)}
+.pv-btn.b-flash{background:rgba(79,214,160,.1);border:1px solid rgba(79,214,160,.25);color:var(--a3)}
+.pv-btn.b-resume{background:rgba(139,111,255,.1);border:1px solid rgba(139,111,255,.25);color:var(--a1)}
+.pv-btn:disabled{opacity:.45;cursor:not-allowed;transform:none!important}
+.pv-result{margin-top:14px;display:none}
+.pv-result.show{display:block}
+/* Inline forms (replace prompt/confirm) */
+.cah-form{padding:20px 16px;display:flex;flex-direction:column;gap:14px}
+.cah-form-title{font-size:16px;font-weight:700;color:var(--tx)}
+.cah-form-inp{background:var(--card);border:1.5px solid var(--bord);border-radius:12px;padding:12px 14px;font-size:15px;color:var(--tx);outline:none;width:100%;box-sizing:border-box;font-family:var(--fb)}
+.cah-form-inp:focus{border-color:var(--a1)}
+.cah-form-btns{display:flex;gap:10px}
+.cah-form-btns button{flex:1;padding:12px;border-radius:12px;font-size:14px;font-weight:600;border:none;cursor:pointer;font-family:var(--fb)}
+.cah-form-cancel{background:var(--card)!important;color:var(--tx)!important;border:1.5px solid var(--bord)!important}
+.cah-form-confirm{background:linear-gradient(135deg,var(--a1),var(--a2))!important;color:#fff!important}
+/* Inline delete confirm */
+.cah-del-confirm{background:var(--card);border:1px solid var(--bord);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px;margin:8px 0}
+.cah-del-confirm p{margin:0;font-size:13px;color:var(--tx);line-height:1.5}
+.cah-del-btns{display:flex;gap:8px}
+.cah-del-btns button{flex:1;padding:10px;border-radius:10px;font-size:13px;font-weight:600;border:none;cursor:pointer;font-family:var(--fb)}
+.cah-del-cancel{background:var(--card)!important;color:var(--tx)!important;border:1.5px solid var(--bord)!important}
+.cah-del-ok{background:linear-gradient(135deg,#f43f5e,#e11d48)!important;color:#fff!important}
 </style>
 </head>
 <body>
@@ -2161,8 +2257,17 @@ button:active{opacity:.85}
   </div>
 </div>
 
-<!-- COMPTE / PROFIL -->
+<!-- COMPTE / PROFIL + CAHIERS -->
 <div class="gp" id="gp-compte">
+  <!-- Vues glissantes (switch depuis la nav du bas) -->
+  <div class="cah-views-outer">
+    <div class="cah-views-inner" id="cah-inner">
+      <!-- VUE CAHIERS -->
+      <div class="cah-view" id="cah-view-cahiers">
+        <div id="cah-content"></div>
+      </div>
+      <!-- VUE PROFIL -->
+      <div class="cah-view" id="cah-view-profil">
   <div class="gpi">
     <!-- Carte profil -->
     <div class="profil-card">
@@ -2924,6 +3029,9 @@ button:active{opacity:.85}
     </div>    </div>
 
   </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 
@@ -3036,6 +3144,11 @@ button:active{opacity:.85}
       <button id="scan-both-btn" onclick="scanGenerate('both')" style="flex:1;padding:10px;background:rgba(255,190,92,.1);border:1px solid rgba(255,190,92,.25);color:var(--a4);border-radius:10px;font-size:12px;font-family:var(--fb);font-weight:700;cursor:pointer;display:none">✨ Les deux</button>
     </div>
     <div id="scan-result" style="margin-top:12px"></div>
+    <div id="scan-cah-row" style="display:none;margin-top:10px;gap:8px;flex-wrap:wrap">
+      <button onclick="scanEnvoyerChat()" style="flex:1;min-width:120px;padding:10px;background:var(--a1);border:none;color:#fff;border-radius:11px;font-size:12px;font-family:var(--fb);font-weight:700;cursor:pointer">💬 Envoyer au Chat</button>
+      <button onclick="scanChoixCahier()" style="flex:1;min-width:120px;padding:10px;background:rgba(79,214,160,.12);border:1px solid rgba(79,214,160,.3);color:var(--a3);border-radius:11px;font-size:12px;font-family:var(--fb);font-weight:700;cursor:pointer">📔 Sauvegarder dans un cahier</button>
+    </div>
+    <div id="scan-cah-picker" style="display:none;margin-top:12px"></div>
   </div>
 </div>
 
@@ -3123,10 +3236,17 @@ button:active{opacity:.85}
     <div class="niw"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
     <span class="nil">Flash</span><span class="ni-badge" id="badge-flash">0</span>
   </button>
-  <button class="ni" id="ni-compte" onclick="goTo('compte')">
-    <div class="niw"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
-    <span class="nil">Profil</span>
-  </button>
+  <div class="ni-duo">
+    <button class="ni" id="ni-compte" onclick="openCahier()">
+      <div class="niw"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+      <span class="nil">Cahier</span>
+    </button>
+    <div class="ni-duo-sep"></div>
+    <button class="ni" id="ni-profil" onclick="openProfil()">
+      <div class="niw"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+      <span class="nil">Profil</span>
+    </button>
+  </div>
 </nav>
 </div>
 
@@ -3550,7 +3670,8 @@ function goTo(id){
   if(id!=='chat'){
     const gp=document.getElementById('gp-'+id);
     if(gp){gp.classList.add('open');if(gp.scrollTop>0)gp.scrollTop=0;}
-    if(id==='compte'){setTimeout(()=>{renderMatStats();applyProfileToUI();},50);}
+    if(id==='compte'){setTimeout(()=>renderCahiersView(),50);}
+    document.getElementById('ni-profil')?.classList.remove('on');
     if(id==='dash'){setTimeout(refreshDash,50);}
     if(id==='flash'){setTimeout(checkSRSNotif,100);}
   } else {
@@ -8060,9 +8181,14 @@ function handleScanPhoto(e){
   reader.readAsDataURL(file);
   e.target.value='';
 }
+let _scanLastMsgs=null, _scanLastReply=null;
 async function scanGenerate(type){
   if(!scanImageData){toast('❌ Prends une photo avant');return;}
   const resultEl=document.getElementById('scan-result');
+  const cahRow=document.getElementById('scan-cah-row');
+  const cahPicker=document.getElementById('scan-cah-picker');
+  if(cahRow) cahRow.style.display='none';
+  if(cahPicker) cahPicker.style.display='none';
   resultEl.innerHTML='<div style="text-align:center;padding:20px;color:var(--mu);font-size:13px">⚡ Analyse en cours...</div>';
   ['scan-fiche-btn','scan-flash-btn','scan-both-btn'].forEach(id=>{
     const el=document.getElementById(id);if(el)el.disabled=true;
@@ -8072,30 +8198,100 @@ async function scanGenerate(type){
     if(type==='fiche') prompt='Analyse ce cours et g\u00e9n\u00e8re une fiche de r\u00e9vision compl\u00e8te au format ##FICHE##...##FINFICHE##';
     else if(type==='flash') prompt='Analyse ce cours et g\u00e9n\u00e8re 10 flashcards au format ##FLASH##...##FINFLASH##';
     else prompt='Analyse ce cours et g\u00e9n\u00e8re une fiche ##FICHE##...##FINFICHE## puis des flashcards ##FLASH##...##FINFLASH##';
-
     const msgs=[{role:'user',content:[
       {type:'image',source:{type:'base64',media_type:scanImageData.mime,data:scanImageData.b64}},
       {type:'text',text:prompt}
     ]}];
     const reply=await callAI({system:buildSys(),messages:msgs,maxTokens:3000});
-
-    // Afficher dans le chat + fermer le modal
-    closeScanCours();
-    goTo('chat');
-    document.getElementById('welcome').classList.add('hidden');
-    document.getElementById('msgs').classList.remove('hidden');
-    chatHist.push({role:'user',content:msgs[0].content});
-    chatHist.push({role:'assistant',content:reply});
-    await renderAI(reply);
-    saveChatHistory();
-    soundAIReady();
-    toast('✅ Cours analysé !');
+    _scanLastMsgs=msgs; _scanLastReply=reply;
+    // Apercu + choix d action
+    resultEl.innerHTML='<div style="font-size:11.5px;color:var(--mu);line-height:1.6;padding:8px 10px;background:var(--card);border:1px solid var(--bord);border-radius:10px;max-height:120px;overflow:hidden">'+esc(reply.replace(/##[A-Z]+##/g,'').slice(0,240))+'...</div>';
+    if(cahRow) cahRow.style.display='flex';
+    toast('✅ Cours analyse !');
   }catch(err){
     resultEl.innerHTML='<div style="color:var(--a2);font-size:12px;padding:10px">❌ '+esc(err.message.slice(0,100))+'</div>';
   }
   ['scan-fiche-btn','scan-flash-btn','scan-both-btn'].forEach(id=>{
     const el=document.getElementById(id);if(el)el.disabled=false;
   });
+}
+
+// Envoyer le resultat scan au chat (ancien comportement)
+async function scanEnvoyerChat(){
+  if(!_scanLastMsgs||!_scanLastReply){return;}
+  const msgs=_scanLastMsgs; const reply=_scanLastReply;
+  closeScanCours();
+  goTo('chat');
+  document.getElementById('welcome').classList.add('hidden');
+  document.getElementById('msgs').classList.remove('hidden');
+  chatHist.push({role:'user',content:msgs[0].content});
+  chatHist.push({role:'assistant',content:reply});
+  await renderAI(reply);
+  saveChatHistory();
+  soundAIReady();
+}
+
+// Afficher le selecteur de cahier pour sauvegarder le scan
+function scanChoixCahier(){
+  const picker=document.getElementById('scan-cah-picker');
+  if(!picker) return;
+  const data=getCahiers();
+  const nbs=data.notebooks;
+  if(!nbs.length){
+    picker.style.display='block';
+    picker.innerHTML='<div style="font-size:12px;color:var(--mu);padding:8px">Aucun cahier. <button onclick="addNotebook();scanChoixCahier()" style="background:none;border:none;color:var(--a1);font-size:12px;font-family:var(--fb);font-weight:700;cursor:pointer;padding:0">Creer un cahier +</button></div>';
+    return;
+  }
+  let h='<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--mu);margin-bottom:8px">Choisir un cahier :</div>';
+  h+='<div style="display:flex;flex-direction:column;gap:6px">';
+  nbs.forEach(nb=>{
+    const color=nb.color||'#8b6fff';
+    h+='<button onclick="scanSauvegarderDans('+nb.id+')" style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--card);border:1px solid var(--bord);border-left:3px solid '+color+';border-radius:11px;cursor:pointer;color:var(--tx);font-family:var(--fb);font-size:13px;font-weight:600;text-align:left">';
+    h+='<span style="font-size:18px">'+(nb.emoji||'📔')+'</span>';
+    h+='<span>'+esc(nb.title)+'</span></button>';
+  });
+  h+='</div>';
+  picker.style.display='block';
+  picker.innerHTML=h;
+}
+
+// Sauvegarder le scan dans le cahier choisi — étape 1 : demander le titre
+function scanSauvegarderDans(nbId){
+  if(!_scanLastReply||!scanImageData) return;
+  var picker=document.getElementById('scan-cah-picker');
+  if(!picker) return;
+  var today=new Date().toLocaleDateString('fr-FR');
+  picker.innerHTML='<div class="cah-form" style="padding:12px 0 4px">'
+    +'<div class="cah-form-title" style="font-size:14px">📄 Titre de la page :</div>'
+    +'<input class="cah-form-inp" id="scan-pg-title-inp" placeholder="Ex: Cours du '+today+'..." maxlength="60" autocomplete="off" autocorrect="off">'
+    +'<div class="cah-form-btns">'
+    +'<button class="cah-form-cancel" onclick="scanChoixCahier()">‹ Retour</button>'
+    +'<button class="cah-form-confirm" onclick="confirmScanSauvegarder('+nbId+')">Sauvegarder</button>'
+    +'</div></div>';
+  setTimeout(function(){ var i=document.getElementById('scan-pg-title-inp'); if(i)i.focus(); }, 120);
+}
+// Étape 2 : créer la page avec le titre saisi
+function confirmScanSauvegarder(nbId){
+  if(!_scanLastReply||!scanImageData) return;
+  var inp=document.getElementById('scan-pg-title-inp');
+  var title=(inp&&inp.value.trim())?inp.value.trim():'Cours scanne';
+  var data=getCahiers();
+  var nb=data.notebooks.find(function(n){ return n.id===nbId; });
+  if(!nb) return;
+  var pg={
+    id:Date.now(),
+    title:title.slice(0,60),
+    notes:_scanLastReply.replace(/##[A-Z]+##/g,'').trim(),
+    photos:['data:'+scanImageData.mime+';base64,'+scanImageData.b64],
+    date:new Date().toLocaleDateString('fr-FR')
+  };
+  if(!nb.pages) nb.pages=[];
+  nb.pages.push(pg);
+  saveCahiers(data);
+  toast('📔 Sauvegarde dans '+esc(nb.title)+' !');
+  closeScanCours();
+  cahierNbId=nbId; cahierPgId=pg.id;
+  openCahier();
 }
 
 // ════════════════════════════════════════════════════════════
@@ -8349,6 +8545,511 @@ function checkFicheURL(){
     // Clear URL param
     history.replaceState(null,'',window.location.pathname);
   }catch(e){}
+}
+
+// ═══════════════════════════════════════════════════════════════
+// CAHIER VIRTUEL — Cahiers de cours avec photos, notes et IA
+// ═══════════════════════════════════════════════════════════════
+
+// ─── State
+let cahierTab = 'cahiers';
+let cahierNbId = null;
+let cahierPgId = null;
+let pvNotesTimer = null;
+let pvTitleTimer = null;
+
+// ─── Storage
+function getCahiers(){
+  try{ return JSON.parse(localStorage.getItem('sk_cahiers')||'{"notebooks":[]}'); }
+  catch(e){ return {notebooks:[]}; }
+}
+function saveCahiers(d){
+  try{ localStorage.setItem('sk_cahiers',JSON.stringify(d)); }catch(e){}
+}
+
+// ─── Tab switching (déclenché depuis la nav du bas)
+function switchCahierTab(t){
+  cahierTab = t;
+  const inner = document.getElementById('cah-inner');
+  if(inner) inner.style.transform = t==='profil' ? 'translateX(-50%)' : 'translateX(0)';
+  // Sync état actif des boutons nav
+  document.getElementById('ni-compte')?.classList.toggle('on', t==='cahiers');
+  document.getElementById('ni-profil')?.classList.toggle('on', t==='profil');
+  if(t==='cahiers') renderCahiersView();
+  if(t==='profil'){ setTimeout(()=>{renderMatStats();applyProfileToUI();},50); }
+}
+
+// ─── Ouvrir le panel sur le tab Cahiers (depuis nav)
+function openCahier(){
+  PAGES.forEach(p=>{
+    document.getElementById('ni-'+p)?.classList.remove('on');
+    if(p!=='chat') document.getElementById('gp-'+p)?.classList.remove('open');
+  });
+  document.getElementById('ni-profil')?.classList.remove('on');
+  const gp=document.getElementById('gp-compte');
+  if(gp){gp.classList.add('open');if(gp.scrollTop>0)gp.scrollTop=0;}
+  switchCahierTab('cahiers');
+  animateNavItem('compte');
+  haptic('tick');
+}
+
+// ─── Ouvrir le panel sur le tab Profil (depuis nav)
+function openProfil(){
+  PAGES.forEach(p=>{
+    document.getElementById('ni-'+p)?.classList.remove('on');
+    if(p!=='chat') document.getElementById('gp-'+p)?.classList.remove('open');
+  });
+  document.getElementById('ni-compte')?.classList.remove('on');
+  const gp=document.getElementById('gp-compte');
+  if(gp){gp.classList.add('open');if(gp.scrollTop>0)gp.scrollTop=0;}
+  switchCahierTab('profil');
+  animateNavItem('compte');
+  haptic('tick');
+}
+
+// ─── Render dispatcher
+function renderCahiersView(){
+  const el = document.getElementById('cah-content');
+  if(!el) return;
+  const data = getCahiers();
+  if(cahierPgId !== null && cahierNbId !== null){
+    renderPageView(data, el);
+  } else if(cahierNbId !== null){
+    renderPagesList(data, el);
+  } else {
+    renderNotebooksList(data, el);
+  }
+}
+
+// ─── Notebooks list
+const NB_EMOJIS = ['📔','📒','📓','📕','📗','📘','📙','🗒️','📋','🗂️'];
+const NB_COLORS = ['#8b6fff','#ff6b9d','#4fd6a0','#ffbe5c','#56c8e8','#f472b6','#fb923c','#10b981'];
+
+function renderNotebooksList(data, el){
+  const nbs = data.notebooks;
+  let h = '<div class="nb-header"><div class="nb-header-title">📔 Mes cahiers</div>';
+  h += '<button class="nb-add" onclick="addNotebook()">+</button></div>';
+  if(!nbs.length){
+    h += '<div class="nb-empty"><div class="nb-empty-ico">📒</div>';
+    h += '<div class="nb-empty-t">Aucun cahier pour l\'instant</div>';
+    h += '<div class="nb-empty-s">Cree ton premier cahier pour enregistrer<br>tes cours, photos et notes.</div>';
+    h += '<button class="nb-empty-cta" onclick="addNotebook()">+ Nouveau cahier</button></div>';
+  } else {
+    h += '<div class="nb-grid">';
+    nbs.forEach(nb => {
+      const count = nb.pages ? nb.pages.length : 0;
+      const color = nb.color || '#8b6fff';
+      const bgC = color+'22';
+      h += '<div class="nb-card" onclick="openNotebook('+nb.id+')">';
+      h += '<div class="nb-card-stripe" style="background:'+color+'"></div>';
+      h += '<div class="nb-card-body">';
+      h += '<div class="nb-card-ico" style="background:'+bgC+'">'+(nb.emoji||'📔')+'</div>';
+      h += '<div class="nb-card-info"><div class="nb-card-name">'+esc(nb.title||'Cahier')+'</div>';
+      h += '<div class="nb-card-meta"><span>'+count+' page'+(count!==1?'s':'')+'</span>'+(nb.subject?'<span>\u00b7 '+esc(nb.subject)+'</span>':'')+'</div></div>';
+      h += '<button class="nb-card-del" onclick="event.stopPropagation();deleteNotebook('+nb.id+')">✕</button>';
+      h += '<span class="nb-card-arrow">›</span>';
+      h += '</div></div>';
+    });
+    h += '</div>';
+  }
+  el.innerHTML = h;
+}
+
+function addNotebook(){
+  const el = document.getElementById('cah-content');
+  if(!el) return;
+  el.innerHTML = '<div class="cah-form">'
+    + '<div class="cah-form-title">📔 Nouveau cahier</div>'
+    + '<input class="cah-form-inp" id="cah-nb-inp" placeholder="Ex: Maths, Histoire, Anglais..." maxlength="40" autocomplete="off" autocorrect="off">'
+    + '<div class="cah-form-btns">'
+    + '<button class="cah-form-cancel" onclick="renderCahiersView()">Annuler</button>'
+    + '<button class="cah-form-confirm" onclick="confirmAddNotebook()">Creer</button>'
+    + '</div></div>';
+  setTimeout(function(){ var i=document.getElementById('cah-nb-inp'); if(i)i.focus(); }, 120);
+}
+function confirmAddNotebook(){
+  var inp = document.getElementById('cah-nb-inp');
+  var title = inp ? inp.value : '';
+  if(!title || !title.trim()) return;
+  var data = getCahiers();
+  var idx = data.notebooks.length % NB_EMOJIS.length;
+  data.notebooks.push({
+    id: Date.now(),
+    title: title.trim().slice(0,40),
+    emoji: NB_EMOJIS[idx],
+    color: NB_COLORS[idx % NB_COLORS.length],
+    subject: '',
+    pages: []
+  });
+  saveCahiers(data);
+  toast('📔 Cahier cree !');
+  renderCahiersView();
+}
+
+function deleteNotebook(id){
+  var el = document.getElementById('cah-content');
+  if(!el) return;
+  var data = getCahiers();
+  var nb = data.notebooks.find(function(n){ return n.id===id; });
+  if(!nb) return;
+  el.insertAdjacentHTML('afterbegin',
+    '<div class="cah-del-confirm" id="cah-del-nb-'+id+'">'
+    +'<p>Supprimer <strong>'+esc(nb.title)+'</strong> et toutes ses pages ?</p>'
+    +'<div class="cah-del-btns">'
+    +'<button class="cah-del-cancel" onclick="document.getElementById(\'cah-del-nb-'+id+'\').remove()">Annuler</button>'
+    +'<button class="cah-del-ok" onclick="doDeleteNotebook('+id+')">Supprimer</button>'
+    +'</div></div>'
+  );
+}
+function doDeleteNotebook(id){
+  var data = getCahiers();
+  data.notebooks = data.notebooks.filter(function(nb){ return nb.id !== id; });
+  saveCahiers(data);
+  if(cahierNbId === id){ cahierNbId = null; cahierPgId = null; }
+  renderCahiersView();
+  toast('🗑 Cahier supprime');
+}
+
+function openNotebook(id){
+  cahierNbId = id;
+  cahierPgId = null;
+  renderCahiersView();
+  const v = document.getElementById('cah-view-cahiers');
+  if(v) v.scrollTop = 0;
+}
+
+// ─── Pages list
+function renderPagesList(data, el){
+  const nb = data.notebooks.find(n => n.id === cahierNbId);
+  if(!nb){ cahierNbId = null; renderCahiersView(); return; }
+  const pages = nb.pages || [];
+  let h = '<div class="pg-back" onclick="backToNotebooks()"><span style="font-size:18px">‹</span> Mes cahiers</div>';
+  h += '<div class="pg-nb-header">';
+  h += '<div class="pg-nb-left"><div class="pg-nb-ico">'+(nb.emoji||'📔')+'</div>';
+  h += '<div class="pg-nb-name">'+esc(nb.title)+'</div></div>';
+  h += '<button class="pg-add" onclick="addPage()" title="Nouvelle page">+</button></div>';
+  if(!pages.length){
+    h += '<div class="pg-empty">Aucune page — appuie sur + pour ajouter un cours</div>';
+  } else {
+    h += '<div class="pg-list">';
+    pages.forEach(pg => {
+      const ph = pg.photos ? pg.photos.length : 0;
+      const meta = pg.date + (ph ? ' \u00b7 '+ph+' 📸' : '') + (pg.notes ? ' \u00b7 📝' : '');
+      h += '<div class="pg-item" onclick="openPage('+pg.id+')">';
+      h += '<div class="pg-item-ico">📄</div>';
+      h += '<div class="pg-item-info"><div class="pg-item-name">'+esc(pg.title||'Page sans titre')+'</div>';
+      h += '<div class="pg-item-meta">'+esc(meta)+'</div></div>';
+      h += '<button class="pg-item-del" onclick="event.stopPropagation();deletePage('+pg.id+')">✕</button>';
+      h += '</div>';
+    });
+    h += '</div>';
+  }
+  el.innerHTML = h;
+}
+
+function backToNotebooks(){
+  cahierNbId = null;
+  cahierPgId = null;
+  renderCahiersView();
+}
+
+function addPage(){
+  var el = document.getElementById('cah-content');
+  if(!el) return;
+  el.innerHTML = '<div class="cah-form">'
+    + '<div class="cah-form-title">📄 Nouvelle page</div>'
+    + '<input class="cah-form-inp" id="cah-pg-inp" placeholder="Ex: Chapitre 3, Les fractions..." maxlength="60" autocomplete="off" autocorrect="off">'
+    + '<div class="cah-form-btns">'
+    + '<button class="cah-form-cancel" onclick="renderCahiersView()">Annuler</button>'
+    + '<button class="cah-form-confirm" onclick="confirmAddPage()">Creer</button>'
+    + '</div></div>';
+  setTimeout(function(){ var i=document.getElementById('cah-pg-inp'); if(i)i.focus(); }, 120);
+}
+function confirmAddPage(){
+  var inp = document.getElementById('cah-pg-inp');
+  var title = inp ? inp.value : '';
+  if(!title || !title.trim()) return;
+  var data = getCahiers();
+  var nb = data.notebooks.find(function(n){ return n.id === cahierNbId; });
+  if(!nb) return;
+  var pg = {
+    id: Date.now(),
+    title: title.trim().slice(0,60),
+    notes: '',
+    photos: [],
+    date: new Date().toLocaleDateString('fr-FR')
+  };
+  if(!nb.pages) nb.pages = [];
+  nb.pages.push(pg);
+  saveCahiers(data);
+  cahierPgId = pg.id;
+  renderCahiersView();
+}
+
+function deletePage(pgId){
+  var el = document.getElementById('cah-content');
+  if(!el) return;
+  var data = getCahiers();
+  var nb = data.notebooks.find(function(n){ return n.id === cahierNbId; });
+  if(!nb) return;
+  var pg = (nb.pages||[]).find(function(p){ return p.id === pgId; });
+  if(!pg) return;
+  el.insertAdjacentHTML('afterbegin',
+    '<div class="cah-del-confirm" id="cah-del-pg-'+pgId+'">'
+    +'<p>Supprimer la page <strong>'+esc(pg.title||'cette page')+'</strong> ?</p>'
+    +'<div class="cah-del-btns">'
+    +'<button class="cah-del-cancel" onclick="document.getElementById(\'cah-del-pg-'+pgId+'\').remove()">Annuler</button>'
+    +'<button class="cah-del-ok" onclick="doDeletePage('+pgId+')">Supprimer</button>'
+    +'</div></div>'
+  );
+}
+function doDeletePage(pgId){
+  var data = getCahiers();
+  var nb = data.notebooks.find(function(n){ return n.id === cahierNbId; });
+  if(!nb) return;
+  nb.pages = (nb.pages||[]).filter(function(p){ return p.id !== pgId; });
+  saveCahiers(data);
+  if(cahierPgId === pgId) cahierPgId = null;
+  renderCahiersView();
+  toast('🗑 Page supprimee');
+}
+
+function openPage(pgId){
+  cahierPgId = pgId;
+  renderCahiersView();
+  const v = document.getElementById('cah-view-cahiers');
+  if(v) v.scrollTop = 0;
+}
+
+// ─── Page viewer
+function renderPageView(data, el){
+  const nb = data.notebooks.find(n => n.id === cahierNbId);
+  if(!nb){ cahierNbId = null; renderCahiersView(); return; }
+  const pg = (nb.pages||[]).find(p => p.id === cahierPgId);
+  if(!pg){ cahierPgId = null; renderCahiersView(); return; }
+  const photos = pg.photos || [];
+
+  let phHtml = '';
+  photos.forEach((src, i) => {
+    phHtml += '<div class="pv-ph-cell">';
+    phHtml += '<img src="'+src+'" onclick="pvZoom('+i+')" style="cursor:zoom-in">';
+    phHtml += '<button class="pv-ph-del" onclick="pvDelPhoto('+i+')">✕</button>';
+    phHtml += '</div>';
+  });
+  if(photos.length < 9){
+    phHtml += '<label class="pv-ph-add" for="pv-ph-inp" title="Galerie">';
+    phHtml += '<span class="pv-ph-add-ico">🖼️</span><span>Galerie</span></label>';
+    phHtml += '<label class="pv-ph-add" for="pv-ph-cam" style="background:rgba(255,190,92,.08);border-color:rgba(255,190,92,.3);color:var(--a4)" title="Scanner">';
+    phHtml += '<span class="pv-ph-add-ico">📸</span><span>Scanner</span></label>';
+  }
+
+  let h = '<div class="pv-back" onclick="backToPages()"><span style="font-size:18px">‹</span> '+esc(nb.title)+'</div>';
+  h += '<input class="pv-title-inp" id="pv-title-inp" placeholder="Titre de la page" oninput="pvSaveTitle(this.value)">';
+  h += '<div class="pv-lbl">📸 Photos du cours</div>';
+  h += '<div class="pv-photos" id="pv-photos">'+phHtml+'</div>';
+  h += '<input type="file" id="pv-ph-inp" accept="image/*" style="display:none" onchange="pvAddPhoto(event)">';
+  h += '<input type="file" id="pv-ph-cam" accept="image/*" capture="environment" style="display:none" onchange="pvScanPhoto(event)">';
+  h += '<div class="pv-lbl">📝 Notes</div>';
+  h += '<textarea class="pv-notes" id="pv-notes" placeholder="Tes notes, resume, points importants..." oninput="pvSaveNotes(this.value)"></textarea>';
+  h += '<div class="pv-btns">';
+  h += '<button class="pv-btn b-flash" id="pv-btn-flash" onclick="pvGenFlash()">🃏 Flashcards</button>';
+  h += '<button class="pv-btn b-resume" id="pv-btn-resume" onclick="pvGenResume()">📋 Resume</button>';
+  h += '</div>';
+  h += '<div class="pv-result" id="pv-result"></div>';
+  el.innerHTML = h;
+
+  // Remplir titre et notes en JS (evite problemes encodage)
+  const ti = document.getElementById('pv-title-inp');
+  if(ti) ti.value = pg.title || '';
+  const ta = document.getElementById('pv-notes');
+  if(ta) ta.value = pg.notes || '';
+}
+
+function backToPages(){
+  cahierPgId = null;
+  renderCahiersView();
+  const v = document.getElementById('cah-view-cahiers');
+  if(v) v.scrollTop = 0;
+}
+
+function pvSaveTitle(val){
+  clearTimeout(pvTitleTimer);
+  pvTitleTimer = setTimeout(()=>{
+    const data = getCahiers();
+    const nb = data.notebooks.find(n => n.id === cahierNbId);
+    const pg = nb && (nb.pages||[]).find(p => p.id === cahierPgId);
+    if(!pg) return;
+    pg.title = val.slice(0,60);
+    saveCahiers(data);
+  }, 700);
+}
+
+function pvSaveNotes(val){
+  clearTimeout(pvNotesTimer);
+  pvNotesTimer = setTimeout(()=>{
+    const data = getCahiers();
+    const nb = data.notebooks.find(n => n.id === cahierNbId);
+    const pg = nb && (nb.pages||[]).find(p => p.id === cahierPgId);
+    if(!pg) return;
+    pg.notes = val;
+    saveCahiers(data);
+  }, 700);
+}
+
+function pvAddPhoto(e){
+  const file = e.target.files[0];
+  if(!file) return;
+  e.target.value = '';
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const data = getCahiers();
+    const nb = data.notebooks.find(n => n.id === cahierNbId);
+    const pg = nb && (nb.pages||[]).find(p => p.id === cahierPgId);
+    if(!pg) return;
+    if(!pg.photos) pg.photos = [];
+    if(pg.photos.length >= 9){ toast('Maximum 9 photos par page'); return; }
+    // Sauvegarder notes courantes avant re-render
+    const notesEl = document.getElementById('pv-notes');
+    if(notesEl) pg.notes = notesEl.value;
+    pg.photos.push(ev.target.result);
+    saveCahiers(data);
+    renderCahiersView();
+    toast('📸 Photo ajoutee !');
+  };
+  reader.readAsDataURL(file);
+}
+
+// Scanner depuis l'editeur de page (camera → photo + transcription IA auto)
+async function pvScanPhoto(e){
+  const file=e.target.files[0];
+  if(!file) return;
+  e.target.value='';
+  const reader=new FileReader();
+  reader.onload=async ev=>{
+    const src=ev.target.result;
+    const data=getCahiers();
+    const nb=data.notebooks.find(n=>n.id===cahierNbId);
+    const pg=nb&&(nb.pages||[]).find(p=>p.id===cahierPgId);
+    if(!pg) return;
+    if(!pg.photos) pg.photos=[];
+    if(pg.photos.length>=9){toast('Maximum 9 photos');return;}
+    const notesEl=document.getElementById('pv-notes');
+    if(notesEl) pg.notes=notesEl.value;
+    pg.photos.push(src);
+    saveCahiers(data);
+    renderCahiersView();
+    toast('📸 Photo ajoutee — analyse IA en cours...');
+    try{
+      const mime=src.startsWith('data:image/png')?'image/png':'image/jpeg';
+      const b64=src.split(',')[1];
+      const reply=await callAI({
+        system:buildSys(),
+        messages:[{role:'user',content:[
+          {type:'image',source:{type:'base64',media_type:mime,data:b64}},
+          {type:'text',text:'Transcris et resume ce cours en francais avec des puces et emojis. Identifie les points cles, formules et definitions importantes.'}
+        ]}],
+        maxTokens:900
+      });
+      const fresh=getCahiers();
+      const fnb=fresh.notebooks.find(n=>n.id===cahierNbId);
+      const fpg=fnb&&(fnb.pages||[]).find(p=>p.id===cahierPgId);
+      if(fpg){
+        fpg.notes=(fpg.notes?fpg.notes+'\n\n':'')+reply;
+        saveCahiers(fresh);
+        renderCahiersView();
+        toast('✅ Cours transcrit automatiquement !');
+      }
+    }catch(err){
+      toast('Photo ajoutee (analyse IA non disponible)');
+    }
+  };
+  reader.readAsDataURL(file);
+}
+
+function pvDelPhoto(idx){
+  const data = getCahiers();
+  const nb = data.notebooks.find(n => n.id === cahierNbId);
+  const pg = nb && (nb.pages||[]).find(p => p.id === cahierPgId);
+  if(!pg) return;
+  const notesEl = document.getElementById('pv-notes');
+  if(notesEl) pg.notes = notesEl.value;
+  pg.photos.splice(idx, 1);
+  saveCahiers(data);
+  renderCahiersView();
+}
+
+function pvZoom(idx){
+  const data = getCahiers();
+  const nb = data.notebooks.find(n => n.id === cahierNbId);
+  const pg = nb && (nb.pages||[]).find(p => p.id === cahierPgId);
+  if(!pg || !pg.photos[idx]) return;
+  const ov = document.createElement('div');
+  ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;cursor:zoom-out';
+  const img = document.createElement('img');
+  img.src = pg.photos[idx];
+  img.style.cssText = 'max-width:96vw;max-height:90vh;border-radius:12px;object-fit:contain';
+  ov.appendChild(img);
+  ov.onclick = () => document.body.removeChild(ov);
+  document.body.appendChild(ov);
+}
+
+// ─── Generation IA depuis la page
+async function pvGenFlash(){
+  const data = getCahiers();
+  const nb = data.notebooks.find(n => n.id === cahierNbId);
+  const pg = nb && (nb.pages||[]).find(p => p.id === cahierPgId);
+  if(!pg){ toast('Page introuvable'); return; }
+  const notesEl = document.getElementById('pv-notes');
+  const notes = notesEl ? notesEl.value : (pg.notes||'');
+  const photos = pg.photos || [];
+  if(!notes.trim() && !photos.length){ toast('Ajoute des notes ou une photo'); return; }
+  const resEl = document.getElementById('pv-result');
+  if(resEl){ resEl.className = 'pv-result show'; resEl.innerHTML = '<div style="text-align:center;padding:16px;color:var(--mu)">⚡ Generation en cours...</div>'; }
+  document.querySelectorAll('.pv-btn').forEach(b => b.disabled = true);
+  try{
+    const parts = [];
+    if(photos.length){
+      const src = photos[0];
+      const mime = src.startsWith('data:image/png') ? 'image/png' : 'image/jpeg';
+      parts.push({type:'image',source:{type:'base64',media_type:mime,data:src.split(',')[1]}});
+    }
+    const prompt = 'Genere 8 flashcards a partir de ce cours.'+(notes?' Notes : '+notes:'')+' Utilise CE FORMAT EXACT :\n##FLASH##\nCARTE 1/8\n❓ [question]\n✅ [reponse]\nCARTE 2/8\n❓ ...\n✅ ...\n##FINFLASH##';
+    parts.push({type:'text',text:prompt});
+    const reply = await callAI({system:buildSys(),messages:[{role:'user',content:parts}],maxTokens:1500});
+    if(resEl) resEl.innerHTML = buildDeckHTML(reply, true);
+  }catch(err){
+    if(resEl) resEl.innerHTML = '<div style="color:var(--a2);font-size:12px;padding:8px">❌ '+esc(err.message.slice(0,100))+'</div>';
+  }
+  document.querySelectorAll('.pv-btn').forEach(b => b.disabled = false);
+}
+
+async function pvGenResume(){
+  const data = getCahiers();
+  const nb = data.notebooks.find(n => n.id === cahierNbId);
+  const pg = nb && (nb.pages||[]).find(p => p.id === cahierPgId);
+  if(!pg){ toast('Page introuvable'); return; }
+  const notesEl = document.getElementById('pv-notes');
+  const notes = notesEl ? notesEl.value : (pg.notes||'');
+  const photos = pg.photos || [];
+  if(!notes.trim() && !photos.length){ toast('Ajoute des notes ou une photo'); return; }
+  const resEl = document.getElementById('pv-result');
+  if(resEl){ resEl.className = 'pv-result show'; resEl.innerHTML = '<div style="text-align:center;padding:16px;color:var(--mu)">📋 Resume en cours...</div>'; }
+  document.querySelectorAll('.pv-btn').forEach(b => b.disabled = true);
+  try{
+    const parts = [];
+    if(photos.length){
+      const src = photos[0];
+      const mime = src.startsWith('data:image/png') ? 'image/png' : 'image/jpeg';
+      parts.push({type:'image',source:{type:'base64',media_type:mime,data:src.split(',')[1]}});
+    }
+    const prompt = 'Fais un resume clair et structure de ce cours pour un(e) eleve de college.'+(notes?' Notes : '+notes:'')+' Utilise des emojis, des listes a puces, et mets en valeur les points cles.';
+    parts.push({type:'text',text:prompt});
+    const reply = await callAI({system:buildSys(),messages:[{role:'user',content:parts}],maxTokens:1200});
+    if(resEl) resEl.innerHTML = '<div style="font-size:12.5px;line-height:1.7;white-space:pre-wrap">'+fmtMsg(reply)+'</div>';
+  }catch(err){
+    if(resEl) resEl.innerHTML = '<div style="color:var(--a2);font-size:12px;padding:8px">❌ '+esc(err.message.slice(0,100))+'</div>';
+  }
+  document.querySelectorAll('.pv-btn').forEach(b => b.disabled = false);
 }
 
 </script>

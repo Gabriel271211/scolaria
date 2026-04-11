@@ -1609,7 +1609,7 @@ button:active{opacity:.85}
 #gp-compte{overflow:hidden!important;padding-bottom:0!important;display:flex!important;flex-direction:column!important}
 .cah-views-outer{flex:1;overflow:hidden;min-height:0;position:relative}
 .cah-views-inner{position:absolute;inset:0;display:flex;width:200%;transition:transform .38s cubic-bezier(.32,1.26,.6,1);will-change:transform}
-.cah-view{width:50%;height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0 0 80px}
+.cah-view{width:50%;height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0 0 80px;position:relative;overflow:hidden}
 .cah-view::-webkit-scrollbar{display:none}
 #cah-view-profil .gpi{padding:0}
 /* Drum nav */
@@ -1627,27 +1627,29 @@ button:active{opacity:.85}
 .ni-drum-slot:hover .ni-drum-arrow{opacity:1;transform:translateX(-50%) translateY(0)}
 @media(hover:none){.ni-drum-arrow{display:none}}
 /* ── Notebooks list v3 ── */
-.nb3-header{display:flex;align-items:center;padding:16px 14px 8px;gap:10px}
-.nb3-title{font-family:var(--fd);font-size:22px;font-weight:900;letter-spacing:-.5px;flex:1}
-.nb3-add{width:36px;height:36px;border-radius:50%;border:none;background:var(--a1);color:#fff;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 14px rgba(124,92,252,.35);flex-shrink:0;transition:transform .15s}
-.nb3-add:active{transform:scale(.88)}
-.nb3-grid{display:flex;flex-direction:column;gap:8px;padding:0 12px}
-.nb3-grp-hd{padding:10px 2px 4px;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--mu)}
-.nb3-card{border-radius:16px;overflow:hidden;background:var(--card);border:1px solid var(--bord);cursor:pointer;transition:transform .15s;-webkit-tap-highlight-color:transparent}
-.nb3-card:active{transform:scale(.97)}
-.nb3-card-body{display:flex;align-items:center;gap:10px;padding:13px 12px 12px}
-.nb3-card-ico{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+/* ── Notebooks v3 — style Apple Notes ── */
+.nb3-header{display:flex;align-items:center;padding:18px 16px 10px;gap:12px}
+.nb3-title{font-size:20px;font-weight:700;flex:1;letter-spacing:-.3px}
+.nb3-add{width:34px;height:34px;border-radius:50%;border:none;background:var(--a1);color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(124,92,252,.3);flex-shrink:0;transition:transform .15s,opacity .15s}
+.nb3-add:active{transform:scale(.9);opacity:.85}
+.nb3-grid{display:flex;flex-direction:column;gap:1px;background:var(--bord);border-radius:14px;overflow:hidden;margin:0 12px}
+.nb3-grp-hd{padding:10px 14px 4px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--mu);background:var(--card)}
+.nb3-card{display:flex;align-items:center;gap:0;background:var(--card);cursor:pointer;transition:opacity .12s;-webkit-tap-highlight-color:transparent;overflow:hidden}
+.nb3-card:active{opacity:.7}
+.nb3-card-accent{width:3px;align-self:stretch;flex-shrink:0}
+.nb3-card-body{display:flex;align-items:center;gap:12px;padding:13px 12px 13px 14px;flex:1;min-width:0}
+.nb3-card-ico{font-size:20px;flex-shrink:0;width:28px;text-align:center}
 .nb3-card-info{flex:1;min-width:0}
-.nb3-card-name{font-weight:700;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:2px}
-.nb3-card-meta{font-size:11px;color:var(--mu)}
-.nb3-card-del{width:28px;height:28px;border-radius:8px;border:none;background:transparent;color:var(--mu);font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.nb3-card-del:active{background:rgba(252,92,125,.12);color:var(--a2)}
-.nb3-card-bar{height:3px}
-.nb3-empty{text-align:center;padding:60px 20px}
-.nb3-empty-ico{font-size:48px;margin-bottom:12px;opacity:.4}
-.nb3-empty-t{font-size:16px;font-weight:700;margin-bottom:6px}
-.nb3-empty-s{font-size:12px;color:var(--mu);line-height:1.8}
-.nb3-empty-cta{margin-top:18px;padding:12px 28px;background:var(--a1);color:#fff;border:none;border-radius:14px;font-size:14px;font-family:var(--fb);font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(124,92,252,.3)}
+.nb3-card-name{font-weight:600;font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:2px;color:var(--tx)}
+.nb3-card-meta{font-size:11.5px;color:var(--mu)}
+.nb3-card-arr{color:var(--mu);font-size:20px;flex-shrink:0;line-height:1;margin-right:4px;opacity:.4}
+.nb3-card-del{width:32px;height:44px;border:none;background:transparent;color:var(--mu);font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;opacity:.5}
+.nb3-card-del:active{opacity:1;color:var(--a2)}
+.nb3-empty{text-align:center;padding:64px 20px}
+.nb3-empty-ico{font-size:44px;margin-bottom:14px;opacity:.3}
+.nb3-empty-t{font-size:16px;font-weight:700;margin-bottom:6px;color:var(--tx)}
+.nb3-empty-s{font-size:12.5px;color:var(--mu);line-height:1.75}
+.nb3-empty-cta{margin-top:20px;padding:12px 28px;background:var(--a1);color:#fff;border:none;border-radius:14px;font-size:14px;font-family:var(--fb);font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(124,92,252,.3)}
 /* ── Notepad infini ── */
 .np-outer{display:flex;flex-direction:column;height:100%;position:absolute;inset:0}
 .np-topbar{display:flex;align-items:center;gap:4px;padding:6px 8px;background:var(--bg);border-bottom:1px solid var(--bord);flex-shrink:0;min-height:46px}
@@ -1711,6 +1713,9 @@ button:active{opacity:.85}
 .np-more-menu.open{display:block}
 .np-more-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border:none;background:transparent;color:var(--tx);font-size:12.5px;font-family:var(--fb);cursor:pointer;border-radius:9px;width:100%;text-align:left;transition:background .12s}
 .np-more-item:active{background:rgba(124,92,252,.1)}
+/* Notepad more menu fix */
+.np-topbar-btn svg{pointer-events:none}
+.np-more-menu{bottom:unset;top:calc(100% + 4px)}
 /* Canvas overlay */
 #np-canvas-overlay{position:fixed;inset:0;z-index:500;background:var(--bg);display:none;flex-direction:column}
 #np-canvas-overlay.open{display:flex}
@@ -1865,7 +1870,7 @@ button:active{opacity:.85}
     <div id="lvl-badge" style="display:none;background:rgba(139,111,255,.12);border:1px solid rgba(139,111,255,.25);border-radius:20px;padding:3px 8px;font-size:10px;font-weight:700;color:var(--a1);font-family:var(--fm)"></div>
     <button class="hdr-btn" onclick="toggleTheme()" id="theme-btn" title="Thème">🌙</button>
     <button class="hdr-btn" id="sound-btn" onclick="toggleSound()" title="Son" style="font-size:15px">🔊</button>
-    <button class="hdr-btn" id="hdr-menu-btn" onclick="toggleHdrMenu()" title="Plus" style="font-size:20px;letter-spacing:1px">⋮</button>
+    <button class="hdr-btn" id="hdr-menu-btn" onclick="toggleHdrMenu()" title="Menu" style="font-size:13px;display:flex;flex-direction:column;gap:3px;align-items:center;justify-content:center"><span style="display:block;width:16px;height:2px;background:currentColor;border-radius:2px"></span><span style="display:block;width:16px;height:2px;background:currentColor;border-radius:2px"></span><span style="display:block;width:16px;height:2px;background:currentColor;border-radius:2px"></span></button>
   </div>
   <!-- Menu déroulant header -->
   <div id="hdr-menu" style="display:none;position:absolute;top:calc(var(--hdr) + 4px);right:10px;background:var(--surf);border:1px solid var(--bord);border-radius:16px;padding:6px;z-index:200;min-width:160px;box-shadow:0 8px 32px rgba(0,0,0,.3)">
@@ -8776,7 +8781,7 @@ function renderCahiersView(){
 function renderNotebooksList(data, el){
   var nbs = data.notebooks || [];
   var h = '<div class="nb3-header"><div class="nb3-title">Mes cahiers</div>';
-  h += '<button class="nb3-add" onclick="addNotebook()">+</button></div>';
+  h += '<button class="nb3-add" onclick="addNotebook()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button></div>';
   if(!nbs.length){
     h += '<div class="nb3-empty">';
     h += '<div class="nb3-empty-ico">&#128210;</div>';
@@ -8794,20 +8799,25 @@ function renderNotebooksList(data, el){
     });
     function renderNb3(nb){
       var color = nb.color || '#7c5cfc';
-      var docLen = nb.doc ? nb.doc.replace(/<[^>]*>/g,'').length : 0;
-      var meta = docLen > 0 ? Math.round(docLen/100)/10+' ko' : 'Vide';
-      if(nb.subject) meta += ' · '+esc(nb.subject);
+      var emoji = nb.emoji || '';
+      var docLen = nb.doc ? nb.doc.replace(/<[^>]*>/g,'').trim().length : 0;
+      var pgCount = nb.pages ? nb.pages.length : 0;
+      var meta = '';
+      if(docLen > 0) meta = Math.round(docLen/5)+' mots';
+      else if(pgCount > 0) meta = pgCount+' page'+(pgCount>1?'s':'');
+      else meta = 'Vide';
+      if(nb.subject) meta += ' &middot; '+esc(nb.subject);
       var r = '<div class="nb3-card" onclick="openNotebook('+nb.id+')">';
+      r += '<div class="nb3-card-accent" style="background:'+color+'"></div>';
       r += '<div class="nb3-card-body">';
-      r += '<div class="nb3-card-ico" style="background:'+color+'22">'+(nb.emoji||'&#128210;')+'</div>';
+      if(emoji) r += '<div class="nb3-card-ico">'+emoji+'</div>';
       r += '<div class="nb3-card-info">';
       r += '<div class="nb3-card-name">'+esc(nb.title||'Cahier')+'</div>';
       r += '<div class="nb3-card-meta">'+meta+'</div>';
       r += '</div>';
-      r += '<button class="nb3-card-del" onclick="event.stopPropagation();deleteNotebook('+nb.id+')">&#10005;</button>';
-      r += '</div>';
-      r += '<div class="nb3-card-bar" style="background:'+color+'"></div>';
-      r += '</div>';
+      r += '<div class="nb3-card-arr">&#8250;</div>';
+      r += '<button class="nb3-card-del" onclick="event.stopPropagation();deleteNotebook('+nb.id+')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>';
+      r += '</div></div>';
       return r;
     }
     h += '<div class="nb3-grid">';
@@ -8828,12 +8838,7 @@ function renderNotebooksList(data, el){
 function addNotebook(){
   var el = document.getElementById('cah-content');
   if(!el) return;
-  var defaultEmoji = NB_EMOJIS[0];
   var defaultColor = NB_COLORS[0];
-  var emojiH = '';
-  NB_EMOJIS.forEach(function(em, i){
-    emojiH += '<span data-em="'+em+'" class="'+(i===0?'sel':'')+'" onclick="nbFormEmoji(this,\''+em+'\')">'+em+'</span>';
-  });
   var colH = '';
   NB_COLORS.forEach(function(c, i){
     colH += '<div class="cah-form-col '+(i===0?'sel':'')+'" style="background:'+c+'" data-c="'+c+'" onclick="nbFormColor(this,\''+c+'\')"></div>';
@@ -8841,18 +8846,14 @@ function addNotebook(){
   el.innerHTML = '<div class="cah-form" id="nb-new-form">'
     +'<div class="cah-form-title">Nouveau cahier</div>'
     +'<div class="cah-form-lbl">Nom</div>'
-    +'<input class="cah-form-inp" id="cah-nb-inp" placeholder="Ex: Maths, Histoire..." maxlength="40" autocomplete="off" autocorrect="off">'
-    +'<div class="cah-form-lbl">Groupe (facultatif)</div>'
-    +'<input class="cah-form-inp" id="cah-nb-grp" placeholder="Ex: Trimestre 1, Sciences..." maxlength="30" autocomplete="off">'
-    +'<div class="cah-form-lbl">Icone</div>'
-    +'<div class="cah-form-emoji" id="nb-form-emoji">'+emojiH+'</div>'
+    +'<input class="cah-form-inp" id="cah-nb-inp" placeholder="Maths, Histoire, Français..." maxlength="40" autocomplete="off" autocorrect="off">'
     +'<div class="cah-form-lbl">Couleur</div>'
     +'<div class="cah-form-colors" id="nb-form-colors">'+colH+'</div>'
     +'<div class="cah-form-btns">'
     +'<button class="cah-form-cancel" onclick="renderCahiersView()">Annuler</button>'
     +'<button class="cah-form-confirm" onclick="confirmAddNotebook()">Créer</button>'
     +'</div></div>';
-  window._nbFormEmoji = defaultEmoji;
+  window._nbFormEmoji = '';
   window._nbFormColor = defaultColor;
   setTimeout(function(){ var i=document.getElementById('cah-nb-inp'); if(i)i.focus(); }, 120);
 }
@@ -9007,7 +9008,7 @@ function renderNotepad(data, el){
   // Bottom bar
   h += '<div class="np-bottom" id="np-bottom">';
   h += '<div class="np-toolbar'+(window._npToolbarSlim?' slim':'')+'" id="np-toolbar">'+tbH+'</div>';
-  h += '<div class="np-ai-bar">';
+  h += '<div id="np-ai-bar-wrap"><div class="np-ai-bar">';
   h += '<div class="np-ai-chips">';
   h += '<button class="np-ai-chip" onclick="npAiAction(\'resume\')">Résumé</button>';
   h += '<button class="np-ai-chip" onclick="npAiAction(\'expliquer\')">Explique</button>';
@@ -9015,7 +9016,7 @@ function renderNotepad(data, el){
   h += '</div>';
   h += '<input class="np-ai-inp" id="np-ai-inp" placeholder="Question IA..." onkeydown="if(event.key===\'Enter\')npAiSend()">';
   h += '<button class="np-ai-send" onclick="npAiSend()">&#8250;</button>';
-  h += '</div>';
+  h += '</div></div>';
   h += '<div class="np-ai-sheet" id="np-ai-sheet"><div class="np-ai-sheet-in"><div class="np-ai-label">Adaptation IA</div><div class="np-ai-reply" id="np-ai-reply"></div></div></div>';
   h += '</div>';
   h += '</div>';
@@ -9108,21 +9109,31 @@ function npMoreAct(type){
 function npInitKeyboard(){
   if(!window.visualViewport) return;
   var lastH = window.visualViewport.height;
-  function onResize(){
-    var bot = document.getElementById('np-bottom');
-    if(!bot) return;
+  function onKbOpen(){
+    // Cache la nav
+    var bn = document.getElementById('bn');
+    if(bn) bn.classList.add('kb-hidden');
+    // Cache la barre IA
+    var aiBar = document.getElementById('np-ai-bar-wrap');
+    if(aiBar) aiBar.style.display='none';
+    // Montre la toolbar
+    var tb = document.getElementById('np-toolbar');
+    if(tb) tb.classList.remove('slim');
+  }
+  function onKbClose(){
+    // Restaure la nav
+    var bn = document.getElementById('bn');
+    if(bn) bn.classList.remove('kb-hidden');
+    // Restaure la barre IA
+    var aiBar = document.getElementById('np-ai-bar-wrap');
+    if(aiBar) aiBar.style.display='';
+  }
+  window.visualViewport.addEventListener('resize', function(){
     var h = window.visualViewport.height;
     var diff = lastH - h;
-    if(diff > 120){
-      // Keyboard open — hide toolbar, keep AI bar
-      var tb = document.getElementById('np-toolbar');
-      if(tb && !window._npToolbarSlim) tb.classList.add('slim');
-    } else if(diff < 50){
-      var tb2 = document.getElementById('np-toolbar');
-      if(tb2 && !window._npToolbarSlim) tb2.classList.remove('slim');
-    }
-  }
-  window.visualViewport.addEventListener('resize', onResize);
+    if(diff > 150){ onKbOpen(); }
+    else if(diff < 50){ onKbClose(); }
+  });
 }
 
 // ─── Photos

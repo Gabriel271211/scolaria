@@ -3835,8 +3835,8 @@ function initMobileKeyboard(){
 // LEVEL
 // ════════════════════════════════
 function saveLevel(v){localStorage.setItem('sk_lv',v);}
-function loadLevel(){const v=localStorage.getItem('sk_lv');if(v)document.getElementById('lvl').value=v;}
-function getLevel(){return document.getElementById('lvl').value||localStorage.getItem('sk_lv')||'';}
+function loadLevel(){const v=localStorage.getItem('sk_lv');if(v){const el=document.getElementById('lvl');if(el)el.value=v;}}
+function getLevel(){const el=document.getElementById('lvl');return (el&&el.value)||localStorage.getItem('sk_lv')||'';}
 function getLvG(lv){
   const m={
     '6ème':'Vocabulaire très simple, exemples quotidiens, étapes ultra-détaillées, beaucoup d\'encouragement',

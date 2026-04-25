@@ -2,7 +2,7 @@
 <html lang="fr" data-theme="dark">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover,interactive-widget=resizes-content">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover,interactive-widget=resizes-visual">
 <title>ScolarIA 🎓 — Assistant scolaire IA</title>
 <meta name="theme-color" content="#7c5cfc">
 <meta name="mobile-web-app-capable" content="yes">
@@ -3830,8 +3830,15 @@ function initSwipe(){
 }
 
 function initMobileKeyboard(){
-  // interactive-widget=resizes-content dans le viewport gere le clavier
-  // Le clavier passe par-dessus la nav, la nav reste visible
+  if(!window.visualViewport) return;
+  var cl=document.getElementById('cl');
+  var msgs=document.getElementById('msgs');
+  window.visualViewport.addEventListener('resize',function(){
+    var kbH=Math.max(0,window.innerHeight-window.visualViewport.height);
+    if(cl){cl.style.bottom=(kbH>50?kbH:0)+'px';}
+    if(kbH>50&&msgs){setTimeout(function(){msgs.scrollTop=msgs.scrollHeight;},50);}
+    else if(cl&&kbH<=50){cl.style.bottom='';}
+  });
 }
 
 // ════════════════════════════════

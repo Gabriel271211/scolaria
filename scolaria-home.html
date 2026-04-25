@@ -3830,55 +3830,8 @@ function initSwipe(){
 }
 
 function initMobileKeyboard(){
-  var bn = document.getElementById('bn');
-  if(!bn) return;
-  var kbTimer = null;
-
-  function hideNav(){
-    if(kbTimer){clearTimeout(kbTimer);kbTimer=null;}
-    bn.classList.add('kb-hidden');
-    // Scroll les messages vers le bas pour que l'input reste visible
-    setTimeout(function(){
-      var m=document.getElementById('msgs');
-      if(m) m.scrollTop=m.scrollHeight;
-    },150);
-  }
-  function showNav(){
-    if(kbTimer) clearTimeout(kbTimer);
-    kbTimer=setTimeout(function(){
-      var a=document.activeElement;
-      if(!a||(a.tagName!=='INPUT'&&a.tagName!=='TEXTAREA')){
-        bn.classList.remove('kb-hidden');
-      }
-    },150);
-  }
-
-  document.addEventListener('focusin',function(ev){
-    var t=ev.target;
-    if(t&&(t.tagName==='INPUT'||t.tagName==='TEXTAREA')) hideNav();
-  });
-  document.addEventListener('focusout',function(ev){
-    var t=ev.target;
-    if(t&&(t.tagName==='INPUT'||t.tagName==='TEXTAREA')){
-      setTimeout(function(){
-        var a=document.activeElement;
-        if(!a||(a.tagName!=='INPUT'&&a.tagName!=='TEXTAREA')) showNav();
-      },50);
-    }
-  });
-
-  // Backup : visualViewport API (Android Chrome)
-  if(window.visualViewport){
-    window.visualViewport.addEventListener('resize',function(){
-      var ratio=window.visualViewport.height/window.innerHeight;
-      if(ratio<0.75){
-        hideNav();
-      } else {
-        var a=document.activeElement;
-        if(!a||(a.tagName!=='INPUT'&&a.tagName!=='TEXTAREA')) bn.classList.remove('kb-hidden');
-      }
-    });
-  }
+  // interactive-widget=resizes-content dans le viewport gere le clavier
+  // Le clavier passe par-dessus la nav, la nav reste visible
 }
 
 // ════════════════════════════════

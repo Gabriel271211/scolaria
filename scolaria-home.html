@@ -3832,12 +3832,18 @@ function initSwipe(){
 function initMobileKeyboard(){
   if(!window.visualViewport) return;
   var cl=document.getElementById('cl');
+  var bn=document.getElementById('bn');
   var msgs=document.getElementById('msgs');
   window.visualViewport.addEventListener('resize',function(){
     var kbH=Math.max(0,window.innerHeight-window.visualViewport.height);
-    if(cl){cl.style.bottom=(kbH>50?kbH:0)+'px';}
-    if(kbH>50&&msgs){setTimeout(function(){msgs.scrollTop=msgs.scrollHeight;},50);}
-    else if(cl&&kbH<=50){cl.style.bottom='';}
+    if(kbH>50){
+      if(bn) bn.classList.add('kb-hidden');
+      if(cl) cl.style.bottom='0';
+      if(msgs) setTimeout(function(){msgs.scrollTop=msgs.scrollHeight;},50);
+    } else {
+      if(bn) bn.classList.remove('kb-hidden');
+      if(cl) cl.style.bottom='';
+    }
   });
 }
 

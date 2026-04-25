@@ -1734,12 +1734,47 @@ button:active{opacity:.85}
 .edu-site-sub{font-size:10px;color:var(--mu);line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .edu-site-ext{position:absolute;top:8px;right:8px;font-size:10px;color:var(--mu);opacity:.6;z-index:1}
 
-/* ══ AMÉLIORATION CARTES FONCTIONNALITÉS (ACCUEIL) ══ */
-.dash-feat-card{position:relative;overflow:hidden}
-.dash-feat-card::after{
-  content:"";position:absolute;inset:auto -20% -50% auto;width:80px;height:80px;border-radius:50%;
-  background:radial-gradient(circle,var(--fc,transparent) 0%,transparent 70%);opacity:.18;pointer-events:none
+/* ══ GRANDES CARTES FONCTIONNALITÉS (ACCUEIL) ══ */
+.feat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:0}
+.feat-big{
+  position:relative;overflow:hidden;border-radius:20px;padding:16px 14px 14px;
+  cursor:pointer;border:none;text-align:left;min-height:130px;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  transition:transform .18s ease,box-shadow .18s ease;
+  -webkit-tap-highlight-color:transparent;
+  box-shadow:0 4px 20px -4px var(--fb-shadow,rgba(0,0,0,.3))
 }
+.feat-big:active{transform:scale(.96)}
+.feat-big-bg{
+  position:absolute;bottom:-10px;right:-10px;
+  width:80px;height:80px;opacity:.22;pointer-events:none;
+  transition:transform .3s ease
+}
+.feat-big:active .feat-big-bg{transform:scale(1.08)}
+.feat-big-tag{
+  display:inline-block;font-size:9px;font-weight:800;letter-spacing:.8px;
+  text-transform:uppercase;padding:2px 7px;border-radius:20px;
+  background:rgba(255,255,255,.22);color:#fff;margin-bottom:6px;align-self:flex-start
+}
+.feat-big-label{font-family:var(--fd);font-size:15px;font-weight:800;color:#fff;line-height:1.2;margin-bottom:3px}
+.feat-big-sub{font-size:10.5px;color:rgba(255,255,255,.8);line-height:1.3}
+
+/* ══ GRANDES CARTES OUTILS IA (ACCUEIL) ══ */
+.outils-ia-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.outils-ia-card{
+  position:relative;overflow:hidden;border-radius:20px;padding:16px 14px 14px;
+  cursor:pointer;border:none;text-align:left;min-height:110px;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  transition:transform .18s ease;-webkit-tap-highlight-color:transparent;
+  box-shadow:0 4px 16px -4px rgba(0,0,0,.35)
+}
+.outils-ia-card:active{transform:scale(.96)}
+.outils-ia-bg{
+  position:absolute;bottom:-8px;right:-8px;width:72px;height:72px;
+  opacity:.25;pointer-events:none
+}
+.outils-ia-label{font-family:var(--fd);font-size:13.5px;font-weight:800;color:#fff;line-height:1.2;margin-bottom:2px}
+.outils-ia-sub{font-size:10px;color:rgba(255,255,255,.78);line-height:1.3}
 /* ══ SCAN COURS ══ */
 .scan-preview{width:100%;max-height:200px;object-fit:cover;border-radius:12px;border:1px solid var(--bord);margin-bottom:10px;display:none}
 /* ══ VEILLE CONTRÔLE ══ */
@@ -3200,38 +3235,47 @@ button:active{opacity:.85}
       </div>
       <div id="dash-modes-xp" style="display:none;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px"></div>
     </div>
-    <!-- Horizontal scroll features -->
-    <div class="hscroll dash-feat-scroll">
-      <button class="dash-feat-card" onclick="openScanCours()" style="--fc:#7c5cfc">
-        <div class="dash-feat-icon" style="background:rgba(124,92,252,.15)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7c5cfc" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
-        <div class="dash-feat-label">Scanner cours</div>
-        <div class="dash-feat-sub">Photo → Fiche</div>
-      </button>
-      <button class="dash-feat-card" onclick="openVeilleControle()" style="--fc:#f472b6">
-        <div class="dash-feat-icon" style="background:rgba(244,114,182,.15)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f472b6" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
-        <div class="dash-feat-label">Veille contrôle</div>
-        <div class="dash-feat-sub">Plan de révision</div>
-      </button>
-      <button class="dash-feat-card" onclick="goTo('pomo')" style="--fc:#fb923c">
-        <div class="dash-feat-icon" style="background:rgba(251,146,60,.15)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fb923c" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
-        <div class="dash-feat-label">Pomodoro</div>
-        <div class="dash-feat-sub">Focus 25 min</div>
-      </button>
-      <button class="dash-feat-card" onclick="goTo('moy')" style="--fc:#38bdf8">
-        <div class="dash-feat-icon" style="background:rgba(56,189,248,.15)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
-        <div class="dash-feat-label">Moyennes</div>
-        <div class="dash-feat-sub">Notes &amp; coefs</div>
-      </button>
-      <button class="dash-feat-card" onclick="openVocalQuiz()" style="--fc:#34d399">
-        <div class="dash-feat-icon" style="background:rgba(52,211,153,.15)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2" stroke-linecap="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></div>
-        <div class="dash-feat-label">Quiz vocal</div>
-        <div class="dash-feat-sub">Réponds à voix haute</div>
-      </button>
-      <button class="dash-feat-card" onclick="sendCombo();goTo('chat')" style="--fc:#fbbf24">
-        <div class="dash-feat-icon" style="background:rgba(251,191,36,.15)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
-        <div class="dash-feat-label">Fiche + Flash</div>
-        <div class="dash-feat-sub">Générer en 1 clic</div>
-      </button>
+    <!-- Grandes cartes fonctionnalités -->
+    <div class="dash-section">
+      <div class="dash-title">Fonctionnalités</div>
+      <div class="feat-grid">
+        <button class="feat-big" onclick="sendCombo();goTo('chat')" style="background:linear-gradient(135deg,#7c5cfc,#a472f9);--fb-shadow:rgba(124,92,252,.4)">
+          <svg class="feat-big-bg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.2" stroke-linecap="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          <div class="feat-big-tag">IA</div>
+          <div class="feat-big-label">Fiche + Flash</div>
+          <div class="feat-big-sub">Génère tout en 1 clic</div>
+        </button>
+        <button class="feat-big" onclick="goTo('flash')" style="background:linear-gradient(135deg,#e91e8c,#f472b6);--fb-shadow:rgba(233,30,140,.4)">
+          <svg class="feat-big-bg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.2" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          <div class="feat-big-tag">Révision</div>
+          <div class="feat-big-label">Flashcards</div>
+          <div class="feat-big-sub">SRS &amp; entraînement</div>
+        </button>
+        <button class="feat-big" onclick="goTo('devoirs')" style="background:linear-gradient(135deg,#f97316,#fb923c);--fb-shadow:rgba(249,115,22,.4)">
+          <svg class="feat-big-bg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.2" stroke-linecap="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          <div class="feat-big-tag">Planning</div>
+          <div class="feat-big-label">Devoirs</div>
+          <div class="feat-big-sub">Agenda &amp; urgences</div>
+        </button>
+        <button class="feat-big" onclick="goTo('pomo')" style="background:linear-gradient(135deg,#dc2626,#ef4444);--fb-shadow:rgba(220,38,38,.4)">
+          <svg class="feat-big-bg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <div class="feat-big-tag">Focus</div>
+          <div class="feat-big-label">Pomodoro</div>
+          <div class="feat-big-sub">25 min concentré</div>
+        </button>
+        <button class="feat-big" onclick="goTo('moy')" style="background:linear-gradient(135deg,#0284c7,#38bdf8);--fb-shadow:rgba(2,132,199,.4)">
+          <svg class="feat-big-bg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.2" stroke-linecap="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          <div class="feat-big-tag">Notes</div>
+          <div class="feat-big-label">Moyennes</div>
+          <div class="feat-big-sub">Calcul &amp; coefficients</div>
+        </button>
+        <button class="feat-big" onclick="window.open('scolaria-langues.html','_self')" style="background:linear-gradient(135deg,#059669,#10b981);--fb-shadow:rgba(5,150,105,.4)">
+          <svg class="feat-big-bg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          <div class="feat-big-tag">Nouveau</div>
+          <div class="feat-big-label">Langues</div>
+          <div class="feat-big-sub">EN &amp; ES · Duolingo style</div>
+        </button>
+      </div>
     </div>
     <!-- Urgent devoirs -->
     <div class="dash-section" id="dash-urgent-sec">
@@ -3313,14 +3357,30 @@ button:active{opacity:.85}
         </a>
       </div>
     </div>
-    <!-- Tools grid -->
+    <!-- Outils IA -->
     <div class="dash-section">
-      <div class="dash-title">Outils</div>
-      <div class="dash-tools-grid">
-        <button class="dash-tool-btn" onclick="openTool('calc')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="11" y2="14"/></svg>Calculatrice</button>
-        <button class="dash-tool-btn" onclick="openTool('conv')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>Convertir</button>
-        <button class="dash-tool-btn" onclick="openTool('conj')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>Conjuguer</button>
-        <button class="dash-tool-btn" onclick="openTool('spell')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7V4h16v3"/><path d="M9 20h6"/><path d="M12 4v16"/></svg>Épeler</button>
+      <div class="dash-title">Outils IA</div>
+      <div class="outils-ia-grid">
+        <button class="outils-ia-card" onclick="openScanCours()" style="background:linear-gradient(135deg,#4c1d95,#7c5cfc)">
+          <svg class="outils-ia-bg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          <div class="outils-ia-label">Scanner cours</div>
+          <div class="outils-ia-sub">Photo → Fiche IA</div>
+        </button>
+        <button class="outils-ia-card" onclick="openVeilleControle()" style="background:linear-gradient(135deg,#831843,#f472b6)">
+          <svg class="outils-ia-bg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <div class="outils-ia-label">Veille contrôle</div>
+          <div class="outils-ia-sub">Plan de révision</div>
+        </button>
+        <button class="outils-ia-card" onclick="openVocalQuiz()" style="background:linear-gradient(135deg,#065f46,#34d399)">
+          <svg class="outils-ia-bg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg>
+          <div class="outils-ia-label">Quiz vocal</div>
+          <div class="outils-ia-sub">Réponds à voix haute</div>
+        </button>
+        <button class="outils-ia-card" onclick="openInterro()" style="background:linear-gradient(135deg,#78350f,#fbbf24)">
+          <svg class="outils-ia-bg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <div class="outils-ia-label">Interrogation</div>
+          <div class="outils-ia-sub">Le prof IA t'interroge</div>
+        </button>
       </div>
     </div>
   </div>

@@ -1655,6 +1655,91 @@ button:active{opacity:.85}
 .dash-tool-btn{background:var(--card);border:1px solid var(--bord);border-radius:12px;padding:11px 14px;cursor:pointer;color:var(--tx);font-size:12px;font-family:var(--fb);font-weight:600;display:flex;align-items:center;gap:8px;text-align:left;transition:all .15s}
 .dash-tool-btn:active{background:rgba(124,92,252,.08);border-color:rgba(124,92,252,.3)}
 .dash-tool-btn svg{color:var(--mu);flex-shrink:0}
+/* ══ GROS BOUTON IA (ACCUEIL) ══ */
+.ai-hero-btn{
+  position:relative;display:flex;align-items:center;gap:14px;
+  width:100%;padding:18px 16px;margin-bottom:18px;
+  background:linear-gradient(135deg,#7c5cfc 0%,#a472f9 45%,#f472b6 100%);
+  border:none;border-radius:22px;cursor:pointer;text-align:left;
+  box-shadow:0 10px 30px -8px rgba(124,92,252,.55),0 4px 14px -4px rgba(244,114,182,.3),inset 0 1px 0 rgba(255,255,255,.18);
+  overflow:hidden;transition:transform .18s ease,box-shadow .18s ease;
+  -webkit-tap-highlight-color:transparent;color:#fff
+}
+.ai-hero-btn::before{
+  content:"";position:absolute;inset:-40% -10% auto auto;width:220px;height:220px;
+  background:radial-gradient(circle,rgba(255,255,255,.28) 0%,rgba(255,255,255,0) 60%);
+  pointer-events:none
+}
+.ai-hero-btn::after{
+  content:"";position:absolute;inset:auto -20% -60% auto;width:200px;height:200px;
+  background:radial-gradient(circle,rgba(255,255,255,.16) 0%,rgba(255,255,255,0) 65%);
+  pointer-events:none
+}
+.ai-hero-btn:active{transform:scale(.97);box-shadow:0 6px 18px -8px rgba(124,92,252,.5)}
+.ai-hero-mascot{
+  position:relative;width:62px;height:62px;border-radius:50%;flex-shrink:0;
+  background:radial-gradient(circle at 35% 30%,#ffffff 0%,#e9e0ff 50%,#cdb6ff 100%);
+  display:flex;align-items:center;justify-content:center;font-size:32px;
+  box-shadow:inset 0 -4px 8px rgba(124,92,252,.25),0 4px 12px rgba(0,0,0,.25),0 0 0 3px rgba(255,255,255,.25);
+  animation:ai-mascot-float 3.4s ease-in-out infinite
+}
+.ai-hero-mascot::after{
+  content:"";position:absolute;inset:-8px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,.5) 0%,rgba(255,255,255,0) 70%);
+  z-index:-1;animation:ai-mascot-pulse 2.4s ease-in-out infinite
+}
+@keyframes ai-mascot-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@keyframes ai-mascot-pulse{0%,100%{opacity:.4;transform:scale(1)}50%{opacity:.85;transform:scale(1.12)}}
+.ai-hero-content{flex:1;min-width:0;position:relative;z-index:1}
+.ai-hero-eyebrow{
+  font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;
+  color:rgba(255,255,255,.85);font-family:var(--fb);margin-bottom:2px;
+  display:flex;align-items:center;gap:6px
+}
+.ai-hero-eyebrow::before{content:"";width:6px;height:6px;border-radius:50%;background:#fff;box-shadow:0 0 8px rgba(255,255,255,.9);animation:ai-mascot-pulse 1.6s ease-in-out infinite}
+.ai-hero-title{font-family:var(--fd);font-size:20px;font-weight:800;color:#fff;line-height:1.1;margin-bottom:3px;letter-spacing:-.3px}
+.ai-hero-sub{font-size:11.5px;color:rgba(255,255,255,.85);line-height:1.4}
+.ai-hero-arrow{
+  position:relative;z-index:1;flex-shrink:0;width:36px;height:36px;border-radius:50%;
+  background:rgba(255,255,255,.22);backdrop-filter:blur(6px);
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;font-weight:700;
+  border:1px solid rgba(255,255,255,.35)
+}
+.ai-hero-sparkles{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:.6}
+
+/* ══ SITES ÉDUCATIFS (ACCUEIL) ══ */
+.edu-sites-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.edu-site{
+  position:relative;display:flex;align-items:center;gap:12px;
+  padding:12px;border-radius:16px;text-decoration:none;cursor:pointer;
+  background:var(--card);border:1px solid var(--bord);
+  transition:transform .18s ease,border-color .18s ease,background .18s ease;
+  -webkit-tap-highlight-color:transparent;overflow:hidden
+}
+.edu-site::before{
+  content:"";position:absolute;inset:0;border-radius:16px;
+  background:linear-gradient(135deg,var(--es-c1,rgba(124,92,252,.12)) 0%,transparent 70%);
+  opacity:.6;pointer-events:none
+}
+.edu-site:active{transform:scale(.97);border-color:var(--es-b,var(--a1))}
+.edu-site-icon{
+  position:relative;z-index:1;width:42px;height:42px;border-radius:12px;flex-shrink:0;
+  background:var(--es-bg,#fff);display:flex;align-items:center;justify-content:center;
+  overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.18),inset 0 0 0 1px rgba(255,255,255,.1)
+}
+.edu-site-icon img{width:30px;height:30px;object-fit:contain;display:block}
+.edu-site-icon-emoji{font-size:24px;line-height:1}
+.edu-site-info{position:relative;z-index:1;flex:1;min-width:0}
+.edu-site-label{font-family:var(--fb);font-size:12.5px;font-weight:700;color:var(--tx);line-height:1.2;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.edu-site-sub{font-size:10px;color:var(--mu);line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.edu-site-ext{position:absolute;top:8px;right:8px;font-size:10px;color:var(--mu);opacity:.6;z-index:1}
+
+/* ══ AMÉLIORATION CARTES FONCTIONNALITÉS (ACCUEIL) ══ */
+.dash-feat-card{position:relative;overflow:hidden}
+.dash-feat-card::after{
+  content:"";position:absolute;inset:auto -20% -50% auto;width:80px;height:80px;border-radius:50%;
+  background:radial-gradient(circle,var(--fc,transparent) 0%,transparent 70%);opacity:.18;pointer-events:none
+}
 /* ══ SCAN COURS ══ */
 .scan-preview{width:100%;max-height:200px;object-fit:cover;border-radius:12px;border:1px solid var(--bord);margin-bottom:10px;display:none}
 /* ══ VEILLE CONTRÔLE ══ */
@@ -3070,6 +3155,29 @@ button:active{opacity:.85}
       <div class="gpt">Accueil</div>
       <button class="add-btn" onclick="refreshDash()">↻</button>
     </div>
+    <!-- GROS BOUTON IA -->
+    <button class="ai-hero-btn" onclick="goTo('chat')" aria-label="Parler à l'IA ScolarIA">
+      <div class="ai-hero-mascot" aria-hidden="true">
+        <span>🤖</span>
+      </div>
+      <div class="ai-hero-content">
+        <div class="ai-hero-eyebrow">IA Scolaria</div>
+        <div class="ai-hero-title">Parler à l'IA</div>
+        <div class="ai-hero-sub">Pose une question, génère une fiche, révise…</div>
+      </div>
+      <div class="ai-hero-arrow" aria-hidden="true">→</div>
+      <svg class="ai-hero-sparkles" viewBox="0 0 200 100" aria-hidden="true">
+        <g fill="#fff">
+          <circle cx="160" cy="20" r="1.6" opacity=".7"/>
+          <circle cx="180" cy="55" r="1.2" opacity=".55"/>
+          <circle cx="150" cy="78" r="1.4" opacity=".65"/>
+          <circle cx="120" cy="14" r="1" opacity=".4"/>
+          <circle cx="100" cy="85" r="1.2" opacity=".5"/>
+          <path d="M170 40 l1.5 4 l4 1.5 l-4 1.5 l-1.5 4 l-1.5 -4 l-4 -1.5 l4 -1.5 z" opacity=".75"/>
+          <path d="M135 60 l1 2.6 l2.6 1 l-2.6 1 l-1 2.6 l-1 -2.6 l-2.6 -1 l2.6 -1 z" opacity=".6"/>
+        </g>
+      </svg>
+    </button>
     <!-- XP card -->
     <div class="dash-xp-card">
       <div class="dash-xp-top">
@@ -3135,10 +3243,75 @@ button:active{opacity:.85}
       <div class="dash-title">Révision du jour</div>
       <div id="dash-srs-preview"></div>
     </div>
-    <!-- Progress -->
+    <!-- Sites éducatifs -->
     <div class="dash-section">
-      <div class="dash-title">Progression</div>
-      <div id="dash-mat-progress"></div>
+      <div class="dash-title">Sites éducatifs</div>
+      <div class="edu-sites-grid">
+        <a class="edu-site" href="https://www.index-education.net/pronote/" target="_blank" rel="noopener noreferrer" style="--es-c1:rgba(45,156,219,.15);--es-b:#2d9cdb;--es-bg:#fff">
+          <div class="edu-site-icon"><img src="https://www.google.com/s2/favicons?domain=index-education.net&sz=128" alt="Pronote" loading="lazy" onerror="this.parentNode.innerHTML='&lt;span class=&quot;edu-site-icon-emoji&quot;&gt;📋&lt;/span&gt;'"></div>
+          <div class="edu-site-info">
+            <div class="edu-site-label">Pronote</div>
+            <div class="edu-site-sub">Notes &amp; devoirs</div>
+          </div>
+          <span class="edu-site-ext">↗</span>
+        </a>
+        <a class="edu-site" href="https://www.lumni.fr/" target="_blank" rel="noopener noreferrer" style="--es-c1:rgba(255,107,107,.15);--es-b:#ff6b6b;--es-bg:#fff">
+          <div class="edu-site-icon"><img src="https://www.google.com/s2/favicons?domain=lumni.fr&sz=128" alt="Lumni" loading="lazy" onerror="this.parentNode.innerHTML='&lt;span class=&quot;edu-site-icon-emoji&quot;&gt;🎬&lt;/span&gt;'"></div>
+          <div class="edu-site-info">
+            <div class="edu-site-label">Lumni</div>
+            <div class="edu-site-sub">Vidéos &amp; cours</div>
+          </div>
+          <span class="edu-site-ext">↗</span>
+        </a>
+        <a class="edu-site" href="https://fr.wikipedia.org/" target="_blank" rel="noopener noreferrer" style="--es-c1:rgba(160,160,160,.15);--es-b:#a0a0a0;--es-bg:#fff">
+          <div class="edu-site-icon"><img src="https://www.google.com/s2/favicons?domain=fr.wikipedia.org&sz=128" alt="Wikipédia" loading="lazy" onerror="this.parentNode.innerHTML='&lt;span class=&quot;edu-site-icon-emoji&quot;&gt;📖&lt;/span&gt;'"></div>
+          <div class="edu-site-info">
+            <div class="edu-site-label">Wikipédia</div>
+            <div class="edu-site-sub">Encyclopédie</div>
+          </div>
+          <span class="edu-site-ext">↗</span>
+        </a>
+        <a class="edu-site" href="https://fr.khanacademy.org/" target="_blank" rel="noopener noreferrer" style="--es-c1:rgba(20,187,75,.15);--es-b:#14bb4b;--es-bg:#fff">
+          <div class="edu-site-icon"><img src="https://www.google.com/s2/favicons?domain=khanacademy.org&sz=128" alt="Khan Academy" loading="lazy" onerror="this.parentNode.innerHTML='&lt;span class=&quot;edu-site-icon-emoji&quot;&gt;🧮&lt;/span&gt;'"></div>
+          <div class="edu-site-info">
+            <div class="edu-site-label">Khan Academy</div>
+            <div class="edu-site-sub">Maths &amp; sciences</div>
+          </div>
+          <span class="edu-site-ext">↗</span>
+        </a>
+        <a class="edu-site" href="https://dictionnaire.lerobert.com/" target="_blank" rel="noopener noreferrer" style="--es-c1:rgba(220,38,38,.15);--es-b:#dc2626;--es-bg:#fff">
+          <div class="edu-site-icon"><img src="https://www.google.com/s2/favicons?domain=dictionnaire.lerobert.com&sz=128" alt="Le Robert" loading="lazy" onerror="this.parentNode.innerHTML='&lt;span class=&quot;edu-site-icon-emoji&quot;&gt;📚&lt;/span&gt;'"></div>
+          <div class="edu-site-info">
+            <div class="edu-site-label">Le Robert</div>
+            <div class="edu-site-sub">Dictionnaire</div>
+          </div>
+          <span class="edu-site-ext">↗</span>
+        </a>
+        <a class="edu-site" href="https://www.louvre.fr/" target="_blank" rel="noopener noreferrer" style="--es-c1:rgba(217,119,6,.18);--es-b:#d97706;--es-bg:#fff">
+          <div class="edu-site-icon"><img src="https://www.google.com/s2/favicons?domain=louvre.fr&sz=128" alt="Louvre" loading="lazy" onerror="this.parentNode.innerHTML='&lt;span class=&quot;edu-site-icon-emoji&quot;&gt;🏛️&lt;/span&gt;'"></div>
+          <div class="edu-site-info">
+            <div class="edu-site-label">Musée du Louvre</div>
+            <div class="edu-site-sub">Œuvres &amp; histoire</div>
+          </div>
+          <span class="edu-site-ext">↗</span>
+        </a>
+        <a class="edu-site" href="https://www.musee-orsay.fr/" target="_blank" rel="noopener noreferrer" style="--es-c1:rgba(236,72,153,.15);--es-b:#ec4899;--es-bg:#fff">
+          <div class="edu-site-icon"><img src="https://www.google.com/s2/favicons?domain=musee-orsay.fr&sz=128" alt="Musée d'Orsay" loading="lazy" onerror="this.parentNode.innerHTML='&lt;span class=&quot;edu-site-icon-emoji&quot;&gt;🎨&lt;/span&gt;'"></div>
+          <div class="edu-site-info">
+            <div class="edu-site-label">Musée d'Orsay</div>
+            <div class="edu-site-sub">Art du XIXᵉ</div>
+          </div>
+          <span class="edu-site-ext">↗</span>
+        </a>
+        <a class="edu-site" href="https://gallica.bnf.fr/" target="_blank" rel="noopener noreferrer" style="--es-c1:rgba(180,83,9,.15);--es-b:#b45309;--es-bg:#fff">
+          <div class="edu-site-icon"><img src="https://www.google.com/s2/favicons?domain=gallica.bnf.fr&sz=128" alt="Gallica BNF" loading="lazy" onerror="this.parentNode.innerHTML='&lt;span class=&quot;edu-site-icon-emoji&quot;&gt;📜&lt;/span&gt;'"></div>
+          <div class="edu-site-info">
+            <div class="edu-site-label">Gallica BNF</div>
+            <div class="edu-site-sub">Archives &amp; livres</div>
+          </div>
+          <span class="edu-site-ext">↗</span>
+        </a>
+      </div>
     </div>
     <!-- Tools grid -->
     <div class="dash-section">

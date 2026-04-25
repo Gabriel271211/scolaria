@@ -943,6 +943,54 @@ function initFS(){
 }
 document.addEventListener('DOMContentLoaded',function(){rAcc();rCours();rParcours();updXP();initFS();});
 
+// Fix nav qui remonte avec le clavier virtuel sur Android
+(function(){
+  var nav=document.getElementById('nav');
+  var keyboardOpen=false;
+  var hideTimer=null;
+
+  function hideNav(){
+    keyboardOpen=true;
+    if(hideTimer){clearTimeout(hideTimer);hideTimer=null;}
+    nav.style.transform='translateX(-50%) translateY(110%)';
+    nav.style.opacity='0';
+    nav.style.pointerEvents='none';
+  }
+  function showNav(){
+    if(hideTimer){clearTimeout(hideTimer);}
+    hideTimer=setTimeout(function(){
+      keyboardOpen=false;
+      nav.style.transform='';
+      nav.style.opacity='';
+      nav.style.pointerEvents='';
+    },150);
+  }
+
+  document.addEventListener('focusin',function(ev){
+    var t=ev.target;
+    if(t&&(t.tagName==='INPUT'||t.tagName==='TEXTAREA')){hideNav();}
+  });
+  document.addEventListener('focusout',function(ev){
+    var t=ev.target;
+    if(t&&(t.tagName==='INPUT'||t.tagName==='TEXTAREA')){
+      // Vérifier si le focus va sur un autre input
+      setTimeout(function(){
+        var a=document.activeElement;
+        if(!a||!(a.tagName==='INPUT'||a.tagName==='TEXTAREA')){showNav();}
+      },50);
+    }
+  });
+
+  // Support visualViewport API (Chrome Android 61+)
+  if(window.visualViewport){
+    window.visualViewport.addEventListener('resize',function(){
+      var ratio=window.visualViewport.height/window.innerHeight;
+      if(ratio<0.75){hideNav();}
+      else if(!document.activeElement||!(document.activeElement.tagName==='INPUT'||document.activeElement.tagName==='TEXTAREA')){showNav();}
+    });
+  }
+}());
+
 </script>
 </body>
 </html>

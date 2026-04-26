@@ -1658,13 +1658,13 @@ button:active{opacity:.85}
 /* ══ ACCUEIL SCROLL DESIGN ══ */
 .acc-scroll{padding:20px 16px 32px;scrollbar-width:none}
 #gp-dash{padding-bottom:calc(var(--nav,70px) + env(safe-area-inset-bottom,0px) + 24px)}
-.acc-stats-card{background:var(--card);border:1px solid var(--bord);border-radius:20px;padding:18px 20px;margin-bottom:16px;position:relative;overflow:hidden}
+.acc-stats-card{background:var(--card);border:1px solid var(--bord);border-radius:16px;padding:10px 14px;margin-bottom:12px;position:relative;overflow:hidden}
 .acc-stats-card::before{content:'';position:absolute;top:0;left:20%;right:20%;height:1px;background:linear-gradient(90deg,transparent,var(--a1),transparent)}
 .acc-stats-row{display:flex;align-items:center;justify-content:space-around}
 .acc-stat{text-align:center;flex:1}
-.acc-stat-val{font-family:var(--fm);font-size:28px;font-weight:700;color:#00d4c8;line-height:1}
-.acc-stat-lbl{font-size:9px;color:var(--mu);margin-top:5px;text-transform:uppercase;letter-spacing:1px;font-weight:700}
-.acc-stat-div{width:1px;height:38px;background:var(--bord);flex-shrink:0}
+.acc-stat-val{font-family:var(--fd);font-size:20px;font-weight:800;color:var(--tx);line-height:1}
+.acc-stat-lbl{font-size:9px;color:var(--mu);margin-top:3px;text-transform:uppercase;letter-spacing:.6px;font-weight:700}
+.acc-stat-div{width:1px;height:26px;background:var(--bord);flex-shrink:0}
 .acc-xp-mini{background:rgba(255,255,255,.03);border:1px solid var(--bord);border-radius:12px;padding:9px 12px;display:flex;align-items:center;gap:8px}
 .acc-xp-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
 .acc-xp-label{flex:1;font-size:11px;font-weight:700;color:var(--tx)}
@@ -1749,9 +1749,9 @@ button:active{opacity:.85}
 .ai-btn-mascot-float{
   position:absolute;top:0;left:14px;z-index:5;
   width:48px;height:48px;border-radius:50%;
-  background:linear-gradient(145deg,#3a2080 0%,#6d44d0 100%);
+  background:linear-gradient(145deg,#1864ab 0%,#1c7ed6 100%);
   display:flex;align-items:center;justify-content:center;
-  box-shadow:0 4px 14px rgba(109,68,208,.5),0 0 0 3px rgba(124,92,252,.2);
+  box-shadow:0 4px 14px rgba(28,126,214,.55),0 0 0 3px rgba(116,192,252,.22);
   animation:ai-mascot-float 3.4s ease-in-out infinite
 }
 .ai-hero-btn{
@@ -3281,18 +3281,21 @@ button:active{opacity:.85}
     <!-- ② BOUTON IA — mascotte débordante -->
     <div class="ai-btn-wrap">
       <div class="ai-btn-mascot-float" aria-hidden="true">
-        <svg viewBox="0 0 48 48" width="28" height="28" fill="none">
-          <line x1="24" y1="8" x2="24" y2="14" stroke="rgba(255,255,255,.75)" stroke-width="2" stroke-linecap="round"/>
-          <circle cx="24" cy="6" r="3" fill="rgba(200,180,255,.9)"/>
-          <rect x="10" y="14" width="28" height="22" rx="8" fill="rgba(120,90,220,.35)"/>
-          <rect x="10" y="14" width="28" height="22" rx="8" stroke="rgba(255,255,255,.3)" stroke-width="1.5" fill="none"/>
-          <circle cx="19" cy="25" r="3.5" fill="rgba(255,255,255,.92)"/>
-          <circle cx="29" cy="25" r="3.5" fill="rgba(255,255,255,.92)"/>
-          <circle cx="20" cy="26" r="1.8" fill="#1a0e38"/>
-          <circle cx="30" cy="26" r="1.8" fill="#1a0e38"/>
-          <circle cx="20.5" cy="25" r=".8" fill="#fff"/>
-          <circle cx="30.5" cy="25" r=".8" fill="#fff"/>
-          <path d="M17 31 Q24 35 31 31" stroke="rgba(255,255,255,.65)" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+        <svg viewBox="0 0 48 48" width="30" height="30" fill="none">
+          <line x1="24" y1="7" x2="24" y2="13" stroke="#a5d8ff" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="24" cy="6" r="3.5" fill="#74c0fc"/>
+          <rect x="9" y="13" width="30" height="24" rx="10" fill="#1971c2"/>
+          <rect x="9" y="19" width="30" height="12" rx="4" fill="#0a3d62" opacity=".85"/>
+          <circle cx="18" cy="25" r="4" fill="#4dabf7"/>
+          <circle cx="30" cy="25" r="4" fill="#4dabf7"/>
+          <circle cx="18" cy="25" r="2.2" fill="#e7f5ff"/>
+          <circle cx="30" cy="25" r="2.2" fill="#e7f5ff"/>
+          <circle cx="18.8" cy="24.2" r=".9" fill="#fff"/>
+          <circle cx="30.8" cy="24.2" r=".9" fill="#fff"/>
+          <rect x="16" y="30" width="16" height="4" rx="2" fill="rgba(255,255,255,.18)"/>
+          <circle cx="20" cy="32" r="1.2" fill="#69db7c"/>
+          <circle cx="24" cy="32" r="1.2" fill="#ffd43b"/>
+          <circle cx="28" cy="32" r="1.2" fill="#ff6b6b"/>
         </svg>
       </div>
       <button class="ai-hero-btn" onclick="goTo('chat')" aria-label="Parler à l'IA ScolarIA">
@@ -3312,78 +3315,68 @@ button:active{opacity:.85}
       </button>
     </div>
 
-    <!-- ③ FONCTIONNALITÉS -->
-    <div class="acc-sec-label">Fonctionnalités</div>
-    <div class="feat-cards-grid">
+    <!-- ③ RACCOURCIS — carousel horizontal (mat-carousel) -->
+    <div class="acc-sec-label">Raccourcis</div>
+    <div class="mat-carousel">
 
-      <!-- Fiche + Flash — violet profond -->
-      <button class="feat-card" onclick="sendCombo();goTo('chat')" style="background:linear-gradient(140deg,#100826 0%,#3b1f80 100%)">
-        <div class="feat-card-bg"><svg viewBox="0 0 60 60" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity=".2"><polygon points="34 6 18 34 30 34 26 54 46 26 34 26 34 6"/></svg></div>
-        <div class="feat-card-glow" style="background:#7c5cfc;box-shadow:0 0 10px #7c5cfc,0 0 20px #7c5cfc55"></div>
-        <div class="feat-card-foot"><div class="feat-card-name">Fiche + Flash</div><div class="feat-card-sub">IA · 1 clic</div></div>
+      <button class="mat-card" onclick="sendCombo();goTo('chat')" style="background:linear-gradient(140deg,#160a3a 0%,#3d1d96 100%)">
+        <div class="mat-bg-svg"><svg viewBox="0 0 60 60" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity=".18"><polygon points="34 6 18 34 30 34 26 54 46 26 34 26 34 6"/></svg></div>
+        <div class="mat-glow" style="background:#7c5cfc;box-shadow:0 0 8px #7c5cfc,0 0 18px #7c5cfc"></div>
+        <div class="mat-footer"><div class="mat-name">Fiche + Flash</div><div class="mat-sub">IA · 1 clic</div></div>
       </button>
 
-      <!-- Flashcards — rose profond -->
-      <button class="feat-card" onclick="goTo('flash')" style="background:linear-gradient(140deg,#200018 0%,#780055 100%)">
-        <div class="feat-card-bg"><svg viewBox="0 0 60 60" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity=".2"><rect x="6" y="14" width="38" height="26" rx="4"/><rect x="16" y="20" width="38" height="26" rx="4"/></svg></div>
-        <div class="feat-card-glow" style="background:#f472b6;box-shadow:0 0 10px #f472b6,0 0 20px #f472b655"></div>
-        <div class="feat-card-foot"><div class="feat-card-name">Flashcards</div><div class="feat-card-sub">SRS · Révision</div></div>
+      <button class="mat-card" onclick="goTo('flash')" style="background:linear-gradient(140deg,#200018 0%,#780055 100%)">
+        <div class="mat-bg-svg"><svg viewBox="0 0 60 60" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity=".18"><rect x="6" y="14" width="38" height="26" rx="4"/><rect x="16" y="20" width="38" height="26" rx="4"/></svg></div>
+        <div class="mat-glow" style="background:#f472b6;box-shadow:0 0 8px #f472b6,0 0 18px #f472b6"></div>
+        <div class="mat-footer"><div class="mat-name">Flashcards</div><div class="mat-sub">SRS · Révision</div></div>
       </button>
 
-      <!-- Devoirs — orange profond -->
-      <button class="feat-card" onclick="goTo('devoirs')" style="background:linear-gradient(140deg,#1f0e00 0%,#7a3a00 100%)">
-        <div class="feat-card-bg"><svg viewBox="0 0 60 60" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity=".2"><rect x="10" y="10" width="40" height="40" rx="6"/><polyline points="18 24 22 28 28 20"/><line x1="32" y1="24" x2="42" y2="24"/><line x1="18" y1="36" x2="42" y2="36"/></svg></div>
-        <div class="feat-card-glow" style="background:#fb923c;box-shadow:0 0 10px #fb923c,0 0 20px #fb923c55"></div>
-        <div class="feat-card-foot"><div class="feat-card-name">Devoirs</div><div class="feat-card-sub">Agenda · Urgences</div></div>
+      <button class="mat-card" onclick="goTo('devoirs')" style="background:linear-gradient(140deg,#1f0d00 0%,#7a3200 100%)">
+        <div class="mat-bg-svg"><svg viewBox="0 0 60 60" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity=".18"><rect x="10" y="10" width="40" height="40" rx="6"/><polyline points="18 24 22 28 28 20"/><line x1="32" y1="24" x2="42" y2="24"/><line x1="18" y1="36" x2="42" y2="36"/></svg></div>
+        <div class="mat-glow" style="background:#fb923c;box-shadow:0 0 8px #fb923c,0 0 18px #fb923c"></div>
+        <div class="mat-footer"><div class="mat-name">Devoirs</div><div class="mat-sub">Agenda</div></div>
       </button>
 
-      <!-- Pomodoro — rouge profond -->
-      <button class="feat-card" onclick="goTo('pomo')" style="background:linear-gradient(140deg,#1f0808 0%,#7a1515 100%)">
-        <div class="feat-card-bg"><svg viewBox="0 0 60 60" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity=".2"><circle cx="30" cy="32" r="18"/><polyline points="30 20 30 32 38 36"/><line x1="24" y1="10" x2="36" y2="10"/></svg></div>
-        <div class="feat-card-glow" style="background:#ef4444;box-shadow:0 0 10px #ef4444,0 0 20px #ef444455"></div>
-        <div class="feat-card-foot"><div class="feat-card-name">Pomodoro</div><div class="feat-card-sub">Focus · 25 min</div></div>
+      <button class="mat-card" onclick="goTo('pomo')" style="background:linear-gradient(140deg,#1f0808 0%,#7a1515 100%)">
+        <div class="mat-bg-svg"><svg viewBox="0 0 60 60" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity=".18"><circle cx="30" cy="32" r="18"/><polyline points="30 20 30 32 38 36"/><line x1="24" y1="10" x2="36" y2="10"/></svg></div>
+        <div class="mat-glow" style="background:#ef4444;box-shadow:0 0 8px #ef4444,0 0 18px #ef4444"></div>
+        <div class="mat-footer"><div class="mat-name">Pomodoro</div><div class="mat-sub">Focus 25 min</div></div>
       </button>
 
-      <!-- Moyennes — bleu profond -->
-      <button class="feat-card" onclick="goTo('moy')" style="background:linear-gradient(140deg,#001a2e 0%,#004a80 100%)">
-        <div class="feat-card-bg"><svg viewBox="0 0 60 60" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity=".2"><line x1="10" y1="50" x2="50" y2="50"/><line x1="18" y1="50" x2="18" y2="34"/><line x1="30" y1="50" x2="30" y2="22"/><line x1="42" y1="50" x2="42" y2="12"/></svg></div>
-        <div class="feat-card-glow" style="background:#38bdf8;box-shadow:0 0 10px #38bdf8,0 0 20px #38bdf855"></div>
-        <div class="feat-card-foot"><div class="feat-card-name">Moyennes</div><div class="feat-card-sub">Notes · Coefs</div></div>
+      <button class="mat-card" onclick="goTo('moy')" style="background:linear-gradient(140deg,#001a2e 0%,#004a80 100%)">
+        <div class="mat-bg-svg"><svg viewBox="0 0 60 60" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity=".18"><line x1="10" y1="50" x2="50" y2="50"/><line x1="18" y1="50" x2="18" y2="34"/><line x1="30" y1="50" x2="30" y2="22"/><line x1="42" y1="50" x2="42" y2="12"/></svg></div>
+        <div class="mat-glow" style="background:#38bdf8;box-shadow:0 0 8px #38bdf8,0 0 18px #38bdf8"></div>
+        <div class="mat-footer"><div class="mat-name">Moyennes</div><div class="mat-sub">Notes &amp; coefs</div></div>
       </button>
 
-      <!-- Langues — vert profond -->
-      <button class="feat-card" onclick="window.open('scolaria-langues.html','_self')" style="background:linear-gradient(140deg,#001a0e 0%,#004d2e 100%)">
-        <div class="feat-card-bg"><svg viewBox="0 0 60 60" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity=".2"><circle cx="30" cy="30" r="20"/><line x1="30" y1="10" x2="30" y2="50"/><path d="M10 30 Q30 14 50 30"/><path d="M10 30 Q30 46 50 30"/></svg></div>
-        <div class="feat-card-glow" style="background:#34d399;box-shadow:0 0 10px #34d399,0 0 20px #34d39955"></div>
-        <div class="feat-card-foot"><div class="feat-card-name">Langues</div><div class="feat-card-sub">EN · ES · Duolingo</div></div>
+      <button class="mat-card" onclick="window.open('scolaria-langues.html','_self')" style="background:linear-gradient(140deg,#021a0d 0%,#055c34 100%)">
+        <div class="mat-bg-svg"><svg viewBox="0 0 60 60" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity=".18"><circle cx="30" cy="30" r="20"/><line x1="30" y1="10" x2="30" y2="50"/><path d="M10 30 Q30 14 50 30"/><path d="M10 30 Q30 46 50 30"/></svg></div>
+        <div class="mat-glow" style="background:#10b981;box-shadow:0 0 8px #10b981,0 0 18px #10b981"></div>
+        <div class="mat-footer"><div class="mat-name">Langues</div><div class="mat-sub">EN · ES</div></div>
       </button>
 
-      <!-- Quiz vocal — cyan profond -->
-      <button class="feat-card" onclick="openVocalQuiz()" style="background:linear-gradient(140deg,#001618 0%,#004048 100%)">
-        <div class="feat-card-bg"><svg viewBox="0 0 60 60" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity=".2"><rect x="22" y="6" width="16" height="28" rx="8"/><path d="M12 32a18 18 0 0 0 36 0"/><line x1="30" y1="50" x2="30" y2="54"/><line x1="22" y1="54" x2="38" y2="54"/></svg></div>
-        <div class="feat-card-glow" style="background:#06b6d4;box-shadow:0 0 10px #06b6d4,0 0 20px #06b6d455"></div>
-        <div class="feat-card-foot"><div class="feat-card-name">Quiz vocal</div><div class="feat-card-sub">À voix haute</div></div>
+      <button class="mat-card" onclick="openVocalQuiz()" style="background:linear-gradient(140deg,#001618 0%,#004048 100%)">
+        <div class="mat-bg-svg"><svg viewBox="0 0 60 60" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity=".18"><rect x="22" y="6" width="16" height="28" rx="8"/><path d="M12 32a18 18 0 0 0 36 0"/><line x1="30" y1="50" x2="30" y2="54"/><line x1="22" y1="54" x2="38" y2="54"/></svg></div>
+        <div class="mat-glow" style="background:#06b6d4;box-shadow:0 0 8px #06b6d4,0 0 18px #06b6d4"></div>
+        <div class="mat-footer"><div class="mat-name">Quiz vocal</div><div class="mat-sub">Voix haute</div></div>
       </button>
 
-      <!-- Calculatrice — indigo profond -->
-      <button class="feat-card" onclick="openTool('calc')" style="background:linear-gradient(140deg,#0e0e3a 0%,#2a2a7a 100%)">
-        <div class="feat-card-bg"><svg viewBox="0 0 60 60" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity=".2"><rect x="12" y="8" width="36" height="44" rx="6"/><line x1="12" y1="22" x2="48" y2="22"/><line x1="20" y1="32" x2="28" y2="32"/><line x1="32" y1="32" x2="40" y2="32"/><line x1="20" y1="42" x2="28" y2="42"/><line x1="32" y1="42" x2="40" y2="42"/></svg></div>
-        <div class="feat-card-glow" style="background:#818cf8;box-shadow:0 0 10px #818cf8,0 0 20px #818cf855"></div>
-        <div class="feat-card-foot"><div class="feat-card-name">Calculatrice</div><div class="feat-card-sub">Outil rapide</div></div>
+      <button class="mat-card" onclick="openTool('calc')" style="background:linear-gradient(140deg,#0e0e3a 0%,#2a2a7a 100%)">
+        <div class="mat-bg-svg"><svg viewBox="0 0 60 60" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity=".18"><rect x="12" y="8" width="36" height="44" rx="6"/><line x1="12" y1="22" x2="48" y2="22"/><line x1="20" y1="32" x2="28" y2="32"/><line x1="32" y1="32" x2="40" y2="32"/><line x1="20" y1="42" x2="28" y2="42"/><line x1="32" y1="42" x2="40" y2="42"/></svg></div>
+        <div class="mat-glow" style="background:#818cf8;box-shadow:0 0 8px #818cf8,0 0 18px #818cf8"></div>
+        <div class="mat-footer"><div class="mat-name">Calculatrice</div><div class="mat-sub">Outil rapide</div></div>
       </button>
 
-      <!-- Conjuguer — violet profond -->
-      <button class="feat-card" onclick="openTool('conj')" style="background:linear-gradient(140deg,#1a0c22 0%,#5c2275 100%)">
-        <div class="feat-card-bg"><svg viewBox="0 0 60 60" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity=".2"><polyline points="10 18 10 10 50 10 50 18"/><line x1="30" y1="10" x2="30" y2="50"/><line x1="18" y1="50" x2="42" y2="50"/></svg></div>
-        <div class="feat-card-glow" style="background:#c084fc;box-shadow:0 0 10px #c084fc,0 0 20px #c084fc55"></div>
-        <div class="feat-card-foot"><div class="feat-card-name">Conjuguer</div><div class="feat-card-sub">Tous les temps</div></div>
+      <button class="mat-card" onclick="openTool('conj')" style="background:linear-gradient(140deg,#1a0c22 0%,#5c2275 100%)">
+        <div class="mat-bg-svg"><svg viewBox="0 0 60 60" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity=".18"><polyline points="10 18 10 10 50 10 50 18"/><line x1="30" y1="10" x2="30" y2="50"/><line x1="18" y1="50" x2="42" y2="50"/></svg></div>
+        <div class="mat-glow" style="background:#c084fc;box-shadow:0 0 8px #c084fc,0 0 18px #c084fc"></div>
+        <div class="mat-footer"><div class="mat-name">Conjuguer</div><div class="mat-sub">Tous temps</div></div>
       </button>
 
-      <!-- Convertisseur — ambre profond -->
-      <button class="feat-card" onclick="openTool('conv')" style="background:linear-gradient(140deg,#1a1000 0%,#5a3800 100%)">
-        <div class="feat-card-bg"><svg viewBox="0 0 60 60" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity=".2"><polyline points="6 18 14 10 22 18"/><path d="M14 10a20 20 0 0 1 20 20"/><polyline points="54 42 46 50 38 42"/><path d="M46 50a20 20 0 0 1-20-20"/></svg></div>
-        <div class="feat-card-glow" style="background:#fbbf24;box-shadow:0 0 10px #fbbf24,0 0 20px #fbbf2455"></div>
-        <div class="feat-card-foot"><div class="feat-card-name">Convertisseur</div><div class="feat-card-sub">Unités &amp; devises</div></div>
+      <button class="mat-card" onclick="openTool('conv')" style="background:linear-gradient(140deg,#1a1000 0%,#5a3800 100%)">
+        <div class="mat-bg-svg"><svg viewBox="0 0 60 60" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity=".18"><polyline points="6 18 14 10 22 18"/><path d="M14 10a20 20 0 0 1 20 20"/><polyline points="54 42 46 50 38 42"/><path d="M46 50a20 20 0 0 1-20-20"/></svg></div>
+        <div class="mat-glow" style="background:#fbbf24;box-shadow:0 0 8px #fbbf24,0 0 18px #fbbf24"></div>
+        <div class="mat-footer"><div class="mat-name">Convertisseur</div><div class="mat-sub">Unités</div></div>
       </button>
 
     </div>
@@ -3469,55 +3462,55 @@ button:active{opacity:.85}
     <div class="acc-sec-label">Progression</div>
     <div id="dash-mat-progress"></div>
 
-    <!-- ⑦ OUTILS IA — vraies photos -->
+    <!-- ⑦ OUTILS IA -->
     <div class="acc-sec-label">Outils IA</div>
-    <div class="outil-photo-grid">
+    <div class="outils-grid">
 
       <!-- Scanner cours -->
-      <button class="outil-photo-card" onclick="openScanCours()">
-        <img class="op-img" src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=280&h=160&fit=crop&q=70" alt="" loading="lazy" onerror="this.style.display='none'">
-        <div class="op-overlay"></div>
-        <div class="op-tint" style="background:linear-gradient(135deg,#7c5cfc,transparent)"></div>
-        <div class="op-content">
-          <div class="op-badge">📸 IA</div>
-          <div class="op-name">Scanner cours</div>
-          <div class="op-sub">Photo → Fiche IA</div>
+      <button class="outil-card" onclick="openScanCours()">
+        <div style="height:76px;background:linear-gradient(135deg,#1e0b4a 0%,#4c1d95 60%,#7c5cfc 100%);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;border-radius:18px 18px 0 0">
+          <svg viewBox="0 0 48 48" width="32" height="32" fill="none" style="position:relative;z-index:1"><rect x="8" y="10" width="32" height="28" rx="5" stroke="#a78bfa" stroke-width="2.2"/><circle cx="24" cy="24" r="7" stroke="#c4b5fd" stroke-width="2" stroke-dasharray="3 2"/><path d="M14 10V7M34 10V7M8 18h2M38 18h2" stroke="#7c5cfc" stroke-width="2" stroke-linecap="round"/><circle cx="24" cy="24" r="2.5" fill="#e9d5ff"/></svg>
+          <div style="position:absolute;inset:0;background:radial-gradient(circle at 70% 30%,rgba(167,139,250,.25) 0%,transparent 65%)"></div>
+        </div>
+        <div class="outil-top">
+          <div class="outil-icon-sq" style="background:rgba(124,92,252,.14)"><span style="font-size:15px">📸</span></div>
+          <div><div class="outil-name">Scanner cours</div><div class="outil-sub">Photo → Fiche IA</div></div>
         </div>
       </button>
 
       <!-- Veille contrôle -->
-      <button class="outil-photo-card" onclick="openVeilleControle()">
-        <img class="op-img" src="https://images.unsplash.com/photo-1506784983877-45594efa4cbe?w=280&h=160&fit=crop&q=70" alt="" loading="lazy" onerror="this.style.display='none'">
-        <div class="op-overlay"></div>
-        <div class="op-tint" style="background:linear-gradient(135deg,#f472b6,transparent)"></div>
-        <div class="op-content">
-          <div class="op-badge">📅 IA</div>
-          <div class="op-name">Veille contrôle</div>
-          <div class="op-sub">Plan de révision</div>
+      <button class="outil-card" onclick="openVeilleControle()">
+        <div style="height:76px;background:linear-gradient(135deg,#3d0030 0%,#831843 60%,#f472b6 100%);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;border-radius:18px 18px 0 0">
+          <svg viewBox="0 0 48 48" width="32" height="32" fill="none" style="position:relative;z-index:1"><rect x="8" y="10" width="32" height="32" rx="6" stroke="#f9a8d4" stroke-width="2.2"/><line x1="16" y1="6" x2="16" y2="14" stroke="#fb7185" stroke-width="2.2" stroke-linecap="round"/><line x1="32" y1="6" x2="32" y2="14" stroke="#fb7185" stroke-width="2.2" stroke-linecap="round"/><line x1="8" y1="22" x2="40" y2="22" stroke="#f9a8d4" stroke-width="1.5" opacity=".7"/><rect x="14" y="28" width="8" height="7" rx="2" fill="rgba(251,113,133,.45)"/><rect x="26" y="28" width="8" height="7" rx="2" fill="rgba(244,114,182,.25)" stroke="#f9a8d4" stroke-width="1.2"/></svg>
+          <div style="position:absolute;inset:0;background:radial-gradient(circle at 30% 70%,rgba(251,113,133,.2) 0%,transparent 65%)"></div>
+        </div>
+        <div class="outil-top">
+          <div class="outil-icon-sq" style="background:rgba(244,114,182,.14)"><span style="font-size:15px">📅</span></div>
+          <div><div class="outil-name">Veille contrôle</div><div class="outil-sub">Plan de révision</div></div>
         </div>
       </button>
 
       <!-- Quiz vocal -->
-      <button class="outil-photo-card" onclick="openVocalQuiz()">
-        <img class="op-img" src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=280&h=160&fit=crop&q=70" alt="" loading="lazy" onerror="this.style.display='none'">
-        <div class="op-overlay"></div>
-        <div class="op-tint" style="background:linear-gradient(135deg,#34d399,transparent)"></div>
-        <div class="op-content">
-          <div class="op-badge">🎙️ IA</div>
-          <div class="op-name">Quiz vocal</div>
-          <div class="op-sub">Réponds à voix haute</div>
+      <button class="outil-card" onclick="openVocalQuiz()">
+        <div style="height:76px;background:linear-gradient(135deg,#002a1f 0%,#065f46 60%,#34d399 100%);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;border-radius:18px 18px 0 0">
+          <svg viewBox="0 0 48 48" width="32" height="32" fill="none" style="position:relative;z-index:1"><rect x="18" y="5" width="12" height="22" rx="6" stroke="#6ee7b7" stroke-width="2.2"/><path d="M10 24a14 14 0 0 0 28 0" stroke="#34d399" stroke-width="2.2" stroke-linecap="round"/><line x1="24" y1="38" x2="24" y2="44" stroke="#6ee7b7" stroke-width="2.2" stroke-linecap="round"/><line x1="18" y1="44" x2="30" y2="44" stroke="#6ee7b7" stroke-width="2.2" stroke-linecap="round"/><circle cx="24" cy="16" r="2" fill="#a7f3d0"/></svg>
+          <div style="position:absolute;inset:0;background:radial-gradient(circle at 50% 80%,rgba(52,211,153,.22) 0%,transparent 65%)"></div>
+        </div>
+        <div class="outil-top">
+          <div class="outil-icon-sq" style="background:rgba(52,211,153,.14)"><span style="font-size:15px">🎙️</span></div>
+          <div><div class="outil-name">Quiz vocal</div><div class="outil-sub">Réponds à voix haute</div></div>
         </div>
       </button>
 
       <!-- Interrogation IA -->
-      <button class="outil-photo-card" onclick="openInterro()">
-        <img class="op-img" src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=280&h=160&fit=crop&q=70" alt="" loading="lazy" onerror="this.style.display='none'">
-        <div class="op-overlay"></div>
-        <div class="op-tint" style="background:linear-gradient(135deg,#fbbf24,transparent)"></div>
-        <div class="op-content">
-          <div class="op-badge">🎓 IA</div>
-          <div class="op-name">Interrogation</div>
-          <div class="op-sub">Le prof IA t'interroge</div>
+      <button class="outil-card" onclick="openInterro()">
+        <div style="height:76px;background:linear-gradient(135deg,#1c1000 0%,#78350f 60%,#fbbf24 100%);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;border-radius:18px 18px 0 0">
+          <svg viewBox="0 0 48 48" width="32" height="32" fill="none" style="position:relative;z-index:1"><path d="M24 6l4.5 9 10 1.5-7.2 7 1.7 10L24 29l-9 4.5 1.7-10L9.5 16.5l10-1.5z" stroke="#fde68a" stroke-width="2" stroke-linejoin="round"/><circle cx="24" cy="38" r="2.5" fill="#fbbf24"/><line x1="24" y1="30" x2="24" y2="34" stroke="#fde68a" stroke-width="2" stroke-linecap="round"/></svg>
+          <div style="position:absolute;inset:0;background:radial-gradient(circle at 30% 30%,rgba(251,191,36,.2) 0%,transparent 65%)"></div>
+        </div>
+        <div class="outil-top">
+          <div class="outil-icon-sq" style="background:rgba(251,191,36,.14)"><span style="font-size:15px">🎓</span></div>
+          <div><div class="outil-name">Interrogation</div><div class="outil-sub">Le prof IA t&#39;interroge</div></div>
         </div>
       </button>
 

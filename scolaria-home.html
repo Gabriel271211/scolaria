@@ -1656,7 +1656,7 @@ button:active{opacity:.85}
 .dash-tool-btn:active{background:rgba(124,92,252,.08);border-color:rgba(124,92,252,.3)}
 .dash-tool-btn svg{color:var(--mu);flex-shrink:0}
 /* ══ ACCUEIL SCROLL DESIGN ══ */
-.acc-scroll{padding:20px 16px 32px;scrollbar-width:none}
+.acc-scroll{padding:calc(var(--hdr,52px) + env(safe-area-inset-top,0px) + 16px) 16px 32px;scrollbar-width:none}
 #gp-dash{padding-bottom:calc(var(--nav,70px) + env(safe-area-inset-bottom,0px) + 24px)}
 .acc-stats-card{background:var(--card);border:1px solid var(--bord);border-radius:16px;padding:10px 14px;margin-bottom:12px;position:relative;overflow:hidden}
 .acc-stats-card::before{content:'';position:absolute;top:0;left:20%;right:20%;height:1px;background:linear-gradient(90deg,transparent,var(--a1),transparent)}

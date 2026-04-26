@@ -1655,6 +1655,94 @@ button:active{opacity:.85}
 .dash-tool-btn{background:var(--card);border:1px solid var(--bord);border-radius:12px;padding:11px 14px;cursor:pointer;color:var(--tx);font-size:12px;font-family:var(--fb);font-weight:600;display:flex;align-items:center;gap:8px;text-align:left;transition:all .15s}
 .dash-tool-btn:active{background:rgba(124,92,252,.08);border-color:rgba(124,92,252,.3)}
 .dash-tool-btn svg{color:var(--mu);flex-shrink:0}
+/* ══ ACCUEIL SCROLL DESIGN ══ */
+.acc-scroll{padding:16px 16px 32px;scrollbar-width:none}
+.acc-stats-card{background:var(--card);border:1px solid var(--bord);border-radius:20px;padding:18px 20px;margin-bottom:16px;position:relative;overflow:hidden}
+.acc-stats-card::before{content:'';position:absolute;top:0;left:20%;right:20%;height:1px;background:linear-gradient(90deg,transparent,var(--a1),transparent)}
+.acc-stats-row{display:flex;align-items:center;justify-content:space-around}
+.acc-stat{text-align:center;flex:1}
+.acc-stat-val{font-family:var(--fm);font-size:28px;font-weight:700;color:#00d4c8;line-height:1}
+.acc-stat-lbl{font-size:9px;color:var(--mu);margin-top:5px;text-transform:uppercase;letter-spacing:1px;font-weight:700}
+.acc-stat-div{width:1px;height:38px;background:var(--bord);flex-shrink:0}
+.acc-xp-mini{background:rgba(255,255,255,.03);border:1px solid var(--bord);border-radius:12px;padding:9px 12px;display:flex;align-items:center;gap:8px}
+.acc-xp-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.acc-xp-label{flex:1;font-size:11px;font-weight:700;color:var(--tx)}
+.acc-xp-val{font-family:var(--fm);font-size:12px;font-weight:700}
+.acc-sec-label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;color:var(--mu);margin-bottom:10px;margin-top:20px}
+.mat-carousel{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding-bottom:4px;scrollbar-width:none}
+.mat-carousel::-webkit-scrollbar{display:none}
+.mat-card{flex-shrink:0;width:148px;height:100px;border-radius:16px;overflow:hidden;position:relative;cursor:pointer;scroll-snap-align:start;transition:transform .2s;-webkit-tap-highlight-color:transparent}
+.mat-card:active{transform:scale(.97)}
+.mat-card::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.78) 0%,rgba(0,0,0,.08) 100%)}
+.mat-glow{position:absolute;top:8px;right:8px;width:8px;height:8px;border-radius:50%;z-index:2}
+.mat-bg-svg{position:absolute;bottom:-4px;right:-4px;width:70px;height:70px;pointer-events:none}
+.mat-footer{position:absolute;bottom:8px;left:10px;z-index:2}
+.mat-name{font-size:12px;font-weight:800;color:#fff;line-height:1.2}
+.mat-sub{font-size:10px;color:rgba(255,255,255,.55);margin-top:1px}
+.outil-icon-sq{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.outil-art{flex:1;display:flex;align-items:center;justify-content:center;min-height:76px;position:relative;overflow:hidden}
+.outil-art-emoji{font-size:46px;opacity:.18;pointer-events:none;filter:saturate(.5)}
+.lastgen-card{background:var(--card);border:1px solid var(--bord);border-radius:20px;overflow:hidden;position:relative}
+.lastgen-card::before{content:'';position:absolute;top:0;left:15%;right:15%;height:1px;background:linear-gradient(90deg,transparent,var(--a1),transparent)}
+.lastgen-hdr{display:flex;align-items:center;justify-content:space-between;padding:13px 14px 10px}
+.lastgen-title{font-size:13px;font-weight:800;color:var(--tx);max-width:190px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lastgen-badge{background:rgba(124,92,252,.15);border:1px solid rgba(124,92,252,.3);color:var(--a1);font-size:10px;font-weight:700;padding:4px 10px;border-radius:20px;cursor:pointer}
+.lastgen-body{display:flex;border-top:1px solid var(--bord)}
+.lastgen-img-wrap{width:115px;flex-shrink:0;position:relative;overflow:hidden}
+.lastgen-img-wrap::after{content:'';position:absolute;top:0;right:0;bottom:0;width:24px;background:linear-gradient(to right,transparent,var(--card))}
+.lastgen-img{width:100%;height:100%;min-height:120px;display:flex;align-items:center;justify-content:center;font-size:38px;background:linear-gradient(135deg,rgba(124,92,252,.1),rgba(244,114,182,.08))}
+.lastgen-actions{flex:1;display:flex;flex-direction:column}
+.lastgen-row{display:flex;align-items:center;gap:10px;padding:11px 12px;background:transparent;border:none;cursor:pointer;text-align:left;width:100%;transition:background .15s;-webkit-tap-highlight-color:transparent}
+.lastgen-row:active{background:rgba(255,255,255,.04)}
+.lastgen-icon{width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.lastgen-info{flex:1;min-width:0}
+.lastgen-row-title{font-size:12px;font-weight:700;color:var(--tx);line-height:1.2}
+.lastgen-row-sub{font-size:10px;color:var(--mu);margin-top:1px}
+.lastgen-arrow{font-size:16px;color:var(--mu);opacity:.4;flex-shrink:0}
+.lastgen-sep{height:1px;background:var(--bord);margin:0 12px}
+.srs-card,.srs-card-empty{background:var(--card);border:1px solid var(--bord);border-radius:20px;overflow:hidden;cursor:pointer;position:relative;transition:transform .15s;-webkit-tap-highlight-color:transparent}
+.srs-card:active{transform:scale(.98)}
+.srs-line{height:2px;background:linear-gradient(90deg,transparent,var(--a1),var(--a2),transparent)}
+.srs-body{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;gap:10px}
+.srs-title{font-size:14px;font-weight:800;color:var(--tx);margin-bottom:3px}
+.srs-sub{font-size:11px;color:var(--mu);line-height:1.4}
+.srs-badge{background:rgba(124,92,252,.18);border:1px solid rgba(124,92,252,.3);color:var(--a1);font-size:10px;font-weight:700;padding:5px 10px;border-radius:20px;white-space:nowrap;flex-shrink:0}
+.srs-badge-green{background:rgba(52,211,153,.12);border-color:rgba(52,211,153,.3);color:var(--a3)}
+.acc-prog-card{background:var(--surf);border:1px solid var(--bord);border-radius:16px;padding:13px 15px;margin-bottom:8px}
+.acc-prog-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
+.acc-prog-name{font-size:13px;font-weight:700;color:var(--tx)}
+.acc-prog-pct{font-family:var(--fm);font-size:13px;font-weight:700}
+.acc-prog-bar{height:5px;background:rgba(255,255,255,.07);border-radius:4px;overflow:hidden}
+.acc-prog-fill{height:100%;border-radius:4px;transition:width .6s ease}
+.acc-prog-count{font-family:var(--fm);font-size:10px;color:var(--mu)}
+.acc-prog-empty{font-size:12px;color:var(--mu);text-align:center;padding:20px;background:rgba(255,255,255,.02);border:1px dashed var(--bord);border-radius:12px}
+.outils-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.outil-card{background:var(--card);border:1px solid var(--bord);border-radius:18px;overflow:hidden;cursor:pointer;display:flex;flex-direction:column;padding:0;transition:transform .2s;text-align:left;-webkit-tap-highlight-color:transparent}
+.outil-card:active{transform:scale(.97)}
+.outil-top{padding:12px 12px 8px;display:flex;align-items:center;gap:8px;flex-shrink:0}
+.outil-icon{font-size:18px;flex-shrink:0}
+.outil-name{font-size:11.5px;font-weight:800;color:var(--tx);line-height:1.2}
+.outil-sub{font-size:9.5px;color:var(--mu)}
+.acc-dv-card{background:var(--surf);border:1px solid var(--bord);border-radius:14px;padding:11px 14px;margin-bottom:7px;cursor:pointer;transition:background .15s}
+.acc-dv-card:active{background:rgba(124,92,252,.06)}
+.acc-dv-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:3px}
+.acc-dv-title{font-size:12px;font-weight:700;color:var(--tx)}
+.acc-dv-badge{background:rgba(252,92,125,.12);border:1px solid rgba(252,92,125,.3);color:#fc5c7d;font-size:9px;font-weight:700;padding:2px 8px;border-radius:10px}
+.acc-dv-sub{font-size:11px;color:var(--mu)}
+@keyframes accFadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+#gp-dash.open .acc-scroll>*{animation:accFadeUp .38s ease both}
+#gp-dash.open .acc-scroll>*:nth-child(1){animation-delay:.03s}
+#gp-dash.open .acc-scroll>*:nth-child(2){animation-delay:.07s}
+#gp-dash.open .acc-scroll>*:nth-child(3){animation-delay:.10s}
+#gp-dash.open .acc-scroll>*:nth-child(4){animation-delay:.13s}
+#gp-dash.open .acc-scroll>*:nth-child(5){animation-delay:.16s}
+#gp-dash.open .acc-scroll>*:nth-child(6){animation-delay:.19s}
+#gp-dash.open .acc-scroll>*:nth-child(7){animation-delay:.22s}
+#gp-dash.open .acc-scroll>*:nth-child(8){animation-delay:.25s}
+#gp-dash.open .acc-scroll>*:nth-child(9){animation-delay:.28s}
+#gp-dash.open .acc-scroll>*:nth-child(10){animation-delay:.31s}
+#bn::before{background:rgba(8,8,16,.88)!important;backdrop-filter:blur(24px)!important;-webkit-backdrop-filter:blur(24px)!important;border-top:1px solid rgba(124,92,252,.18)!important}
+.ni-center .niw{border-radius:16px!important;width:52px!important;height:52px!important}
 /* ══ GROS BOUTON IA (ACCUEIL) ══ */
 .ai-hero-btn{
   position:relative;display:flex;align-items:center;gap:14px;
@@ -3185,16 +3273,32 @@ button:active{opacity:.85}
 
 <!-- ═══ PAGE DASHBOARD ═══ -->
 <div class="gp" id="gp-dash">
-  <div class="gpi">
-    <div class="gph">
-      <div class="gpt">Accueil</div>
-      <button class="add-btn" onclick="refreshDash()">↻</button>
-    </div>
-    <!-- GROS BOUTON IA -->
-    <button class="ai-hero-btn" onclick="goTo('chat')" aria-label="Parler à l'IA ScolarIA">
-      <div class="ai-hero-mascot" aria-hidden="true">
-        <span>🤖</span>
+  <div class="acc-scroll">
+
+    <!-- ① STATS CARD -->
+    <div class="acc-stats-card">
+      <div class="acc-stats-row">
+        <div class="acc-stat">
+          <div class="acc-stat-val" id="dash-streak-n">0</div>
+          <div class="acc-stat-lbl">Jours</div>
+        </div>
+        <div class="acc-stat-div"></div>
+        <div class="acc-stat">
+          <div class="acc-stat-val" id="dash-devoirs-n">0</div>
+          <div class="acc-stat-lbl">Devoirs</div>
+        </div>
+        <div class="acc-stat-div"></div>
+        <div class="acc-stat">
+          <div class="acc-stat-val" id="dash-srs-n">0</div>
+          <div class="acc-stat-lbl">Cartes</div>
+        </div>
       </div>
+      <div id="dash-modes-xp" style="display:none;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px"></div>
+    </div>
+
+    <!-- ② GROS BOUTON IA -->
+    <button class="ai-hero-btn" onclick="goTo('chat')" aria-label="Parler à l'IA ScolarIA">
+      <div class="ai-hero-mascot" aria-hidden="true"><span>🤖</span></div>
       <div class="ai-hero-content">
         <div class="ai-hero-eyebrow">IA Scolaria</div>
         <div class="ai-hero-title">Parler à l'IA</div>
@@ -3213,176 +3317,223 @@ button:active{opacity:.85}
         </g>
       </svg>
     </button>
-    <!-- XP card -->
-    <div class="dash-xp-card">
-      <div class="dash-xp-top">
-        <div class="dash-xp-stats">
-          <div class="dash-xp-stat">
-            <div class="dash-xp-stat-n" id="dash-streak-n">0</div>
-            <div class="dash-xp-stat-l">Jours</div>
-          </div>
-          <div class="dash-xp-divider"></div>
-          <div class="dash-xp-stat">
-            <div class="dash-xp-stat-n" id="dash-devoirs-n">0</div>
-            <div class="dash-xp-stat-l">Devoirs</div>
-          </div>
-          <div class="dash-xp-divider"></div>
-          <div class="dash-xp-stat">
-            <div class="dash-xp-stat-n" id="dash-srs-n">0</div>
-            <div class="dash-xp-stat-l">Cartes</div>
-          </div>
+
+    <!-- ③ DERNIÈRE GÉNÉRATION -->
+    <div class="acc-sec-label">Dernière génération</div>
+    <div class="lastgen-card">
+      <div class="lastgen-hdr">
+        <div class="lastgen-title" id="dash-lastgen-title">Mes fiches</div>
+        <button class="lastgen-badge" onclick="goTo('flash')">Ouvrir ›</button>
+      </div>
+      <div class="lastgen-body">
+        <div class="lastgen-img-wrap">
+          <div class="lastgen-img"><svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="var(--a1)" stroke-width="1.5" stroke-linecap="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><line x1="9" y1="7" x2="15" y2="7"/><line x1="9" y1="11" x2="15" y2="11"/></svg></div>
+        </div>
+        <div class="lastgen-actions">
+          <button class="lastgen-row" onclick="goTo('flash')">
+            <div class="lastgen-icon" style="background:rgba(124,92,252,.18)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#7c5cfc" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg></div>
+            <div class="lastgen-info">
+              <div class="lastgen-row-title">Voir mes fiches</div>
+              <div class="lastgen-row-sub" id="dash-lg-fiches-count">Bibliothèque</div>
+            </div>
+            <span class="lastgen-arrow">›</span>
+          </button>
+          <div class="lastgen-sep"></div>
+          <button class="lastgen-row" onclick="goTo('flash')">
+            <div class="lastgen-icon" style="background:rgba(251,146,60,.18)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fb923c" stroke-width="2" stroke-linecap="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></div>
+            <div class="lastgen-info">
+              <div class="lastgen-row-title">Flashcards</div>
+              <div class="lastgen-row-sub" id="dash-lg-cards-count">SRS actif</div>
+            </div>
+            <span class="lastgen-arrow">›</span>
+          </button>
+          <div class="lastgen-sep"></div>
+          <button class="lastgen-row" onclick="openScanCours()">
+            <div class="lastgen-icon" style="background:rgba(52,211,153,.18)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2" stroke-linecap="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
+            <div class="lastgen-info">
+              <div class="lastgen-row-title">Générer fiche</div>
+              <div class="lastgen-row-sub">Nouveau chapitre</div>
+            </div>
+            <span class="lastgen-arrow">›</span>
+          </button>
         </div>
       </div>
-      <div id="dash-modes-xp" style="display:none;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px"></div>
     </div>
-    <!-- Grandes cartes fonctionnalités -->
-    <div class="dash-section">
-      <div class="dash-title">Fonctionnalités</div>
-      <div class="feat-grid">
-        <button class="feat-big" onclick="sendCombo();goTo('chat')" style="background:linear-gradient(135deg,#7c5cfc,#a472f9);--fb-shadow:rgba(124,92,252,.4)">
-          <svg class="feat-big-bg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.2" stroke-linecap="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-          <div class="feat-big-tag">IA</div>
-          <div class="feat-big-label">Fiche + Flash</div>
-          <div class="feat-big-sub">Génère tout en 1 clic</div>
-        </button>
-        <button class="feat-big" onclick="goTo('flash')" style="background:linear-gradient(135deg,#e91e8c,#f472b6);--fb-shadow:rgba(233,30,140,.4)">
-          <svg class="feat-big-bg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.2" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-          <div class="feat-big-tag">Révision</div>
-          <div class="feat-big-label">Flashcards</div>
-          <div class="feat-big-sub">SRS &amp; entraînement</div>
-        </button>
-        <button class="feat-big" onclick="goTo('devoirs')" style="background:linear-gradient(135deg,#f97316,#fb923c);--fb-shadow:rgba(249,115,22,.4)">
-          <svg class="feat-big-bg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.2" stroke-linecap="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-          <div class="feat-big-tag">Planning</div>
-          <div class="feat-big-label">Devoirs</div>
-          <div class="feat-big-sub">Agenda &amp; urgences</div>
-        </button>
-        <button class="feat-big" onclick="goTo('pomo')" style="background:linear-gradient(135deg,#dc2626,#ef4444);--fb-shadow:rgba(220,38,38,.4)">
-          <svg class="feat-big-bg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-          <div class="feat-big-tag">Focus</div>
-          <div class="feat-big-label">Pomodoro</div>
-          <div class="feat-big-sub">25 min concentré</div>
-        </button>
-        <button class="feat-big" onclick="goTo('moy')" style="background:linear-gradient(135deg,#0284c7,#38bdf8);--fb-shadow:rgba(2,132,199,.4)">
-          <svg class="feat-big-bg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.2" stroke-linecap="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-          <div class="feat-big-tag">Notes</div>
-          <div class="feat-big-label">Moyennes</div>
-          <div class="feat-big-sub">Calcul &amp; coefficients</div>
-        </button>
-        <button class="feat-big" onclick="window.open('scolaria-langues.html','_self')" style="background:linear-gradient(135deg,#059669,#10b981);--fb-shadow:rgba(5,150,105,.4)">
-          <svg class="feat-big-bg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-          <div class="feat-big-tag">Nouveau</div>
-          <div class="feat-big-label">Langues</div>
-          <div class="feat-big-sub">EN &amp; ES · Duolingo style</div>
-        </button>
+
+    <!-- ④ RÉVISION DU JOUR -->
+    <div class="acc-sec-label">Révision du jour</div>
+    <div class="srs-card" id="dash-srs-sec" style="display:none" onclick="goTo('flash')">
+      <div class="srs-line"></div>
+      <div class="srs-body">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="width:34px;height:34px;border-radius:10px;background:rgba(124,92,252,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--a1)" stroke-width="2" stroke-linecap="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+          <div>
+            <div class="srs-title" id="dash-srs-title">0 cartes à réviser</div>
+            <div class="srs-sub">Révise maintenant pour ne rien oublier.</div>
+          </div>
+        </div>
+        <span class="srs-badge">Aujourd&#39;hui</span>
       </div>
     </div>
-    <!-- Urgent devoirs -->
-    <div class="dash-section" id="dash-urgent-sec">
-      <div class="dash-title">Devoirs urgents</div>
+    <div class="srs-card-empty" id="dash-srs-empty">
+      <div class="srs-line" style="background:linear-gradient(90deg,transparent,var(--a3),transparent)"></div>
+      <div class="srs-body">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="width:34px;height:34px;border-radius:10px;background:rgba(52,211,153,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--a3)" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div>
+            <div class="srs-title">Tout révisé !</div>
+            <div class="srs-sub">Reviens demain pour ta prochaine session.</div>
+          </div>
+        </div>
+        <span class="srs-badge srs-badge-green">À jour</span>
+      </div>
+    </div>
+
+    <!-- ⑤ DEVOIRS URGENTS (masqué si vide) -->
+    <div id="dash-urgent-sec" style="display:none">
+      <div class="acc-sec-label" style="margin-top:20px">Devoirs urgents</div>
       <div id="dash-urgent-list"></div>
     </div>
-    <!-- SRS -->
-    <div class="dash-section" id="dash-srs-sec">
-      <div class="dash-title">Révision du jour</div>
-      <div id="dash-srs-preview"></div>
+
+    <!-- ⑥ PROGRESSION -->
+    <div class="acc-sec-label">Progression</div>
+    <div id="dash-mat-progress"></div>
+
+    <!-- ⑦ RACCOURCIS -->
+    <div class="acc-sec-label">Raccourcis</div>
+    <div class="hscroll dash-feat-scroll" style="margin-bottom:4px">
+      <button class="dash-feat-card" onclick="goTo('pomo')" style="--fc:#fb923c">
+        <div class="dash-feat-icon" style="background:rgba(251,146,60,.15)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fb923c" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <div class="dash-feat-label">Pomodoro</div>
+        <div class="dash-feat-sub">Focus 25 min</div>
+      </button>
+      <button class="dash-feat-card" onclick="goTo('moy')" style="--fc:#38bdf8">
+        <div class="dash-feat-icon" style="background:rgba(56,189,248,.15)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+        <div class="dash-feat-label">Moyennes</div>
+        <div class="dash-feat-sub">Notes &amp; coefs</div>
+      </button>
+      <button class="dash-feat-card" onclick="openVocalQuiz()" style="--fc:#34d399">
+        <div class="dash-feat-icon" style="background:rgba(52,211,153,.15)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2" stroke-linecap="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></div>
+        <div class="dash-feat-label">Quiz vocal</div>
+        <div class="dash-feat-sub">À voix haute</div>
+      </button>
+      <button class="dash-feat-card" onclick="sendCombo();goTo('chat')" style="--fc:#fbbf24">
+        <div class="dash-feat-icon" style="background:rgba(251,191,36,.15)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+        <div class="dash-feat-label">Fiche + Flash</div>
+        <div class="dash-feat-sub">1 clic</div>
+      </button>
+      <button class="dash-feat-card" onclick="openTool('calc')" style="--fc:#a78bfa">
+        <div class="dash-feat-icon" style="background:rgba(167,139,250,.15)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="11" y2="14"/></svg></div>
+        <div class="dash-feat-label">Calculatrice</div>
+        <div class="dash-feat-sub">Outil rapide</div>
+      </button>
+      <button class="dash-feat-card" onclick="openTool('conj')" style="--fc:#f472b6">
+        <div class="dash-feat-icon" style="background:rgba(244,114,182,.15)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f472b6" stroke-width="2" stroke-linecap="round"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg></div>
+        <div class="dash-feat-label">Conjuguer</div>
+        <div class="dash-feat-sub">Tous temps</div>
+      </button>
+      <button class="dash-feat-card" onclick="window.open('scolaria-langues.html','_self')" style="--fc:#10b981">
+        <div class="dash-feat-icon" style="background:rgba(16,185,129,.15)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+        <div class="dash-feat-label">Langues</div>
+        <div class="dash-feat-sub">EN &amp; ES</div>
+      </button>
     </div>
-    <!-- Sites éducatifs -->
-    <div class="dash-section">
-      <div class="dash-title">Sites éducatifs</div>
-      <div class="edu-sites-grid">
-        <a class="edu-site" href="https://www.index-education.net/pronote/" target="_blank" rel="noopener noreferrer" style="--es-c1:rgba(45,156,219,.15);--es-b:#2d9cdb;--es-bg:#fff">
-          <div class="edu-site-icon"><img src="https://www.google.com/s2/favicons?domain=index-education.net&sz=128" alt="Pronote" loading="lazy" onerror="this.parentNode.innerHTML='&lt;span class=&quot;edu-site-icon-emoji&quot;&gt;📋&lt;/span&gt;'"></div>
-          <div class="edu-site-info">
-            <div class="edu-site-label">Pronote</div>
-            <div class="edu-site-sub">Notes &amp; devoirs</div>
-          </div>
-          <span class="edu-site-ext">↗</span>
-        </a>
-        <a class="edu-site" href="https://www.lumni.fr/" target="_blank" rel="noopener noreferrer" style="--es-c1:rgba(255,107,107,.15);--es-b:#ff6b6b;--es-bg:#fff">
-          <div class="edu-site-icon"><img src="https://www.google.com/s2/favicons?domain=lumni.fr&sz=128" alt="Lumni" loading="lazy" onerror="this.parentNode.innerHTML='&lt;span class=&quot;edu-site-icon-emoji&quot;&gt;🎬&lt;/span&gt;'"></div>
-          <div class="edu-site-info">
-            <div class="edu-site-label">Lumni</div>
-            <div class="edu-site-sub">Vidéos &amp; cours</div>
-          </div>
-          <span class="edu-site-ext">↗</span>
-        </a>
-        <a class="edu-site" href="https://fr.wikipedia.org/" target="_blank" rel="noopener noreferrer" style="--es-c1:rgba(160,160,160,.15);--es-b:#a0a0a0;--es-bg:#fff">
-          <div class="edu-site-icon"><img src="https://www.google.com/s2/favicons?domain=fr.wikipedia.org&sz=128" alt="Wikipédia" loading="lazy" onerror="this.parentNode.innerHTML='&lt;span class=&quot;edu-site-icon-emoji&quot;&gt;📖&lt;/span&gt;'"></div>
-          <div class="edu-site-info">
-            <div class="edu-site-label">Wikipédia</div>
-            <div class="edu-site-sub">Encyclopédie</div>
-          </div>
-          <span class="edu-site-ext">↗</span>
-        </a>
-        <a class="edu-site" href="https://fr.khanacademy.org/" target="_blank" rel="noopener noreferrer" style="--es-c1:rgba(20,187,75,.15);--es-b:#14bb4b;--es-bg:#fff">
-          <div class="edu-site-icon"><img src="https://www.google.com/s2/favicons?domain=khanacademy.org&sz=128" alt="Khan Academy" loading="lazy" onerror="this.parentNode.innerHTML='&lt;span class=&quot;edu-site-icon-emoji&quot;&gt;🧮&lt;/span&gt;'"></div>
-          <div class="edu-site-info">
-            <div class="edu-site-label">Khan Academy</div>
-            <div class="edu-site-sub">Maths &amp; sciences</div>
-          </div>
-          <span class="edu-site-ext">↗</span>
-        </a>
-        <a class="edu-site" href="https://dictionnaire.lerobert.com/" target="_blank" rel="noopener noreferrer" style="--es-c1:rgba(220,38,38,.15);--es-b:#dc2626;--es-bg:#fff">
-          <div class="edu-site-icon"><img src="https://www.google.com/s2/favicons?domain=dictionnaire.lerobert.com&sz=128" alt="Le Robert" loading="lazy" onerror="this.parentNode.innerHTML='&lt;span class=&quot;edu-site-icon-emoji&quot;&gt;📚&lt;/span&gt;'"></div>
-          <div class="edu-site-info">
-            <div class="edu-site-label">Le Robert</div>
-            <div class="edu-site-sub">Dictionnaire</div>
-          </div>
-          <span class="edu-site-ext">↗</span>
-        </a>
-        <a class="edu-site" href="https://www.louvre.fr/" target="_blank" rel="noopener noreferrer" style="--es-c1:rgba(217,119,6,.18);--es-b:#d97706;--es-bg:#fff">
-          <div class="edu-site-icon"><img src="https://www.google.com/s2/favicons?domain=louvre.fr&sz=128" alt="Louvre" loading="lazy" onerror="this.parentNode.innerHTML='&lt;span class=&quot;edu-site-icon-emoji&quot;&gt;🏛️&lt;/span&gt;'"></div>
-          <div class="edu-site-info">
-            <div class="edu-site-label">Musée du Louvre</div>
-            <div class="edu-site-sub">Œuvres &amp; histoire</div>
-          </div>
-          <span class="edu-site-ext">↗</span>
-        </a>
-        <a class="edu-site" href="https://www.musee-orsay.fr/" target="_blank" rel="noopener noreferrer" style="--es-c1:rgba(236,72,153,.15);--es-b:#ec4899;--es-bg:#fff">
-          <div class="edu-site-icon"><img src="https://www.google.com/s2/favicons?domain=musee-orsay.fr&sz=128" alt="Musée d'Orsay" loading="lazy" onerror="this.parentNode.innerHTML='&lt;span class=&quot;edu-site-icon-emoji&quot;&gt;🎨&lt;/span&gt;'"></div>
-          <div class="edu-site-info">
-            <div class="edu-site-label">Musée d'Orsay</div>
-            <div class="edu-site-sub">Art du XIXᵉ</div>
-          </div>
-          <span class="edu-site-ext">↗</span>
-        </a>
-        <a class="edu-site" href="https://gallica.bnf.fr/" target="_blank" rel="noopener noreferrer" style="--es-c1:rgba(180,83,9,.15);--es-b:#b45309;--es-bg:#fff">
-          <div class="edu-site-icon"><img src="https://www.google.com/s2/favicons?domain=gallica.bnf.fr&sz=128" alt="Gallica BNF" loading="lazy" onerror="this.parentNode.innerHTML='&lt;span class=&quot;edu-site-icon-emoji&quot;&gt;📜&lt;/span&gt;'"></div>
-          <div class="edu-site-info">
-            <div class="edu-site-label">Gallica BNF</div>
-            <div class="edu-site-sub">Archives &amp; livres</div>
-          </div>
-          <span class="edu-site-ext">↗</span>
-        </a>
-      </div>
+
+    <!-- ⑧ OUTILS IA -->
+    <div class="acc-sec-label">Outils IA</div>
+    <div class="outils-grid">
+      <button class="outil-card" onclick="openScanCours()">
+        <div class="outil-top">
+          <div class="outil-icon-sq" style="background:rgba(124,92,252,.18)"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#7c5cfc" stroke-width="2" stroke-linecap="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
+          <div><div class="outil-name">Scanner cours</div><div class="outil-sub">Scanne tes notes</div></div>
+        </div>
+        <div class="outil-art" style="background:linear-gradient(180deg,var(--card) 0%,rgba(124,92,252,.22) 100%)">
+          <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#7c5cfc" stroke-width="1.2" stroke-linecap="round" opacity=".25"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        </div>
+      </button>
+      <button class="outil-card" onclick="openVeilleControle()">
+        <div class="outil-top">
+          <div class="outil-icon-sq" style="background:rgba(244,114,182,.18)"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#f472b6" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+          <div><div class="outil-name">Veille contrôle</div><div class="outil-sub">Plan IA</div></div>
+        </div>
+        <div class="outil-art" style="background:linear-gradient(180deg,var(--card) 0%,rgba(244,114,182,.22) 100%)">
+          <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#f472b6" stroke-width="1.2" stroke-linecap="round" opacity=".25"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="12" y2="18"/></svg>
+        </div>
+      </button>
     </div>
-    <!-- Outils IA -->
-    <div class="dash-section">
-      <div class="dash-title">Outils IA</div>
-      <div class="outils-ia-grid">
-        <button class="outils-ia-card" onclick="openScanCours()" style="background:linear-gradient(135deg,#4c1d95,#7c5cfc)">
-          <svg class="outils-ia-bg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-          <div class="outils-ia-label">Scanner cours</div>
-          <div class="outils-ia-sub">Photo → Fiche IA</div>
-        </button>
-        <button class="outils-ia-card" onclick="openVeilleControle()" style="background:linear-gradient(135deg,#831843,#f472b6)">
-          <svg class="outils-ia-bg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          <div class="outils-ia-label">Veille contrôle</div>
-          <div class="outils-ia-sub">Plan de révision</div>
-        </button>
-        <button class="outils-ia-card" onclick="openVocalQuiz()" style="background:linear-gradient(135deg,#065f46,#34d399)">
-          <svg class="outils-ia-bg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg>
-          <div class="outils-ia-label">Quiz vocal</div>
-          <div class="outils-ia-sub">Réponds à voix haute</div>
-        </button>
-        <button class="outils-ia-card" onclick="openInterro()" style="background:linear-gradient(135deg,#78350f,#fbbf24)">
-          <svg class="outils-ia-bg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-          <div class="outils-ia-label">Interrogation</div>
-          <div class="outils-ia-sub">Le prof IA t'interroge</div>
-        </button>
-      </div>
+
+    <!-- ⑨ SITES ÉDUCATIFS -->
+    <div class="acc-sec-label">Sites éducatifs</div>
+    <div class="edu-sites-grid">
+      <a class="edu-site" href="https://www.index-education.net/pronote/" target="_blank" rel="noopener noreferrer" style="--es-c1:rgba(45,156,219,.15);--es-b:#2d9cdb;--es-bg:#fff">
+        <div class="edu-site-icon"><img src="https://www.google.com/s2/favicons?domain=index-education.net&sz=128" alt="Pronote" loading="lazy" onerror="this.parentNode.innerHTML='&lt;span class=&quot;edu-site-icon-emoji&quot;&gt;📋&lt;/span&gt;'"></div>
+        <div class="edu-site-info">
+          <div class="edu-site-label">Pronote</div>
+          <div class="edu-site-sub">Notes &amp; devoirs</div>
+        </div>
+        <span class="edu-site-ext">↗</span>
+      </a>
+      <a class="edu-site" href="https://www.lumni.fr/" target="_blank" rel="noopener noreferrer" style="--es-c1:rgba(255,107,107,.15);--es-b:#ff6b6b;--es-bg:#fff">
+        <div class="edu-site-icon"><img src="https://www.google.com/s2/favicons?domain=lumni.fr&sz=128" alt="Lumni" loading="lazy" onerror="this.parentNode.innerHTML='&lt;span class=&quot;edu-site-icon-emoji&quot;&gt;🎬&lt;/span&gt;'"></div>
+        <div class="edu-site-info">
+          <div class="edu-site-label">Lumni</div>
+          <div class="edu-site-sub">Vidéos &amp; cours</div>
+        </div>
+        <span class="edu-site-ext">↗</span>
+      </a>
+      <a class="edu-site" href="https://fr.wikipedia.org/" target="_blank" rel="noopener noreferrer" style="--es-c1:rgba(160,160,160,.15);--es-b:#a0a0a0;--es-bg:#fff">
+        <div class="edu-site-icon"><img src="https://www.google.com/s2/favicons?domain=fr.wikipedia.org&sz=128" alt="Wikipédia" loading="lazy" onerror="this.parentNode.innerHTML='&lt;span class=&quot;edu-site-icon-emoji&quot;&gt;📖&lt;/span&gt;'"></div>
+        <div class="edu-site-info">
+          <div class="edu-site-label">Wikipédia</div>
+          <div class="edu-site-sub">Encyclopédie</div>
+        </div>
+        <span class="edu-site-ext">↗</span>
+      </a>
+      <a class="edu-site" href="https://fr.khanacademy.org/" target="_blank" rel="noopener noreferrer" style="--es-c1:rgba(20,187,75,.15);--es-b:#14bb4b;--es-bg:#fff">
+        <div class="edu-site-icon"><img src="https://www.google.com/s2/favicons?domain=khanacademy.org&sz=128" alt="Khan Academy" loading="lazy" onerror="this.parentNode.innerHTML='&lt;span class=&quot;edu-site-icon-emoji&quot;&gt;🧮&lt;/span&gt;'"></div>
+        <div class="edu-site-info">
+          <div class="edu-site-label">Khan Academy</div>
+          <div class="edu-site-sub">Maths &amp; sciences</div>
+        </div>
+        <span class="edu-site-ext">↗</span>
+      </a>
+      <a class="edu-site" href="https://dictionnaire.lerobert.com/" target="_blank" rel="noopener noreferrer" style="--es-c1:rgba(220,38,38,.15);--es-b:#dc2626;--es-bg:#fff">
+        <div class="edu-site-icon"><img src="https://www.google.com/s2/favicons?domain=dictionnaire.lerobert.com&sz=128" alt="Le Robert" loading="lazy" onerror="this.parentNode.innerHTML='&lt;span class=&quot;edu-site-icon-emoji&quot;&gt;📚&lt;/span&gt;'"></div>
+        <div class="edu-site-info">
+          <div class="edu-site-label">Le Robert</div>
+          <div class="edu-site-sub">Dictionnaire</div>
+        </div>
+        <span class="edu-site-ext">↗</span>
+      </a>
+      <a class="edu-site" href="https://www.louvre.fr/" target="_blank" rel="noopener noreferrer" style="--es-c1:rgba(217,119,6,.18);--es-b:#d97706;--es-bg:#fff">
+        <div class="edu-site-icon"><img src="https://www.google.com/s2/favicons?domain=louvre.fr&sz=128" alt="Louvre" loading="lazy" onerror="this.parentNode.innerHTML='&lt;span class=&quot;edu-site-icon-emoji&quot;&gt;🏛️&lt;/span&gt;'"></div>
+        <div class="edu-site-info">
+          <div class="edu-site-label">Musée du Louvre</div>
+          <div class="edu-site-sub">Œuvres &amp; histoire</div>
+        </div>
+        <span class="edu-site-ext">↗</span>
+      </a>
+      <a class="edu-site" href="https://www.musee-orsay.fr/" target="_blank" rel="noopener noreferrer" style="--es-c1:rgba(236,72,153,.15);--es-b:#ec4899;--es-bg:#fff">
+        <div class="edu-site-icon"><img src="https://www.google.com/s2/favicons?domain=musee-orsay.fr&sz=128" alt="Musée d'Orsay" loading="lazy" onerror="this.parentNode.innerHTML='&lt;span class=&quot;edu-site-icon-emoji&quot;&gt;🎨&lt;/span&gt;'"></div>
+        <div class="edu-site-info">
+          <div class="edu-site-label">Musée d'Orsay</div>
+          <div class="edu-site-sub">Art du XIXᵉ</div>
+        </div>
+        <span class="edu-site-ext">↗</span>
+      </a>
+      <a class="edu-site" href="https://gallica.bnf.fr/" target="_blank" rel="noopener noreferrer" style="--es-c1:rgba(180,83,9,.15);--es-b:#b45309;--es-bg:#fff">
+        <div class="edu-site-icon"><img src="https://www.google.com/s2/favicons?domain=gallica.bnf.fr&sz=128" alt="Gallica BNF" loading="lazy" onerror="this.parentNode.innerHTML='&lt;span class=&quot;edu-site-icon-emoji&quot;&gt;📜&lt;/span&gt;'"></div>
+        <div class="edu-site-info">
+          <div class="edu-site-label">Gallica BNF</div>
+          <div class="edu-site-sub">Archives &amp; livres</div>
+        </div>
+        <span class="edu-site-ext">↗</span>
+      </a>
     </div>
+
+    <!-- Spacer + compat placeholder -->
+    <div style="height:20px"></div>
+    <div id="dash-srs-preview" style="display:none"></div>
   </div>
 </div>
 
@@ -8791,10 +8942,9 @@ function refreshDash(){
   const _modes=[{key:'sk_lang',label:'🌍 Langues',color:'#0ea5e9'},{key:'sk_sci',label:'🔬 Sciences',color:'#10b981'},{key:'sk_hist',label:'📜 Histoire',color:'#d97706'},{key:'sk_arts',label:'🎨 Arts',color:'#ec4899'}];
   let _totalXP=0;
   const _grid=document.getElementById('dash-modes-xp');
-  if(_grid){const _items=_modes.map(m=>{try{const p=JSON.parse(localStorage.getItem(m.key)||'{}')||{};const xp=p.xp||0;_totalXP+=xp;if(xp===0)return '';return '<div style="background:var(--card);border:1px solid var(--bord);border-radius:14px;padding:10px 12px;display:flex;align-items:center;gap:8px"><div style="width:8px;height:8px;border-radius:50%;background:'+m.color+';flex-shrink:0"></div><div style="flex:1;font-size:11px;font-weight:700;color:var(--tx)">'+m.label+'</div><div style="font-family:var(--fm);font-size:12px;font-weight:700;color:'+m.color+'">'+xp+' XP</div></div>';}catch(e){return '';}}).filter(Boolean);_grid.innerHTML=_items.join('');_grid.style.display=_items.length>0?'grid':'none';}
+  if(_grid){const _items=_modes.map(m=>{try{const p=JSON.parse(localStorage.getItem(m.key)||'{}')||{};const xp=p.xp||0;_totalXP+=xp;if(xp===0)return '';return '<div class="acc-xp-mini"><div class="acc-xp-dot" style="background:'+m.color+';box-shadow:0 0 6px '+m.color+'"></div><div class="acc-xp-label">'+m.label+'</div><div class="acc-xp-val" style="color:'+m.color+'">'+xp+' XP</div></div>';}catch(e){return '';}}).filter(Boolean);_grid.innerHTML=_items.join('');_grid.style.display=_items.length>0?'grid':'none';}
   const _badge=document.getElementById('dash-xp-badge');if(_badge){if(_totalXP>0){_badge.textContent=_totalXP+' XP';_badge.style.display='block';}else{_badge.style.display='none';}}
 
-  const today = new Date().toISOString().slice(0,10);
   const srs = JSON.parse(localStorage.getItem('sk_srs')||'{}');
   const srsCount = Object.values(srs).filter(s=>s.nextReview&&s.nextReview<=Date.now()).length;
   const urgentDv = devoirs.filter(d=>d.urg==='urgent'&&!d.done);
@@ -8817,32 +8967,42 @@ function refreshDash(){
     } else {
       us.style.display='block';
       ul.innerHTML=urgentDv.slice(0,3).map(d=>`
-        <div class="dash-card" onclick="goTo('devoirs')" style="padding:10px 14px">
-          <div class="dash-card-hdr">
-            <div class="dash-card-title">📋 ${esc(d.mat||'Devoir')}</div>
-            <span class="dash-card-badge dash-urgent">Urgent</span>
+        <div class="acc-dv-card" onclick="goTo('devoirs')">
+          <div class="acc-dv-hdr">
+            <div class="acc-dv-title">${esc(d.mat||'Devoir')}</div>
+            <span class="acc-dv-badge">Urgent</span>
           </div>
-          <div class="dash-card-sub">${esc(d.desc||'')}</div>
+          <div class="acc-dv-sub">${esc(d.desc||'')}</div>
         </div>`).join('');
     }
   }
 
-  // SRS preview
-  const sl=document.getElementById('dash-srs-preview');
+  // SRS — carte premium
   const ss=document.getElementById('dash-srs-sec');
-  if(sl&&ss){
+  const se=document.getElementById('dash-srs-empty');
+  const st=document.getElementById('dash-srs-title');
+  if(ss&&se){
     if(srsCount===0){
       ss.style.display='none';
+      se.style.display='block';
     } else {
       ss.style.display='block';
-      sl.innerHTML=`<div class="dash-card" onclick="goTo('flash')">
-        <div class="dash-card-hdr">
-          <div class="dash-card-title">🧠 ${srsCount} carte${srsCount>1?'s':''} à réviser</div>
-          <span class="dash-card-badge dash-info">Aujourd'hui</span>
-        </div>
-        <div class="dash-card-sub">Révise maintenant pour ne pas perdre ta progression SRS.</div>
-      </div>`;
+      se.style.display='none';
+      if(st) st.textContent=srsCount+' carte'+(srsCount>1?'s':'')+' à réviser';
     }
+  }
+
+  // Dernière génération
+  const lgTitle=document.getElementById('dash-lastgen-title');
+  const lgFiches=document.getElementById('dash-lg-fiches-count');
+  const lgCards=document.getElementById('dash-lg-cards-count');
+  if(lgTitle&&library){
+    const lastFiche=library.fiches&&library.fiches.length?library.fiches[library.fiches.length-1]:null;
+    const lastDeck=library.decks&&library.decks.length?library.decks[library.decks.length-1]:null;
+    if(lastFiche) lgTitle.textContent=lastFiche.titre||'Mes fiches';
+    const nbF=library.fiches?library.fiches.length:0;
+    if(lgFiches) lgFiches.textContent=nbF+' fiche'+(nbF>1?'s':'')+' générée'+(nbF>1?'s':'');
+    if(lgCards&&lastDeck) lgCards.textContent=lastDeck.cards.length+' cartes · SRS';
   }
 
   // Progression par matière
@@ -8859,20 +9019,22 @@ function refreshDash(){
     });
     const entries=Object.entries(matStats);
     if(!entries.length){
-      mp.innerHTML='<div style="font-size:12px;color:var(--mu);text-align:center;padding:20px 0">Commence à faire des flashcards pour voir ta progression ici !</div>';
+      mp.innerHTML='<div class="acc-prog-empty">Commence les flashcards pour voir ta progression ici !</div>';
     } else {
       mp.innerHTML=entries.slice(0,5).map(([name,s])=>{
         const pct=s.total>0?Math.round(s.ok/s.total*100):0;
         const col=getMatColor(name)||'var(--a1)';
-        const lvl=pct>=80?'🟢 Maîtrisé':pct>=50?'🟡 En cours':'🔴 À revoir';
-        return `<div class="dash-mat-card">
-          <div class="dash-mat-row">
-            <span class="dash-mat-name">${esc(name.slice(0,22))}</span>
-            <span class="dash-prog-pct" style="color:${col}">${pct}%</span>
+        const lvlCol=pct>=80?'#10b981':pct>=50?'#fbbf24':'#fc5c7d';
+        const lvlTxt=pct>=80?'Maîtrisé':pct>=50?'En cours':'À revoir';
+        const lvl='<span style="display:inline-flex;align-items:center;gap:4px;font-size:10px"><span style="width:6px;height:6px;border-radius:50%;background:'+lvlCol+';display:inline-block"></span>'+lvlTxt+'</span>';
+        return `<div class="acc-prog-card">
+          <div class="acc-prog-row">
+            <span class="acc-prog-name">${esc(name.slice(0,22))}</span>
+            <span class="acc-prog-pct" style="color:${col}">${pct}%</span>
           </div>
-          <div class="dash-prog-bar"><div class="dash-prog-fill" style="width:${pct}%;background:${col}"></div></div>
-          <div class="dash-mat-row" style="margin-top:5px;margin-bottom:0">
-            <span class="dash-mat-count">${s.ok} / ${s.total} cartes maîtrisées</span>
+          <div class="acc-prog-bar"><div class="acc-prog-fill" style="width:${pct}%;background:${col};box-shadow:0 0 8px ${col}66"></div></div>
+          <div class="acc-prog-row" style="margin-top:5px;margin-bottom:0">
+            <span class="acc-prog-count">${s.ok} / ${s.total} cartes maîtrisées</span>
             <span style="font-size:10px">${lvl}</span>
           </div>
         </div>`;

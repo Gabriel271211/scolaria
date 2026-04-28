@@ -4591,7 +4591,7 @@ async function callAI({system, messages, maxTokens=1200}){
         if(!res.ok){
           const msg = data?.error?.message || 'Erreur '+res.status;
           if(res.status===401){throw new Error('Clé Groq invalide. Vérifie sur console.groq.com');}
-          if(res.status===429){throw new Error('Limite Groq atteinte — attends 1 min');}
+          if(res.status===429){lastErr='Rate limit 429';continue;} // essaie le modèle suivant
           if(res.status===404||res.status===400){lastErr=msg;continue;}
           throw new Error('Groq '+res.status+': '+msg);
         }
@@ -4603,7 +4603,7 @@ async function callAI({system, messages, maxTokens=1200}){
         }
         return text;
       }catch(e){
-        if(e.message.includes('invalide')||e.message.includes('Limite'))throw e;
+        if(e.message.includes('invalide'))throw e;
         lastErr = e.message;
       }
     }
@@ -4647,8 +4647,8 @@ async function callAI({system, messages, maxTokens=1200}){
         const data = await res.json();
         if(!res.ok){
           const msg = data?.error?.message || 'Erreur '+res.status;
-          // 404 = modèle pas dispo → essaie le suivant
-          if(res.status===404||res.status===400){lastErr=msg;continue;}
+          // 404/400 = modèle pas dispo, 429 = rate limit → essaie le suivant
+          if(res.status===404||res.status===400||res.status===429){lastErr=msg;continue;}
           // 403 = clé invalide → inutile d'essayer d'autres
           if(res.status===403||res.status===401){
             throw new Error('Clé API invalide ou non autorisée. Vérifie ta clé sur aistudio.google.com');
@@ -8225,9 +8225,7 @@ async function testApiKey(){
       if(status===403||status===401){
         toast('❌ Clé refusée ('+status+') : '+errMsg.slice(0,80));return;
       }
-      if(status===429){
-        toast('⚠️ Limite atteinte (429) — attends 1 min puis réessaie');return;
-      }
+      if(status===429){lastErr='Rate limit';continue;} // essaie modèle suivant
       if(status===404){lastErr='Modèle '+model+' indispo';continue;}
 
       lastErr=status+' '+errMsg.slice(0,60);

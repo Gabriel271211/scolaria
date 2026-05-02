@@ -4453,11 +4453,11 @@ STYLE D'ÉCRITURE — RÈGLE ABSOLUE : ZÉRO PARAGRAPHE :
 • Vrais contenus : vraies dates, vraies formules, vraies définitions. Si tu n'es pas sûr → tu n'inclus pas.
 
 LONGUEUR ${ficheLongueur} — profondeur croissante sur LE COEUR, jamais de remplissage :
-• COURTE → 3-5 puces MAX par section, 1-2 sections max. Juste les faits bruts à mémoriser. Pas d'exemple, pas de cas particulier, pas d'astuce. Si c'est une liste : la liste, point final.
-• MOYENNE → 5-10 puces par section, 2-4 sections. Les détails utiles, 1 exemple concret par notion clé, les pièges fréquents. Toujours en puces, jamais en paragraphe.
-• LONGUE → Toutes les puces nécessaires, 4-7 sections. Tous les cas, tous les exemples résolus étape par étape (en puces numérotées), tous les pièges, astuces mnémotechniques. Exhaustif — mais toujours en puces, jamais en prose.
+• COURTE → 3-5 puces MAX par section, 1-2 sections max. Juste les faits bruts à mémoriser. Pas d'exemple, pas de cas particulier. Si c'est une liste : la liste, point final.
+• MOYENNE → 10-18 puces par section, 3-5 sections. TOUT ce qui est vraiment utile à retenir. Chaque définition est complète : pas juste un mot — une vraie définition précise en une ligne (ex : "**Photosynthèse** → processus par lequel les plantes convertissent lumière + CO₂ + eau en glucose + O₂"). Un exemple concret par notion clé. Les pièges courants. Si une info compte pour comprendre ou réviser → elle y est. Toujours en puces.
+• LONGUE → 15-25 puces par section, 5-8 sections. Absolument tout. Tous les cas, toutes les exceptions, plusieurs exemples résolus pas à pas (en puces numérotées), tous les pièges même subtils, astuces mnémotechniques, liens entre notions. Exhaustif — mais toujours en puces.
 
-→ Augmenter la taille = PLUS DE PUCES sur le coeur du sujet. JAMAIS de paragraphes narratifs quelle que soit la taille.
+→ Augmenter la taille = PLUS DE PUCES et DÉFINITIONS PLUS COMPLÈTES. JAMAIS de paragraphes quelle que soit la taille.
 
 → Augmenter la taille = APPROFONDIR le sujet, JAMAIS ajouter du remplissage générique ou de la biographie qui n'a pas été demandée.
 
@@ -5013,7 +5013,7 @@ async function submitGenHub(){
   var lv=getLevel();if(lv)prompt+=' (niveau '+lv+')';
   try{
     var isFiche=genHubMode==='fiche'||genHubMode==='combo'||genHubMode==='resume';
-    var maxTok=isFiche?(ficheLongueur==='LONGUE'?9000:ficheLongueur==='COURTE'?1800:4500):3000;
+    var maxTok=isFiche?(ficheLongueur==='LONGUE'?9000:ficheLongueur==='COURTE'?1800:6500):3000;
     var msgContent=genHubPhotoData
       ?[{type:'image',source:{type:'base64',media_type:genHubPhotoData.mime,data:genHubPhotoData.b64}},{type:'text',text:prompt+'\n\nUtilise le contenu de la photo pour baser ta génération dessus.'}]
       :prompt;
@@ -5083,7 +5083,7 @@ async function submitGen(){
   var lv=getLevel();if(lv)prompt+=' (niveau '+lv+')';
   try{
     var isFiche=genMode==='fiche'||genMode==='combo';
-    var maxTok=isFiche?(ficheLongueur==='LONGUE'?9000:ficheLongueur==='COURTE'?1800:4500):3000;
+    var maxTok=isFiche?(ficheLongueur==='LONGUE'?9000:ficheLongueur==='COURTE'?1800:6500):3000;
     var result=await callAI({system:buildSys(),messages:[{role:'user',content:prompt}],maxTokens:maxTok});
     document.getElementById('gen-loading').style.display='none';
     document.getElementById('gen-result').style.display='';

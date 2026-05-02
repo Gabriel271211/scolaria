@@ -4636,22 +4636,46 @@ function saveEdtEdit(){
 async function scanEdtPhoto(event){
   const file=event.target.files[0];if(!file)return;
   event.target.value='';
-  toast('Analyse de la photo...');
+  toast('Analyse de la photo en cours…');
   const reader=new FileReader();
   reader.onload=async function(e){
     const b64=e.target.result.split(',')[1];
     const mime=file.type;
     try{
-      const result=await callAI({system:`Tu es un assistant qui extrait les emplois du temps scolaires depuis des photos. Réponds UNIQUEMENT avec du JSON valide, sans texte avant ou après.`,messages:[{role:'user',content:[{type:'image',source:{type:'base64',media_type:mime,data:b64}},{type:'text',text:'Extrait cet emploi du temps en JSON. Format EXACT :\n{"weekA":{"0":[{"h":"8h","m":"Maths"},{"h":"10h","m":"Français"}],"1":[...],"2":[...],"3":[...],"4":[...]},"weekB":{"0":[...],"1":[...],"2":[...],"3":[...],"4":[...]}}\nLes clés 0=Lundi,1=Mardi,2=Mercredi,3=Jeudi,4=Vendredi. Si pas de semaine B distincte, copie weekA dans weekB. Réponds SEULEMENT avec le JSON.'}]}],maxTokens:2000});
+      const result=await callAI({
+        system:'Tu es un assistant qui lit des emplois du temps scolaires. Réponds UNIQUEMENT avec du JSON brut, sans markdown, sans ```json, sans texte autour.',
+        messages:[{role:'user',content:[
+          {type:'image',source:{type:'base64',media_type:mime,data:b64}},
+          {type:'text',text:'Lis cet emploi du temps et renvoie un JSON avec ce format EXACT (remplace les exemples par le vrai contenu) :\n{\n  "weekA": {\n    "Lundi": [{"h":"8h00","m":"Maths"},{"h":"10h00","m":"Français"}],\n    "Mardi": [...],\n    "Mercredi": [...],\n    "Jeudi": [...],\n    "Vendredi": [...]\n  },\n  "weekB": {\n    "Lundi": [...],\n    ...\n  }\n}\nSi la photo ne montre qu\'une seule semaine, mets le même contenu dans weekA et weekB.\nRéponds UNIQUEMENT avec le JSON, rien d\'autre.'}
+        ]}],
+        maxTokens:3000
+      });
+      // Extraire le JSON même si l'IA a mis du texte autour
       const jsonMatch=result.match(/\{[\s\S]*\}/);
-      if(!jsonMatch)throw new Error('JSON non trouvé');
+      if(!jsonMatch)throw new Error('Pas de JSON dans la réponse');
       const parsed=JSON.parse(jsonMatch[0]);
-      if(parsed.weekA)edtData.weekA=normalizeEdtWeek(parsed.weekA);
-      if(parsed.weekB)edtData.weekB=normalizeEdtWeek(parsed.weekB);
-      if(!edtData.semAStart){const now=new Date();const jsDay=now.getDay();const diff=jsDay===0?-6:1-jsDay;const mon=new Date(now);mon.setDate(mon.getDate()+diff);edtData.semAStart=mon.toISOString().split('T')[0];}
+      // Accepter weekA/weekB OU structure plate avec noms de jours
+      const wA=parsed.weekA||parsed.semA||parsed.semaineA||parsed.week_a;
+      const wB=parsed.weekB||parsed.semB||parsed.semaineB||parsed.week_b;
+      if(wA){
+        edtData.weekA=normalizeEdtWeek(wA);
+        edtData.weekB=normalizeEdtWeek(wB||wA);
+      }else{
+        // Structure plate : {"Lundi":[...],"Mardi":[...]} directement
+        const flat=normalizeEdtWeek(parsed);
+        edtData.weekA=flat;edtData.weekB=flat;
+      }
+      // Recalculer semAStart pour que la semaine actuelle = weekA
+      const now=new Date();const jsDay=now.getDay();
+      const dm=jsDay===0?-6:1-jsDay;
+      const mon=new Date(now);mon.setDate(now.getDate()+dm);
+      edtData.semAStart=mon.toISOString().split('T')[0];
       saveEdt();renderEdtCard();
       toast('Emploi du temps importé !');
-    }catch(err){toast('Impossible de lire la photo. Saisis manuellement ✎');}
+    }catch(err){
+      console.error('EDT scan error:',err);
+      toast('Erreur lecture photo : '+err.message.slice(0,60));
+    }
   };
   reader.readAsDataURL(file);
 }

@@ -4434,17 +4434,21 @@ LIBERTÉ DE STRUCTURE — TU CRÉES TES SECTIONS LIBREMENT :
 • Tu peux faire 5-6 sections si le sujet le justifie réellement.
 • Pas de sections vides, pas de "à compléter", pas de placeholder. Si une section ne contient rien d'utile, tu ne la mets pas.
 
-STYLE D'ÉCRITURE — DENSE, PAS RÉDIGÉ :
-• Pas de paragraphes lourds. Phrases courtes. Listes à puces. Tableaux markdown quand c'est pertinent : | col | col |
-• Va à l'essentiel. Si un point se dit en 5 mots, ne le développe pas en 3 phrases.
-• Vrais contenus uniquement : vraies dates précises, vraies formules exactes, vraies définitions complètes. Si tu n'es pas sûr → tu n'inclus pas.
-• **Gras** sur les mots-clés et termes importants.
-• Schémas : flèches A → B → C, pas d'ASCII compliqué.
+STYLE D'ÉCRITURE — RÈGLE ABSOLUE : ZÉRO PARAGRAPHE :
+• TOUT doit être en listes à puces (• item), listes numérotées (1. item) ou tableaux (| col | col |).
+• JAMAIS de phrases rédigées qui expliquent comme dans un cours. Si tu t'apprêtes à écrire une phrase narrative → transforme-la en puce.
+• Une puce = une info. Maximum 10-15 mots par puce. Si c'est plus long → coupe en 2 puces.
+• **Gras** sur les mots-clés, formules, dates, termes importants. Rien d'autre en gras.
+• Formules : écrites directement, sur leur propre ligne, en gras. Pas d'explication en prose autour.
+• Schémas : A → B → C sur une seule ligne. Jamais d'ASCII multi-lignes complexe.
+• Vrais contenus : vraies dates, vraies formules, vraies définitions. Si tu n'es pas sûr → tu n'inclus pas.
 
-LONGUEUR ${ficheLongueur} — toujours focalisée sur LE COEUR du sujet, jamais sur le remplissage :
-• COURTE → STRICT minimum vital. Juste ce qu'il faut absolument savoir pour comprendre / mémoriser. Pas d'exemples multiples, pas de cas particuliers, pas d'astuce. Format ultra condensé.
-• MOYENNE → On creuse le coeur. Détails utiles, pièges fréquents, 1-2 exemples concrets, cas particuliers importants. Toujours focalisé sur ce qui a été demandé.
-• LONGUE → Tout ce qui peut être appris sur LE COEUR du sujet. Toutes les exceptions, tous les cas, plusieurs exemples résolus, tous les pièges même subtils, astuces mnémotechniques, liens utiles avec d'autres notions du même sujet. PLUS DE PROFONDEUR — pas plus de sections décoratives.
+LONGUEUR ${ficheLongueur} — profondeur croissante sur LE COEUR, jamais de remplissage :
+• COURTE → 3-5 puces MAX par section, 1-2 sections max. Juste les faits bruts à mémoriser. Pas d'exemple, pas de cas particulier, pas d'astuce. Si c'est une liste : la liste, point final.
+• MOYENNE → 5-10 puces par section, 2-4 sections. Les détails utiles, 1 exemple concret par notion clé, les pièges fréquents. Toujours en puces, jamais en paragraphe.
+• LONGUE → Toutes les puces nécessaires, 4-7 sections. Tous les cas, tous les exemples résolus étape par étape (en puces numérotées), tous les pièges, astuces mnémotechniques. Exhaustif — mais toujours en puces, jamais en prose.
+
+→ Augmenter la taille = PLUS DE PUCES sur le coeur du sujet. JAMAIS de paragraphes narratifs quelle que soit la taille.
 
 → Augmenter la taille = APPROFONDIR le sujet, JAMAIS ajouter du remplissage générique ou de la biographie qui n'a pas été demandée.
 
@@ -5000,7 +5004,7 @@ async function submitGenHub(){
   var lv=getLevel();if(lv)prompt+=' (niveau '+lv+')';
   try{
     var isFiche=genHubMode==='fiche'||genHubMode==='combo'||genHubMode==='resume';
-    var maxTok=isFiche?(ficheLongueur==='LONGUE'?9000:ficheLongueur==='COURTE'?3500:6000):3000;
+    var maxTok=isFiche?(ficheLongueur==='LONGUE'?9000:ficheLongueur==='COURTE'?1800:4500):3000;
     var msgContent=genHubPhotoData
       ?[{type:'image',source:{type:'base64',media_type:genHubPhotoData.mime,data:genHubPhotoData.b64}},{type:'text',text:prompt+'\n\nUtilise le contenu de la photo pour baser ta génération dessus.'}]
       :prompt;
@@ -5070,7 +5074,7 @@ async function submitGen(){
   var lv=getLevel();if(lv)prompt+=' (niveau '+lv+')';
   try{
     var isFiche=genMode==='fiche'||genMode==='combo';
-    var maxTok=isFiche?(ficheLongueur==='LONGUE'?9000:ficheLongueur==='COURTE'?3500:6000):3000;
+    var maxTok=isFiche?(ficheLongueur==='LONGUE'?9000:ficheLongueur==='COURTE'?1800:4500):3000;
     var result=await callAI({system:buildSys(),messages:[{role:'user',content:prompt}],maxTokens:maxTok});
     document.getElementById('gen-loading').style.display='none';
     document.getElementById('gen-result').style.display='';
@@ -5639,29 +5643,39 @@ function buildFicheHTML(content,withActions){
     return`<div class="fiche-wrap${dCls0}" id="${fid0}"><div class="fiche-top"><div class="ft-badge">📚 Fiche de révision • ScolarIA</div><div class="ft-title">${esc(titre)}</div>${niveau?`<div class="ft-sub">${esc(niveau)}</div>`:''}</div><div class="fiche-body">${secH0}${mtH0}</div>${acts0}</div>`;
   }
 
-  // Rendu contenu : gras **mot**, tableaux markdown, flèches processus
+  // Rendu contenu : gras **mot**, listes ul/ol, tableaux markdown
   const fB=s=>esc(s).replace(/\*\*([^*\n]+)\*\*/g,'<strong>$1</strong>');
   const rC=c=>{
-    // Traitement ligne par ligne : tableaux + texte mixte
     const lines=c.split('\n');
-    let result='',tbl=[];
+    let result='',tbl=[],ulItems=[],olItems=[];
+    const isBullet=ln=>/^[•\-→\*▸]\s+/.test(ln.trim());
+    const isNum=ln=>/^\d+[\.\)]\s+/.test(ln.trim());
     const flushTbl=()=>{
       if(!tbl.length)return;
       const cells=r=>r.split('|').filter((_,i,a)=>i>0&&i<a.length-1).map(x=>x.trim());
       const isSep=r=>cells(r).every(x=>/^[-: ]+$/.test(x));
       const head=cells(tbl[0]);
       const body=tbl.slice(1).filter(r=>!isSep(r)).map(cells);
-      let t='<table style="border-collapse:collapse;width:100%;font-size:11px;margin:5px 0">';
-      t+='<tr>'+head.map(h=>'<th style="border:1px solid #d0d0e8;padding:5px 8px;background:rgba(0,0,0,.06);font-weight:700;text-align:left">'+fB(h)+'</th>').join('')+'</tr>';
+      let t='<table style="border-collapse:collapse;width:100%;font-size:11px;margin:6px 0">';
+      t+='<tr>'+head.map(h=>'<th style="border:1px solid #d0d0e8;padding:5px 8px;background:rgba(0,0,0,.07);font-weight:700;text-align:left">'+fB(h)+'</th>').join('')+'</tr>';
       body.forEach(row=>{t+='<tr>'+row.map(d=>'<td style="border:1px solid #d0d0e8;padding:4px 8px">'+fB(d)+'</td>').join('')+'</tr>';});
-      t+='</table>';
-      result+=t;tbl=[];
+      t+='</table>';result+=t;tbl=[];
+    };
+    const flushUl=()=>{
+      if(!ulItems.length)return;
+      result+='<ul style="margin:3px 0 3px 0;padding:0;list-style:none">'+ulItems.map(x=>'<li style="display:flex;gap:6px;margin-bottom:2px;line-height:1.5"><span style="color:var(--a1,#6366f1);flex-shrink:0;font-size:10px;margin-top:3px">▸</span><span>'+x+'</span></li>').join('')+'</ul>';ulItems=[];
+    };
+    const flushOl=()=>{
+      if(!olItems.length)return;
+      result+='<ol style="margin:3px 0 3px 16px;padding:0">'+olItems.map(x=>'<li style="margin-bottom:2px;line-height:1.5">'+x+'</li>').join('')+'</ol>';olItems=[];
     };
     lines.forEach((ln,i)=>{
-      if(/^\s*\|.+\|\s*$/.test(ln)){tbl.push(ln);}
-      else{flushTbl();result+=fB(ln)+(i<lines.length-1?'<br>':'');}
+      if(/^\s*\|.+\|\s*$/.test(ln)){flushUl();flushOl();tbl.push(ln);}
+      else if(isBullet(ln)){flushOl();flushTbl();ulItems.push(fB(ln.trim().replace(/^[•\-→\*▸]\s+/,'')));}
+      else if(isNum(ln)){flushUl();flushTbl();olItems.push(fB(ln.trim().replace(/^\d+[\.\)]\s+/,'')));}
+      else{flushUl();flushOl();flushTbl();if(ln.trim())result+=fB(ln)+(i<lines.length-1?'<br>':'');}
     });
-    flushTbl();
+    flushUl();flushOl();flushTbl();
     return result;
   };
 
@@ -5680,7 +5694,15 @@ function buildFicheHTML(content,withActions){
   const retenir=retenirLines.join('\n').trim();
   const mt=mtLines.join('\n').trim();
 
-  const retH=retenir?`<div class="fsec" style="border-left:3px solid ${c1};background:linear-gradient(135deg,${c1}1a,${c2}0d)"><div class="fsec-label" style="color:${c1}">⭐ À RETENIR</div><div class="fsec-body" style="font-weight:600">${esc(retenir).replace(/\n/g,'<br>')}</div></div>`:'';
+  const retH=retenir?(()=>{
+    const retLines=retenir.split('\n');
+    const retItems=retLines.filter(l=>l.trim());
+    const retHTML=retItems.map(l=>{
+      const txt=fB(l.trim().replace(/^[•\-→\*▸]\s+/,''));
+      return`<li style="display:flex;gap:7px;margin-bottom:4px;line-height:1.5"><span style="color:${c1};flex-shrink:0;font-size:11px;margin-top:2px">★</span><span>${txt}</span></li>`;
+    }).join('');
+    return`<div class="fsec" style="border-left:3px solid ${c1};background:linear-gradient(135deg,${c1}1a,${c2}0d)"><div class="fsec-label" style="color:${c1}">⭐ À RETENIR</div><div class="fsec-body"><ul style="margin:0;padding:0;list-style:none">${retHTML}</ul></div></div>`;
+  })():'';
 
   let mtH='';
   if(mt){

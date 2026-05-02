@@ -4334,10 +4334,134 @@ function getLvG(lv){
 }
 
 // ════════════════════════════════
+// FORMAT PAR MATIÈRE
+// ════════════════════════════════
+const _matRules={
+  'Maths':`━━━ MATIÈRE : MATHÉMATIQUES ━━━
+ORDRE STRICT dans chaque section :
+1. Formule(s) : seule sur sa ligne, en gras — rien avant, rien après sur la même ligne
+2. Variables : définir chaque lettre/symbole (a = ..., b = ..., c = ...)
+3. Conditions : quand cette formule s'applique (triangle rectangle, x > 0, etc.)
+4. Exemple résolu : problème avec vraies valeurs numériques, étapes numérotées, résultat en gras + unité
+5. Pièges : erreurs classiques (signe moins oublié, unité non convertie, racine des deux membres, division par zéro)
+6. Réciproque / cas particuliers si applicable
+Règle absolue : unité obligatoire sur chaque grandeur. Jamais de variable sans définition.`,
+
+  'Physique-Chimie':`━━━ MATIÈRE : PHYSIQUE-CHIMIE ━━━
+ORDRE STRICT dans chaque section :
+1. Formule(s) : sur sa propre ligne en gras avec unités de chaque grandeur (ex : U [V] = R [Ω] × I [A])
+2. Variables : symbole → nom → unité SI (ex : F = force en Newton N)
+3. Loi / principe : ce que dit la loi, domaine d'application
+4. Exemple résolu : application numérique complète pas à pas, résultat avec unité et ordre de grandeur
+5. Conversions courantes si applicable (km/h → m/s, kJ → J...)
+6. Pièges : erreurs d'unités, mauvais isolement de variable, confusion de signes, décimales
+Règle absolue : unité obligatoire partout. Chaque étape du calcul sur sa propre puce numérotée.`,
+
+  'Histoire-Géo':`━━━ MATIÈRE : HISTOIRE-GÉOGRAPHIE ━━━
+ORDRE STRICT dans chaque section :
+1. Repères chronologiques : liste ou tableau (date → événement en 6 mots max), ordre antéchronologique ou chronologique
+2. Contexte : 2-3 puces pour situer la période / zone géographique
+3. Acteurs clés : nom → rôle → dates si important (1 ligne par personne)
+4. Causes → Déroulement → Conséquences : 3 blocs distincts, chacun en puces
+5. Chiffres clés : victimes, superficies, populations, distances — en gras
+6. Vocabulaire : termes historiques/géographiques → définition courte (1 ligne)
+7. Pièges brevet : dates confondues, orthographe des noms, anachronismes fréquents
+Pour la géographie : toujours préciser les échelles (local/national/mondial) et les chiffres récents.`,
+
+  'Français':`━━━ MATIÈRE : FRANÇAIS ━━━
+ORDRE STRICT dans chaque section :
+1. Règle / définition : énoncée en 1-2 puces claires, jamais de prose
+2. Exemples corrects : 3-5 exemples avec le point-clé en gras, tirés de vraies phrases
+3. Contre-exemples : ce qui est FAUX et pourquoi (très efficace pour mémoriser)
+4. Exceptions : listées une par une, jamais regroupées vaguement
+5. Règles d'accord : genre, nombre, temps — explicites et complètes
+6. Figures de style : nom → définition → exemple littéral avec citation si applicable
+7. Pièges : confusions fréquentes (a/à, ou/où, ces/ses/c'est/s'est, la/là/l'a), erreurs au brevet
+Pour la lecture d'oeuvre : thème → sous-thème → citations courtes (3-5 mots + page si possible).`,
+
+  'SVT':`━━━ MATIÈRE : SVT ━━━
+ORDRE STRICT dans chaque section :
+1. Vocabulaire technique : chaque terme → définition exacte et précise en 1 ligne (pas de paraphrase)
+2. Structures / organes : liste (organe/molécule/cellule → rôle précis, localisation)
+3. Processus : schéma en flèches textuelles A → B → C → D (jamais ASCII complexe)
+4. Chiffres clés : températures, durées, proportions, concentrations — en gras avec unité
+5. Liens cause → effet : que se passe-t-il si X est absent, défaillant ou en excès
+6. Exemples concrets : maladie, espèce, expérience réelle pour illustrer chaque notion
+7. Vocabulaire brevet obligatoire : termes exacts qui doivent apparaître dans une copie`,
+
+  'Anglais':`━━━ MATIÈRE : ANGLAIS ━━━
+ORDRE STRICT dans chaque section :
+1. Structure grammaticale : 1 ligne en gras (ex : S + HAVE + V-ed + complément)
+2. Usage : quand utiliser cette forme, avec marqueurs temporels (yesterday, since, for, just, already...)
+3. Tableau de conjugaison compact : affirmatif | négatif | interrogatif — avec traduction
+4. Exemples : 5-6 phrases avec traduction — varier affirmatif, négatif, interrogatif, réponse courte
+5. Verbes irréguliers : tableau (base → past simple → past participle) si applicable à la leçon
+6. Faux amis / pièges de traduction : mot → ce qu'il NE veut PAS dire → ce qu'il veut dire
+7. Prononciation : indiquer si un point est piégeux (ex : "ough" dans thought/through/though)`,
+
+  'Espagnol':`━━━ MATIÈRE : ESPAGNOL ━━━
+ORDRE STRICT dans chaque section :
+1. Structure grammaticale : 1 ligne en gras
+2. Tableau de conjugaison : yo / tú / él / nosotros / vosotros / ellos — avec traduction
+3. Usage : quand utiliser cette forme, marqueurs temporels (ayer, siempre, hace..., ya, todavía...)
+4. Exemples : 5-6 phrases avec traduction française
+5. Accentuation : règles d'accent si applicable (questions, exclamations, homophones)
+6. Verbes irréguliers importants du groupe si applicable
+7. Faux amis espagnol-français : mot → sens réel (ex : embarazada ≠ embarassée)
+8. Pièges d'accord : genre (masculin/féminin), pluriel, adjectifs attributs`,
+
+  'NSI':`━━━ MATIÈRE : NSI — NUMÉRIQUE ET SCIENCES INFORMATIQUES ━━━
+ORDRE STRICT dans chaque section :
+1. Syntaxe exacte : code sur sa propre ligne indenté correctement (Python, HTML, SQL selon la leçon)
+2. Paramètres : nom → type attendu → rôle (1 puce par paramètre)
+3. Valeur de retour : type + description de ce que renvoie la fonction/expression
+4. Exemple minimal : le code le plus court qui illustre le concept, avec commentaire # sur chaque ligne clé
+5. Exemple complet : cas d'usage réel avec entrée/sortie attendue
+6. Erreurs fréquentes : TypeError, IndexError, boucle infinie, off-by-one, indentation, = vs ==
+7. Complexité algorithmique si applicable : O(1), O(n), O(n²) — avec explication intuitive`,
+
+  'Philosophie':`━━━ MATIÈRE : PHILOSOPHIE ━━━
+ORDRE STRICT dans chaque section :
+1. Question / problème : formulé en 1 phrase précise — c'est l'enjeu central
+2. Définition des concepts clés : chaque terme philosophique → définition rigoureuse (pas le sens commun)
+3. Distinction conceptuelle : X ≠ Y — expliquer en quoi deux notions proches diffèrent (liberté ≠ licence, désir ≠ besoin)
+4. Arguments : 1 puce = 1 argument + sa justification en 1 ligne, numérotés
+5. Contre-arguments / objections : ce qui remet en question la thèse
+6. Auteurs et thèses : nom → idée principale en 1 ligne → oeuvre clé
+7. Citations courtes : entre guillemets, 1 ligne max, avec l'auteur — seulement si tu es sûr de la citation`,
+
+  'SES':`━━━ MATIÈRE : SES — SCIENCES ÉCONOMIQUES ET SOCIALES ━━━
+ORDRE STRICT dans chaque section :
+1. Définitions : chaque concept → définition rigoureuse en 1 ligne (vocabulaire SES précis, pas de paraphrase)
+2. Mécanisme économique / sociologique : processus en flèches (A → B → C) ou liste causes → effets
+3. Acteurs : agent économique / institution → rôle précis dans le mécanisme
+4. Données chiffrées : statistiques, taux, indices — en gras, avec année et source courte (INSEE, Banque Mondiale...)
+5. Exemple concret actuel : situation réelle récente qui illustre le mécanisme (crise 2008, inflation 2022...)
+6. Théories / auteurs : nom → thèse en 1 ligne → courant de pensée (keynésien, libéral, structuraliste...)
+7. Nuances / limites : ce qui nuance ou contredit le mécanisme, selon le contexte`
+};
+function _buildMatInstruct(mat){
+  if(mat&&_matRules[mat])return '\n'+_matRules[mat]+'\n';
+  return `
+━━━ FORMAT SELON LA MATIÈRE (DÉTECTION AUTO) ━━━
+Identifie la matière du sujet et applique les règles :
+• Maths/Physique-Chimie → formule en premier seule sur sa ligne en gras, variables définies, exemple numérique résolu pas à pas, unités partout, pièges de calcul
+• Histoire-Géo → dates chronologiques en tête, causes→déroulement→conséquences, acteurs clés (nom→rôle 1 ligne), chiffres en gras
+• Français → règle en tête, exemples + contre-exemples, exceptions listées, pièges orthographe/accord
+• SVT → vocabulaire technique défini, processus en flèches A→B→C, organe→rôle, chiffres+unités
+• Anglais/Espagnol → structure grammaticale 1 ligne, tableau conjugaison, exemples traduits, faux amis
+• NSI → syntaxe exacte, code indenté, paramètres définis, erreurs fréquentes
+• Philosophie → thèse en 1 phrase, arguments numérotés, auteurs+thèses, distinctions conceptuelles
+• SES → définitions rigoureuses, mécanismes en flèches, données chiffrées, exemples actuels
+`;
+}
+
+// ════════════════════════════════
 // SYSTEM PROMPT
 // ════════════════════════════════
-function buildSys(longueur){longueur=longueur||'AUTO';
+function buildSys(longueur,mat){longueur=longueur||'AUTO';
   const lv=getLevel();
+  const matInstruct=_buildMatInstruct(mat);
   return `Tu es ScolarIA — un assistant scolaire pour collégiens et lycéens français.
 NIVEAU : ${lv||'non précisé'}. ADAPTATION : ${getLvG(lv)}
 
@@ -4448,7 +4572,7 @@ STYLE D'ÉCRITURE — RÈGLE ABSOLUE : ZÉRO PARAGRAPHE :
 • Formules : écrites directement, sur leur propre ligne, en gras. Pas d'explication en prose autour.
 • Schémas : A → B → C sur une seule ligne. Jamais d'ASCII multi-lignes complexe.
 • Vrais contenus : vraies dates, vraies formules, vraies définitions. Si tu n'es pas sûr → tu n'inclus pas.
-
+${matInstruct}
 LONGUEUR — ${longueur==='AUTO'?'AUTO (adapté à la demande)':longueur} :
 ${longueur==='AUTO'?`RÈGLE FONDAMENTALE : par défaut fais LONG. Réduis uniquement si un signal clair le demande.
 • PAR DÉFAUT → LONGUE : 18-25 puces par section, 5-7 sections. Maximum d'infos utiles, toutes définitions complètes.
@@ -5019,7 +5143,7 @@ async function submitGenHub(){
     var msgContent=genHubPhotoData
       ?[{type:'image',source:{type:'base64',media_type:genHubPhotoData.mime,data:genHubPhotoData.b64}},{type:'text',text:prompt+'\n\nUtilise le contenu de la photo pour baser ta génération dessus.'}]
       :prompt;
-    var result=await callAI({system:buildSys(ficheLongueur),messages:[{role:'user',content:msgContent}],maxTokens:maxTok});
+    var result=await callAI({system:buildSys(ficheLongueur,mat),messages:[{role:'user',content:msgContent}],maxTokens:maxTok});
     genHubPhotoData=null;
     chatHist.push({role:'user',content:prompt});
     chatHist.push({role:'assistant',content:result});
@@ -5086,7 +5210,7 @@ async function submitGen(){
   try{
     var isFiche=genMode==='fiche'||genMode==='combo';
     var maxTok=isFiche?(ficheLongueur==='LONGUE'?9000:ficheLongueur==='COURTE'?1800:6500):3000;
-    var result=await callAI({system:buildSys(ficheLongueur),messages:[{role:'user',content:prompt}],maxTokens:maxTok});
+    var result=await callAI({system:buildSys(ficheLongueur,mat),messages:[{role:'user',content:prompt}],maxTokens:maxTok});
     document.getElementById('gen-loading').style.display='none';
     document.getElementById('gen-result').style.display='';
     chatHist.push({role:'user',content:prompt});

@@ -172,6 +172,8 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fb)
 }
 .wa-main:hover{background:var(--c1-strong)}
 .wa-main:active{transform:scale(.98)}
+.wa-main-interro{background:linear-gradient(135deg,#a855f7,#ec4899)!important;box-shadow:0 8px 22px -10px rgba(168,85,247,.6)!important}
+.wa-main-interro:hover{background:linear-gradient(135deg,#9333ea,#db2777)!important}
 .wa-main .wa-icon{display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#fff;opacity:.95}
 .wa-main .wa-label{flex:1;line-height:1.25}
 .wa-main .wa-label span{display:block;font-size:12px;opacity:.75;font-weight:400;margin-top:2px}
@@ -2332,6 +2334,10 @@ button:active{opacity:.85}
       <button class="wa-main" onclick="document.getElementById('ci').focus()">
         <span class="wa-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
         <span class="wa-label">Pose ta question<span>Maths, français, histoire, sciences…</span></span>
+      </button>
+      <button class="wa-main wa-main-interro" onclick="openInterro()">
+        <span class="wa-icon">🎓</span>
+        <span class="wa-label">Interrogation IA<span>Le prof IA t'interroge sur le cours de ton choix</span></span>
       </button>
       <div class="wa-row">
         <button class="wa-sq" onclick="pf('Génère une FICHE et des FLASHCARDS sur ')">

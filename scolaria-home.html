@@ -2331,10 +2331,6 @@ button:active{opacity:.85}
         <span class="wa-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span>
         <span class="wa-label">Installer l'app<span>Accès rapide, fonctionne hors ligne</span></span>
       </button>
-      <button class="wa-main" onclick="document.getElementById('ci').focus()">
-        <span class="wa-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
-        <span class="wa-label">Pose ta question<span>Maths, français, histoire, sciences…</span></span>
-      </button>
       <button class="wa-main wa-main-interro" onclick="openInterro()">
         <span class="wa-icon">🎓</span>
         <span class="wa-label">Interrogation IA<span>Le prof IA t'interroge sur le cours de ton choix</span></span>
@@ -4485,13 +4481,13 @@ function renderEdtCard(){
     return;
   }
 
-  // Calculer les bornes de la grille
+  // Calculer les bornes de la grille — toujours alignées sur des heures entières
   const slotMins=slots.map(s=>parseSlotMin(s.h)).filter(m=>m>=0);
   const durMins=slots.map(s=>(s.dur||1)*60);
-  const gridStart=slotMins.length?Math.max(0,Math.min(...slotMins)-30):480;
-  const gridEnd=slotMins.length?Math.max(...slotMins.map((m,i)=>m+durMins[i]))+30:1020;
-  const gridStartH=Math.floor(gridStart/60);
-  const gridEndH=Math.ceil(gridEnd/60);
+  const gridStartH=slotMins.length?Math.max(0,Math.floor(Math.min(...slotMins)/60)-1):8;
+  const gridEndH=slotMins.length?Math.ceil(Math.max(...slotMins.map((m,i)=>m+durMins[i]))/60)+1:18;
+  const gridStart=gridStartH*60; // en minutes, aligné heure entière
+  const gridEnd=gridEndH*60;
   const PX_H=60; // pixels par heure
 
   // Colonne des heures
@@ -4656,11 +4652,20 @@ async function scanEdtPhoto(event){
   reader.readAsDataURL(file);
 }
 function normalizeEdtWeek(w){
-  const out={};
-  for(let i=0;i<5;i++){
-    const key=String(i);
-    const arr=w[key]||w[i]||[];
-    out[i]=Array.isArray(arr)?arr.map(s=>typeof s==='string'?{h:'',m:s}:s):[];
+  const dayIdx={lundi:0,mardi:1,mercredi:2,jeudi:3,vendredi:4,monday:0,tuesday:1,wednesday:2,thursday:3,friday:4};
+  const out={0:[],1:[],2:[],3:[],4:[]};
+  for(const key of Object.keys(w)){
+    const idx=/^\d+$/.test(key)?parseInt(key):dayIdx[key.toLowerCase()];
+    if(idx===undefined||idx<0||idx>4)continue;
+    const arr=w[key];
+    if(!Array.isArray(arr))continue;
+    out[idx]=arr.map(s=>{
+      if(typeof s==='string')return{h:'',m:s};
+      const h=s.h||s.heure||s.time||s.debut||'';
+      const m=s.m||s.matiere||s.subject||s.nom||s.name||s.course||'';
+      const salle=s.salle||s.room||s.classe||'';
+      return{h:String(h).replace(':','h').replace('H','h'),m:String(m),salle:salle?String(salle):''};
+    }).filter(s=>s.m);
   }
   return out;
 }

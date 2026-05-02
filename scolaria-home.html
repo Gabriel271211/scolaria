@@ -311,6 +311,10 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fb)
 .fa-lib{background:rgba(52,211,153,.14);color:#05875e}
 .fa-share{background:rgba(251,191,36,.14);color:#92600a}
 .fa-img{background:rgba(56,189,248,.14);color:#0369a1}
+.fa-fav{background:rgba(251,191,36,.1);color:#b45309;transition:all .2s}
+.fa-fav.on{background:rgba(251,191,36,.28);color:#f59e0b;font-weight:800}
+.fa-quiz{background:rgba(37,99,235,.1);color:#2563eb}
+.fa-icon{flex:0!important;min-width:38px!important;padding:8px 6px!important;font-size:15px}
 
 /* === STYLE NÉON (cyber / terminal) === */
 .fwrap-neon{background:#06070d;color:#e7eaff;border:1px solid #1d2247;box-shadow:0 0 0 1px rgba(99,102,241,.15),0 0 32px rgba(99,102,241,.18),0 4px 28px rgba(0,0,0,.6);position:relative}
@@ -5642,7 +5646,7 @@ function buildFicheHTML(content,withActions){
     ficheReg[fid0]={titre,niveau,secs:oldSecs.filter(s=>s.c),mt:mt0||'',design:ficheDesign};
     const secH0=oldSecs.filter(s=>s.c).map(s=>`<div class="fsec" style="border-left:3px solid ${s.col};background:${s.bg}"><div class="fsec-label" style="color:${s.col}">${s.e} ${s.l}</div><div class="fsec-body">${esc(s.c)}</div></div>`).join('');
     let acts0='';
-    if(withActions)acts0=`<div class="fiche-actions"><button class="fa-btn fa-save" onclick="saveFicheImg('${fid0}')">📸 Image</button><button class="fa-btn fa-copy" onclick="copyFicheById('${fid0}')">📋 Copier</button><button class="fa-btn fa-lib" onclick="saveFicheLib('${fid0}')">💾 Sauver</button><button class="fa-btn" style="background:#ecf4ff;color:#2563eb" onclick="startQuizFromFiche('${fid0}')">🧠 Quiz</button><button class="fa-btn fa-share" onclick="exportFichePDF('${fid0}')">📄 PDF</button><button class="fa-btn" style="background:#ecfdf5;color:#059669" onclick="shareFicheURL('${fid0}')">🔗 Lien</button><button class="fa-btn fa-img" onclick="shareFicheAsImage('${fid0}')">📸 Image</button><button class="fa-btn" style="background:#fff3e0;color:#d97706" onclick="openShareModal('${fid0}')">📤 Partager</button></div>`;
+    if(withActions)acts0=`<div class="fiche-actions"><button class="fa-btn fa-lib" onclick="saveFicheLib('${fid0}')">💾 Sauver</button><button class="fa-btn fa-fav" id="fa-fav-${fid0}" onclick="saveFicheLibFav('${fid0}')">☆ Favori</button><button class="fa-btn fa-quiz" onclick="startQuizFromFiche('${fid0}')">🧠 Quiz</button><button class="fa-btn fa-icon" onclick="saveFicheImg('${fid0}')" title="Télécharger en image">📸</button><button class="fa-btn fa-icon" onclick="shareFicheURL('${fid0}')" title="Copier le lien">🔗</button></div>`;
     const dCls0=ficheDesign&&ficheDesign!=='classic'?' fwrap-'+ficheDesign:'';
     addToFicheHistory({titre,niveau,secs:oldSecs.filter(s=>s.c),mt:mt0||'',design:ficheDesign});
     return`<div class="fiche-wrap${dCls0}" id="${fid0}"><div class="fiche-top"><div class="ft-badge">📚 Fiche de révision • ScolarIA</div><div class="ft-title">${esc(titre)}</div>${niveau?`<div class="ft-sub">${esc(niveau)}</div>`:''}</div><div class="fiche-body">${secH0}${mtH0}</div>${acts0}</div>`;
@@ -5721,14 +5725,11 @@ function buildFicheHTML(content,withActions){
 
   let acts='';
   if(withActions)acts=`<div class="fiche-actions">
-    <button class="fa-btn fa-save" onclick="saveFicheImg('${fid}')">📸 Image</button>
-    <button class="fa-btn fa-copy" onclick="copyFicheById('${fid}')">📋 Copier</button>
     <button class="fa-btn fa-lib" onclick="saveFicheLib('${fid}')">💾 Sauver</button>
-    <button class="fa-btn" style="background:#ecf4ff;color:#2563eb" onclick="startQuizFromFiche('${fid}')">🧠 Quiz</button>
-    <button class="fa-btn fa-share" onclick="exportFichePDF('${fid}')">📄 PDF</button>
-    <button class="fa-btn" style="background:#ecfdf5;color:#059669" onclick="shareFicheURL('${fid}')">🔗 Lien</button>
-    <button class="fa-btn fa-img" onclick="shareFicheAsImage('${fid}')">📸 Image</button>
-    <button class="fa-btn" style="background:#fff3e0;color:#d97706" onclick="openShareModal('${fid}')">📤 Partager</button>
+    <button class="fa-btn fa-fav" id="fa-fav-${fid}" onclick="saveFicheLibFav('${fid}')">☆ Favori</button>
+    <button class="fa-btn fa-quiz" onclick="startQuizFromFiche('${fid}')">🧠 Quiz</button>
+    <button class="fa-btn fa-icon" onclick="saveFicheImg('${fid}')" title="Télécharger en image">📸</button>
+    <button class="fa-btn fa-icon" onclick="shareFicheURL('${fid}')" title="Copier le lien">🔗</button>
   </div>`;
   const dCls=ficheDesign&&ficheDesign!=='classic'?' fwrap-'+ficheDesign:'';
   // Désactive le gradient par-matière si un style alternatif est choisi (le CSS prend la main)
@@ -6221,6 +6222,22 @@ function saveFicheLib(fid){
   if(library.fiches.length>=25)library.fiches.shift();
   library.fiches.push({id:Date.now(),titre:data.titre,niveau:data.niveau||'',secs:data.secs,mt:data.mt,retenir:data.retenir||'',design:data.design||'classic',fav:false,date:new Date().toLocaleDateString('fr-FR')});
   saveLib();renderLibAll();toast('📄 Fiche sauvegardée dans ta bibliothèque !');haptic('success');applyProfileToUI();
+}
+function saveFicheLibFav(fid){
+  const data=ficheReg[fid];if(!data){toast('❌ Données intro.');return;}
+  const btn=document.getElementById('fa-fav-'+fid);
+  // Chercher si déjà sauvegardée et en favori
+  const existing=library.fiches.find(f=>f.titre===data.titre&&f.fav);
+  if(existing){
+    existing.fav=false;saveLib();renderLibAll();
+    if(btn){btn.textContent='☆ Favori';btn.classList.remove('on');}
+    toast('☆ Retiré des favoris');return;
+  }
+  if(library.fiches.length>=25)library.fiches.shift();
+  library.fiches.push({id:Date.now(),titre:data.titre,niveau:data.niveau||'',secs:data.secs,mt:data.mt,retenir:data.retenir||'',design:data.design||'classic',fav:true,date:new Date().toLocaleDateString('fr-FR')});
+  saveLib();renderLibAll();
+  if(btn){btn.textContent='★ Favori';btn.classList.add('on');}
+  toast('★ Sauvegardée en favori !');haptic('success');applyProfileToUI();
 }
 function toggleFavFiche(id,ev){
   if(ev){ev.stopPropagation();}

@@ -2263,11 +2263,7 @@ button:active{opacity:.85}
   <div id="chat-toggle" onclick="toggleChatBar()">▼</div>
   <div id="iz">
     <div class="flen-row">
-      <span class="flen-lbl">Fiche</span>
-      <button class="flen-btn" id="flen-c" onclick="setFicheLongueur('COURTE',this)">S</button>
-      <button class="flen-btn on" id="flen-m" onclick="setFicheLongueur('MOYENNE',this)">M</button>
-      <button class="flen-btn" id="flen-l" onclick="setFicheLongueur('LONGUE',this)">L</button>
-      <span class="flen-lbl" style="margin-left:6px">Style</span>
+      <span class="flen-lbl">Style fiche</span>
       <button class="flen-btn fd-btn on" id="fd-classic" onclick="setFicheDesign('classic',this)" title="Classique">▦</button>
       <button class="flen-btn fd-btn" id="fd-neon" onclick="setFicheDesign('neon',this)" title="Néon">⚡</button>
       <button class="flen-btn fd-btn" id="fd-paper" onclick="setFicheDesign('paper',this)" title="Manuscrit">✎</button>
@@ -2369,6 +2365,7 @@ button:active{opacity:.85}
         <div class="mof"><label>Matière</label><select id="gen-hub-mat"><option>Maths</option><option>Français</option><option>Histoire-Géo</option><option>Physique-Chimie</option><option>SVT</option><option>Anglais</option><option>Espagnol</option><option>NSI</option><option>Philosophie</option><option>SES</option></select></div>
         <div class="mof"><label>Cours (optionnel)</label><textarea id="gen-hub-cours" rows="3" placeholder="Colle ici ton cours pour une génération basée dessus..." style="resize:vertical"></textarea></div>
         <div class="mof"><label>Photo de cours (optionnel)</label><div class="ph-area" onclick="document.getElementById('gen-hub-photo').click()" id="gen-photo-area"><img id="gen-photo-prev" class="ph-prev"><span id="gen-photo-lbl" style="font-size:10.5px;color:var(--mu)">📸 Photo de cours ou exercice</span></div><input type="file" id="gen-hub-photo" accept="image/*" style="display:none" onchange="genHubPhotoPrev(event)"></div>
+        <div class="mof"><label>Longueur de la fiche</label><div style="display:flex;gap:8px;margin-top:4px"><button class="flen-btn" id="gh-flen-c" onclick="setFicheLongueur('COURTE',this,'gh-flen-c','gh-flen-m','gh-flen-l')" style="flex:1;height:36px;font-size:12px">S — Essentiel</button><button class="flen-btn on" id="gh-flen-m" onclick="setFicheLongueur('MOYENNE',this,'gh-flen-c','gh-flen-m','gh-flen-l')" style="flex:1;height:36px;font-size:12px">M — Complet</button><button class="flen-btn" id="gh-flen-l" onclick="setFicheLongueur('LONGUE',this,'gh-flen-c','gh-flen-m','gh-flen-l')" style="flex:1;height:36px;font-size:12px">L — Exhaustif</button></div></div>
         <button class="gen-go-btn" onclick="submitGenHub()">Générer</button>
       </div>
       <div id="gen-loading-hub" style="display:none;margin-top:12px">
@@ -4339,7 +4336,7 @@ function getLvG(lv){
 // ════════════════════════════════
 // SYSTEM PROMPT
 // ════════════════════════════════
-function buildSys(){
+function buildSys(longueur){longueur=longueur||'AUTO';
   const lv=getLevel();
   return `Tu es ScolarIA — un assistant scolaire pour collégiens et lycéens français.
 NIVEAU : ${lv||'non précisé'}. ADAPTATION : ${getLvG(lv)}
@@ -4452,10 +4449,16 @@ STYLE D'ÉCRITURE — RÈGLE ABSOLUE : ZÉRO PARAGRAPHE :
 • Schémas : A → B → C sur une seule ligne. Jamais d'ASCII multi-lignes complexe.
 • Vrais contenus : vraies dates, vraies formules, vraies définitions. Si tu n'es pas sûr → tu n'inclus pas.
 
-LONGUEUR ${ficheLongueur} — profondeur croissante sur LE COEUR, jamais de remplissage :
-• COURTE → 3-5 puces MAX par section, 1-2 sections max. Juste les faits bruts à mémoriser. Pas d'exemple, pas de cas particulier. Si c'est une liste : la liste, point final.
-• MOYENNE → 10-18 puces par section, 3-5 sections. TOUT ce qui est vraiment utile à retenir. Chaque définition est complète : pas juste un mot — une vraie définition précise en une ligne (ex : "**Photosynthèse** → processus par lequel les plantes convertissent lumière + CO₂ + eau en glucose + O₂"). Un exemple concret par notion clé. Les pièges courants. Si une info compte pour comprendre ou réviser → elle y est. Toujours en puces.
-• LONGUE → 15-25 puces par section, 5-8 sections. Absolument tout. Tous les cas, toutes les exceptions, plusieurs exemples résolus pas à pas (en puces numérotées), tous les pièges même subtils, astuces mnémotechniques, liens entre notions. Exhaustif — mais toujours en puces.
+LONGUEUR — ${longueur==='AUTO'?'AUTO (tu décides selon la demande)':longueur} :
+${longueur==='AUTO'?`• MODE AUTO — tu juges la longueur selon le sujet et la formulation :
+  - Sujet vaste (Seconde Guerre Mondiale, Révolution Française, Système immunitaire, Évolution...) → vise LONGUE
+  - Sujet ciblé (Théorème de Pythagore, une formule, une règle de grammaire, un événement précis) → vise MOYENNE
+  - Mot-clé "développe" / "tout" / "complet" / "exhaustif" dans la demande → vise LONGUE
+  - Mot-clé "rapide" / "bref" / "vite" / "juste l'essentiel" → vise COURTE
+  - Sans signal particulier → MOYENNE par défaut
+  Les définitions LONGUE : 25-40 puces par section, 6-10 sections. Les MOYENNE : 10-18 puces, 3-5 sections. Les COURTE : 3-5 puces, 1-2 sections.`:`• COURTE → 3-5 puces MAX par section, 1-2 sections max. Uniquement les faits bruts à mémoriser. Pas d'exemple, pas de cas particulier. Condensé à l'extrême. Si c'est une liste : la liste, rien d'autre.
+• MOYENNE → 10-18 puces par section, 3-5 sections. Tout ce qui est vraiment utile. Définitions complètes en une ligne. Un exemple concret par notion clé. Les pièges courants. Toujours en puces.
+• LONGUE → 25-40 puces par section, 6-10 sections. Absolument TOUT : tous les cas, toutes les exceptions, plusieurs exemples résolus pas à pas, tous les pièges même subtils, mnémotechniques, liens entre notions, tableaux comparatifs. Ultra-exhaustif — mais toujours en puces.`}
 
 → Augmenter la taille = PLUS DE PUCES et DÉFINITIONS PLUS COMPLÈTES. JAMAIS de paragraphes quelle que soit la taille.
 
@@ -4557,11 +4560,11 @@ function buildSys2(){
     const isSwitchReq = /fiche|flashcard|flash.card|exercice|exo|résumé|resume|récap|recap|révision|revision|synthèse|synthese/i.test(lastTxt);
     if(isSwitchReq){
       // Basculer en mode normal pour cette réponse
-      return buildSys() + `\n\nCONTEXTE IMPORTANT : L'élève vient de faire une session d'interrogation orale sur "${interroSujet||'un sujet'}". Il te demande maintenant quelque chose basé sur ce qui vient d'être vu dans la conversation. Utilise le contenu de la conversation pour personnaliser ta réponse — ne génère pas quelque chose de générique.`;
+      return buildSys('AUTO') + `\n\nCONTEXTE IMPORTANT : L'élève vient de faire une session d'interrogation orale sur "${interroSujet||'un sujet'}". Il te demande maintenant quelque chose basé sur ce qui vient d'été vu dans la conversation. Utilise le contenu de la conversation pour personnaliser ta réponse — ne génère pas quelque chose de générique.`;
     }
     return buildInterroSys();
   }
-  return buildSys();
+  return buildSys('AUTO');
 }
 
 
@@ -5017,7 +5020,7 @@ async function submitGenHub(){
     var msgContent=genHubPhotoData
       ?[{type:'image',source:{type:'base64',media_type:genHubPhotoData.mime,data:genHubPhotoData.b64}},{type:'text',text:prompt+'\n\nUtilise le contenu de la photo pour baser ta génération dessus.'}]
       :prompt;
-    var result=await callAI({system:buildSys(),messages:[{role:'user',content:msgContent}],maxTokens:maxTok});
+    var result=await callAI({system:buildSys(ficheLongueur),messages:[{role:'user',content:msgContent}],maxTokens:maxTok});
     genHubPhotoData=null;
     chatHist.push({role:'user',content:prompt});
     chatHist.push({role:'assistant',content:result});
@@ -5084,7 +5087,7 @@ async function submitGen(){
   try{
     var isFiche=genMode==='fiche'||genMode==='combo';
     var maxTok=isFiche?(ficheLongueur==='LONGUE'?9000:ficheLongueur==='COURTE'?1800:6500):3000;
-    var result=await callAI({system:buildSys(),messages:[{role:'user',content:prompt}],maxTokens:maxTok});
+    var result=await callAI({system:buildSys(ficheLongueur),messages:[{role:'user',content:prompt}],maxTokens:maxTok});
     document.getElementById('gen-loading').style.display='none';
     document.getElementById('gen-result').style.display='';
     chatHist.push({role:'user',content:prompt});
@@ -5105,8 +5108,11 @@ async function submitGen(){
 }
 function setFicheLongueur(v,el){
   ficheLongueur=v;
-  ['flen-c','flen-m','flen-l'].forEach(id=>{document.getElementById(id)?.classList.remove('on');});
+  ['flen-c','flen-m','flen-l','gh-flen-c','gh-flen-m','gh-flen-l'].forEach(id=>{document.getElementById(id)?.classList.remove('on');});
   el.classList.add('on');
+  // Sync the sibling group that wasn't clicked
+  var map={COURTE:['flen-c','gh-flen-c'],MOYENNE:['flen-m','gh-flen-m'],LONGUE:['flen-l','gh-flen-l']};
+  (map[v]||[]).forEach(id=>{var b=document.getElementById(id);if(b&&b!==el)b.classList.add('on');});
 }
 function setFicheDesign(v,el){
   ficheDesign=v;
@@ -5284,7 +5290,7 @@ async function streamAI(){
     const lastUM = chatHist[chatHist.length-1];
     const lastUTxt = typeof lastUM?.content==='string' ? lastUM.content : (lastUM?.content?.find?.(c=>c.type==='text')?.text||'');
     const isFicheReq = /fiche|📚|⚡/i.test(lastUTxt)||lastUTxt.includes('FICHE')||lastUTxt.includes('révision');
-    const maxTok = isFicheReq ? (ficheLongueur==='LONGUE' ? 9000 : ficheLongueur==='COURTE' ? 3500 : 6000) : 3000;
+    const maxTok = isFicheReq ? 8000 : 3000;
     fullText = await callAI({system:buildSys2(), messages:histToSend, maxTokens:maxTok});
   }catch(err){
     const errMsg = err.message||'';

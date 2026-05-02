@@ -312,6 +312,67 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fb)
 .fa-share{background:rgba(251,191,36,.14);color:#92600a}
 .fa-img{background:rgba(56,189,248,.14);color:#0369a1}
 
+/* === STYLE NÉON (cyber / terminal) === */
+.fwrap-neon{background:#06070d;color:#e7eaff;border:1px solid #1d2247;box-shadow:0 0 0 1px rgba(99,102,241,.15),0 0 32px rgba(99,102,241,.18),0 4px 28px rgba(0,0,0,.6);position:relative}
+.fwrap-neon::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(180deg,rgba(99,102,241,.025) 0 2px,transparent 2px 4px);pointer-events:none;border-radius:inherit;z-index:0}
+.fwrap-neon>*{position:relative;z-index:1}
+.fwrap-neon .fiche-top{background:linear-gradient(135deg,#0a0e2c 0%,#1a0a2e 100%);border-bottom:1px solid #2d3260}
+.fwrap-neon .ft-badge{color:#5cf5ff;text-shadow:0 0 12px rgba(92,245,255,.7);letter-spacing:2px;font-family:'JetBrains Mono','Courier New',monospace;font-size:9px}
+.fwrap-neon .ft-title{color:#fff;text-shadow:0 0 18px rgba(99,102,241,.8),0 0 6px rgba(255,92,242,.4);font-family:'JetBrains Mono','Space Grotesk',monospace;letter-spacing:0}
+.fwrap-neon .ft-sub{color:#8a8ec7;font-family:'JetBrains Mono',monospace}
+.fwrap-neon .fsec{background:rgba(255,255,255,.015)!important;border-bottom:1px solid #181c3a;border-left:none!important;padding:12px 14px;position:relative}
+.fwrap-neon .fsec::before{content:'>';position:absolute;left:4px;top:12px;color:#5cf5ff;font-family:'JetBrains Mono',monospace;font-size:11px;text-shadow:0 0 8px rgba(92,245,255,.8)}
+.fwrap-neon .fsec-label{color:#ff5cf2!important;text-shadow:0 0 10px rgba(255,92,242,.5);font-family:'JetBrains Mono',monospace;letter-spacing:1.5px;padding-left:14px}
+.fwrap-neon .fsec-body{color:#dde0ff;font-family:'JetBrains Mono','Space Grotesk',monospace;font-size:12.5px;padding-left:14px}
+.fwrap-neon .fsec-body strong{color:#5cf5ff;text-shadow:0 0 6px rgba(92,245,255,.4);font-weight:700}
+.fwrap-neon table{background:rgba(99,102,241,.04);border:1px solid #2d3260;color:#dde0ff}
+.fwrap-neon table th{background:rgba(255,92,242,.1)!important;color:#ff5cf2!important;border:1px solid #2d3260!important}
+.fwrap-neon table td{border:1px solid #2d3260!important}
+.fwrap-neon .fiche-actions{background:#080a18;border-top:1px solid #1d2247}
+
+/* === STYLE MANUSCRIT (carnet ligné) === */
+.fwrap-paper{background:#fbf6e9;color:#2a2515;border:1px solid #d4c5a0;box-shadow:0 4px 22px rgba(0,0,0,.35),inset 0 0 0 1px rgba(212,197,160,.4)}
+.fwrap-paper .fiche-top{background:#e5d8b2!important;color:#3d2f15;border-bottom:2px solid #b89a5e;padding:16px 18px}
+.fwrap-paper .ft-badge{color:#8a6e2a;font-family:'Caveat',cursive;font-size:14px;text-transform:none;letter-spacing:0;opacity:.85;font-weight:600}
+.fwrap-paper .ft-title{color:#2a1f08;font-family:'Caveat','Brush Script MT',cursive;font-size:24px;font-weight:700;letter-spacing:.3px;line-height:1.1}
+.fwrap-paper .ft-sub{color:#6b5824;font-family:'Caveat',cursive;font-size:13px}
+.fwrap-paper .fsec{background:transparent!important;border-bottom:none;border-left:none!important;padding:14px 18px 8px;position:relative;background-image:linear-gradient(to bottom,transparent 0,transparent calc(1.85em - 1px),rgba(180,150,90,.18) calc(1.85em - 1px),rgba(180,150,90,.18) 1.85em,transparent 1.85em)!important;background-size:100% 1.85em}
+.fwrap-paper .fsec-label{color:#a8521a!important;font-family:'Caveat',cursive;font-size:18px;text-transform:none;letter-spacing:.3px;font-weight:700;padding:0;margin-bottom:6px;border-bottom:2px dotted #b89a5e;display:inline-block;padding-bottom:1px}
+.fwrap-paper .fsec-body{color:#1f1a0a;font-family:'Caveat','Comic Sans MS',cursive;font-size:17px;line-height:1.85em;font-weight:500}
+.fwrap-paper .fsec-body strong{color:#a8521a;background:rgba(255,235,105,.5);padding:0 3px;font-weight:700}
+.fwrap-paper table{background:rgba(255,255,255,.4);border:1.5px solid #b89a5e;font-family:'Space Grotesk',sans-serif}
+.fwrap-paper table th{background:rgba(184,154,94,.25)!important;color:#3d2f15!important;border:1px solid #b89a5e!important;font-family:'Caveat',cursive;font-size:14px}
+.fwrap-paper table td{border:1px solid #d4c5a0!important;color:#2a2515}
+.fwrap-paper .fiche-actions{background:#e9dcb8;border-top:1px dashed #b89a5e}
+
+/* === STYLE MAGAZINE (éditorial) === */
+.fwrap-mag{background:#fafaf5;color:#0d0d12;border:none;box-shadow:0 6px 30px rgba(0,0,0,.4);position:relative}
+.fwrap-mag .fiche-top{background:#0d0d12!important;color:#fafaf5;padding:20px 18px 22px;border-bottom:6px solid #ffd400}
+.fwrap-mag .ft-badge{color:#ffd400;font-family:'Space Grotesk',sans-serif;font-size:9px;letter-spacing:3px;font-weight:800;text-transform:uppercase;border-left:3px solid #ffd400;padding-left:8px;margin-bottom:8px}
+.fwrap-mag .ft-title{color:#fff;font-family:'Space Grotesk','Playfair Display',serif;font-size:22px;font-weight:900;letter-spacing:-1px;line-height:1;text-transform:uppercase}
+.fwrap-mag .ft-sub{color:#999;font-family:'Space Grotesk',sans-serif;font-size:10.5px;text-transform:uppercase;letter-spacing:1.5px;margin-top:6px}
+.fwrap-mag .fsec{background:transparent!important;border-bottom:1px solid #d8d8c8;border-left:none!important;padding:16px 18px 14px;position:relative}
+.fwrap-mag .fsec:last-of-type{border-bottom:none}
+.fwrap-mag .fsec-label{color:#0d0d12!important;font-family:'Space Grotesk','Playfair Display',serif;font-size:15px;text-transform:uppercase;letter-spacing:1px;font-weight:900;margin-bottom:8px;display:inline-block;background:#ffd400;padding:3px 8px;border-radius:0}
+.fwrap-mag .fsec-body{color:#1a1a22;font-family:'Space Grotesk','Georgia',serif;font-size:13.5px;line-height:1.65;column-count:1}
+.fwrap-mag .fsec-body strong{color:#0d0d12;font-weight:900;background:linear-gradient(transparent 60%,#ffd400 60%);padding:0 1px}
+.fwrap-mag .fsec-body::first-letter{font-family:'Playfair Display','Georgia',serif;font-size:34px;font-weight:900;float:left;line-height:.85;margin:3px 7px 0 0;color:#0d0d12}
+.fwrap-mag .fsec-body p:not(:first-child)::first-letter,.fwrap-mag .fsec-body div::first-letter,.fwrap-mag .fsec-body br+*::first-letter{font-size:inherit;float:none;margin:0;font-family:inherit}
+.fwrap-mag table{background:#fff;border:1px solid #0d0d12;font-family:'Space Grotesk',sans-serif;font-size:12px}
+.fwrap-mag table th{background:#0d0d12!important;color:#ffd400!important;border:1px solid #0d0d12!important;text-transform:uppercase;letter-spacing:.5px}
+.fwrap-mag table td{border:1px solid #d8d8c8!important;color:#1a1a22}
+.fwrap-mag .fiche-actions{background:#ececdc;border-top:2px solid #0d0d12}
+
+/* Bouton design (sélecteur) */
+.fd-btn{font-size:13px;line-height:1;padding:3px 9px;min-width:32px}
+
+/* Onglet Favoris/Historique dans la library */
+.lib-tab-fav.on{background:#fbbf24;color:#1a1a2e}
+.lib-tab-hist.on{background:#94a3b8;color:#fff}
+.lib-fav-star{background:transparent;border:none;color:#cbd5e1;cursor:pointer;font-size:16px;padding:0 4px;transition:all .15s;display:flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:7px}
+.lib-fav-star:hover{background:rgba(251,191,36,.12);color:#fbbf24}
+.lib-fav-star.on{color:#fbbf24}
+
 /* FLIP CARDS */
 .fc-wrap{background:var(--card);border:1px solid var(--bord);border-radius:16px;overflow:hidden}
 .fc-top{background:linear-gradient(135deg,rgba(99,102,241,.18),rgba(92,216,252,.08));padding:9px 12px;border-bottom:1px solid var(--bord);display:flex;align-items:center;justify-content:space-between}
@@ -2197,6 +2258,11 @@ button:active{opacity:.85}
       <button class="flen-btn" id="flen-c" onclick="setFicheLongueur('COURTE',this)">S</button>
       <button class="flen-btn on" id="flen-m" onclick="setFicheLongueur('MOYENNE',this)">M</button>
       <button class="flen-btn" id="flen-l" onclick="setFicheLongueur('LONGUE',this)">L</button>
+      <span class="flen-lbl" style="margin-left:6px">Style</span>
+      <button class="flen-btn fd-btn on" id="fd-classic" onclick="setFicheDesign('classic',this)" title="Classique">▦</button>
+      <button class="flen-btn fd-btn" id="fd-neon" onclick="setFicheDesign('neon',this)" title="Néon">⚡</button>
+      <button class="flen-btn fd-btn" id="fd-paper" onclick="setFicheDesign('paper',this)" title="Manuscrit">✎</button>
+      <button class="flen-btn fd-btn" id="fd-mag" onclick="setFicheDesign('mag',this)" title="Magazine">¶</button>
       <span class="flen-lbl" style="margin-left:6px">Flash</span>
       <button class="flen-btn" id="fct-5" onclick="setFlashCount(5,this)">5</button>
       <button class="flen-btn on" id="fct-10" onclick="setFlashCount(10,this)">10</button>
@@ -2505,10 +2571,14 @@ button:active{opacity:.85}
     <div class="gph"><div class="gpt">Bibliothèque</div><button class="gp-close" onclick="closeLib()">✕</button></div>
     <div class="lib-tabs">
       <button class="lib-tab on" id="lt-fiches" onclick="libTab('fiches')">📄 Fiches</button>
+      <button class="lib-tab lib-tab-fav" id="lt-fav" onclick="libTab('fav')">★ Favoris</button>
+      <button class="lib-tab lib-tab-hist" id="lt-fhist" onclick="libTab('fhist')">🕐 Récents</button>
       <button class="lib-tab" id="lt-decks" onclick="libTab('decks')">🃏 Decks</button>
       <button class="lib-tab" id="lt-notes" onclick="libTab('notes')">💬 Réponses</button>
     </div>
     <div class="lib-sec on" id="ls-fiches"><div id="lib-fiches-list"></div></div>
+    <div class="lib-sec" id="ls-fav"><div id="lib-fav-list"></div></div>
+    <div class="lib-sec" id="ls-fhist"><div style="display:flex;justify-content:flex-end;margin-bottom:8px"><button class="lib-act lib-del" style="width:auto;padding:5px 10px;font-size:11px" onclick="clearFicheHistory()">Vider l'historique</button></div><div id="lib-fhist-list"></div></div>
     <div class="lib-sec" id="ls-decks"><div id="lib-decks-list"></div></div>
     <div class="lib-sec" id="ls-notes"><div id="lib-notes-list"></div></div>
   </div>
@@ -4013,6 +4083,11 @@ let srsData={};
 let progHistory=[];
 // Longueur fiche de révision : COURTE / MOYENNE / LONGUE
 let ficheLongueur='MOYENNE';
+// Design fiche : classic / neon / paper / mag
+let ficheDesign='classic';
+try{const _fd=localStorage.getItem('sk_fd');if(_fd)ficheDesign=_fd;}catch(e){}
+// Historique de toutes les fiches générées (séparé de la bibliothèque)
+let ficheHistory=[];
 // Nombre de flashcards à générer
 let flashCount=10;
 // Mode chat : normal / interro
@@ -4037,6 +4112,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   loadProfile();
   loadLibrary(); renderLibAll(); renderFlashLibSection();
   loadChatHistory(); loadSRS(); loadProgHistory();
+  loadFicheHistory(); loadFicheDesign();
   // Charger le ton sauvegardé
   try{const t=localStorage.getItem('sk_ton');if(t){sessionTon=t;const b=document.querySelector(`.ton-btn[data-ton="${t}"]`);if(b)setTon(t,b);}}catch(e){}
   setTimeout(updateMsgCounter, 100);
@@ -4200,10 +4276,14 @@ function closeLib(){document.getElementById('gp-lib').classList.remove('open');}
 function openHist(){document.getElementById('gp-hist').classList.add('open');renderHistList();}
 function closeHist(){document.getElementById('gp-hist').classList.remove('open');}
 function libTab(t){
-  ['fiches','decks','notes'].forEach(x=>{
-    document.getElementById('lt-'+x).classList.toggle('on',x===t);
-    document.getElementById('ls-'+x).classList.toggle('on',x===t);
+  ['fiches','fav','fhist','decks','notes'].forEach(x=>{
+    const lt=document.getElementById('lt-'+x);
+    const ls=document.getElementById('ls-'+x);
+    if(lt)lt.classList.toggle('on',x===t);
+    if(ls)ls.classList.toggle('on',x===t);
   });
+  if(t==='fav')renderLibFav();
+  else if(t==='fhist')renderFicheHistory();
 }
 
 function initSwipe(){
@@ -4337,146 +4417,69 @@ Varie les types selon la matière (calcul, rédaction courte, définition, mise 
 Exercice par exercice, dire clairement si juste ou faux, si faux expliquer pourquoi en 1-2 phrases, score final "Tu as eu X/Y".
 Naturel, direct, sans mise en forme excessive.
 
-FORMAT FICHE — RÈGLE ABSOLUE — lis et applique TOUT avant de générer :
+FORMAT FICHE — Lis tout avant de générer.
 
-ÉTAPE 1 — DÉTECTION OBLIGATOIRE : avant de générer quoi que ce soit, identifie :
-1. La MATIÈRE exacte (maths, physique-chimie, histoire, géo, français, langues, svt, philo, ses…)
-2. Le TYPE DE CONTENU parmi cette liste STRICTE :
-   CONJUGAISON     → temps verbal, mode, conjugaison (ex : passé composé, imparfait, subjonctif)
-   THEOREME_MATHS  → théorème, formule, propriété mathématique (Pythagore, Thalès, trigonométrie…)
-   REGLE_GRAMMAIRE → règle d'accord, orthographe, syntaxe, ponctuation
-   VOCABULAIRE     → liste de mots, définitions, thème lexical, lexique
-   EVENEMENT_HIST  → guerre, révolution, régime, période historique, date précise
-   CONCEPT_GEO     → mondialisation, territoire, flux, aménagement, développement
-   NOTION_SCIENT   → mécanisme biologique, réaction chimique, circuit électrique, phénomène physique
-   OEUVRE_LITT     → roman, poème, pièce de théâtre, texte à analyser
-   LOI_PHYSCHIM    → loi d'Ohm, Newton, Boyle-Mariotte, réaction acide-base, équation chimique
-   AUTRE           → tout ce qui ne rentre pas dans les catégories ci-dessus
-3. Le FORMAT IMPOSÉ pour ce type (voir ci-dessous) — jamais de template fixe, jamais de sections vides
+PRINCIPE FONDAMENTAL — RÉPONDS EXACTEMENT À CE QUI EST DEMANDÉ :
+Tu fabriques une fiche qui répond précisément à la demande. Tu ne forces JAMAIS de structure générique. Pas de "Partie 1, Partie 2, Partie 3", pas de sections fourre-tout type "Introduction", "Contexte" ou "Conclusion" si elles n'apportent rien au sujet précis.
 
-ÉTAPE 2 — FORMAT IMPOSÉ PAR TYPE :
+Exemples concrets pour bien comprendre :
+• "Liste des guerres importantes depuis 1900" → la liste, point. Une mini-intro de 1 ligne MAX (et seulement si elle ajoute quelque chose), puis la liste des dates avec le nom de la guerre. PAS de section "causes générales", PAS de section "conséquences", PAS de blabla — juste ce qui a été demandé.
+• "Théorème de Pythagore" → la formule, ce que représente chaque variable, conditions, réciproque, 1-2 exemples résolus, pièges. PAS la biographie de Pythagore.
+• "Vie de Pythagore" → là tu fais une fiche sur sa vie, ses voyages, ce qu'il a fait. PAS le théorème.
+• "Présent simple anglais" → conjugaison, marqueurs, négation, interrogation, pièges, exemples. PAS l'histoire de la langue anglaise.
 
-▸ TYPE CONJUGAISON :
-→ Tableau HTML : tous les pronoms × 3 verbes (1 régulier, 1 irrégulier, 1 fréquent du quotidien)
-→ Formation étape par étape numérotée (radical + terminaison)
-→ Quand l'utiliser : règle + marqueurs temporels typiques
-→ Exceptions et verbes irréguliers courants à connaître
-→ 5 phrases exemples complètes (pour langues étrangères : + traduction + phonétique)
-→ Pièges fréquents pour francophones
+LIBERTÉ DE STRUCTURE — TU CRÉES TES SECTIONS LIBREMENT :
+• Tu choisis tes sections en fonction de CE sujet précis. Tu nommes chaque section avec ce qui parle vraiment au contenu (ex : "La formule", "Les 3 cas", "Dates clés", "Conjugaison", "Pièges classiques", "Réciproque"…).
+• Tu peux faire 1 seule section si c'est mieux (ex : pure liste de dates → 1 section "Dates" suffit).
+• Tu peux faire 5-6 sections si le sujet le justifie réellement.
+• Pas de sections vides, pas de "à compléter", pas de placeholder. Si une section ne contient rien d'utile, tu ne la mets pas.
 
-▸ TYPE THEOREME_MATHS :
-→ La formule en gras, encadrée, bien visible
-→ Explication de chaque variable (ce qu'elle représente, son unité si applicable)
-→ Schéma ASCII légendé si géométrie (triangle, cercle, droites…)
-→ Exemple ENTIER résolu pas à pas — AUCUNE étape sautée, chaque calcul détaillé
-→ 2ème exemple différent (contexte ou valeurs différents) résolu complètement
-→ Conditions d'application (quand peut-on utiliser ce théorème ?)
-→ Erreurs classiques des élèves
-→ Astuce mnémotechnique si utile
+STYLE D'ÉCRITURE — DENSE, PAS RÉDIGÉ :
+• Pas de paragraphes lourds. Phrases courtes. Listes à puces. Tableaux markdown quand c'est pertinent : | col | col |
+• Va à l'essentiel. Si un point se dit en 5 mots, ne le développe pas en 3 phrases.
+• Vrais contenus uniquement : vraies dates précises, vraies formules exactes, vraies définitions complètes. Si tu n'es pas sûr → tu n'inclus pas.
+• **Gras** sur les mots-clés et termes importants.
+• Schémas : flèches A → B → C, pas d'ASCII compliqué.
 
-▸ TYPE REGLE_GRAMMAIRE :
-→ La règle en 1 phrase claire et directe (pas de jargon inutile)
-→ Tableau exceptions s'il y en a (règle | exception | exemple)
-→ Exemples corrects ✓ vs incorrects ✗ côte à côte
-→ Cas particuliers à ne pas confondre
-→ Moyen mnémotechnique si utile
+LONGUEUR ${ficheLongueur} — toujours focalisée sur LE COEUR du sujet, jamais sur le remplissage :
+• COURTE → STRICT minimum vital. Juste ce qu'il faut absolument savoir pour comprendre / mémoriser. Pas d'exemples multiples, pas de cas particuliers, pas d'astuce. Format ultra condensé.
+• MOYENNE → On creuse le coeur. Détails utiles, pièges fréquents, 1-2 exemples concrets, cas particuliers importants. Toujours focalisé sur ce qui a été demandé.
+• LONGUE → Tout ce qui peut être appris sur LE COEUR du sujet. Toutes les exceptions, tous les cas, plusieurs exemples résolus, tous les pièges même subtils, astuces mnémotechniques, liens utiles avec d'autres notions du même sujet. PLUS DE PROFONDEUR — pas plus de sections décoratives.
 
-▸ TYPE VOCABULAIRE :
-→ Tableau : Terme | Définition complète | Exemple d'usage concret
-→ Regroupement par famille/thème si pertinent
-→ Étymologie si elle aide à retenir
-→ Faux amis si langue étrangère
+→ Augmenter la taille = APPROFONDIR le sujet, JAMAIS ajouter du remplissage générique ou de la biographie qui n'a pas été demandée.
 
-▸ TYPE EVENEMENT_HIST :
-→ Frise chronologique ASCII avec les dates clés :
-   1789 ──── 1793 ──── 1799 ──── 1815
-→ Causes (politiques, économiques, sociales — distinguées clairement)
-→ Déroulement (faits chronologiques essentiels)
-→ Conséquences (court terme + long terme)
-→ Acteurs principaux + leur rôle précis (1-2 lignes chacun)
-→ Chiffres clés à retenir absolument
-→ Vocabulaire du chapitre avec vraies définitions (pas de paraphrase)
-
-▸ TYPE CONCEPT_GEO :
-→ Définition précise et complète (pas juste un mot)
-→ Schéma d'organisation ASCII si pertinent :
-   Concept
-   ├── Dimension 1
-   └── Dimension 2
-→ Chiffres et données réels actuels (dates, pourcentages, rangs…)
-→ Exemples concrets de pays/régions/villes avec leurs spécificités
-→ Liens de causalité entre les concepts
-
-▸ TYPE NOTION_SCIENT :
-→ Schéma légendé ASCII du mécanisme/organe/circuit
-→ Processus étape par étape numéroté (1. → 2. → 3. …)
-→ Définitions scientifiques précises des termes clés
-→ Formule + unités SI si applicable
-→ Exemple concret du quotidien pour ancrer la compréhension
-→ Expérience de référence à connaître si pertinente
-
-▸ TYPE OEUVRE_LITT :
-→ Contexte auteur + époque (bref mais précis : dates, courant littéraire)
-→ Résumé structuré (début / noeud / dénouement ou plan de l'oeuvre)
-→ Thèmes principaux développés avec exemples du texte
-→ Citations importantes + analyse courte de chacune
-→ Figures de style avec exemples tirés de l'oeuvre
-→ Axes de lecture pour l'examen / questions possibles
-
-▸ TYPE LOI_PHYSCHIM :
-→ Formule avec TOUTES les variables nommées et leur signification
-→ Unités SI pour chaque grandeur
-→ Triangle des formules (A = B×C → schéma triangle) si applicable
-→ Exemple de calcul résolu de A à Z avec toutes les étapes
-→ Schéma du circuit / de la réaction si pertinent
-→ Erreurs fréquentes (unités, formule inversée, arrondi…)
-
-▸ TYPE AUTRE :
-→ Raisonne : quel format aide le plus à comprendre CE sujet précis ?
-→ Choisis librement les sections les plus pertinentes
-→ Supprime toute section qui n'apporterait rien pour CE sujet
-
-LONGUEUR ACTUELLE : ${ficheLongueur}
-• COURTE → L'essentiel uniquement : format du type respecté mais condensé. Définitions courtes, 1 exemple, points clés seulement.
-• MOYENNE → Équilibrée : format du type complet. Définitions développées, exemples multiples, cas particuliers importants.
-• LONGUE → Tout en détail : rien n'est omis. Développe chaque point à fond. Minimum 8 sections. Ne t'arrête pas.
-
-QUALITÉ OBLIGATOIRE :
-• Vrais contenus — jamais de placeholders, jamais de "à compléter", jamais d'exemples inventés
-• Toutes les formules exactes, toutes les dates précises, toutes les règles complètes
-• Tableaux HTML avec vrais contenus dans chaque cellule, lisibles sur mobile
-• Schémas : utilise des flèches HTML claires avec des boîtes (div/span avec bordures). Pour les cycles : A → B → C. Pas de dessins ASCII avec des tirets.
-• Si un fait est incertain → ne pas l'inclure plutôt que risquer une erreur
+MINI-TEST — OPTIONNEL :
+Si le sujet s'y prête (notion à mémoriser, formule à appliquer, vocabulaire, règle, théorème, événement avec dates) → ajoute 2-4 questions courtes pour s'auto-évaluer.
+Si le sujet est une simple liste pure de faits sans logique à tester (ex : "liste des couleurs", "liste des présidents") → n'ajoute PAS de mini-test, ce serait artificiel.
 
 PHOTOS jointes : si une image est envoyée, ANALYSE-LA en PRIORITÉ ABSOLUE.
-Identifie : cours, formules, définitions, schémas, exercices visibles.
-CONSTRUIS la fiche entièrement sur le contenu réel de la photo. Cite les formules et données exactes visibles.
-Ne génère jamais de contenu générique si la photo montre le cours précis.
+Construis la fiche entièrement sur le contenu réel de la photo (formules exactes, données précises, schémas visibles). Jamais de contenu générique si la photo montre le cours précis.
 
-FORMAT OBLIGATOIRE — CRITIQUE — respecte chaque balise à la lettre :
-⚠️ Tu DOIS terminer par ##FINFICHE## même si le contenu est très long. C'est la balise la plus importante.
-⚠️ La structure doit être lisible par un parser automatique : pas de texte avant ##FICHE##, pas de texte après ##FINFICHE##.
+FORMAT TECHNIQUE — RESPECTE CHAQUE BALISE :
+⚠️ Tu DOIS terminer par ##FINFICHE##. Pas de texte avant ##FICHE##, pas de texte après ##FINFICHE##.
+
 ##FICHE##
-TITRE:[matière] — [chapitre précis]
-NIVEAU:[niveau]
-MATIERE:[maths|physique|chimie|histoire|géo|français|langues|anglais|espagnol|svt|philo|ses|autre]
-TYPE:[CONJUGAISON|THEOREME_MATHS|REGLE_GRAMMAIRE|VOCABULAIRE|EVENEMENT_HIST|CONCEPT_GEO|NOTION_SCIENT|OEUVRE_LITT|LOI_PHYSCHIM|AUTRE]
-LONGUEUR:${ficheLongueur}
-SECTION:[Nom descriptif de la section]
-[contenu développé de la section — vrais contenus, format du type respecté]
-SECTION:[Section suivante]
+TITRE:[exactement le sujet demandé, sans rajout générique]
+NIVEAU:[niveau de l'élève]
+MATIERE:[maths|physique|chimie|histoire|géo|français|anglais|espagnol|svt|philo|ses|autre]
+SECTION:[nom que TU choisis selon le sujet]
+[contenu dense, listes/tableaux, vrais contenus]
+SECTION:[autre nom adapté]
 [contenu]
 RETENIR:
-• [point essentiel 1 — le plus important à retenir absolument]
-• [point essentiel 2]
-• [point essentiel 3]
-• [point essentiel 4 si pertinent]
-• [point essentiel 5 si pertinent]
+• [point essentiel — le plus important à retenir]
+• [point essentiel]
+• [point essentiel]
 MINITEST:
-Q1:[question précise sur le contenu]|R1:[réponse complète et exacte]
+Q1:[question précise]|R1:[réponse exacte]
 Q2:[question]|R2:[réponse]
 Q3:[question]|R3:[réponse]
 ##FINFICHE##
+
+NOTES IMPORTANTES :
+• La balise RETENIR est OPTIONNELLE. Pour les fiches très courtes (liste pure de dates / mots / faits), ne pas la mettre — elle ferait doublon avec le contenu.
+• La balise MINITEST est OPTIONNELLE (voir critère ci-dessus).
+• Les sections sont libres : 1, 2, 3, 4, 5, 6 — ce qui sert le sujet.
 
 FORMAT FLASHCARDS (EXACTEMENT, ${flashCount} cartes) :
 ##FLASH##
@@ -5092,6 +5095,19 @@ function setFicheLongueur(v,el){
   ['flen-c','flen-m','flen-l'].forEach(id=>{document.getElementById(id)?.classList.remove('on');});
   el.classList.add('on');
 }
+function setFicheDesign(v,el){
+  ficheDesign=v;
+  ['fd-classic','fd-neon','fd-paper','fd-mag'].forEach(id=>{document.getElementById(id)?.classList.remove('on');});
+  if(el)el.classList.add('on');
+  try{localStorage.setItem('sk_fd',v);}catch(e){}
+  const lbl={classic:'Classique',neon:'Néon',paper:'Manuscrit',mag:'Magazine'};
+  toast('🎨 Style fiche : '+lbl[v]);
+}
+function loadFicheDesign(){
+  const map={classic:'fd-classic',neon:'fd-neon',paper:'fd-paper',mag:'fd-mag'};
+  ['fd-classic','fd-neon','fd-paper','fd-mag'].forEach(id=>{document.getElementById(id)?.classList.remove('on');});
+  const el=document.getElementById(map[ficheDesign]);if(el)el.classList.add('on');
+}
 function setFlashCount(n,el){
   flashCount=n;
   ['fct-5','fct-10','fct-15','fct-20'].forEach(id=>{document.getElementById(id)?.classList.remove('on');});
@@ -5614,11 +5630,13 @@ function buildFicheHTML(content,withActions){
     let mtH0='';
     if(mt0){const qas0=[...mt0.matchAll(/Q(\d+):([^|]+)\|R\d+:([^\n]+)/g)];if(qas0.length)mtH0=`<div class="fsec" style="border-left:3px solid #059669;background:#ecfdf5"><div class="fsec-label" style="color:#059669">✅ MINI-TEST</div>${qas0.map((qa,i)=>{const uid='qt_'+Date.now()+'_'+i;return`<div style="margin-bottom:5px"><div class="fsec-body" style="font-size:12px;font-weight:600">Q${i+1} : ${qa[2].trim()}</div><div id="${uid}" onclick="this.style.filter='none'" style="font-family:'Caveat',cursive;font-size:12px;color:#059669;cursor:pointer;display:inline-block;background:#d1fae5;padding:2px 7px;border-radius:5px;filter:blur(4px)">→ ${qa[3].trim()}</div></div>`;}).join('')}</div>`;}
     const fid0='fiche_'+Date.now();
-    ficheReg[fid0]={titre,niveau,secs:oldSecs.filter(s=>s.c),mt:mt0||''};
+    ficheReg[fid0]={titre,niveau,secs:oldSecs.filter(s=>s.c),mt:mt0||'',design:ficheDesign};
     const secH0=oldSecs.filter(s=>s.c).map(s=>`<div class="fsec" style="border-left:3px solid ${s.col};background:${s.bg}"><div class="fsec-label" style="color:${s.col}">${s.e} ${s.l}</div><div class="fsec-body">${esc(s.c)}</div></div>`).join('');
     let acts0='';
     if(withActions)acts0=`<div class="fiche-actions"><button class="fa-btn fa-save" onclick="saveFicheImg('${fid0}')">📸 Image</button><button class="fa-btn fa-copy" onclick="copyFicheById('${fid0}')">📋 Copier</button><button class="fa-btn fa-lib" onclick="saveFicheLib('${fid0}')">💾 Sauver</button><button class="fa-btn" style="background:#ecf4ff;color:#2563eb" onclick="startQuizFromFiche('${fid0}')">🧠 Quiz</button><button class="fa-btn fa-share" onclick="exportFichePDF('${fid0}')">📄 PDF</button><button class="fa-btn" style="background:#ecfdf5;color:#059669" onclick="shareFicheURL('${fid0}')">🔗 Lien</button><button class="fa-btn fa-img" onclick="shareFicheAsImage('${fid0}')">📸 Image</button><button class="fa-btn" style="background:#fff3e0;color:#d97706" onclick="openShareModal('${fid0}')">📤 Partager</button></div>`;
-    return`<div class="fiche-wrap" id="${fid0}"><div class="fiche-top"><div class="ft-badge">📚 Fiche de révision • ScolarIA</div><div class="ft-title">${esc(titre)}</div>${niveau?`<div class="ft-sub">${esc(niveau)}</div>`:''}</div><div class="fiche-body">${secH0}${mtH0}</div>${acts0}</div>`;
+    const dCls0=ficheDesign&&ficheDesign!=='classic'?' fwrap-'+ficheDesign:'';
+    addToFicheHistory({titre,niveau,secs:oldSecs.filter(s=>s.c),mt:mt0||'',design:ficheDesign});
+    return`<div class="fiche-wrap${dCls0}" id="${fid0}"><div class="fiche-top"><div class="ft-badge">📚 Fiche de révision • ScolarIA</div><div class="ft-title">${esc(titre)}</div>${niveau?`<div class="ft-sub">${esc(niveau)}</div>`:''}</div><div class="fiche-body">${secH0}${mtH0}</div>${acts0}</div>`;
   }
 
   // Rendu contenu : gras **mot**, tableaux markdown, flèches processus
@@ -5671,7 +5689,8 @@ function buildFicheHTML(content,withActions){
   }
 
   const fid='fiche_'+Date.now();
-  ficheReg[fid]={titre,niveau,secs:secs.map((s,i)=>({e:'',l:s.name,c:s.c,col:PAL[i%PAL.length].col,bg:PAL[i%PAL.length].bg})),mt};
+  const fSecs=secs.map((s,i)=>({e:'',l:s.name,c:s.c,col:PAL[i%PAL.length].col,bg:PAL[i%PAL.length].bg}));
+  ficheReg[fid]={titre,niveau,secs:fSecs,mt,retenir,design:ficheDesign};
 
   let acts='';
   if(withActions)acts=`<div class="fiche-actions">
@@ -5684,7 +5703,11 @@ function buildFicheHTML(content,withActions){
     <button class="fa-btn fa-img" onclick="shareFicheAsImage('${fid}')">📸 Image</button>
     <button class="fa-btn" style="background:#fff3e0;color:#d97706" onclick="openShareModal('${fid}')">📤 Partager</button>
   </div>`;
-  return`<div class="fiche-wrap" id="${fid}"><div class="fiche-top" style="background:linear-gradient(135deg,${c1},${c2})"><div class="ft-badge">📚 Fiche de révision • ScolarIA</div><div class="ft-title">${esc(titre)}</div>${niveau?`<div class="ft-sub">${esc(niveau)}</div>`:''}</div><div class="fiche-body">${secH}${retH}${mtH}</div>${acts}</div>`;
+  const dCls=ficheDesign&&ficheDesign!=='classic'?' fwrap-'+ficheDesign:'';
+  // Désactive le gradient par-matière si un style alternatif est choisi (le CSS prend la main)
+  const topStyle=(ficheDesign==='classic')?` style="background:linear-gradient(135deg,${c1},${c2})"`:'';
+  addToFicheHistory({titre,niveau,secs:fSecs,mt,retenir,design:ficheDesign});
+  return`<div class="fiche-wrap${dCls}" id="${fid}"><div class="fiche-top"${topStyle}><div class="ft-badge">📚 Fiche de révision • ScolarIA</div><div class="ft-title">${esc(titre)}</div>${niveau?`<div class="ft-sub">${esc(niveau)}</div>`:''}</div><div class="fiche-body">${secH}${retH}${mtH}</div>${acts}</div>`;
 }
 
 // ════════════════════════════════
@@ -6169,8 +6192,58 @@ function saveLib(){try{localStorage.setItem('sk_lib',JSON.stringify(library));}c
 function saveFicheLib(fid){
   const data=ficheReg[fid];if(!data){toast('❌ Données intro.');return;}
   if(library.fiches.length>=25)library.fiches.shift();
-  library.fiches.push({id:Date.now(),titre:data.titre,niveau:data.niveau||'',secs:data.secs,mt:data.mt,date:new Date().toLocaleDateString('fr-FR')});
+  library.fiches.push({id:Date.now(),titre:data.titre,niveau:data.niveau||'',secs:data.secs,mt:data.mt,retenir:data.retenir||'',design:data.design||'classic',fav:false,date:new Date().toLocaleDateString('fr-FR')});
   saveLib();renderLibAll();toast('📄 Fiche sauvegardée dans ta bibliothèque !');haptic('success');applyProfileToUI();
+}
+function toggleFavFiche(id,ev){
+  if(ev){ev.stopPropagation();}
+  const f=library.fiches.find(x=>x.id===id);if(!f)return;
+  f.fav=!f.fav;saveLib();renderLibFiches();
+  const favSec=document.getElementById('ls-fav');
+  if(favSec&&favSec.classList.contains('on'))renderLibFav();
+  toast(f.fav?'★ Ajouté aux favoris':'☆ Retiré des favoris');
+}
+// === HISTORIQUE FICHES ===
+function loadFicheHistory(){try{const s=localStorage.getItem('sk_fhist_fiches');if(s)ficheHistory=JSON.parse(s);}catch(e){ficheHistory=[];}}
+function saveFicheHistoryLS(){try{localStorage.setItem('sk_fhist_fiches',JSON.stringify(ficheHistory));}catch(e){}}
+function addToFicheHistory(data){
+  if(!data||!data.titre)return;
+  // Évite les doublons immédiats (même titre dans les 30 dernières secondes)
+  const last=ficheHistory[0];
+  if(last&&last.titre===data.titre&&(Date.now()-last.id)<30000)return;
+  ficheHistory.unshift({id:Date.now(),titre:data.titre,niveau:data.niveau||'',secs:data.secs,mt:data.mt||'',retenir:data.retenir||'',design:data.design||'classic',date:new Date().toLocaleDateString('fr-FR')});
+  if(ficheHistory.length>50)ficheHistory.length=50;
+  saveFicheHistoryLS();
+}
+function clearFicheHistory(){
+  if(!confirm('Vider l\'historique des fiches ?'))return;
+  ficheHistory=[];saveFicheHistoryLS();renderFicheHistory();toast('🗑 Historique vidé');
+}
+function renderFicheHistory(){
+  const el=document.getElementById('lib-fhist-list');if(!el)return;
+  if(!ficheHistory.length){el.innerHTML='<div class="lib-empty">Aucune fiche récente. Génère ta première fiche !</div>';return;}
+  el.innerHTML=ficheHistory.map(f=>{
+    const dStyle={classic:'#6366f1',neon:'#5cf5ff',paper:'#a8521a',mag:'#ffd400'}[f.design||'classic']||'#6366f1';
+    return `<div class="lib-item"><div class="lib-icon" style="color:${dStyle}">📄</div><div class="lib-info" onclick="openHistFiche(${f.id})"><div class="lib-name">${esc(f.titre)}</div><div class="lib-meta">${f.niveau?esc(f.niveau)+' · ':''}${f.date}</div></div><div class="lib-acts"><button class="lib-act lib-open" onclick="openHistFiche(${f.id})" title="Voir">👁</button><button class="lib-act lib-open" style="background:rgba(52,211,153,.14);color:#05875e" onclick="saveHistToLib(${f.id})" title="Sauver dans la bibliothèque">💾</button><button class="lib-act lib-del" onclick="delHistFiche(${f.id})">✕</button></div></div>`;
+  }).join('');
+}
+function openHistFiche(id){
+  const f=ficheHistory.find(x=>x.id===id);if(!f)return;
+  const fid='fvh_'+id;ficheReg[fid]={titre:f.titre,niveau:f.niveau,secs:f.secs,mt:f.mt,retenir:f.retenir,design:f.design};
+  document.getElementById('fv-title').textContent=f.titre;
+  const dCls=f.design&&f.design!=='classic'?' fwrap-'+f.design:'';
+  const secH=(f.secs||[]).map(s=>`<div class="fsec" style="border-left:3px solid ${s.col};background:${s.bg}"><div class="fsec-label" style="color:${s.col}">${s.e||'📌'} ${esc(s.l)}</div><div class="fsec-body">${esc(s.c)}</div></div>`).join('');
+  document.getElementById('fiche-viewer-body').innerHTML=`<div class="fiche-wrap${dCls}" id="${fid}"><div class="fiche-top"><div class="ft-badge">📚 Fiche de révision • ScolarIA</div><div class="ft-title">${esc(f.titre)}</div>${f.niveau?`<div class="ft-sub">${esc(f.niveau)}</div>`:''}</div><div class="fiche-body">${secH}</div></div>`;
+  document.getElementById('fiche-viewer').classList.add('open');
+}
+function saveHistToLib(id){
+  const f=ficheHistory.find(x=>x.id===id);if(!f)return;
+  if(library.fiches.length>=25)library.fiches.shift();
+  library.fiches.push({id:Date.now(),titre:f.titre,niveau:f.niveau||'',secs:f.secs,mt:f.mt,retenir:f.retenir||'',design:f.design||'classic',fav:false,date:new Date().toLocaleDateString('fr-FR')});
+  saveLib();renderLibFiches();toast('📄 Sauvegardée dans la bibliothèque !');applyProfileToUI();
+}
+function delHistFiche(id){
+  ficheHistory=ficheHistory.filter(x=>x.id!==id);saveFicheHistoryLS();renderFicheHistory();
 }
 function saveDeckLib(did){
   const data=deckReg[did];if(!data){toast('❌ Données intro.');return;}
@@ -6187,10 +6260,25 @@ function saveRespLib(rid){
 function delLib(type,id){library[type]=library[type].filter(x=>x.id!==id);saveLib();renderLibAll();}
 
 function renderLibAll(){renderLibFiches();renderLibDecks();renderLibNotes();}
+function _ficheItemHTML(f){
+  const star=f.fav?'★':'☆';
+  const starCls=f.fav?'lib-fav-star on':'lib-fav-star';
+  const designIcon={classic:'▦',neon:'⚡',paper:'✎',mag:'¶'}[f.design||'classic']||'▦';
+  return `<div class="lib-item"><div class="lib-icon">📄</div><div class="lib-info" onclick="openFV(${f.id})"><div class="lib-name">${esc(f.titre)}</div><div class="lib-meta">${f.niveau?esc(f.niveau)+' · ':''}<span title="Style">${designIcon}</span> · ${f.date||''}</div></div><div class="lib-acts"><button class="${starCls}" onclick="toggleFavFiche(${f.id},event)" title="Favori">${star}</button><button class="lib-act lib-open" onclick="openFV(${f.id})">👁</button><button class="lib-act lib-del" onclick="delLib('fiches',${f.id})">✕</button></div></div>`;
+}
 function renderLibFiches(){
   const el=document.getElementById('lib-fiches-list');if(!el)return;
   if(!library.fiches.length){el.innerHTML='<div class="lib-empty">Aucune fiche sauvegardée.</div>';return;}
-  el.innerHTML=library.fiches.slice().reverse().map(f=>`<div class="lib-item"><div class="lib-icon">📄</div><div class="lib-info" onclick="openFV(${f.id})"><div class="lib-name">${esc(f.titre)}</div><div class="lib-meta">${f.niveau?f.niveau+' · ':''}${f.date}</div></div><div class="lib-acts"><button class="lib-act lib-open" onclick="openFV(${f.id})">👁</button><button class="lib-act lib-del" onclick="delLib('fiches',${f.id})">✕</button></div></div>`).join('');
+  // Favoris en premier, puis le reste par ordre récent
+  const favs=library.fiches.filter(f=>f.fav).slice().reverse();
+  const rest=library.fiches.filter(f=>!f.fav).slice().reverse();
+  el.innerHTML=[...favs,...rest].map(_ficheItemHTML).join('');
+}
+function renderLibFav(){
+  const el=document.getElementById('lib-fav-list');if(!el)return;
+  const favs=library.fiches.filter(f=>f.fav).slice().reverse();
+  if(!favs.length){el.innerHTML='<div class="lib-empty">Aucun favori. Ajoute une étoile ★ à tes fiches préférées !</div>';return;}
+  el.innerHTML=favs.map(_ficheItemHTML).join('');
 }
 function renderLibDecks(){
   const el=document.getElementById('lib-decks-list');if(!el)return;
@@ -6223,10 +6311,11 @@ function loadDeckFromLib(id){
 // ════════════════════════════════
 function openFV(id){
   const f=library.fiches.find(x=>x.id===id);if(!f)return;
-  const fid='fv_'+id;ficheReg[fid]={titre:f.titre,niveau:f.niveau,secs:f.secs,mt:f.mt};
+  const fid='fv_'+id;ficheReg[fid]={titre:f.titre,niveau:f.niveau,secs:f.secs,mt:f.mt,retenir:f.retenir||'',design:f.design||'classic'};
   document.getElementById('fv-title').textContent=f.titre;
-  const secH=(f.secs||[]).map(s=>`<div class="fsec" style="border-left:3px solid ${s.col};background:${s.bg}"><div class="fsec-label" style="color:${s.col}">${s.e} ${s.l}</div><div class="fsec-body">${esc(s.c)}</div></div>`).join('');
-  document.getElementById('fiche-viewer-body').innerHTML=`<div class="fiche-wrap" id="${fid}"><div class="fiche-top"><div class="ft-badge">📚 Fiche de révision • ScolarIA</div><div class="ft-title">${esc(f.titre)}</div>${f.niveau?`<div class="ft-sub">${esc(f.niveau)}</div>`:''}</div><div class="fiche-body">${secH}</div></div>`;
+  const dCls=f.design&&f.design!=='classic'?' fwrap-'+f.design:'';
+  const secH=(f.secs||[]).map(s=>`<div class="fsec" style="border-left:3px solid ${s.col};background:${s.bg}"><div class="fsec-label" style="color:${s.col}">${s.e||'📌'} ${esc(s.l)}</div><div class="fsec-body">${esc(s.c)}</div></div>`).join('');
+  document.getElementById('fiche-viewer-body').innerHTML=`<div class="fiche-wrap${dCls}" id="${fid}"><div class="fiche-top"><div class="ft-badge">📚 Fiche de révision • ScolarIA</div><div class="ft-title">${esc(f.titre)}</div>${f.niveau?`<div class="ft-sub">${esc(f.niveau)}</div>`:''}</div><div class="fiche-body">${secH}</div></div>`;
   document.getElementById('fiche-viewer').classList.add('open');
 }
 function closeFV(){document.getElementById('fiche-viewer').classList.remove('open');}

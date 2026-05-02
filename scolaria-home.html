@@ -2054,6 +2054,84 @@ button:active{opacity:.85}
 .ob-badge-green{background:rgba(79,214,160,.15);color:var(--a3)}
 .ob-badge-blue{background:rgba(86,200,232,.15);color:var(--a5)}
 
+/* ═══ EMPLOI DU TEMPS ═══ */
+.edt-card{background:var(--card);border:1px solid var(--bord);border-radius:16px;padding:14px;margin-bottom:14px}
+.edt-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.edt-title{font-size:13px;font-weight:700;color:var(--tx);display:flex;align-items:center;gap:5px}
+.edt-week-btn{font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;border:1.5px solid var(--bord);background:transparent;color:var(--mu);cursor:pointer;font-family:var(--fb);transition:all .15s}
+.edt-week-btn.on{background:var(--c1);border-color:var(--c1);color:#fff}
+.edt-icon-btn{font-size:14px;background:transparent;border:none;cursor:pointer;padding:3px 6px;border-radius:8px;color:var(--mu);transition:background .15s}
+.edt-icon-btn:active{background:var(--surf)}
+.edt-nav-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.edt-nav-btn{width:34px;height:34px;border-radius:50%;background:var(--surf);border:1px solid var(--bord);font-size:20px;color:var(--tx);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;line-height:1}
+.edt-nav-btn:active{background:var(--c1);color:#fff;border-color:var(--c1)}
+.edt-day-info{text-align:center}
+.edt-day-name{font-size:15px;font-weight:700;color:var(--tx)}
+.edt-day-date{font-size:11px;color:var(--mu);margin-top:1px}
+.edt-slots-list{display:flex;flex-direction:column;gap:6px}
+.edt-slot{display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--surf);border-radius:10px;border-left:3px solid var(--c1)}
+.edt-slot-h{font-size:11px;font-weight:700;color:var(--mu);min-width:36px;font-family:var(--fb)}
+.edt-slot-mat{font-size:13px;font-weight:600;color:var(--tx)}
+.edt-slot-current{border-left-color:#10b981!important;background:rgba(16,185,129,.07)!important}
+.edt-slot-done{opacity:.4}
+.edt-empty-day{font-size:12px;color:var(--mu);text-align:center;padding:14px 0;font-style:italic}
+.edt-next-bar{margin-top:10px;padding:8px 10px;border-radius:10px;background:var(--surf);font-size:12px;color:var(--mu);display:flex;gap:6px;align-items:center}
+.edt-next-bar strong{color:var(--tx);font-weight:700}
+.edt-add-row{display:flex;justify-content:center;margin-top:8px}
+.edt-add-btn{font-size:11.5px;color:var(--c1);background:transparent;border:none;cursor:pointer;font-family:var(--fb);font-weight:600;padding:4px 8px;border-radius:8px}
+.edt-add-btn:active{background:var(--c1-soft)}
+#edt-edit-modal{position:fixed;inset:0;z-index:600;background:rgba(0,0,0,.7);display:none;align-items:flex-end}
+#edt-edit-modal.open{display:flex}
+.edt-edit-box{background:var(--bg);border-radius:20px 20px 0 0;width:100%;max-height:88vh;overflow-y:auto;padding:20px 16px 32px;animation:su .25s ease}
+.edt-edit-title{font-size:15px;font-weight:700;color:var(--tx);margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
+.edt-edit-week-row{display:flex;gap:8px;margin-bottom:16px}
+.edt-edit-week-btn{flex:1;padding:9px;border-radius:10px;border:1.5px solid var(--bord);background:transparent;color:var(--mu);font-family:var(--fb);font-weight:700;font-size:13px;cursor:pointer;transition:all .15s}
+.edt-edit-week-btn.on{background:var(--c1);border-color:var(--c1);color:#fff}
+.edt-day-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--mu);margin-bottom:5px}
+.edt-day-inp{width:100%;background:var(--surf);border:1px solid var(--bord);border-radius:10px;color:var(--tx);font-family:var(--fb);font-size:12px;padding:8px 10px;resize:none;height:58px;line-height:1.4;box-sizing:border-box;margin-bottom:10px}
+.edt-save-btn{width:100%;padding:13px;border:none;background:var(--c1);color:#fff;border-radius:13px;font-size:14px;font-weight:700;font-family:var(--fb);cursor:pointer;margin-top:6px}
+
+/* ═══ RÉVISION GUIDÉE ═══ */
+#rv-overlay{position:fixed;inset:0;z-index:500;background:var(--bg);display:none;flex-direction:column}
+#rv-overlay.open{display:flex;animation:su .3s ease}
+.rv-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--bord);flex-shrink:0}
+.rv-close-btn{width:32px;height:32px;border-radius:50%;background:var(--surf);border:1px solid var(--bord);color:var(--tx);font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.rv-title-center{font-size:13px;font-weight:700;color:var(--tx);flex:1;text-align:center;padding:0 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rv-progress{font-size:12px;font-weight:700;color:var(--c1);background:var(--c1-soft);border-radius:20px;padding:3px 10px;min-width:44px;text-align:center;flex-shrink:0}
+.rv-body{flex:1;overflow-y:auto;padding:18px 16px 24px;display:flex;flex-direction:column;gap:14px}
+.rv-section-chip{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--c1);padding:4px 12px;background:var(--c1-soft);border-radius:20px;align-self:flex-start}
+.rv-card{background:var(--card);border:1px solid var(--bord);border-radius:16px;overflow:hidden;min-height:150px}
+.rv-hidden-state{display:flex;flex-direction:column;align-items:center;gap:10px;padding:26px 20px;color:var(--mu);font-size:13px}
+.rv-eye{font-size:32px;opacity:.4}
+.rv-reveal-btn{padding:10px 26px;background:var(--c1);color:#fff;border:none;border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--fb);margin-top:4px}
+.rv-content-inner{padding:14px 14px 10px;font-size:13px;color:var(--tx);line-height:1.6}
+.rv-nav-row{display:flex;gap:8px}
+.rv-btn{flex:1;padding:12px;border-radius:12px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--fb);border:1.5px solid var(--bord);background:transparent;color:var(--tx);transition:all .15s}
+.rv-btn:disabled{opacity:.3;cursor:not-allowed}
+.rv-btn-next{background:var(--c1);border-color:var(--c1);color:#fff}
+.rv-btn-next:disabled{background:var(--surf);border-color:var(--bord);color:var(--mu)}
+.rv-done-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;padding:28px 16px;text-align:center}
+.rv-done-emoji{font-size:52px}
+.rv-done-h{font-size:18px;font-weight:800;color:var(--tx)}
+.rv-done-s{font-size:13px;color:var(--mu)}
+.rv-done-btns{display:flex;gap:8px;width:100%;max-width:320px}
+.rv-done-btn{flex:1;padding:12px;border-radius:12px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--fb);border:none;transition:all .15s}
+.rv-done-primary{background:var(--c1);color:#fff}
+.rv-done-sec{background:var(--surf);color:var(--tx);border:1px solid var(--bord)}
+
+/* ═══ INTERROGATION HERO CARD ═══ */
+.interro-hero-card{width:100%;background:linear-gradient(135deg,rgba(var(--c3-rgb),.08) 0%,var(--card) 60%);border:1.5px solid var(--bord);border-radius:16px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;text-align:left;font-family:var(--fb);color:var(--tx);transition:all .18s;-webkit-tap-highlight-color:transparent;box-sizing:border-box}
+.interro-hero-card:active{transform:scale(.98)}
+.interro-hero-left{display:flex;align-items:center;gap:12px}
+.interro-hero-icon{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#a855f7,#ec4899);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.interro-hero-title{font-size:14px;font-weight:700;color:var(--tx);margin-bottom:2px}
+.interro-hero-sub{font-size:11.5px;color:var(--mu);line-height:1.35}
+
+/* ═══ DEVOIRS URGENCE ═══ */
+.dv-urgency{font-size:9.5px;font-weight:800;padding:2px 7px;border-radius:20px;text-transform:uppercase;letter-spacing:.3px}
+.dv-u-red{background:rgba(239,68,68,.15);color:#ef4444}
+.dv-u-orange{background:rgba(249,115,22,.15);color:#f97316}
+
 </style>
 </head>
 <body>
@@ -2297,6 +2375,30 @@ button:active{opacity:.85}
       <button class="add-btn" onclick="openMo()">＋</button>
     </div>
     <input type="file" id="pronote-scan" accept="image/*" style="display:none" onchange="pronoteDevoir(event)">
+    <!-- EMPLOI DU TEMPS -->
+    <div class="edt-card" id="edt-card">
+      <div class="edt-header">
+        <span class="edt-title">📅 Emploi du temps</span>
+        <div style="display:flex;gap:5px;align-items:center">
+          <button class="edt-week-btn on" id="edt-wA" onclick="setEdtWeekManual('A')">Sem A</button>
+          <button class="edt-week-btn" id="edt-wB" onclick="setEdtWeekManual('B')">Sem B</button>
+          <button class="edt-icon-btn" onclick="openEdtEdit()" title="Modifier">✎</button>
+          <button class="edt-icon-btn" onclick="document.getElementById('edt-scan-input').click()" title="Photo">📸</button>
+          <input type="file" id="edt-scan-input" accept="image/*" style="display:none" onchange="scanEdtPhoto(event)">
+        </div>
+      </div>
+      <div class="edt-nav-row">
+        <button class="edt-nav-btn" onclick="edtNavDay(-1)">‹</button>
+        <div class="edt-day-info">
+          <div class="edt-day-name" id="edt-day-name">—</div>
+          <div class="edt-day-date" id="edt-day-date">—</div>
+        </div>
+        <button class="edt-nav-btn" onclick="edtNavDay(1)">›</button>
+      </div>
+      <div class="edt-slots-list" id="edt-slots-list"><div class="edt-empty-day">Aucun cours — ajoute ton emploi du temps ✎ ou scanne-le 📸</div></div>
+      <div class="edt-next-bar" id="edt-next-bar" style="display:none"></div>
+      <div class="edt-add-row"><button class="edt-add-btn" onclick="openEdtEdit()">＋ Ajouter des cours</button></div>
+    </div>
     <!-- Cercles actions rapides -->
     <div class="hscroll" style="margin-bottom:16px">
       <div class="hcircle" onclick="openMo()">
@@ -3408,6 +3510,18 @@ button:active{opacity:.85}
     </button>
 
 
+    <!-- INTERROGATION HERO -->
+    <button class="interro-hero-card" onclick="openInterro()" style="width:100%;border:none;margin-bottom:10px">
+      <div class="interro-hero-left">
+        <div class="interro-hero-icon">🎓</div>
+        <div>
+          <div class="interro-hero-title">Mode Interrogation IA</div>
+          <div class="interro-hero-sub">Le prof IA te pose des questions — choisis la matière et la difficulté</div>
+        </div>
+      </div>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </button>
+
     <!-- RÉVISION DU JOUR — apparaît si SRS dû -->
     <div class="srs-card" id="dash-srs-sec" style="display:none" onclick="goTo('flash')">
       <div class="srs-body">
@@ -3840,6 +3954,48 @@ button:active{opacity:.85}
   <div id="gen-fs-body"></div>
 </div>
 
+<!-- RÉVISION GUIDÉE -->
+<div id="rv-overlay">
+  <div class="rv-header">
+    <button class="rv-close-btn" onclick="closeRevision()">✕</button>
+    <div class="rv-title-center" id="rv-title">Révision guidée</div>
+    <div class="rv-progress" id="rv-progress">1/1</div>
+  </div>
+  <div class="rv-body" id="rv-body">
+    <div class="rv-section-chip" id="rv-section-chip">Section</div>
+    <div class="rv-card" id="rv-card">
+      <div class="rv-hidden-state" id="rv-hidden">
+        <div class="rv-eye">👁</div>
+        <div style="color:var(--mu);font-size:13px">Essaie de te souvenir de cette section...</div>
+        <button class="rv-reveal-btn" onclick="rvReveal()">Afficher le contenu</button>
+      </div>
+      <div class="rv-content-inner" id="rv-content" style="display:none"></div>
+    </div>
+    <div class="rv-nav-row">
+      <button class="rv-btn" id="rv-prev" onclick="rvPrev()" disabled>← Précédent</button>
+      <button class="rv-btn rv-btn-next" id="rv-next" onclick="rvNext()">Suivant →</button>
+    </div>
+    <div id="rv-test-zone" style="display:none"></div>
+  </div>
+</div>
+
+<!-- EDT EDIT MODAL -->
+<div id="edt-edit-modal" onclick="if(event.target===this)closeEdtEdit()">
+  <div class="edt-edit-box">
+    <div class="edt-edit-title">
+      <span>Modifier l'emploi du temps</span>
+      <button style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--mu)" onclick="closeEdtEdit()">✕</button>
+    </div>
+    <div style="font-size:11px;color:var(--mu);margin-bottom:12px;line-height:1.5">Format : une ligne par cours — <strong>8h Maths</strong> ou <strong>10h30 Physique-Chimie</strong><br>Sépare les cours par retour à la ligne.</div>
+    <div class="edt-edit-week-row">
+      <button class="edt-edit-week-btn on" id="eem-wA" onclick="edtEditSwitchWeek('A')">Semaine A</button>
+      <button class="edt-edit-week-btn" id="eem-wB" onclick="edtEditSwitchWeek('B')">Semaine B</button>
+    </div>
+    <div id="edt-edit-days"></div>
+    <button class="edt-save-btn" onclick="saveEdtEdit()">💾 Enregistrer</button>
+  </div>
+</div>
+
 <!-- TOOL MODALS -->
 <div id="tool-modal" onclick="if(event.target===this)closeTool()">
   <div id="tool-box">
@@ -4118,7 +4274,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   loadProfile();
   loadLibrary(); renderLibAll(); renderFlashLibSection();
   loadChatHistory(); loadSRS(); loadProgHistory();
-  loadFicheHistory(); loadFicheDesign();
+  loadFicheHistory(); loadFicheDesign(); initEdt();
   // Charger le ton sauvegardé
   try{const t=localStorage.getItem('sk_ton');if(t){sessionTon=t;const b=document.querySelector(`.ton-btn[data-ton="${t}"]`);if(b)setTon(t,b);}}catch(e){}
   setTimeout(updateMsgCounter, 100);
@@ -4237,6 +4393,292 @@ function loadTheme(){
   const t=localStorage.getItem('sk_theme')||'dark';
   document.documentElement.setAttribute('data-theme',t);
   document.getElementById('theme-btn').textContent=t==='dark'?'🌙':'☀️';
+}
+
+// ════════════════════════════════
+// EMPLOI DU TEMPS
+// ════════════════════════════════
+const EDT_DAYS=['Lundi','Mardi','Mercredi','Jeudi','Vendredi'];
+const EDT_COLORS={'Maths':'#6366f1','Français':'#ec4899','Histoire-Géo':'#f59e0b','SVT':'#10b981','Physique-Chimie':'#06b6d4','Anglais':'#3b82f6','Espagnol':'#f97316','NSI':'#8b5cf6','Philosophie':'#6b7280','SES':'#84cc16','EPS':'#22c55e','Arts':'#e879f9','Musique':'#a78bfa','Technologie':'#14b8a6'};
+let edtData={semAStart:null,weekA:{0:[],1:[],2:[],3:[],4:[]},weekB:{0:[],1:[],2:[],3:[],4:[]}};
+let edtOffset=0;
+let edtEditWeek='A';
+
+function initEdt(){
+  try{const s=localStorage.getItem('sk_edt');if(s)edtData=JSON.parse(s);}catch(e){}
+  renderEdtCard();
+}
+function saveEdt(){try{localStorage.setItem('sk_edt',JSON.stringify(edtData));}catch(e){}}
+
+function getWeekForDate(d){
+  if(!edtData.semAStart)return 'A';
+  const start=new Date(edtData.semAStart);
+  const target=new Date(d);
+  const jsDay=target.getDay();
+  const diffToMon=jsDay===0?-6:1-jsDay;
+  target.setDate(target.getDate()+diffToMon);
+  const weeks=Math.round((target-start)/(7*24*3600*1000));
+  return weeks%2===0?'A':'B';
+}
+
+function setEdtWeekManual(w){
+  if(!edtData.semAStart){
+    const now=new Date();
+    const jsDay=now.getDay();
+    const diffToMon=jsDay===0?-6:1-jsDay;
+    const mon=new Date(now);mon.setDate(mon.getDate()+diffToMon);
+    const monStr=mon.toISOString().split('T')[0];
+    if(w==='A'){edtData.semAStart=monStr;}
+    else{const prev=new Date(mon);prev.setDate(prev.getDate()-7);edtData.semAStart=prev.toISOString().split('T')[0];}
+    saveEdt();
+  }
+  document.getElementById('edt-wA').classList.toggle('on',w==='A');
+  document.getElementById('edt-wB').classList.toggle('on',w==='B');
+  renderEdtCard();
+}
+
+function edtNavDay(delta){
+  edtOffset+=delta;
+  renderEdtCard();
+}
+
+function renderEdtCard(){
+  const now=new Date();
+  const target=new Date(now);target.setDate(target.getDate()+edtOffset);
+  let jsDay=target.getDay();
+  if(jsDay===0){target.setDate(target.getDate()+1);edtOffset++;jsDay=1;}
+  if(jsDay===6){target.setDate(target.getDate()+2);edtOffset+=2;jsDay=1;}
+  const dayIdx=jsDay-1;
+  const week=getWeekForDate(target);
+  document.getElementById('edt-wA').classList.toggle('on',week==='A');
+  document.getElementById('edt-wB').classList.toggle('on',week==='B');
+  document.getElementById('edt-day-name').textContent=EDT_DAYS[dayIdx];
+  document.getElementById('edt-day-date').textContent=target.toLocaleDateString('fr-FR',{day:'numeric',month:'long'});
+  const slots=(edtData['week'+week]?.[dayIdx])||[];
+  const slotsList=document.getElementById('edt-slots-list');
+  const nowH=now.getHours()*60+now.getMinutes();
+  const isToday=edtOffset===0;
+  if(!slots.length){slotsList.innerHTML='<div class="edt-empty-day">Pas de cours ce jour — modifie ✎ ou scanne 📸</div>';document.getElementById('edt-next-bar').style.display='none';return;}
+  slotsList.innerHTML=slots.map(s=>{
+    const slotMin=parseSlotMin(s.h);
+    let cls='edt-slot';
+    if(isToday&&slotMin>=0){if(slotMin<=nowH&&nowH<slotMin+60)cls+=' edt-slot-current';else if(slotMin<nowH)cls+=' edt-slot-done';}
+    const col=EDT_COLORS[s.m]||'var(--c1)';
+    return '<div class="'+cls+'" style="border-left-color:'+col+'"><span class="edt-slot-h">'+esc(s.h||'')+'</span><span class="edt-slot-mat">'+esc(s.m)+'</span></div>';
+  }).join('');
+  const nextBar=document.getElementById('edt-next-bar');
+  const next=getNextCours();
+  if(next){nextBar.style.display='flex';nextBar.innerHTML='⏭ Prochain : <strong>'+esc(next.m)+'</strong>&nbsp;'+esc(next.day+(next.h?' à '+next.h:''));}
+  else{nextBar.style.display='none';}
+}
+
+function parseSlotMin(h){
+  if(!h)return -1;
+  const m=h.match(/(\d+)h?(?:(\d+))?/);
+  if(!m)return -1;
+  return parseInt(m[1])*60+(m[2]?parseInt(m[2]):0);
+}
+
+function getNextCours(){
+  const now=new Date();
+  const nowMin=now.getHours()*60+now.getMinutes();
+  for(let delta=0;delta<8;delta++){
+    const d=new Date(now);d.setDate(d.getDate()+delta);
+    const jsDay=d.getDay();
+    if(jsDay===0||jsDay===6)continue;
+    const dayIdx=jsDay-1;
+    const week=getWeekForDate(d);
+    const slots=(edtData['week'+week]?.[dayIdx])||[];
+    for(const s of slots){
+      const sm=parseSlotMin(s.h);
+      if(delta===0&&sm>=0&&sm<=nowMin)continue;
+      return{...s,day:EDT_DAYS[dayIdx]+(delta===0?' aujourd\'hui':delta===1?' demain':' '+EDT_DAYS[dayIdx])};
+    }
+  }
+  return null;
+}
+
+function getEdtContext(){
+  if(!edtData.semAStart)return '';
+  const now=new Date();
+  const lines=[];
+  for(let delta=0;delta<7;delta++){
+    const d=new Date(now);d.setDate(d.getDate()+delta);
+    const jsDay=d.getDay();
+    if(jsDay===0||jsDay===6)continue;
+    const dayIdx=jsDay-1;
+    const week=getWeekForDate(d);
+    const slots=(edtData['week'+week]?.[dayIdx])||[];
+    if(!slots.length)continue;
+    const dateStr=d.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'short'});
+    lines.push('• '+dateStr+' (Sem '+week+') : '+slots.map(s=>s.m+(s.h?' '+s.h:'')).join(', '));
+    if(lines.length>=4)break;
+  }
+  if(!lines.length)return '';
+  return '\nEMPLOI DU TEMPS (prochains jours) :\n'+lines.join('\n')+'\n';
+}
+
+function openEdtEdit(){
+  edtEditWeek='A';
+  document.getElementById('eem-wA').classList.add('on');
+  document.getElementById('eem-wB').classList.remove('on');
+  renderEdtEditDays();
+  document.getElementById('edt-edit-modal').classList.add('open');
+}
+function closeEdtEdit(){document.getElementById('edt-edit-modal').classList.remove('open');}
+function edtEditSwitchWeek(w){
+  edtEditWeek=w;
+  document.getElementById('eem-wA').classList.toggle('on',w==='A');
+  document.getElementById('eem-wB').classList.toggle('on',w==='B');
+  renderEdtEditDays();
+}
+function renderEdtEditDays(){
+  const key='week'+edtEditWeek;
+  const cont=document.getElementById('edt-edit-days');
+  cont.innerHTML=EDT_DAYS.map((day,i)=>{
+    const slots=(edtData[key]?.[i])||[];
+    const val=slots.map(s=>(s.h?s.h+' ':'')+s.m).join('\n');
+    return '<div class="edt-day-label">'+day+'</div><textarea class="edt-day-inp" id="edt-inp-'+i+'" placeholder="Ex: 8h Maths\n10h Français\n14h SVT">'+esc(val)+'</textarea>';
+  }).join('');
+}
+function saveEdtEdit(){
+  const key='week'+edtEditWeek;
+  if(!edtData[key])edtData[key]={};
+  EDT_DAYS.forEach((_,i)=>{
+    const v=document.getElementById('edt-inp-'+i)?.value||'';
+    edtData[key][i]=v.split('\n').map(l=>l.trim()).filter(Boolean).map(l=>{
+      const m=l.match(/^(\d+h?\d*)\s+(.+)$/);
+      return m?{h:m[1],m:m[2].trim()}:{h:'',m:l.trim()};
+    });
+  });
+  if(!edtData.semAStart){
+    const now=new Date();const jsDay=now.getDay();
+    const diffToMon=jsDay===0?-6:1-jsDay;
+    const mon=new Date(now);mon.setDate(mon.getDate()+diffToMon);
+    edtData.semAStart=(edtEditWeek==='A'?mon:new Date(mon.getTime()-7*24*3600*1000)).toISOString().split('T')[0];
+  }
+  saveEdt();
+  closeEdtEdit();
+  renderEdtCard();
+  toast('Emploi du temps mis à jour !');
+}
+
+async function scanEdtPhoto(event){
+  const file=event.target.files[0];if(!file)return;
+  event.target.value='';
+  toast('Analyse de la photo...');
+  const reader=new FileReader();
+  reader.onload=async function(e){
+    const b64=e.target.result.split(',')[1];
+    const mime=file.type;
+    try{
+      const result=await callAI({system:`Tu es un assistant qui extrait les emplois du temps scolaires depuis des photos. Réponds UNIQUEMENT avec du JSON valide, sans texte avant ou après.`,messages:[{role:'user',content:[{type:'image',source:{type:'base64',media_type:mime,data:b64}},{type:'text',text:'Extrait cet emploi du temps en JSON. Format EXACT :\n{"weekA":{"0":[{"h":"8h","m":"Maths"},{"h":"10h","m":"Français"}],"1":[...],"2":[...],"3":[...],"4":[...]},"weekB":{"0":[...],"1":[...],"2":[...],"3":[...],"4":[...]}}\nLes clés 0=Lundi,1=Mardi,2=Mercredi,3=Jeudi,4=Vendredi. Si pas de semaine B distincte, copie weekA dans weekB. Réponds SEULEMENT avec le JSON.'}]}],maxTokens:2000});
+      const jsonMatch=result.match(/\{[\s\S]*\}/);
+      if(!jsonMatch)throw new Error('JSON non trouvé');
+      const parsed=JSON.parse(jsonMatch[0]);
+      if(parsed.weekA)edtData.weekA=normalizeEdtWeek(parsed.weekA);
+      if(parsed.weekB)edtData.weekB=normalizeEdtWeek(parsed.weekB);
+      if(!edtData.semAStart){const now=new Date();const jsDay=now.getDay();const diff=jsDay===0?-6:1-jsDay;const mon=new Date(now);mon.setDate(mon.getDate()+diff);edtData.semAStart=mon.toISOString().split('T')[0];}
+      saveEdt();renderEdtCard();
+      toast('Emploi du temps importé !');
+    }catch(err){toast('Impossible de lire la photo. Saisis manuellement ✎');}
+  };
+  reader.readAsDataURL(file);
+}
+function normalizeEdtWeek(w){
+  const out={};
+  for(let i=0;i<5;i++){
+    const key=String(i);
+    const arr=w[key]||w[i]||[];
+    out[i]=Array.isArray(arr)?arr.map(s=>typeof s==='string'?{h:'',m:s}:s):[];
+  }
+  return out;
+}
+
+// ════════════════════════════════
+// RÉVISION GUIDÉE
+// ════════════════════════════════
+let rvSections=[];
+let rvIdx=0;
+let rvRevealed=false;
+
+function launchRevision(fid){
+  const fd=ficheReg[fid];if(!fd)return;
+  const raw=fd.raw||'';
+  rvSections=parseFicheSectionsForRv(raw);
+  if(!rvSections.length){toast('Aucune section à réviser');return;}
+  rvIdx=0;rvRevealed=false;
+  const titleMatch=raw.match(/TITRE:([^\n]+)/);
+  document.getElementById('rv-title').textContent=titleMatch?titleMatch[1].trim():'Révision guidée';
+  document.getElementById('rv-overlay').classList.add('open');
+  document.body.style.overflow='hidden';
+  rvRender();
+}
+function parseFicheSectionsForRv(raw){
+  const body=raw.replace(/[\s\S]*##FICHE##/,'').replace(/##FINFICHE##[\s\S]*/,'');
+  const lines=body.split('\n');
+  const sections=[];let cur=null;
+  for(const line of lines){
+    if(line.startsWith('TITRE:')||line.startsWith('NIVEAU:')||line.startsWith('MATIERE:'))continue;
+    if(line.startsWith('SECTION:')){
+      if(cur&&cur.content.trim())sections.push(cur);
+      cur={name:line.replace('SECTION:','').trim(),content:'',isRetenir:false};
+    }else if(line.startsWith('RETENIR:')){
+      if(cur&&cur.content.trim())sections.push(cur);
+      cur={name:'★ À retenir',content:'',isRetenir:true};
+    }else if(line.startsWith('MINITEST:')){
+      if(cur&&cur.content.trim())sections.push(cur);
+      cur=null;
+    }else if(cur){cur.content+=line+'\n';}
+  }
+  if(cur&&cur.content.trim())sections.push(cur);
+  return sections;
+}
+function rvRender(){
+  const sec=rvSections[rvIdx];if(!sec)return;
+  document.getElementById('rv-progress').textContent=(rvIdx+1)+'/'+rvSections.length;
+  document.getElementById('rv-section-chip').textContent=sec.name;
+  document.getElementById('rv-hidden').style.display=rvRevealed?'none':'flex';
+  const cont=document.getElementById('rv-content');
+  if(rvRevealed){
+    cont.style.display='block';
+    cont.innerHTML=rC(sec.content);
+  }else{cont.style.display='none';}
+  document.getElementById('rv-prev').disabled=rvIdx===0;
+  const isLast=rvIdx===rvSections.length-1;
+  const nextBtn=document.getElementById('rv-next');
+  nextBtn.textContent=isLast?'Terminer ✓':'Suivant →';
+  nextBtn.disabled=false;
+}
+function rvReveal(){rvRevealed=true;rvRender();}
+function rvNext(){
+  if(rvIdx>=rvSections.length-1){rvFinish();return;}
+  rvIdx++;rvRevealed=false;rvRender();
+  document.getElementById('rv-body').scrollTop=0;
+}
+function rvPrev(){
+  if(rvIdx<=0)return;
+  rvIdx--;rvRevealed=false;rvRender();
+  document.getElementById('rv-body').scrollTop=0;
+}
+function rvFinish(){
+  document.getElementById('rv-section-chip').style.display='none';
+  document.getElementById('rv-card').innerHTML='<div class="rv-done-wrap"><div class="rv-done-emoji">🎉</div><div class="rv-done-h">Révision terminée !</div><div class="rv-done-s">Tu as parcouru toutes les sections de cette fiche.</div><div class="rv-done-btns"><button class="rv-done-btn rv-done-primary" onclick="rvRestart()">🔄 Recommencer</button><button class="rv-done-btn rv-done-sec" onclick="closeRevision()">Fermer</button></div></div>';
+  document.getElementById('rv-nav-row')||document.querySelector('.rv-nav-row')&&(document.querySelector('.rv-nav-row').style.display='none');
+  document.getElementById('rv-prev').style.display='none';
+  document.getElementById('rv-next').style.display='none';
+}
+function rvRestart(){
+  rvIdx=0;rvRevealed=false;
+  document.getElementById('rv-section-chip').style.display='';
+  document.getElementById('rv-prev').style.display='';
+  document.getElementById('rv-next').style.display='';
+  document.getElementById('rv-card').innerHTML='<div class="rv-hidden-state" id="rv-hidden"><div class="rv-eye">👁</div><div style="color:var(--mu);font-size:13px">Essaie de te souvenir de cette section...</div><button class="rv-reveal-btn" onclick="rvReveal()">Afficher le contenu</button></div><div class="rv-content-inner" id="rv-content" style="display:none"></div>';
+  rvRender();
+}
+function closeRevision(){
+  document.getElementById('rv-overlay').classList.remove('open');
+  document.body.style.overflow='';
 }
 
 // ════════════════════════════════
@@ -4462,8 +4904,9 @@ Identifie la matière du sujet et applique les règles :
 function buildSys(longueur,mat){longueur=longueur||'AUTO';
   const lv=getLevel();
   const matInstruct=_buildMatInstruct(mat);
+  const edtCtx=getEdtContext();
   return `Tu es ScolarIA — un assistant scolaire pour collégiens et lycéens français.
-NIVEAU : ${lv||'non précisé'}. ADAPTATION : ${getLvG(lv)}
+NIVEAU : ${lv||'non précisé'}. ADAPTATION : ${getLvG(lv)}${edtCtx?'\n'+edtCtx:''}
 
 ━━━ QUI TU ES ━━━
 Tu parles comme un vrai humain qui s'y connaît. Pas un bot. Pas un prof robotique. Tu réfléchis vraiment à ce que l'élève dit, et tu réponds à ÇA précisément — pas à une version générique de sa question.
@@ -5856,9 +6299,9 @@ function buildFicheHTML(content,withActions){
   if(withActions)acts=`<div class="fiche-actions">
     <button class="fa-btn fa-lib" onclick="saveFicheLib('${fid}')">💾 Sauver</button>
     <button class="fa-btn fa-fav" id="fa-fav-${fid}" onclick="saveFicheLibFav('${fid}')">☆ Favori</button>
+    <button class="fa-btn fa-quiz" onclick="launchRevision('${fid}')" title="Révision guidée section par section">📖 Réviser</button>
     <button class="fa-btn fa-quiz" onclick="startQuizFromFiche('${fid}')">🧠 Quiz</button>
     <button class="fa-btn fa-icon" onclick="saveFicheImg('${fid}')" title="Télécharger en image">📸</button>
-    <button class="fa-btn fa-icon" onclick="shareFicheURL('${fid}')" title="Copier le lien">🔗</button>
   </div>`;
   const dCls=ficheDesign&&ficheDesign!=='classic'?' fwrap-'+ficheDesign:'';
   // Désactive le gradient par-matière si un style alternatif est choisi (le CSS prend la main)

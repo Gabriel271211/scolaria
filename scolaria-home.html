@@ -4613,19 +4613,23 @@ function saveEdtEdit(){
   EDT_DAYS.forEach((_,i)=>{
     const v=document.getElementById('edt-inp-'+i)?.value||'';
     edtData[key][i]=v.split('\n').map(l=>l.trim()).filter(Boolean).map(l=>{
-      const m=l.match(/^(\d+h?\d*)\s+(.+)$/);
-      return m?{h:m[1],m:m[2].trim()}:{h:'',m:l.trim()};
+      const m=l.match(/^(\d+[h:]\d*|\d+)\s+(.+)$/);
+      return m?{h:m[1].replace(':','h'),m:m[2].trim()}:{h:'',m:l.trim()};
     });
   });
-  if(!edtData.semAStart){
-    const now=new Date();const jsDay=now.getDay();
-    const diffToMon=jsDay===0?-6:1-jsDay;
-    const mon=new Date(now);mon.setDate(mon.getDate()+diffToMon);
-    edtData.semAStart=(edtEditWeek==='A'?mon:new Date(mon.getTime()-7*24*3600*1000)).toISOString().split('T')[0];
+  // Toujours recalculer semAStart pour que la semaine affichée = semaine éditée
+  const now=new Date();
+  const disp=new Date(now);disp.setDate(disp.getDate()+edtOffset);
+  const dj=disp.getDay();
+  const dm=dj===0?-6:1-dj;
+  const mon=new Date(disp);mon.setDate(disp.getDate()+dm);
+  if(edtEditWeek==='A'){
+    edtData.semAStart=mon.toISOString().split('T')[0];
+  }else{
+    const prev=new Date(mon);prev.setDate(mon.getDate()-7);
+    edtData.semAStart=prev.toISOString().split('T')[0];
   }
-  saveEdt();
-  closeEdtEdit();
-  renderEdtCard();
+  saveEdt();closeEdtEdit();renderEdtCard();
   toast('Emploi du temps mis à jour !');
 }
 

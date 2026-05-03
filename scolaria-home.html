@@ -2077,12 +2077,16 @@ button:active{opacity:.85}
 .edt-day-date{font-size:11px;color:var(--mu);margin-top:1px}
 /* Grille horaire style Pronote */
 .edt-grid{display:flex;gap:0;position:relative;overflow:hidden}
-.edt-hours-col{display:flex;flex-direction:column;width:34px;flex-shrink:0}
-.edt-hour-lbl{font-size:9.5px;font-weight:600;color:var(--mu);font-family:var(--fb);display:flex;align-items:flex-start;padding-top:0;box-sizing:border-box;flex-shrink:0}
+.edt-hours-col{position:relative;width:42px;flex-shrink:0}
+.edt-hour-lbl{position:absolute;left:0;right:4px;font-size:10px;font-weight:700;color:var(--mu);font-family:var(--fb);transform:translateY(-6px);text-align:right;line-height:1}
 .edt-slots-col{flex:1;position:relative}
-.edt-hour-line{position:absolute;left:0;right:0;border-top:1px solid var(--bord);z-index:0}
+.edt-hour-line{position:absolute;left:0;right:0;border-top:1px dashed var(--bord);z-index:0}
 .edt-hour-line:first-child{border-top:none}
 .edt-block{position:absolute;left:2px;right:2px;border-radius:8px;padding:5px 8px;overflow:hidden;z-index:1;display:flex;flex-direction:column;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.15)}
+.edt-pause{position:absolute;left:2px;right:2px;border-radius:8px;padding:4px 8px;overflow:hidden;z-index:1;display:flex;align-items:center;justify-content:space-between;font-size:11px;font-weight:700;border:1px dashed var(--bord)}
+.edt-pause-h{font-size:10px;font-weight:600;opacity:.7;font-family:var(--fb)}
+.edt-pause-cantine{background:repeating-linear-gradient(45deg,rgba(245,158,11,.12),rgba(245,158,11,.12) 6px,rgba(245,158,11,.05) 6px,rgba(245,158,11,.05) 12px);color:#b45309;border-color:rgba(245,158,11,.45)}
+.edt-pause-recre{background:repeating-linear-gradient(45deg,rgba(34,197,94,.10),rgba(34,197,94,.10) 6px,rgba(34,197,94,.04) 6px,rgba(34,197,94,.04) 12px);color:#15803d;border-color:rgba(34,197,94,.4)}
 .edt-block-mat{font-size:12px;font-weight:800;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.2}
 .edt-block-h{font-size:10px;color:rgba(255,255,255,.85);margin-top:2px;font-weight:600}
 .edt-block-done{filter:saturate(.4);opacity:.55}
@@ -3807,6 +3811,7 @@ button:active{opacity:.85}
         <div class="vq-transcript" id="vq-transcript">Appuie sur le micro et réponds à voix haute</div>
         <div class="vq-feedback" id="vq-feedback"></div>
         <div style="display:flex;gap:8px;margin-top:14px">
+          <button onclick="vqSendAnswer()" id="vq-send-btn" class="modal-primary-btn" style="flex:1;display:none">Envoyer ma réponse</button>
           <button onclick="vqNext()" id="vq-next-btn" class="modal-primary-btn" style="flex:1;display:none">Suivant</button>
           <button onclick="vqSkip()" class="modal-secondary-btn" style="flex:0 0 auto;padding:10px 18px">Passer</button>
         </div>
@@ -4481,56 +4486,91 @@ function renderEdtCard(){
     return;
   }
 
-  // Calculer les bornes de la grille — toujours alignées sur des heures entières
-  const slotMins=slots.map(s=>parseSlotMin(s.h)).filter(m=>m>=0);
-  const durMins=slots.map(s=>(s.dur||1)*60);
-  const gridStartH=slotMins.length?Math.max(0,Math.floor(Math.min(...slotMins)/60)-1):8;
-  const gridEndH=slotMins.length?Math.ceil(Math.max(...slotMins.map((m,i)=>m+durMins[i]))/60)+1:18;
-  const gridStart=gridStartH*60; // en minutes, aligné heure entière
-  const gridEnd=gridEndH*60;
-  const PX_H=60; // pixels par heure
+  // Trier les cours par heure de début et calculer leurs bornes
+  const validSlots=slots.map(s=>{
+    const start=parseSlotMin(s.h);
+    return start<0?null:{...s,_start:start,_end:getSlotEnd(s)};
+  }).filter(Boolean).sort((a,b)=>a._start-b._start);
 
-  // Colonne des heures
-  let hoursHTML='';
-  for(let h=gridStartH;h<=gridEndH;h++){
-    hoursHTML+='<div class="edt-hour-lbl" style="height:'+PX_H+'px">'+h+'h</div>';
+  if(!validSlots.length){
+    cont.innerHTML='<div class="edt-empty-day">Pas de cours ce jour — modifie ✎ ou scanne 📸</div>';
+    document.getElementById('edt-next-bar').style.display='none';
+    return;
   }
 
-  // Lignes horizontales
-  let linesHTML='';
-  for(let h=gridStartH;h<=gridEndH;h++){
-    const top=(h-gridStartH)*PX_H;
+  // Construire les segments : cours + pauses détectées (récré >=15min, cantine si autour de midi)
+  const segments=[];
+  for(let i=0;i<validSlots.length;i++){
+    const cur=validSlots[i];
+    if(i>0){
+      const prev=validSlots[i-1];
+      const gap=cur._start-prev._end;
+      if(gap>=15){
+        // Cantine = pause longue (>=30min) qui chevauche la plage 11h–14h
+        const isCantine=gap>=30&&prev._end<=14*60&&cur._start>=11*60+30;
+        segments.push({type:isCantine?'cantine':'recre',start:prev._end,end:cur._start});
+      }
+    }
+    segments.push({type:'cours',slot:cur,start:cur._start,end:cur._end});
+  }
+
+  // Bornes de grille basées sur les vraies heures (pas arrondies)
+  const gridStart=segments[0].start;
+  const gridEnd=segments[segments.length-1].end;
+  const PX_PER_MIN=1.1; // ~66px par heure
+  const totalH=(gridEnd-gridStart)*PX_PER_MIN;
+
+  // Récolter les heures uniques affichées à gauche : début de chaque segment + fin du dernier
+  const timeMarks=[];
+  const seen={};
+  segments.forEach(seg=>{
+    if(!seen[seg.start]){seen[seg.start]=1;timeMarks.push(seg.start);}
+  });
+  if(!seen[gridEnd]){timeMarks.push(gridEnd);}
+
+  // Colonne des heures réelles + lignes horizontales associées
+  let hoursHTML='',linesHTML='';
+  timeMarks.forEach(t=>{
+    const top=(t-gridStart)*PX_PER_MIN;
+    hoursHTML+='<div class="edt-hour-lbl" style="top:'+top+'px">'+fmtMin(t)+'</div>';
     linesHTML+='<div class="edt-hour-line" style="top:'+top+'px"></div>';
-  }
+  });
 
-  // Blocs de cours
+  // Blocs (cours + cantine + récré)
   let blocksHTML='';
-  slots.forEach(function(s){
-    const sm=parseSlotMin(s.h);
-    if(sm<0)return;
-    const dur=(s.dur||1)*60;
-    const top=(sm-gridStart)/60*PX_H;
-    const height=dur/60*PX_H-4;
-    const col=EDT_COLORS[s.m]||'#6366f1';
-    const isDone=isToday&&(sm+dur)<=nowMin;
-    const isCurrent=isToday&&sm<=nowMin&&nowMin<sm+dur;
-    const doneCls=isDone?' edt-block-done':'';
-    const glow=isCurrent?';box-shadow:0 0 0 2px #fff,0 0 0 4px '+col:'';
-    blocksHTML+='<div class="edt-block'+doneCls+'" style="top:'+top+'px;height:'+height+'px;background:'+col+glow+'">';
-    blocksHTML+='<div class="edt-block-mat">'+esc(s.m)+'</div>';
-    if(s.h)blocksHTML+='<div class="edt-block-h">'+esc(s.h)+(s.salle?' · '+esc(s.salle):'')+'</div>';
-    blocksHTML+='</div>';
+  segments.forEach(seg=>{
+    const top=(seg.start-gridStart)*PX_PER_MIN;
+    const height=Math.max(22,(seg.end-seg.start)*PX_PER_MIN-3);
+    if(seg.type==='cours'){
+      const s=seg.slot;
+      const col=EDT_COLORS[s.m]||'#6366f1';
+      const isDone=isToday&&seg.end<=nowMin;
+      const isCurrent=isToday&&seg.start<=nowMin&&nowMin<seg.end;
+      const doneCls=isDone?' edt-block-done':'';
+      const glow=isCurrent?';box-shadow:0 0 0 2px #fff,0 0 0 4px '+col:'';
+      blocksHTML+='<div class="edt-block'+doneCls+'" style="top:'+top+'px;height:'+height+'px;background:'+col+glow+'">';
+      blocksHTML+='<div class="edt-block-mat">'+esc(s.m)+'</div>';
+      blocksHTML+='<div class="edt-block-h">'+fmtMin(seg.start)+'–'+fmtMin(seg.end)+(s.salle?' · '+esc(s.salle):'')+'</div>';
+      blocksHTML+='</div>';
+    }else if(seg.type==='cantine'){
+      blocksHTML+='<div class="edt-pause edt-pause-cantine" style="top:'+top+'px;height:'+height+'px">';
+      blocksHTML+='<span>🍽 Cantine</span><span class="edt-pause-h">'+fmtMin(seg.start)+'–'+fmtMin(seg.end)+'</span>';
+      blocksHTML+='</div>';
+    }else{
+      blocksHTML+='<div class="edt-pause edt-pause-recre" style="top:'+top+'px;height:'+height+'px">';
+      blocksHTML+='<span>☕ Récré</span><span class="edt-pause-h">'+fmtMin(seg.start)+'–'+fmtMin(seg.end)+'</span>';
+      blocksHTML+='</div>';
+    }
   });
 
   // Indicateur heure actuelle
   let nowLineHTML='';
   if(isToday&&nowMin>=gridStart&&nowMin<=gridEnd){
-    const nowTop=(nowMin-gridStart)/60*PX_H;
+    const nowTop=(nowMin-gridStart)*PX_PER_MIN;
     nowLineHTML='<div class="edt-now-line" style="top:'+nowTop+'px"></div>';
   }
 
-  const totalH=(gridEndH-gridStartH)*PX_H;
-  cont.innerHTML='<div class="edt-grid"><div class="edt-hours-col">'+hoursHTML+'</div><div class="edt-slots-col" style="min-height:'+totalH+'px">'+linesHTML+blocksHTML+nowLineHTML+'</div></div>';
+  cont.innerHTML='<div class="edt-grid"><div class="edt-hours-col" style="min-height:'+totalH+'px">'+hoursHTML+'</div><div class="edt-slots-col" style="min-height:'+totalH+'px">'+linesHTML+blocksHTML+nowLineHTML+'</div></div>';
 
   const nextBar=document.getElementById('edt-next-bar');
   const next=getNextCours();
@@ -4540,9 +4580,21 @@ function renderEdtCard(){
 
 function parseSlotMin(h){
   if(!h)return -1;
-  const m=h.match(/(\d+)h?(?:(\d+))?/);
+  const m=String(h).match(/(\d+)[h:H]?(\d+)?/);
   if(!m)return -1;
   return parseInt(m[1])*60+(m[2]?parseInt(m[2]):0);
+}
+function getSlotEnd(s){
+  const start=parseSlotMin(s.h);
+  if(start<0)return -1;
+  const e=parseSlotMin(s.e);
+  if(e>start)return e;
+  if(s.dur)return start+Math.round(s.dur*60);
+  return start+55;
+}
+function fmtMin(min){
+  const h=Math.floor(min/60),m=min%60;
+  return h+'h'+(m<10?'0':'')+m;
 }
 
 function getNextCours(){
@@ -4646,7 +4698,7 @@ async function scanEdtPhoto(event){
         system:'Tu es un assistant qui lit des emplois du temps scolaires. Réponds UNIQUEMENT avec du JSON brut, sans markdown, sans ```json, sans texte autour.',
         messages:[{role:'user',content:[
           {type:'image',source:{type:'base64',media_type:mime,data:b64}},
-          {type:'text',text:'Lis cet emploi du temps et renvoie un JSON avec ce format EXACT (remplace les exemples par le vrai contenu) :\n{\n  "weekA": {\n    "Lundi": [{"h":"8h00","m":"Maths"},{"h":"10h00","m":"Français"}],\n    "Mardi": [...],\n    "Mercredi": [...],\n    "Jeudi": [...],\n    "Vendredi": [...]\n  },\n  "weekB": {\n    "Lundi": [...],\n    ...\n  }\n}\nSi la photo ne montre qu\'une seule semaine, mets le même contenu dans weekA et weekB.\nRéponds UNIQUEMENT avec le JSON, rien d\'autre.'}
+          {type:'text',text:'Lis cet emploi du temps scolaire et renvoie un JSON avec ce format EXACT :\n{\n  "weekA": {\n    "Lundi": [{"h":"8h00","e":"8h55","m":"Maths","salle":"113"}, {"h":"8h55","e":"9h50","m":"Français","salle":"106"}],\n    "Mardi": [...],\n    "Mercredi": [...],\n    "Jeudi": [...],\n    "Vendredi": [...]\n  },\n  "weekB": {\n    "Lundi": [...],\n    ...\n  }\n}\n\nRÈGLES IMPORTANTES :\n- "h" = heure de début EXACTE telle qu\'écrite sur la photo (ex: "8h00", "8h55", "9h50", "10h05", "11h00", "14h00")\n- "e" = heure de fin EXACTE de ce même cours (regarde la prochaine ligne horaire ou la durée du bloc)\n- "m" = matière (nom court, ex: "Maths", "Français", "Histoire-Géo", "SVT", "Physique-Chimie", "Anglais", "EPS", "Arts", "Musique", "Technologie")\n- "salle" = numéro/nom de la salle si visible (ex: "113", "207", "Musique"), sinon ""\n- N\'INCLUS PAS les pauses, récrés ou cantine — UNIQUEMENT les vrais cours\n- Si une case est vide à un horaire (ex: jeudi à 8h), n\'invente rien : passe au cours suivant\n- Si la photo montre une seule semaine, mets le même contenu dans weekA et weekB\n- Si tu vois Semestre 1 / Semestre 2 dans une même case, prends Semestre 1 pour weekA et Semestre 2 pour weekB\n\nRéponds UNIQUEMENT avec le JSON brut, rien d\'autre.'}
         ]}],
         maxTokens:3000
       });
@@ -4688,11 +4740,13 @@ function normalizeEdtWeek(w){
     const arr=w[key];
     if(!Array.isArray(arr))continue;
     out[idx]=arr.map(s=>{
-      if(typeof s==='string')return{h:'',m:s};
+      if(typeof s==='string')return{h:'',e:'',m:s,salle:''};
       const h=s.h||s.heure||s.time||s.debut||'';
+      const e=s.e||s.fin||s.end||s.endTime||'';
       const m=s.m||s.matiere||s.subject||s.nom||s.name||s.course||'';
       const salle=s.salle||s.room||s.classe||'';
-      return{h:String(h).replace(':','h').replace('H','h'),m:String(m),salle:salle?String(salle):''};
+      const fmt=v=>String(v).replace(':','h').replace('H','h').trim();
+      return{h:fmt(h),e:fmt(e),m:String(m),salle:salle?String(salle):''};
     }).filter(s=>s.m);
   }
   return out;
@@ -9253,14 +9307,17 @@ function soundTick(){if(!_soundEnabled())return;playTone(1000,.04,'sine',.04);}
 // VOICE 🎤
 // ════════════════════════════════
 let voiceRecog=null,isListening=false;
+let voiceManualStop=false;
+let voiceAccum=''; // transcript accumulé entre les segments
 function toggleVoice(){
   const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
   if(!SR){toast('🎤 Micro : ouvre le fichier via un serveur ou Chrome mobile');return;}
-  if(isListening){voiceRecog?.stop();return;}
-  // Demander permission micro
+  if(isListening){voiceManualStop=true;try{voiceRecog?.stop();}catch(e){}return;}
+  voiceAccum='';
+  voiceManualStop=false;
   if(navigator.mediaDevices?.getUserMedia){
     navigator.mediaDevices.getUserMedia({audio:true}).then(stream=>{
-      stream.getTracks().forEach(t=>t.stop()); // juste pour vérifier la permission
+      stream.getTracks().forEach(t=>t.stop());
       _startVoice(SR);
     }).catch(()=>{toast('🎤 Autorise le micro dans les paramètres du navigateur');});
   } else {
@@ -9268,19 +9325,20 @@ function toggleVoice(){
   }
 }
 function _startVoice(SR){
+  if(voiceManualStop)return;
   voiceRecog=new SR();
   voiceRecog.lang='fr-FR';
-  voiceRecog.continuous=false;
+  voiceRecog.continuous=false; // false + restart manuel = plus fiable sur Chrome Android
   voiceRecog.interimResults=true;
   voiceRecog.maxAlternatives=1;
-  let finalTranscript='';
+  let segFinal='';
   const btn=document.getElementById('voice-btn');
   const inp=document.getElementById('ci');
   voiceRecog.onstart=()=>{
-    isListening=true;finalTranscript='';
+    isListening=true;segFinal='';
     btn.classList.add('listening');btn.textContent='🔴';
-    inp.placeholder='🎤 Parle maintenant...';
-    toast('🎤 Écoute en cours...',3000);
+    if(!voiceAccum)inp.placeholder='🎤 Parle... (reclique pour arrêter)';
+    if(!voiceAccum)toast('🎤 Écoute — reclique le micro pour arrêter',3000);
   };
   voiceRecog.onresult=e=>{
     let interim='',final='';
@@ -9288,30 +9346,34 @@ function _startVoice(SR){
       if(e.results[i].isFinal)final+=e.results[i][0].transcript;
       else interim+=e.results[i][0].transcript;
     }
-    if(final)finalTranscript+=final;
-    inp.value=(finalTranscript+interim).trim();
+    if(final)segFinal+=final;
+    inp.value=(voiceAccum+(voiceAccum&&(segFinal||interim)?' ':'')+segFinal+interim).trim();
     ar(inp);
   };
   voiceRecog.onend=()=>{
+    // Fusionner le segment dans l'accumulateur
+    if(segFinal){
+      voiceAccum=(voiceAccum+(voiceAccum?' ':'')+segFinal).trim();
+      inp.value=voiceAccum;ar(inp);
+    }
+    if(!voiceManualStop&&isListening){
+      // Relancer avec un nouvel objet SR après une courte pause
+      setTimeout(()=>{if(!voiceManualStop)_startVoice(SR);},120);
+      return;
+    }
     isListening=false;
     btn.classList.remove('listening');btn.textContent='🎤';
     inp.placeholder='Pose ta question ou envoie une photo...';
-    if(finalTranscript.trim()){
-      inp.value=finalTranscript.trim();
-      ar(inp);
-      toast('✅ Message dicté !');
-    }
+    if(voiceAccum.trim()){inp.value=voiceAccum.trim();ar(inp);toast('✅ Texte dicté — appuie sur Envoyer');}
+    voiceAccum='';
   };
   voiceRecog.onerror=ev=>{
-    isListening=false;
+    if(ev.error==='no-speech'||ev.error==='aborted')return; // onend relancera
+    voiceManualStop=true;isListening=false;
     btn.classList.remove('listening');btn.textContent='🎤';
-    const msgs={
-      'not-allowed':'Autorise le micro dans Chrome → Paramètres du site',
-      'no-speech':'Aucune voix détectée, réessaie',
-      'network':'Problème réseau pour la reconnaissance vocale',
-      'aborted':'Micro arrêté'
-    };
+    const msgs={'not-allowed':'Autorise le micro dans Chrome → Paramètres du site','network':'Problème réseau'};
     toast('🎤 '+(msgs[ev.error]||'Erreur micro: '+ev.error));
+    voiceAccum='';
   };
   try{voiceRecog.start();}catch(e){toast('🎤 Erreur démarrage micro');}
 }
@@ -10040,61 +10102,100 @@ function closeVocalQuiz(){
   document.getElementById('vq-modal').style.display='none';
   stopVocalListening();
 }
+let vqManualStop=false;
+let vqCurrentAnswer=''; // accumulateur entre les segments
 function renderVQ(){
   if(vqIdx>=vqCards.length){
     document.getElementById('vq-question').textContent='🎉 Quiz terminé ! '+vqOk+'/'+vqCards.length+' correctes';
     document.getElementById('vq-mic-btn').style.display='none';
+    document.getElementById('vq-send-btn').style.display='none';
     document.getElementById('vq-transcript').textContent='';
     document.getElementById('vq-prog').textContent='';
     soundSuccess();launchConfetti();
     return;
   }
   const card=vqCards[vqIdx];
+  vqCurrentAnswer='';
+  vqManualStop=false;
   document.getElementById('vq-question').textContent=card.q;
   document.getElementById('vq-transcript').textContent='Appuie sur le micro et réponds à voix haute';
   document.getElementById('vq-feedback').style.display='none';
   document.getElementById('vq-feedback').className='vq-feedback';
   document.getElementById('vq-next-btn').style.display='none';
+  document.getElementById('vq-send-btn').style.display='none';
   document.getElementById('vq-mic-btn').style.display='flex';
   document.getElementById('vq-prog').textContent=(vqIdx+1)+' / '+vqCards.length+' — ✅ '+vqOk;
 }
 function toggleVocalAnswer(){
   if(vqListening){stopVocalListening();return;}
+  // Redémarrage : réinitialiser l'accumulateur si on repart de zéro
+  vqCurrentAnswer='';
+  vqManualStop=false;
   startVocalListening();
 }
 function startVocalListening(){
+  if(vqManualStop)return;
   const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
   if(!SR){toast('❌ Reconnaissance vocale non supportée sur ce navigateur');return;}
   vqSpeech=new SR();
   vqSpeech.lang='fr-FR';
-  vqSpeech.continuous=false;
+  vqSpeech.continuous=false; // false + restart manuel = plus fiable sur Chrome Android
   vqSpeech.interimResults=true;
+  let segFinal='';
   vqSpeech.onstart=()=>{
-    vqListening=true;
+    vqListening=true;segFinal='';
     document.getElementById('vq-mic-btn').classList.add('listening');
-    document.getElementById('vq-transcript').textContent='Écoute...';
+    if(!vqCurrentAnswer)
+      document.getElementById('vq-transcript').textContent='🎤 Parle... (reclique le micro pour arrêter)';
   };
   vqSpeech.onresult=e=>{
-    const t=Array.from(e.results).map(r=>r[0].transcript).join('');
-    document.getElementById('vq-transcript').textContent=t;
+    let interim='',final='';
+    for(let i=e.resultIndex;i<e.results.length;i++){
+      if(e.results[i].isFinal)final+=e.results[i][0].transcript;
+      else interim+=e.results[i][0].transcript;
+    }
+    if(final)segFinal+=final;
+    const shown=(vqCurrentAnswer+(vqCurrentAnswer&&(segFinal||interim)?' ':'')+segFinal+interim).trim();
+    document.getElementById('vq-transcript').textContent=shown||'🎤 Parle...';
   };
   vqSpeech.onend=()=>{
+    // Fusionner le segment dans l'accumulateur global
+    if(segFinal){
+      vqCurrentAnswer=(vqCurrentAnswer+(vqCurrentAnswer?' ':'')+segFinal).trim();
+      document.getElementById('vq-transcript').textContent=vqCurrentAnswer;
+    }
+    if(!vqManualStop&&vqListening){
+      // Relancer avec un nouvel objet SR — évite l'erreur InvalidStateError de Chrome
+      setTimeout(()=>{if(!vqManualStop)startVocalListening();},120);
+      return;
+    }
     vqListening=false;
     document.getElementById('vq-mic-btn').classList.remove('listening');
-    const t=document.getElementById('vq-transcript').textContent;
-    if(t&&t!=='Écoute...')checkVocalAnswer(t);
+    if(vqCurrentAnswer.trim()){
+      document.getElementById('vq-send-btn').style.display='block';
+    }
   };
-  vqSpeech.onerror=()=>{
-    vqListening=false;
+  vqSpeech.onerror=ev=>{
+    if(ev.error==='no-speech'||ev.error==='aborted')return; // onend relancera
+    vqManualStop=true;vqListening=false;
     document.getElementById('vq-mic-btn').classList.remove('listening');
-    toast('❌ Erreur micro. Vérifie les permissions.');
+    toast('❌ Erreur micro : '+ev.error);
   };
   try{vqSpeech.start();}catch(e){toast('❌ Micro non disponible');}
 }
 function stopVocalListening(){
+  vqManualStop=true;
   vqListening=false;
   try{vqSpeech?.stop();}catch(e){}
   document.getElementById('vq-mic-btn').classList.remove('listening');
+}
+function vqSendAnswer(){
+  const t=(vqCurrentAnswer||document.getElementById('vq-transcript').textContent||'').trim();
+  if(!t||t.startsWith('🎤')||t.startsWith('Appuie')){toast('🎤 Dicte d\'abord ta réponse');return;}
+  vqCurrentAnswer=''; // vider avant stop pour que onend ne re-affiche pas le bouton
+  if(vqListening){stopVocalListening();}
+  document.getElementById('vq-send-btn').style.display='none';
+  checkVocalAnswer(t);
 }
 async function checkVocalAnswer(answer){
   const card=vqCards[vqIdx];

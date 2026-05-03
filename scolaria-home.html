@@ -4499,6 +4499,17 @@ function renderEdtCard(){
     return;
   }
 
+  // Corriger les chevauchements : si un cours finit après le début du suivant,
+  // on cap sa fin au début du suivant (évite les blocs qui se cachent mutuellement)
+  for(let i=0;i<validSlots.length-1;i++){
+    if(validSlots[i]._end>validSlots[i+1]._start){
+      validSlots[i]._end=validSlots[i+1]._start;
+    }
+    if(validSlots[i]._end<=validSlots[i]._start){
+      validSlots[i]._end=validSlots[i]._start+55; // durée minimale de secours
+    }
+  }
+
   // Grille des horaires en minutes (pour détecter les permes)
   const gridMins=(edtData.horaires||[]).map(parseSlotMin).filter(m=>m>=0).sort((a,b)=>a-b);
 
@@ -4607,13 +4618,20 @@ function parseSlotMin(h){
 function getSlotEnd(s){
   const start=parseSlotMin(s.h);
   if(start<0)return -1;
-  // 1. Utiliser e si fourni et cohérent
+  const gridMins=(edtData.horaires||[]).map(parseSlotMin).filter(m=>m>start).sort((a,b)=>a-b);
+  if(gridMins.length){
+    // Si e est fourni ET correspond à un créneau de la grille (double période possible)
+    const e=parseSlotMin(s.e);
+    if(e>start&&e-start<=120){
+      const eOnGrid=gridMins.some(m=>Math.abs(m-e)<=2);
+      if(eOnGrid)return e;
+    }
+    // Sinon : prochain créneau de la grille = fin du cours
+    return gridMins[0];
+  }
+  // Pas de grille : e si raisonnable (30-120 min), sinon +55
   const e=parseSlotMin(s.e);
-  if(e>start&&e-start<=120)return e;
-  // 2. Utiliser le prochain créneau de la grille (horaires)
-  const grid=(edtData.horaires||[]).map(parseSlotMin).filter(m=>m>start).sort((a,b)=>a-b);
-  if(grid.length&&grid[0]-start<=75)return grid[0];
-  // 3. Fallback : 55 min (une période standard)
+  if(e>start&&e-start>=30&&e-start<=120)return e;
   return start+55;
 }
 function fmtMin(min){

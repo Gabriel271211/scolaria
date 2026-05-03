@@ -4498,18 +4498,22 @@ function renderEdtCard(){
     return;
   }
 
-  // Construire les segments : cours + pauses détectées (récré >=15min, cantine si autour de midi)
+  // Construire les segments : cours + pauses intelligentes
+  // Récré : gap 10–25 min (pause inter-cours officielle)
+  // Cantine : gap >45 min chevauchant 12h–13h30
+  // Sinon (grand gap = pas de cours ce créneau) : pas de label
   const segments=[];
   for(let i=0;i<validSlots.length;i++){
     const cur=validSlots[i];
     if(i>0){
       const prev=validSlots[i-1];
       const gap=cur._start-prev._end;
-      if(gap>=15){
-        // Cantine = pause longue (>=30min) qui chevauche la plage 11h–14h
-        const isCantine=gap>=30&&prev._end<=14*60&&cur._start>=11*60+30;
-        segments.push({type:isCantine?'cantine':'recre',start:prev._end,end:cur._start});
+      if(gap>=10&&gap<=25){
+        segments.push({type:'recre',start:prev._end,end:cur._start});
+      }else if(gap>45&&prev._end<=13*60+30&&cur._start>=12*60){
+        segments.push({type:'cantine',start:prev._end,end:cur._start});
       }
+      // gap > 25 et pas cantine = simple absence de cours, pas de bloc
     }
     segments.push({type:'cours',slot:cur,start:cur._start,end:cur._end});
   }
@@ -4698,7 +4702,7 @@ async function scanEdtPhoto(event){
         system:'Tu es un assistant qui lit des emplois du temps scolaires. Réponds UNIQUEMENT avec du JSON brut, sans markdown, sans ```json, sans texte autour.',
         messages:[{role:'user',content:[
           {type:'image',source:{type:'base64',media_type:mime,data:b64}},
-          {type:'text',text:'Lis cet emploi du temps scolaire et renvoie un JSON avec ce format EXACT :\n{\n  "weekA": {\n    "Lundi": [{"h":"8h00","e":"8h55","m":"Maths","salle":"113"}, {"h":"8h55","e":"9h50","m":"Français","salle":"106"}],\n    "Mardi": [...],\n    "Mercredi": [...],\n    "Jeudi": [...],\n    "Vendredi": [...]\n  },\n  "weekB": {\n    "Lundi": [...],\n    ...\n  }\n}\n\nRÈGLES IMPORTANTES :\n- "h" = heure de début EXACTE telle qu\'écrite sur la photo (ex: "8h00", "8h55", "9h50", "10h05", "11h00", "14h00")\n- "e" = heure de fin EXACTE de ce même cours (regarde la prochaine ligne horaire ou la durée du bloc)\n- "m" = matière (nom court, ex: "Maths", "Français", "Histoire-Géo", "SVT", "Physique-Chimie", "Anglais", "EPS", "Arts", "Musique", "Technologie")\n- "salle" = numéro/nom de la salle si visible (ex: "113", "207", "Musique"), sinon ""\n- N\'INCLUS PAS les pauses, récrés ou cantine — UNIQUEMENT les vrais cours\n- Si une case est vide à un horaire (ex: jeudi à 8h), n\'invente rien : passe au cours suivant\n- Si la photo montre une seule semaine, mets le même contenu dans weekA et weekB\n- Si tu vois Semestre 1 / Semestre 2 dans une même case, prends Semestre 1 pour weekA et Semestre 2 pour weekB\n\nRéponds UNIQUEMENT avec le JSON brut, rien d\'autre.'}
+          {type:'text',text:'Analyse cet emploi du temps scolaire français (collège/lycée).\n\nSTEP 1 — Lis la colonne des heures à gauche : elle contient les horaires EXACTS de chaque période (ex: 8h00, 8h55, 9h50, 10h05, 11h00, 11h55, 14h00, 14h55, 15h50, 16h05…). Ces heures délimitent le début et la fin de chaque bloc.\n\nSTEP 2 — Pour chaque case colorée (= un cours), note :\n- l\'heure de début = la ligne horaire en haut du bloc\n- l\'heure de fin = la ligne horaire en bas du bloc\n- la matière = texte principal en gras (Maths, Français, Anglais, Histoire-Géo, SVT, Physique-Chimie, EPS, Technologie, Musique, Arts…)\n- la salle = numéro ou nom sous la matière (ex: 113, 207, 301 SVT CLG, Techno1…), vide si absent\n\nSTEP 3 — Renvoie UNIQUEMENT ce JSON (sans markdown, sans ``` ) :\n{\n  "weekA": {\n    "Lundi":   [{"h":"8h00","e":"8h55","m":"Maths","salle":"113"}, {"h":"8h55","e":"9h50","m":"Technologie","salle":"Techno1"}, {"h":"10h05","e":"11h00","m":"Français","salle":"106"}],\n    "Mardi":   [...],\n    "Mercredi":[...],\n    "Jeudi":   [...],\n    "Vendredi":[...]\n  },\n  "weekB": { ... }\n}\n\nRÈGLES STRICTES :\n- Utilise les heures EXACTEMENT telles qu\'écrites (8h55 et non 9h00 ; 10h05 et non 10h00)\n- Si une colonne (jour) n\'a PAS de cours à un horaire → ne mets rien pour ce créneau\n- N\'invente AUCUNE heure, matière ou salle non visible sur la photo\n- N\'inclus PAS les récréations, pauses ou cantine (cases vides ou grisées)\n- Si tu vois "Semestre 1 / Semestre 2" dans une case : weekA = Semestre 1, weekB = Semestre 2\n- Si une seule semaine visible : copie weekA dans weekB\n- Si les semaines A/B sont explicitement marquées : utilise-les correctement'}
         ]}],
         maxTokens:3000
       });

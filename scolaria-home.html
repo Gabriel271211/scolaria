@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr" data-theme="dark">
 <head>
 <meta charset="UTF-8">
@@ -2061,54 +2061,6 @@ button:active{opacity:.85}
 .flen-interro-btn:active{opacity:.8}
 .flen-sep{width:1px;height:16px;background:var(--bord);flex-shrink:0;margin:0 3px}
 
-/* ═══ EMPLOI DU TEMPS ═══ */
-.edt-card{background:var(--card);border:1px solid var(--bord);border-radius:16px;padding:14px;margin-bottom:14px}
-.edt-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-.edt-title{font-size:13px;font-weight:700;color:var(--tx);display:flex;align-items:center;gap:5px}
-.edt-week-btn{font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;border:1.5px solid var(--bord);background:transparent;color:var(--mu);cursor:pointer;font-family:var(--fb);transition:all .15s}
-.edt-week-btn.on{background:var(--c1);border-color:var(--c1);color:#fff}
-.edt-icon-btn{font-size:14px;background:transparent;border:none;cursor:pointer;padding:3px 6px;border-radius:8px;color:var(--mu);transition:background .15s}
-.edt-icon-btn:active{background:var(--surf)}
-.edt-nav-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.edt-nav-btn{width:34px;height:34px;border-radius:50%;background:var(--surf);border:1px solid var(--bord);font-size:20px;color:var(--tx);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;line-height:1}
-.edt-nav-btn:active{background:var(--c1);color:#fff;border-color:var(--c1)}
-.edt-day-info{text-align:center}
-.edt-day-name{font-size:15px;font-weight:700;color:var(--tx)}
-.edt-day-date{font-size:11px;color:var(--mu);margin-top:1px}
-/* Grille horaire style Pronote */
-.edt-grid{display:flex;gap:0;position:relative;overflow:hidden}
-.edt-hours-col{position:relative;width:42px;flex-shrink:0}
-.edt-hour-lbl{position:absolute;left:0;right:4px;font-size:10px;font-weight:700;color:var(--mu);font-family:var(--fb);transform:translateY(-6px);text-align:right;line-height:1}
-.edt-slots-col{flex:1;position:relative}
-.edt-hour-line{position:absolute;left:0;right:0;border-top:1px dashed var(--bord);z-index:0}
-.edt-hour-line:first-child{border-top:none}
-.edt-block{position:absolute;left:2px;right:2px;border-radius:8px;padding:5px 8px;overflow:hidden;z-index:1;display:flex;flex-direction:column;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.15)}
-.edt-pause{position:absolute;left:2px;right:2px;border-radius:8px;padding:4px 8px;overflow:hidden;z-index:1;display:flex;align-items:center;justify-content:space-between;font-size:11px;font-weight:700;border:1px dashed var(--bord)}
-.edt-pause-h{font-size:10px;font-weight:600;opacity:.7;font-family:var(--fb)}
-.edt-pause-cantine{background:repeating-linear-gradient(45deg,rgba(245,158,11,.12),rgba(245,158,11,.12) 6px,rgba(245,158,11,.05) 6px,rgba(245,158,11,.05) 12px);color:#b45309;border-color:rgba(245,158,11,.45)}
-.edt-pause-recre{background:repeating-linear-gradient(45deg,rgba(34,197,94,.10),rgba(34,197,94,.10) 6px,rgba(34,197,94,.04) 6px,rgba(34,197,94,.04) 12px);color:#15803d;border-color:rgba(34,197,94,.4)}
-.edt-pause-perme{background:repeating-linear-gradient(45deg,rgba(99,102,241,.10),rgba(99,102,241,.10) 6px,rgba(99,102,241,.04) 6px,rgba(99,102,241,.04) 12px);color:#6366f1;border-color:rgba(99,102,241,.35)}
-.edt-block-mat{font-size:12px;font-weight:800;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.2}
-.edt-block-h{font-size:10px;color:rgba(255,255,255,.85);margin-top:2px;font-weight:600}
-.edt-block-done{filter:saturate(.4);opacity:.55}
-.edt-now-line{position:absolute;left:0;right:0;height:2px;background:#ef4444;z-index:2;border-radius:2px}
-.edt-now-line::before{content:'';position:absolute;left:-3px;top:-4px;width:10px;height:10px;background:#ef4444;border-radius:50%}
-.edt-empty-day{font-size:12px;color:var(--mu);text-align:center;padding:20px 0;font-style:italic}
-.edt-next-bar{margin-top:10px;padding:8px 10px;border-radius:10px;background:var(--surf);font-size:12px;color:var(--mu);display:flex;gap:6px;align-items:center}
-.edt-next-bar strong{color:var(--tx);font-weight:700}
-.edt-add-row{display:flex;justify-content:center;margin-top:8px}
-.edt-add-btn{font-size:11.5px;color:var(--c1);background:transparent;border:none;cursor:pointer;font-family:var(--fb);font-weight:600;padding:4px 8px;border-radius:8px}
-.edt-add-btn:active{background:var(--c1-soft)}
-#edt-edit-modal{position:fixed;inset:0;z-index:600;background:rgba(0,0,0,.7);display:none;align-items:flex-end}
-#edt-edit-modal.open{display:flex}
-.edt-edit-box{background:var(--bg);border-radius:20px 20px 0 0;width:100%;max-height:88vh;overflow-y:auto;padding:20px 16px 32px;animation:su .25s ease}
-.edt-edit-title{font-size:15px;font-weight:700;color:var(--tx);margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
-.edt-edit-week-row{display:flex;gap:8px;margin-bottom:16px}
-.edt-edit-week-btn{flex:1;padding:9px;border-radius:10px;border:1.5px solid var(--bord);background:transparent;color:var(--mu);font-family:var(--fb);font-weight:700;font-size:13px;cursor:pointer;transition:all .15s}
-.edt-edit-week-btn.on{background:var(--c1);border-color:var(--c1);color:#fff}
-.edt-day-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--mu);margin-bottom:5px}
-.edt-day-inp{width:100%;background:var(--surf);border:1px solid var(--bord);border-radius:10px;color:var(--tx);font-family:var(--fb);font-size:12px;padding:8px 10px;resize:none;height:58px;line-height:1.4;box-sizing:border-box;margin-bottom:10px}
-.edt-save-btn{width:100%;padding:13px;border:none;background:var(--c1);color:#fff;border-radius:13px;font-size:14px;font-weight:700;font-family:var(--fb);cursor:pointer;margin-top:6px}
 
 /* ═══ RÉVISION GUIDÉE ═══ */
 #rv-overlay{position:fixed;inset:0;z-index:500;background:var(--bg);display:none;flex-direction:column}
@@ -2396,30 +2348,6 @@ button:active{opacity:.85}
       <button class="add-btn" onclick="openMo()">＋</button>
     </div>
     <input type="file" id="pronote-scan" accept="image/*" style="display:none" onchange="pronoteDevoir(event)">
-    <!-- EMPLOI DU TEMPS -->
-    <div class="edt-card" id="edt-card">
-      <div class="edt-header">
-        <span class="edt-title">📅 Emploi du temps</span>
-        <div style="display:flex;gap:5px;align-items:center">
-          <button class="edt-week-btn on" id="edt-wA" onclick="setEdtWeekManual('A')">Sem A</button>
-          <button class="edt-week-btn" id="edt-wB" onclick="setEdtWeekManual('B')">Sem B</button>
-          <button class="edt-icon-btn" onclick="openEdtEdit()" title="Modifier">✎</button>
-          <button class="edt-icon-btn" onclick="document.getElementById('edt-scan-input').click()" title="Photo">📸</button>
-          <input type="file" id="edt-scan-input" accept="image/*" style="display:none" onchange="scanEdtPhoto(event)">
-        </div>
-      </div>
-      <div class="edt-nav-row">
-        <button class="edt-nav-btn" onclick="edtNavDay(-1)">‹</button>
-        <div class="edt-day-info">
-          <div class="edt-day-name" id="edt-day-name">—</div>
-          <div class="edt-day-date" id="edt-day-date">—</div>
-        </div>
-        <button class="edt-nav-btn" onclick="edtNavDay(1)">›</button>
-      </div>
-      <div class="edt-slots-list" id="edt-slots-list"><div class="edt-empty-day">Aucun cours — ajoute ton emploi du temps ✎ ou scanne-le 📸</div></div>
-      <div class="edt-next-bar" id="edt-next-bar" style="display:none"></div>
-      <div class="edt-add-row"><button class="edt-add-btn" onclick="openEdtEdit()">＋ Ajouter des cours</button></div>
-    </div>
     <!-- Cercles actions rapides -->
     <div class="hscroll" style="margin-bottom:16px">
       <div class="hcircle" onclick="openMo()">
@@ -4001,22 +3929,6 @@ button:active{opacity:.85}
   </div>
 </div>
 
-<!-- EDT EDIT MODAL -->
-<div id="edt-edit-modal" onclick="if(event.target===this)closeEdtEdit()">
-  <div class="edt-edit-box">
-    <div class="edt-edit-title">
-      <span>Modifier l'emploi du temps</span>
-      <button style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--mu)" onclick="closeEdtEdit()">✕</button>
-    </div>
-    <div style="font-size:11px;color:var(--mu);margin-bottom:12px;line-height:1.5">Format : une ligne par cours — <strong>8h Maths</strong> ou <strong>10h30 Physique-Chimie</strong><br>Sépare les cours par retour à la ligne.</div>
-    <div class="edt-edit-week-row">
-      <button class="edt-edit-week-btn on" id="eem-wA" onclick="edtEditSwitchWeek('A')">Semaine A</button>
-      <button class="edt-edit-week-btn" id="eem-wB" onclick="edtEditSwitchWeek('B')">Semaine B</button>
-    </div>
-    <div id="edt-edit-days"></div>
-    <button class="edt-save-btn" onclick="saveEdtEdit()">💾 Enregistrer</button>
-  </div>
-</div>
 
 <!-- TOOL MODALS -->
 <div id="tool-modal" onclick="if(event.target===this)closeTool()">
@@ -4296,7 +4208,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   loadProfile();
   loadLibrary(); renderLibAll(); renderFlashLibSection();
   loadChatHistory(); loadSRS(); loadProgHistory();
-  loadFicheHistory(); loadFicheDesign(); initEdt();
+  loadFicheHistory(); loadFicheDesign();
   // Charger le ton sauvegardé
   try{const t=localStorage.getItem('sk_ton');if(t){sessionTon=t;const b=document.querySelector(`.ton-btn[data-ton="${t}"]`);if(b)setTon(t,b);}}catch(e){}
   setTimeout(updateMsgCounter, 100);
@@ -4417,387 +4329,8 @@ function loadTheme(){
   document.getElementById('theme-btn').textContent=t==='dark'?'🌙':'☀️';
 }
 
-// ════════════════════════════════
-// EMPLOI DU TEMPS
-// ════════════════════════════════
-const EDT_DAYS=['Lundi','Mardi','Mercredi','Jeudi','Vendredi'];
-const EDT_COLORS={'Maths':'#6366f1','Français':'#ec4899','Histoire-Géo':'#f59e0b','SVT':'#10b981','Physique-Chimie':'#06b6d4','Anglais':'#3b82f6','Espagnol':'#f97316','NSI':'#8b5cf6','Philosophie':'#6b7280','SES':'#84cc16','EPS':'#22c55e','Arts':'#e879f9','Musique':'#a78bfa','Technologie':'#14b8a6'};
-let edtData={semAStart:null,horaires:[],weekA:{0:[],1:[],2:[],3:[],4:[]},weekB:{0:[],1:[],2:[],3:[],4:[]}};
-let edtOffset=0;
-let edtEditWeek='A';
 
-function initEdt(){
-  try{const s=localStorage.getItem('sk_edt');if(s)edtData=JSON.parse(s);}catch(e){}
-  renderEdtCard();
-}
-function saveEdt(){try{localStorage.setItem('sk_edt',JSON.stringify(edtData));}catch(e){}}
 
-function getWeekForDate(d){
-  if(!edtData.semAStart)return 'A';
-  const start=new Date(edtData.semAStart);
-  const target=new Date(d);
-  const jsDay=target.getDay();
-  const diffToMon=jsDay===0?-6:1-jsDay;
-  target.setDate(target.getDate()+diffToMon);
-  const weeks=Math.round((target-start)/(7*24*3600*1000));
-  return weeks%2===0?'A':'B';
-}
-
-function setEdtWeekManual(w){
-  if(!edtData.semAStart){
-    const now=new Date();
-    const jsDay=now.getDay();
-    const diffToMon=jsDay===0?-6:1-jsDay;
-    const mon=new Date(now);mon.setDate(mon.getDate()+diffToMon);
-    const monStr=mon.toISOString().split('T')[0];
-    if(w==='A'){edtData.semAStart=monStr;}
-    else{const prev=new Date(mon);prev.setDate(prev.getDate()-7);edtData.semAStart=prev.toISOString().split('T')[0];}
-    saveEdt();
-  }
-  document.getElementById('edt-wA').classList.toggle('on',w==='A');
-  document.getElementById('edt-wB').classList.toggle('on',w==='B');
-  renderEdtCard();
-}
-
-function edtNavDay(delta){
-  edtOffset+=delta;
-  renderEdtCard();
-}
-
-function renderEdtCard(){
-  const now=new Date();
-  const target=new Date(now);target.setDate(target.getDate()+edtOffset);
-  let jsDay=target.getDay();
-  if(jsDay===0){target.setDate(target.getDate()+1);edtOffset++;jsDay=1;}
-  if(jsDay===6){target.setDate(target.getDate()+2);edtOffset+=2;jsDay=1;}
-  const dayIdx=jsDay-1;
-  const week=getWeekForDate(target);
-  document.getElementById('edt-wA').classList.toggle('on',week==='A');
-  document.getElementById('edt-wB').classList.toggle('on',week==='B');
-  document.getElementById('edt-day-name').textContent=EDT_DAYS[dayIdx];
-  document.getElementById('edt-day-date').textContent=target.toLocaleDateString('fr-FR',{day:'numeric',month:'long'});
-  const slots=(edtData['week'+week]?.[dayIdx])||[];
-  const cont=document.getElementById('edt-slots-list');
-  const isToday=edtOffset===0;
-  const nowMin=now.getHours()*60+now.getMinutes();
-
-  if(!slots.length){
-    cont.innerHTML='<div class="edt-empty-day">Pas de cours ce jour — modifie ✎ ou scanne 📸</div>';
-    document.getElementById('edt-next-bar').style.display='none';
-    return;
-  }
-
-  // Trier les cours par heure de début et calculer leurs bornes
-  const validSlots=slots.map(s=>{
-    const start=parseSlotMin(s.h);
-    return start<0?null:{...s,_start:start,_end:getSlotEnd(s)};
-  }).filter(Boolean).sort((a,b)=>a._start-b._start);
-
-  if(!validSlots.length){
-    cont.innerHTML='<div class="edt-empty-day">Pas de cours ce jour — modifie ✎ ou scanne 📸</div>';
-    document.getElementById('edt-next-bar').style.display='none';
-    return;
-  }
-
-  // Corriger les chevauchements : si un cours finit après le début du suivant,
-  // on cap sa fin au début du suivant (évite les blocs qui se cachent mutuellement)
-  for(let i=0;i<validSlots.length-1;i++){
-    if(validSlots[i]._end>validSlots[i+1]._start){
-      validSlots[i]._end=validSlots[i+1]._start;
-    }
-    if(validSlots[i]._end<=validSlots[i]._start){
-      validSlots[i]._end=validSlots[i]._start+55; // durée minimale de secours
-    }
-  }
-
-  // Grille des horaires en minutes (pour détecter les permes)
-  const gridMins=(edtData.horaires||[]).map(parseSlotMin).filter(m=>m>=0).sort((a,b)=>a-b);
-
-  // Construire les segments : cours + pauses intelligentes
-  const segments=[];
-  for(let i=0;i<validSlots.length;i++){
-    const cur=validSlots[i];
-    if(i>0){
-      const prev=validSlots[i-1];
-      const gap=cur._start-prev._end;
-      if(gap>0){
-        // Détecter si un créneau horaire de la grille tombe dans ce gap
-        const slotsInGap=gridMins.filter(m=>m>prev._end&&m<cur._start);
-        if(gap>=5&&gap<=30){
-          // Récré officielle (10-15 min typiquement)
-          segments.push({type:'recre',start:prev._end,end:cur._start});
-        }else if(gap>30&&prev._end<12*60+30&&cur._start>12*60){
-          // Grande pause autour de midi = cantine
-          segments.push({type:'cantine',start:prev._end,end:cur._start});
-        }else if(slotsInGap.length>0){
-          // Un ou plusieurs créneaux de la grille sans cours = heure(s) de perme
-          const nbPerme=slotsInGap.length;
-          segments.push({type:'perme',start:prev._end,end:cur._start,nb:nbPerme});
-        }
-        // Sinon (grand écart sans créneau connu) = pas de bloc, juste espace vide
-      }
-    }
-    segments.push({type:'cours',slot:cur,start:cur._start,end:cur._end});
-  }
-
-  // Bornes de grille basées sur les vraies heures (pas arrondies)
-  const gridStart=segments[0].start;
-  const gridEnd=segments[segments.length-1].end;
-  const PX_PER_MIN=1.1; // ~66px par heure
-  const totalH=(gridEnd-gridStart)*PX_PER_MIN;
-
-  // Récolter les heures uniques affichées à gauche : début de chaque segment + fin du dernier
-  const timeMarks=[];
-  const seen={};
-  segments.forEach(seg=>{
-    if(!seen[seg.start]){seen[seg.start]=1;timeMarks.push(seg.start);}
-  });
-  if(!seen[gridEnd]){timeMarks.push(gridEnd);}
-
-  // Colonne des heures réelles + lignes horizontales associées
-  let hoursHTML='',linesHTML='';
-  timeMarks.forEach(t=>{
-    const top=(t-gridStart)*PX_PER_MIN;
-    hoursHTML+='<div class="edt-hour-lbl" style="top:'+top+'px">'+fmtMin(t)+'</div>';
-    linesHTML+='<div class="edt-hour-line" style="top:'+top+'px"></div>';
-  });
-
-  // Blocs (cours + cantine + récré)
-  let blocksHTML='';
-  segments.forEach(seg=>{
-    const top=(seg.start-gridStart)*PX_PER_MIN;
-    const height=Math.max(22,(seg.end-seg.start)*PX_PER_MIN-3);
-    if(seg.type==='cours'){
-      const s=seg.slot;
-      const col=EDT_COLORS[s.m]||'#6366f1';
-      const isDone=isToday&&seg.end<=nowMin;
-      const isCurrent=isToday&&seg.start<=nowMin&&nowMin<seg.end;
-      const doneCls=isDone?' edt-block-done':'';
-      const glow=isCurrent?';box-shadow:0 0 0 2px #fff,0 0 0 4px '+col:'';
-      blocksHTML+='<div class="edt-block'+doneCls+'" style="top:'+top+'px;height:'+height+'px;background:'+col+glow+'">';
-      blocksHTML+='<div class="edt-block-mat">'+esc(s.m)+'</div>';
-      blocksHTML+='<div class="edt-block-h">'+fmtMin(seg.start)+'–'+fmtMin(seg.end)+(s.salle?' · '+esc(s.salle):'')+'</div>';
-      blocksHTML+='</div>';
-    }else if(seg.type==='cantine'){
-      blocksHTML+='<div class="edt-pause edt-pause-cantine" style="top:'+top+'px;height:'+height+'px">';
-      blocksHTML+='<span>🍽 Cantine</span><span class="edt-pause-h">'+fmtMin(seg.start)+'–'+fmtMin(seg.end)+'</span>';
-      blocksHTML+='</div>';
-    }else if(seg.type==='recre'){
-      blocksHTML+='<div class="edt-pause edt-pause-recre" style="top:'+top+'px;height:'+height+'px">';
-      blocksHTML+='<span>☕ Récré</span><span class="edt-pause-h">'+fmtMin(seg.start)+'–'+fmtMin(seg.end)+'</span>';
-      blocksHTML+='</div>';
-    }else if(seg.type==='perme'){
-      const lbl=seg.nb>1?'📚 '+seg.nb+'× Perme':'📚 Perme';
-      blocksHTML+='<div class="edt-pause edt-pause-perme" style="top:'+top+'px;height:'+height+'px">';
-      blocksHTML+='<span>'+lbl+'</span><span class="edt-pause-h">'+fmtMin(seg.start)+'–'+fmtMin(seg.end)+'</span>';
-      blocksHTML+='</div>';
-    }
-  });
-
-  // Indicateur heure actuelle
-  let nowLineHTML='';
-  if(isToday&&nowMin>=gridStart&&nowMin<=gridEnd){
-    const nowTop=(nowMin-gridStart)*PX_PER_MIN;
-    nowLineHTML='<div class="edt-now-line" style="top:'+nowTop+'px"></div>';
-  }
-
-  cont.innerHTML='<div class="edt-grid"><div class="edt-hours-col" style="min-height:'+totalH+'px">'+hoursHTML+'</div><div class="edt-slots-col" style="min-height:'+totalH+'px">'+linesHTML+blocksHTML+nowLineHTML+'</div></div>';
-
-  const nextBar=document.getElementById('edt-next-bar');
-  const next=getNextCours();
-  if(next){nextBar.style.display='flex';nextBar.innerHTML='⏭ Prochain : <strong>'+esc(next.m)+'</strong>&nbsp;'+esc(next.day+(next.h?' à '+next.h:''));}
-  else{nextBar.style.display='none';}
-}
-
-function parseSlotMin(h){
-  if(!h)return -1;
-  const m=String(h).match(/(\d+)[h:H]?(\d+)?/);
-  if(!m)return -1;
-  return parseInt(m[1])*60+(m[2]?parseInt(m[2]):0);
-}
-function getSlotEnd(s){
-  const start=parseSlotMin(s.h);
-  if(start<0)return -1;
-  const gridMins=(edtData.horaires||[]).map(parseSlotMin).filter(m=>m>start).sort((a,b)=>a-b);
-  if(gridMins.length){
-    // Si e est fourni ET correspond à un créneau de la grille (double période possible)
-    const e=parseSlotMin(s.e);
-    if(e>start&&e-start<=120){
-      const eOnGrid=gridMins.some(m=>Math.abs(m-e)<=2);
-      if(eOnGrid)return e;
-    }
-    // Sinon : prochain créneau de la grille = fin du cours
-    return gridMins[0];
-  }
-  // Pas de grille : e si raisonnable (30-120 min), sinon +55
-  const e=parseSlotMin(s.e);
-  if(e>start&&e-start>=30&&e-start<=120)return e;
-  return start+55;
-}
-function fmtMin(min){
-  const h=Math.floor(min/60),m=min%60;
-  return h+'h'+(m<10?'0':'')+m;
-}
-
-function getNextCours(){
-  const now=new Date();
-  const nowMin=now.getHours()*60+now.getMinutes();
-  for(let delta=0;delta<8;delta++){
-    const d=new Date(now);d.setDate(d.getDate()+delta);
-    const jsDay=d.getDay();
-    if(jsDay===0||jsDay===6)continue;
-    const dayIdx=jsDay-1;
-    const week=getWeekForDate(d);
-    const slots=(edtData['week'+week]?.[dayIdx])||[];
-    for(const s of slots){
-      const sm=parseSlotMin(s.h);
-      if(delta===0&&sm>=0&&sm<=nowMin)continue;
-      return{...s,day:EDT_DAYS[dayIdx]+(delta===0?' aujourd\'hui':delta===1?' demain':' '+EDT_DAYS[dayIdx])};
-    }
-  }
-  return null;
-}
-
-function getEdtContext(){
-  if(!edtData.semAStart)return '';
-  const now=new Date();
-  const lines=[];
-  for(let delta=0;delta<7;delta++){
-    const d=new Date(now);d.setDate(d.getDate()+delta);
-    const jsDay=d.getDay();
-    if(jsDay===0||jsDay===6)continue;
-    const dayIdx=jsDay-1;
-    const week=getWeekForDate(d);
-    const slots=(edtData['week'+week]?.[dayIdx])||[];
-    if(!slots.length)continue;
-    const dateStr=d.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'short'});
-    lines.push('• '+dateStr+' (Sem '+week+') : '+slots.map(s=>s.m+(s.h?' '+s.h:'')).join(', '));
-    if(lines.length>=4)break;
-  }
-  if(!lines.length)return '';
-  return '\nEMPLOI DU TEMPS (prochains jours) :\n'+lines.join('\n')+'\n';
-}
-
-function openEdtEdit(){
-  edtEditWeek='A';
-  document.getElementById('eem-wA').classList.add('on');
-  document.getElementById('eem-wB').classList.remove('on');
-  renderEdtEditDays();
-  document.getElementById('edt-edit-modal').classList.add('open');
-}
-function closeEdtEdit(){document.getElementById('edt-edit-modal').classList.remove('open');}
-function edtEditSwitchWeek(w){
-  edtEditWeek=w;
-  document.getElementById('eem-wA').classList.toggle('on',w==='A');
-  document.getElementById('eem-wB').classList.toggle('on',w==='B');
-  renderEdtEditDays();
-}
-function renderEdtEditDays(){
-  const key='week'+edtEditWeek;
-  const cont=document.getElementById('edt-edit-days');
-  cont.innerHTML=EDT_DAYS.map((day,i)=>{
-    const slots=(edtData[key]?.[i])||[];
-    const val=slots.map(s=>(s.h?s.h+' ':'')+s.m).join('\n');
-    return '<div class="edt-day-label">'+day+'</div><textarea class="edt-day-inp" id="edt-inp-'+i+'" placeholder="Ex: 8h Maths\n10h Français\n14h SVT">'+esc(val)+'</textarea>';
-  }).join('');
-}
-function saveEdtEdit(){
-  const key='week'+edtEditWeek;
-  if(!edtData[key])edtData[key]={};
-  EDT_DAYS.forEach((_,i)=>{
-    const v=document.getElementById('edt-inp-'+i)?.value||'';
-    edtData[key][i]=v.split('\n').map(l=>l.trim()).filter(Boolean).map(l=>{
-      const m=l.match(/^(\d+[h:]\d*|\d+)\s+(.+)$/);
-      return m?{h:m[1].replace(':','h'),m:m[2].trim()}:{h:'',m:l.trim()};
-    });
-  });
-  // Toujours recalculer semAStart pour que la semaine affichée = semaine éditée
-  const now=new Date();
-  const disp=new Date(now);disp.setDate(disp.getDate()+edtOffset);
-  const dj=disp.getDay();
-  const dm=dj===0?-6:1-dj;
-  const mon=new Date(disp);mon.setDate(disp.getDate()+dm);
-  if(edtEditWeek==='A'){
-    edtData.semAStart=mon.toISOString().split('T')[0];
-  }else{
-    const prev=new Date(mon);prev.setDate(mon.getDate()-7);
-    edtData.semAStart=prev.toISOString().split('T')[0];
-  }
-  saveEdt();closeEdtEdit();renderEdtCard();
-  toast('Emploi du temps mis à jour !');
-}
-
-async function scanEdtPhoto(event){
-  const file=event.target.files[0];if(!file)return;
-  event.target.value='';
-  toast('Analyse de la photo en cours…');
-  const reader=new FileReader();
-  reader.onload=async function(e){
-    const b64=e.target.result.split(',')[1];
-    const mime=file.type;
-    try{
-      const result=await callAI({
-        system:'Tu es un assistant qui lit des emplois du temps scolaires. Réponds UNIQUEMENT avec du JSON brut, sans markdown, sans ```json, sans texte autour.',
-        messages:[{role:'user',content:[
-          {type:'image',source:{type:'base64',media_type:mime,data:b64}},
-          {type:'text',text:'Analyse cet emploi du temps scolaire français (collège/lycée).\n\nSTEP 1 — Colonne des heures à GAUCHE\nLis toutes les heures écrites dans la colonne de gauche, de haut en bas. Ce sont les lignes de la grille. Exemple typique : 8h00, 8h55, 9h50, 10h05, 11h00, 11h55, 14h00, 14h55, 15h50, 16h05. Copie-les EXACTEMENT telles qu\'elles apparaissent.\n\nSTEP 2 — Cases colorées = cours\nPour chaque case colorée, identifie :\n- "h" = heure de la ligne qui borde le HAUT de cette case (heure de début)\n- "e" = heure de la ligne qui borde le BAS de cette case (heure de fin)\n- "m" = matière (ex: Maths, Français, Anglais LV1, Histoire-Géo, SVT, Physique-Chimie, EPS, Technologie, Musique, Arts Plastiques…)\n- "salle" = salle visible sous la matière (ex: 113, 207, 301 SVT CLG…), "" si absent\nSi une case Semestre1/Semestre2 : h/e/m/salle pour chaque semestre séparément.\n\nSTEP 3 — Renvoie UNIQUEMENT ce JSON brut :\n{\n  "horaires": ["8h00","8h55","9h50","10h05","11h00","11h55","14h00","14h55","15h50","16h05"],\n  "weekA": {\n    "Lundi":   [{"h":"8h00","e":"8h55","m":"Maths","salle":"113"},{"h":"8h55","e":"9h50","m":"Technologie","salle":"Techno1"},{"h":"10h05","e":"11h00","m":"Français","salle":"106"}],\n    "Mardi":   [...],\n    "Mercredi":[...],\n    "Jeudi":   [...],\n    "Vendredi":[...]\n  },\n  "weekB": { "Lundi":[...], ... }\n}\n\nRÈGLES :\n- "horaires" = liste complète de TOUTES les heures de la colonne gauche, dans l\'ordre\n- "h" et "e" doivent être des valeurs de cette liste\n- Si une case est vide pour un jour donné à un créneau → NE PAS l\'inclure dans weekA/weekB\n- NE PAS inventer de cours, salle ou horaire non visible\n- NE PAS inclure les récréations ou la cantine (ce sont des lignes vides/grises)\n- Si une seule semaine visible → copie weekA dans weekB\n- Semestre 1 = weekA, Semestre 2 = weekB si les deux sont visibles'}
-        ]}],
-        maxTokens:3000
-      });
-      // Extraire le JSON même si l'IA a mis du texte autour
-      const jsonMatch=result.match(/\{[\s\S]*\}/);
-      if(!jsonMatch)throw new Error('Pas de JSON dans la réponse');
-      const parsed=JSON.parse(jsonMatch[0]);
-      // Sauvegarder les horaires (créneaux de la grille)
-      if(Array.isArray(parsed.horaires)&&parsed.horaires.length){
-        const fmt=v=>String(v).replace(':','h').replace('H','h').trim();
-        edtData.horaires=parsed.horaires.map(fmt).filter(Boolean);
-      }
-      // Accepter weekA/weekB OU structure plate avec noms de jours
-      const wA=parsed.weekA||parsed.semA||parsed.semaineA||parsed.week_a;
-      const wB=parsed.weekB||parsed.semB||parsed.semaineB||parsed.week_b;
-      if(wA){
-        edtData.weekA=normalizeEdtWeek(wA);
-        edtData.weekB=normalizeEdtWeek(wB||wA);
-      }else{
-        // Structure plate : {"Lundi":[...],"Mardi":[...]} directement
-        const flat=normalizeEdtWeek(parsed);
-        edtData.weekA=flat;edtData.weekB=flat;
-      }
-      // Recalculer semAStart pour que la semaine actuelle = weekA
-      const now=new Date();const jsDay=now.getDay();
-      const dm=jsDay===0?-6:1-jsDay;
-      const mon=new Date(now);mon.setDate(now.getDate()+dm);
-      edtData.semAStart=mon.toISOString().split('T')[0];
-      saveEdt();renderEdtCard();
-      toast('Emploi du temps importé !');
-    }catch(err){
-      console.error('EDT scan error:',err);
-      toast('Erreur lecture photo : '+err.message.slice(0,60));
-    }
-  };
-  reader.readAsDataURL(file);
-}
-function normalizeEdtWeek(w){
-  const dayIdx={lundi:0,mardi:1,mercredi:2,jeudi:3,vendredi:4,monday:0,tuesday:1,wednesday:2,thursday:3,friday:4};
-  const out={0:[],1:[],2:[],3:[],4:[]};
-  for(const key of Object.keys(w)){
-    const idx=/^\d+$/.test(key)?parseInt(key):dayIdx[key.toLowerCase()];
-    if(idx===undefined||idx<0||idx>4)continue;
-    const arr=w[key];
-    if(!Array.isArray(arr))continue;
-    out[idx]=arr.map(s=>{
-      if(typeof s==='string')return{h:'',e:'',m:s,salle:''};
-      const h=s.h||s.heure||s.time||s.debut||'';
-      const e=s.e||s.fin||s.end||s.endTime||'';
-      const m=s.m||s.matiere||s.subject||s.nom||s.name||s.course||'';
-      const salle=s.salle||s.room||s.classe||'';
-      const fmt=v=>String(v).replace(':','h').replace('H','h').trim();
-      return{h:fmt(h),e:fmt(e),m:String(m),salle:salle?String(salle):''};
-    }).filter(s=>s.m);
-  }
-  return out;
-}
 
 // ════════════════════════════════
 // RÉVISION GUIDÉE
@@ -5108,9 +4641,8 @@ Identifie la matière du sujet et applique les règles :
 function buildSys(longueur,mat){longueur=longueur||'AUTO';
   const lv=getLevel();
   const matInstruct=_buildMatInstruct(mat);
-  const edtCtx=getEdtContext();
   return `Tu es ScolarIA — un assistant scolaire pour collégiens et lycéens français.
-NIVEAU : ${lv||'non précisé'}. ADAPTATION : ${getLvG(lv)}${edtCtx?'\n'+edtCtx:''}
+NIVEAU : ${lv||'non précisé'}. ADAPTATION : ${getLvG(lv)}
 
 ━━━ QUI TU ES ━━━
 Tu parles comme un vrai humain qui s'y connaît. Pas un bot. Pas un prof robotique. Tu réfléchis vraiment à ce que l'élève dit, et tu réponds à ÇA précisément — pas à une version générique de sa question.
@@ -5341,7 +4873,7 @@ function buildSys2(){
 // ════════════════════════════════
 // CALL AI — Groq ⚡ / Gemini 🤖 / Anthropic 🔵
 // ════════════════════════════════
-async function callAI({system, messages, maxTokens=1200}){
+async function callAI({system, messages, maxTokens=1200, temperature=0.7}){
   // Auto-corriger le provider si la clé ne correspond pas
   if(profile.apikey && !profile.apikey.startsWith('•')){
     const k = profile.apikey;
@@ -5418,7 +4950,7 @@ async function callAI({system, messages, maxTokens=1200}){
         const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
           method:'POST',
           headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},
-          body:JSON.stringify({model, messages:oaiMessages, max_tokens:maxTokens, temperature:0.7})
+          body:JSON.stringify({model, messages:oaiMessages, max_tokens:maxTokens, temperature})
         });
         const data = await res.json();
         if(!res.ok){
@@ -5469,7 +5001,7 @@ async function callAI({system, messages, maxTokens=1200}){
     const body = {
       systemInstruction: {parts:[{text: system||''}]},
       contents: geminiContents,
-      generationConfig: {maxOutputTokens: maxTokens, temperature: 0.7}
+      generationConfig: {maxOutputTokens: maxTokens, temperature}
     };
 
     let lastErr = 'Erreur inconnue';

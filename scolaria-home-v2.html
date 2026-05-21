@@ -2277,6 +2277,13 @@ function showRevStep(n) {
   if (n === 1) renderRevDecks();
 }
 
+var revDurLabels = {
+  flashcards: ['5 min · 5 cartes',     '15 min · 10 cartes',    '30 min · 20 cartes'],
+  fiche:      ['5 min · Courte',        '15 min · Complète',     '30 min · Détaillée'],
+  quiz:       ['5 min · 5 questions',   '15 min · 10 questions', '30 min · 20 questions'],
+  resume:     ['5 min · Bref',          '15 min · Développé',    '30 min · Approfondi']
+};
+
 function revPickType(type) {
   revCurType = type;
   document.querySelectorAll('.rev-type-btn').forEach(function(b) {
@@ -2284,6 +2291,11 @@ function revPickType(type) {
   });
   event.currentTarget.classList.add('sel');
   showRevStep(3);
+  var labels = revDurLabels[type] || revDurLabels.flashcards;
+  ['express','normal','complet'].forEach(function(dur, i) {
+    var btn = document.querySelector('.rev-dur-btn[data-dur="' + dur + '"]');
+    if (btn) { var sub = btn.querySelector('.rev-dur-sub'); if (sub) sub.textContent = '~' + labels[i]; }
+  });
 }
 
 function revPickDur(dur) {

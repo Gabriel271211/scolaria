@@ -765,21 +765,35 @@ body::after {
 
 /* ── RÉVISIONS WIZARD ── */
 .rev-work-btn {
-  width: 100%; padding: 20px;
-  border-radius: 18px;
-  background: var(--accent); border: none;
-  color: #fff; font-size: 19px; font-weight: 800; font-family: var(--fb);
-  cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
-  box-shadow: 0 6px 20px rgba(79,70,229,.38);
-  animation: revpulse 2.6s ease-in-out infinite;
+  width: 100%; padding: 22px 24px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  border: none;
+  color: #fff; font-size: 21px; font-weight: 900; font-family: var(--fb);
+  cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 14px;
+  letter-spacing: -.4px;
+  position: relative; overflow: hidden;
+  box-shadow: 0 8px 28px rgba(79,70,229,.52);
+  animation: revpulse 2.8s ease-in-out infinite;
   -webkit-tap-highlight-color: transparent;
-  letter-spacing: -.2px;
+}
+.rev-work-btn::after {
+  content: '';
+  position: absolute; top: 0; left: -80%;
+  width: 50%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.2), transparent);
+  transform: skewX(-15deg);
+  animation: revshimmer 3.2s ease-in-out infinite;
 }
 .rev-work-btn:active { opacity: .88; transform: scale(.98); }
-.rev-work-btn svg { width: 22px; height: 22px; stroke: #fff; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+.rev-work-btn svg { width: 26px; height: 26px; fill: rgba(255,255,255,.9); flex-shrink: 0; }
 @keyframes revpulse {
-  0%,100% { box-shadow: 0 6px 20px rgba(79,70,229,.38); transform: translateY(0); }
-  50%      { box-shadow: 0 10px 30px rgba(79,70,229,.6); transform: translateY(-3px); }
+  0%,100% { box-shadow: 0 8px 28px rgba(79,70,229,.52); transform: translateY(0); }
+  50%      { box-shadow: 0 14px 44px rgba(79,70,229,.8); transform: translateY(-4px); }
+}
+@keyframes revshimmer {
+  0%       { left: -80%; }
+  60%,100% { left: 130%; }
 }
 .rev-step-hdr { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; }
 .rev-back {
@@ -1811,8 +1825,8 @@ body::after {
       </div>
       <div style="font-size:13px;color:var(--mu);margin-bottom:24px;line-height:1.5">Lance une session et progresse carte par carte</div>
       <button class="rev-work-btn" onclick="showRevStep(2)">
-        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-        Travailler
+        <svg viewBox="0 0 24 24"><path d="M12 2l2 8 8 2-8 2-2 8-2-8-8-2 8-2z"/></svg>
+        Générer
       </button>
       <div class="home-section-title" style="margin-top:26px;margin-bottom:10px">Mes decks</div>
       <div id="rev-decks-s1"></div>

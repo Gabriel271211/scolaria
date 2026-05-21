@@ -1467,6 +1467,37 @@ body::after {
 .ndel{background:transparent;border:none;color:var(--mu);font-size:15px;cursor:pointer;flex-shrink:0;padding:4px}
 .madd{width:100%;padding:11px;background:transparent;border:1.5px dashed var(--bord);border-radius:11px;color:var(--mu);font-size:13px;font-family:var(--fb);cursor:pointer;margin-bottom:8px;font-weight:600}
 .mcalc{width:100%;padding:14px;background:var(--accent);border:none;border-radius:12px;color:#fff;font-size:14px;font-family:var(--fb);font-weight:800;cursor:pointer}
+/* ── RÉVISIONS — CHARGEMENT IA ── */
+.rev-topic-wrap{margin-bottom:16px}
+.rev-topic-lbl{font-size:12px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:6px}
+.rev-topic-inp{width:100%;border:1.5px solid var(--bord);border-radius:12px;padding:12px 14px;font-size:14px;font-family:var(--fb);background:var(--card);color:var(--tx);outline:none;transition:border-color .2s}
+.rev-topic-inp:focus{border-color:var(--accent)}
+.rev-topic-inp.err{border-color:var(--danger)}
+.rev-loading{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;text-align:center}
+.rev-spin{width:44px;height:44px;border:3.5px solid var(--bord);border-top-color:var(--accent);border-radius:50%;animation:rvspin .7s linear infinite;margin-bottom:16px}
+@keyframes rvspin{to{transform:rotate(360deg)}}
+.rev-loading-txt{font-size:14px;color:var(--mu);font-weight:600}
+.rev-loading-sub{font-size:12px;color:var(--mu);margin-top:4px;opacity:.7}
+.rev-ia-result{background:var(--card);border-radius:16px;padding:16px;margin-top:8px;font-size:14px;line-height:1.65;border:1.5px solid var(--bord)}
+.rev-ia-result h2{font-size:16px;font-weight:800;margin:14px 0 6px;color:var(--tx)}
+.rev-ia-result h3{font-size:14px;font-weight:700;margin:10px 0 4px;color:var(--accent)}
+.rev-ia-result ul,.rev-ia-result ol{padding-left:20px;margin:6px 0}
+.rev-ia-result li{margin:4px 0;line-height:1.5}
+.rev-ia-result table{width:100%;border-collapse:collapse;margin:10px 0;font-size:13px}
+.rev-ia-result th{background:var(--accent-l);color:var(--accent);font-weight:700;padding:8px 10px;border:1px solid var(--bord);text-align:left}
+.rev-ia-result td{padding:7px 10px;border:1px solid var(--bord);vertical-align:top}
+.rev-ia-result tr:nth-child(even) td{background:var(--bg)}
+.rev-ia-result code{background:var(--bg);border-radius:4px;padding:1px 5px;font-size:12px}
+.rev-ia-result strong{font-weight:800;color:var(--tx)}
+.rev-ia-result hr{border:none;border-top:1px solid var(--bord);margin:12px 0}
+.rev-ia-btns{display:flex;flex-direction:column;gap:10px;margin-top:16px}
+.rev-ia-btn-primary{width:100%;padding:14px;border:none;border-radius:14px;background:var(--accent);color:#fff;font-size:14px;font-weight:800;font-family:var(--fb);cursor:pointer}
+.rev-ia-btn-sec{width:100%;padding:12px;border:1.5px solid var(--bord);border-radius:14px;background:transparent;color:var(--tx);font-size:13px;font-weight:700;font-family:var(--fb);cursor:pointer}
+.rev-err-box{background:#fff1f2;border:1.5px solid #fca5a5;border-radius:14px;padding:16px;text-align:center;color:#dc2626;font-size:13px;line-height:1.5;margin-top:8px}
+.rev-err-box button{margin-top:12px;padding:10px 20px;border:none;border-radius:10px;background:var(--danger);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--fb)}
+/* Conj AI */
+.conj-ai-loading{text-align:center;padding:20px;color:var(--mu);font-size:13px}
+.conj-ai-spin{display:inline-block;width:22px;height:22px;border:2.5px solid var(--bord);border-top-color:var(--accent);border-radius:50%;animation:rvspin .7s linear infinite;vertical-align:middle;margin-right:8px}
 /* CLÉ API GROQ */
 .groq-bar{background:var(--bg);border:1.5px solid var(--bord);border-radius:14px;padding:14px;margin-bottom:14px}
 .groq-bar label{font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:8px}
@@ -1984,7 +2015,13 @@ body::after {
     <div id="rev-s3" style="display:none">
       <div class="rev-step-hdr">
         <button class="rev-back" onclick="showRevStep(2)">&#8249;</button>
-        <div class="rev-step-title">Comment ?</div>
+        <div class="rev-step-title" id="rev-s3-title">Comment ?</div>
+      </div>
+      <div class="rev-topic-wrap">
+        <label class="rev-topic-lbl" id="rev-topic-lbl">Sujet ou thème</label>
+        <input class="rev-topic-inp" id="rev-topic" type="text"
+          placeholder="ex: La Révolution française, théorème de Pythagore, les volcans..."
+          oninput="this.classList.remove('err')">
       </div>
       <div class="rev-dur-opts">
         <button class="rev-dur-btn sel" data-dur="express" onclick="revPickDur('express')">
@@ -2409,6 +2446,13 @@ var revDurLabels = {
   resume:     ['5 min · Bref',          '15 min · Développé',    '30 min · Approfondi']
 };
 
+var REV_TYPE_LABELS = {
+  flashcards: { title: 'Flashcards', placeholder: 'ex: La photosynthèse, les droits de l\'homme...' },
+  fiche:      { title: 'Fiche de révision', placeholder: 'ex: La Première Guerre mondiale, les fractions...' },
+  quiz:       { title: 'Interrogation',     placeholder: 'ex: Le système solaire, les verbes irréguliers...' },
+  resume:     { title: 'Résumé',            placeholder: 'ex: La Révolution française, l\'évolution...' }
+};
+
 function revPickType(type) {
   revCurType = type;
   document.querySelectorAll('.rev-type-btn').forEach(function(b) {
@@ -2421,6 +2465,11 @@ function revPickType(type) {
     var btn = document.querySelector('.rev-dur-btn[data-dur="' + dur + '"]');
     if (btn) { var sub = btn.querySelector('.rev-dur-sub'); if (sub) sub.textContent = '~' + labels[i]; }
   });
+  var info = REV_TYPE_LABELS[type] || REV_TYPE_LABELS.flashcards;
+  var title = document.getElementById('rev-s3-title');
+  var inp   = document.getElementById('rev-topic');
+  if (title) title.textContent = info.title;
+  if (inp)   inp.placeholder   = info.placeholder;
 }
 
 function revPickDur(dur) {
@@ -2445,52 +2494,127 @@ function revGetLimit() {
   return 5;
 }
 
-function revStart() {
+async function revStart() {
+  var topic = (document.getElementById('rev-topic') ? document.getElementById('rev-topic').value.trim() : '');
   var cours = '';
   if (revCoursOn) {
     var ta = document.getElementById('rev-cours-txt');
     if (ta) cours = ta.value.trim();
   }
-  var limit = revGetLimit();
 
-  if (revCurType === 'fiche' || revCurType === 'resume') {
-    var p = revCurType === 'fiche'
-      ? 'Genere-moi une fiche de revision structuree'
-      : 'Resume en ' + limit + ' points cles';
-    if (cours) p += ' a partir de ce cours : ' + cours;
-    else p += ' sur : ';
-    revGoChat(p);
-    showRevStep(1);
+  /* Validation : sujet obligatoire si pas de cours collé */
+  if (!topic && !cours) {
+    var inp = document.getElementById('rev-topic');
+    if (inp) { inp.classList.add('err'); inp.focus(); }
     return;
   }
 
-  if (revCurType === 'quiz') {
-    var qp = 'Lance-moi une interrogation de ' + limit + ' questions';
-    if (cours) qp += ' sur ce cours : ' + cours;
-    else qp += ' sur : ';
-    revGoChat(qp);
-    showRevStep(1);
-    return;
+  var limit   = revGetLimit();
+  var subject = cours ? 'ce cours' : '"' + topic + '"';
+
+  /* Affiche l'étape 4 avec spinner */
+  showRevStep(4);
+  var s4 = document.getElementById('rev-s4');
+  var typeLabels = { flashcards: 'Flashcards', fiche: 'Fiche', quiz: 'Interrogation', resume: 'Resume' };
+  s4.innerHTML =
+    '<div class="rev-sess-hdr">' +
+      '<button class="rev-sess-close" onclick="showRevStep(1)">&#x2715;</button>' +
+      '<span class="rev-sess-lbl">' + (typeLabels[revCurType] || 'IA') + '</span>' +
+    '</div>' +
+    '<div class="rev-loading">' +
+      '<div class="rev-spin"></div>' +
+      '<div class="rev-loading-txt">ScolarIA génère...</div>' +
+      '<div class="rev-loading-sub">Quelques secondes</div>' +
+    '</div>';
+
+  /* Construire le prompt selon le type */
+  var prompt = '';
+  if (revCurType === 'flashcards') {
+    prompt = 'Genere exactement ' + limit + ' flashcards sur ' + subject + '. OBLIGATOIRE : tableau markdown | Question | Reponse | avec ligne ---|---. Aucun texte avant ou apres le tableau.';
+    if (cours) prompt += '\n\nCOURS A ANALYSER :\n' + cours;
+    else prompt += '\n\nSujet : ' + topic;
+  } else if (revCurType === 'fiche') {
+    prompt = 'Genere une fiche de revision complete et structuree sur ' + subject + ' (niveau 3eme). Plan : introduction, cours avec sous-parties, definitions cles, exemples, pieges au brevet.';
+    if (cours) prompt += '\n\nCOURS :\n' + cours;
+  } else if (revCurType === 'quiz') {
+    prompt = 'Lance une interrogation de ' + limit + ' questions variees (QCM + vrai/faux + reponse courte) sur ' + subject + ' (niveau 3eme). Donne la correction complete a la fin.';
+    if (cours) prompt += '\n\nCOURS :\n' + cours;
+  } else {
+    prompt = 'Resume en ' + limit + ' points cles essentiels (liste numerotee, court et percutant) : ' + subject;
+    if (cours) prompt += '\n\nCOURS :\n' + cours;
   }
 
-  var cards = [];
-  if (cours) {
-    var mots = cours.split(/\s+/).filter(function(w) { return w.length > 3; });
-    var pool = mots.slice(0, limit * 2);
-    for (var i = 0; i < Math.min(limit, Math.floor(pool.length / 2)); i++) {
-      cards.push({ q: pool[i * 2] || 'Mot ' + (i+1), a: pool[i * 2 + 1] || '?' });
+  try {
+    var reply = '';
+    var groqKey = localStorage.getItem('sk_groq') || '';
+    if (groqKey) {
+      reply = await callGroq([
+        { role: 'system', content: SCOLARIA_SYSTEM },
+        { role: 'user', content: prompt }
+      ]);
+    } else {
+      var res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: prompt, history: [] })
+      });
+      var data = await res.json();
+      reply = data.reply || data.error || 'Pas de reponse.';
     }
+
+    if (revCurType === 'flashcards') {
+      var cards = parseFlashCards(reply, limit);
+      if (cards.length < 1) {
+        s4.innerHTML =
+          '<div class="rev-sess-hdr"><button class="rev-sess-close" onclick="showRevStep(1)">&#x2715;</button><span class="rev-sess-lbl">Erreur</span></div>' +
+          '<div class="rev-err-box">Impossible de parser les flashcards.<br><small>' + esc(reply.substring(0,120)) + '...</small>' +
+          '<button onclick="showRevStep(3)">Reessayer</button></div>';
+        return;
+      }
+      revStartSession(cards);
+    } else {
+      var label = typeLabels[revCurType] || 'Resultat';
+      s4.innerHTML =
+        '<div class="rev-sess-hdr">' +
+          '<button class="rev-sess-close" onclick="showRevStep(1)">&#x2715;</button>' +
+          '<span class="rev-sess-lbl">' + label + ' — ' + esc(topic || 'Cours') + '</span>' +
+        '</div>' +
+        '<div class="rev-ia-result">' + mdToHtml(reply) + '</div>' +
+        '<div class="rev-ia-btns">' +
+          '<button class="rev-ia-btn-primary" onclick="revGoChat(\'' + esc(topic) + '\')">Continuer dans le Chat IA</button>' +
+          '<button class="rev-ia-btn-sec" onclick="showRevStep(1)">Retour accueil</button>' +
+        '</div>';
+    }
+  } catch(err) {
+    s4.innerHTML =
+      '<div class="rev-sess-hdr"><button class="rev-sess-close" onclick="showRevStep(1)">&#x2715;</button><span class="rev-sess-lbl">Erreur</span></div>' +
+      '<div class="rev-err-box">Erreur : ' + esc(err.message) + '<br><br>' +
+        ((!localStorage.getItem('sk_groq')) ? '<small>Astuce : configure ta cle Groq dans <b>Profil</b> pour activer le chat IA.</small>' : '') +
+        '<br><button onclick="showRevStep(3)">Reessayer</button>' +
+      '</div>';
   }
-  if (!cards.length) {
-    cards = [
-      { q: 'Qu&#39;est-ce que la photosynthese ?', a: 'Processus par lequel les plantes fabriquent leur nourriture grace a la lumiere.' },
-      { q: 'Definir un ecosysteme', a: 'Ensemble forme par une communaute d&#39;etres vivants et son environnement.' },
-      { q: 'Qu&#39;est-ce que la mitose ?', a: 'Division cellulaire produisant deux cellules filles identiques.' },
-      { q: 'Definir la respiration cellulaire', a: 'Reaction chimique qui transforme le glucose en energie (ATP).' },
-      { q: 'Role des mitochondries', a: 'Produire l&#39;energie (ATP) pour la cellule.' }
-    ].slice(0, limit);
+}
+
+/* Parse un tableau markdown | Question | Reponse | en tableau de cards {q, a} */
+function parseFlashCards(md, limit) {
+  var cards = [];
+  var lines = md.split('\n');
+  var pastSep = false;
+  for (var i = 0; i < lines.length; i++) {
+    var l = lines[i].trim();
+    if (!l.startsWith('|')) { pastSep = false; continue; }
+    /* Ligne séparateur ---|--- */
+    if (/^\|\s*[-:]+\s*\|/.test(l)) { pastSep = true; continue; }
+    var parts = l.split('|').map(function(p){ return p.trim(); }).filter(Boolean);
+    if (parts.length < 2) continue;
+    /* Ignorer la ligne d'en-tête (Question / Réponse / Q / R) */
+    if (/^(question|q)$/i.test(parts[0])) continue;
+    if (pastSep || cards.length > 0) {
+      cards.push({ q: parts[0], a: parts[1] });
+    }
+    if (cards.length >= limit) break;
   }
-  revStartSession(cards);
+  return cards;
 }
 
 function revStartSession(cards) {
@@ -2969,7 +3093,7 @@ var CONJ_FR = {
 };
 var PRONS_FR = ['je / j\'','tu','il / elle','nous','vous','ils / elles'];
 
-function doConj(verb) {
+async function doConj(verb) {
   var res  = document.getElementById('conj-result');
   var lang = document.getElementById('conj-lang') ? document.getElementById('conj-lang').value : 'fr';
   if (!res || !verb || verb.length < 2) { if(res) res.innerHTML = ''; return; }
@@ -2982,18 +3106,35 @@ function doConj(verb) {
       res.innerHTML = buildConjTable(verb, 'Présent', PRONS_FR, data.pres) +
                       buildConjTable(verb, 'Imparfait', PRONS_FR, data.impa) +
                       buildConjTable(verb, 'Futur', PRONS_FR, data.fut);
-    } else if (verb.endsWith('er') && verb.length > 3) {
+      return;
+    }
+    if (verb.endsWith('er') && verb.length > 3) {
       var stem = verb.slice(0,-2);
       var pres = [stem+'e',stem+'es',stem+'e',stem+'ons',stem+'ez',stem+'ent'];
       var impa = [stem+'ais',stem+'ais',stem+'ait',stem+'ions',stem+'iez',stem+'aient'];
       var fut  = [stem+'erai',stem+'eras',stem+'era',stem+'erons',stem+'erez',stem+'eront'];
       res.innerHTML = buildConjTable(verb,'Présent',PRONS_FR,pres) + buildConjTable(verb,'Imparfait',PRONS_FR,impa) + buildConjTable(verb,'Futur',PRONS_FR,fut);
-    } else if (verb.endsWith('ir') && verb.length > 3) {
+      return;
+    }
+    if (verb.endsWith('ir') && verb.length > 3) {
       var stem2 = verb.slice(0,-2);
       var pres2 = [stem2+'is',stem2+'is',stem2+'it',stem2+'issons',stem2+'issez',stem2+'issent'];
       res.innerHTML = buildConjTable(verb,'Présent',PRONS_FR,pres2);
+      return;
+    }
+    /* Verbe irrégulier non trouvé → fallback IA */
+    var groqKey = localStorage.getItem('sk_groq') || '';
+    if (groqKey) {
+      res.innerHTML = '<div class="conj-ai-loading"><span class="conj-ai-spin"></span>ScolarIA conjugue...</div>';
+      try {
+        var p = 'Conjugue le verbe francais "' + verb + '" en donnant des tableaux markdown pour : Present, Imparfait, Futur simple, Conditionnel present. Format : | Pronom | Forme | avec ---|--- en 2eme ligne.';
+        var reply = await callGroq([{role:'system',content:SCOLARIA_SYSTEM},{role:'user',content:p}]);
+        res.innerHTML = '<div class="conj-box"><div class="conj-title">Conjugaison de "' + esc(verb) + '" (IA)</div>' + mdToHtml(reply) + '</div>';
+      } catch(e) {
+        res.innerHTML = '<div style="color:var(--danger);font-size:13px;padding:12px;text-align:center">Erreur : ' + esc(e.message) + '</div>';
+      }
     } else {
-      res.innerHTML = '<div style="font-size:13px;color:var(--mu);padding:12px;text-align:center">Verbe non trouvé hors ligne.<br><small>Essaie : aller, avoir, être, faire, pouvoir, vouloir, venir, prendre, savoir, voir</small></div>';
+      res.innerHTML = '<div style="font-size:13px;color:var(--mu);padding:12px;text-align:center">Verbe irrégulier non trouvé hors ligne.<br><small>Configure ta clé Groq dans <b>Profil</b> pour la conjugaison IA.<br>Verbes disponibles : aller, avoir, être, faire, pouvoir, vouloir, venir, prendre, savoir, voir</small></div>';
     }
   } else if (lang === 'en') {
     var prons = ['I','you','he/she','we','you','they'];
@@ -3001,7 +3142,21 @@ function doConj(verb) {
     var pres  = [verb,verb,s3,verb,verb,verb];
     var pp    = verb.endsWith('e') ? verb+'d' : verb+'ed';
     var past  = [pp,pp,pp,pp,pp,pp];
+    /* Pour EN aussi : si clé Groq → enrichir avec présent perfect + futur */
     res.innerHTML = buildConjTable(verb,'Present simple',prons,pres) + buildConjTable(verb,'Past simple',prons,past);
+    var groqKeyEn = localStorage.getItem('sk_groq') || '';
+    if (groqKeyEn) {
+      res.innerHTML += '<div class="conj-ai-loading"><span class="conj-ai-spin"></span>More tenses via IA...</div>';
+      try {
+        var pe = 'Conjugate the English verb "' + verb + '" in markdown tables | Pronoun | Form | for: Present Perfect, Future (will), Conditional (would). Keep it concise.';
+        var re = await callGroq([{role:'system',content:SCOLARIA_SYSTEM},{role:'user',content:pe}]);
+        var old = document.getElementById('conj-result');
+        if (old) {
+          var loading = old.querySelector('.conj-ai-loading');
+          if (loading) loading.outerHTML = mdToHtml(re);
+        }
+      } catch(e2) { /* silencieux */ }
+    }
   } else {
     var suf = verb.endsWith('ar') ? ['o','as','a','amos','áis','an'] : verb.endsWith('er') ? ['o','es','e','emos','éis','en'] : ['o','es','e','imos','ís','en'];
     var stem3 = verb.slice(0,-2);

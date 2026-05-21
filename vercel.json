@@ -1,7 +1,7 @@
 {
   "version": 2,
   "rewrites": [
-    { "source": "/", "destination": "/scolaria-home.html" }
+    { "source": "/", "destination": "/scolaria-home-v2.html" }
   ],
   "headers": [
     {

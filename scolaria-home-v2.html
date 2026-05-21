@@ -1269,6 +1269,23 @@ body::after {
   color: var(--mu);
   font-style: italic;
 }
+/* ── MARKDOWN dans les bulles IA ── */
+.msg-ai p { margin: 0 0 5px; }
+.msg-ai p:last-child { margin-bottom: 0; }
+.msg-ai h2 { font-size:15px; font-weight:800; margin:10px 0 4px; color:var(--accent); }
+.msg-ai h3, .msg-ai h4 { font-size:13px; font-weight:800; margin:8px 0 3px; color:var(--tx); }
+.msg-ai ul { margin:4px 0 6px 0; padding-left:18px; }
+.msg-ai ol { margin:4px 0 6px 0; padding-left:20px; }
+.msg-ai li { margin-bottom:3px; line-height:1.45; }
+.msg-ai code { background:var(--bg); border-radius:4px; padding:1px 6px; font-family:monospace; font-size:11.5px; }
+.msg-ai table { border-collapse:collapse; width:100%; margin:7px 0; font-size:12px; border-radius:8px; overflow:hidden; }
+.msg-ai th { background:var(--accent); color:#fff; padding:6px 10px; text-align:left; font-weight:700; font-size:12px; }
+.msg-ai td { border-bottom:1px solid var(--bord); padding:6px 10px; vertical-align:top; }
+.msg-ai tr:last-child td { border-bottom:none; }
+.msg-ai tr:nth-child(odd) td { background:var(--bg); }
+.msg-ai strong { font-weight:800; color:var(--tx); }
+.msg-ai em { font-style:italic; color:var(--mu); }
+.msg-ai hr { border:none; border-top:1px solid var(--bord); margin:8px 0; }
 
 #chat-bar {
   background: var(--bg);
@@ -1764,24 +1781,39 @@ body::after {
     </div>
     <div id="chat-bar">
       <div class="chat-shortcuts">
-        <button class="chat-sc" onclick="chatShortcut('marque')">
-          <svg viewBox="0 0 24 24" stroke="#f59e0b"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
-          Marque-page
-        </button>
         <button class="chat-sc" onclick="chatShortcut('fiche')">
           <svg viewBox="0 0 24 24" stroke="#10b981"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
           Fiche
         </button>
         <button class="chat-sc" onclick="chatShortcut('flash')">
           <svg viewBox="0 0 24 24" stroke="#4f46e5"><rect x="2" y="4" width="20" height="16" rx="3"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
-          Flashcard
+          Flashcards
+        </button>
+        <button class="chat-sc" onclick="chatShortcut('interro')">
+          <svg viewBox="0 0 24 24" stroke="#f43f5e"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          Interrogation
         </button>
         <button class="chat-sc" onclick="chatShortcut('résumer')">
           <svg viewBox="0 0 24 24" stroke="#ec4899"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="11" x2="15" y2="11"/><line x1="3" y1="16" x2="18" y2="16"/></svg>
-          Résumer
+          Résumé
+        </button>
+        <button class="chat-sc" onclick="chatShortcut('calc')">
+          <svg viewBox="0 0 24 24" stroke="#f59e0b"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="10" y2="10"/><line x1="14" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="10" y2="14"/><line x1="14" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="10" y2="18"/><line x1="14" y1="18" x2="16" y2="18"/></svg>
+          Calcul
+        </button>
+        <button class="chat-sc" onclick="chatShortcut('conj')">
+          <svg viewBox="0 0 24 24" stroke="#a855f7"><path d="M4 6h16M4 12h10M4 18h14"/><path d="M15 9l3 3-3 3"/></svg>
+          Conjuguer
+        </button>
+        <button class="chat-sc" onclick="chatShortcut('conv')">
+          <svg viewBox="0 0 24 24" stroke="#0ea5e9"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 014-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>
+          Convertir
+        </button>
+        <button class="chat-sc" onclick="chatShortcut('scan')">
+          <svg viewBox="0 0 24 24" stroke="#16a34a"><path d="M3 7V5a2 2 0 012-2h2M17 3h2a2 2 0 012 2v2M21 17v2a2 2 0 01-2 2h-2M7 21H5a2 2 0 01-2-2v-2"/><line x1="3" y1="12" x2="21" y2="12"/></svg>
+          Scan cours
         </button>
       </div>
-      <button id="chat-interro" onclick="chatShortcut('interro')">Interrogation IA</button>
       <div class="chat-input-row">
         <textarea id="chat-input" placeholder="Pose ta question..." rows="1"
           oninput="autoResize(this)" onkeydown="chatKey(event)"></textarea>
@@ -2478,25 +2510,96 @@ function revGoChat(prompt) {
 }
 
 /* ── CHAT ── */
+var chatHistory = [];
+
 const SHORTCUTS = {
-  marque:  'Ajoute un marque-page sur ce sujet pour que je puisse y revenir.',
-  fiche:   'Génère-moi une fiche de révision complète sur ce sujet.',
-  flash:   'Crée-moi 5 flashcards question/réponse sur ce sujet.',
-  résumer: 'Résume ce sujet en 5 points clés faciles à retenir.',
-  interro: 'Lance-moi une interrogation écrite sur ce sujet avec correction.'
+  fiche:   'Génère-moi une fiche de révision complète sur : ',
+  flash:   'Crée-moi 10 flashcards question/réponse sur : ',
+  interro: 'Lance-moi une interrogation de 8 questions (QCM + réponse courte) sur : ',
+  résumer: 'Résume en 7 points clés : ',
+  calc:    'Résous ce calcul étape par étape : ',
+  conj:    'Conjugue ce verbe à tous les temps principaux (présent, imparfait, futur, conditionnel, subjonctif) : ',
+  conv:    'Convertis : ',
+  scan:    'Analyse ce cours et génère une fiche de révision + 8 flashcards basées DESSUS :\n\n'
 };
 
 function chatShortcut(type) {
   const input = document.getElementById('chat-input');
   const current = input.value.trim();
-  const prefix = SHORTCUTS[type];
-  if (current) {
-    input.value = prefix + ' Sujet : ' + current;
+  const prefix = SHORTCUTS[type] || '';
+  if (type === 'scan') {
+    input.value = prefix;
+  } else if (current) {
+    input.value = prefix + current;
   } else {
     input.value = prefix;
   }
   autoResize(input);
   input.focus();
+}
+
+function mdToHtml(text) {
+  var lines = text.split('\n');
+  var out = '';
+  var inUl = false, inOl = false, inTable = false, tableFirst = true;
+
+  function inlineFmt(s) {
+    s = s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    s = s.replace(/\*\*\*(.+?)\*\*\*/g,'<strong><em>$1</em></strong>');
+    s = s.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
+    s = s.replace(/\*(.+?)\*/g,'<em>$1</em>');
+    s = s.replace(/`([^`]+)`/g,'<code>$1</code>');
+    return s;
+  }
+  function closeList() {
+    if (inUl) { out += '</ul>'; inUl = false; }
+    if (inOl) { out += '</ol>'; inOl = false; }
+  }
+  function closeTable() {
+    if (inTable) { out += '</table>'; inTable = false; tableFirst = true; }
+  }
+
+  for (var i = 0; i < lines.length; i++) {
+    var line = lines[i];
+    var trimmed = line.trim();
+
+    if (/^\|.+\|$/.test(trimmed)) {
+      if (/^\|[\s:\-|]+\|$/.test(trimmed)) { tableFirst = false; continue; }
+      closeList();
+      if (!inTable) { out += '<table>'; inTable = true; tableFirst = true; }
+      var cells = trimmed.slice(1,-1).split('|');
+      if (tableFirst) {
+        out += '<tr>' + cells.map(function(c){ return '<th>' + inlineFmt(c.trim()) + '</th>'; }).join('') + '</tr>';
+        tableFirst = false;
+      } else {
+        out += '<tr>' + cells.map(function(c){ return '<td>' + inlineFmt(c.trim()) + '</td>'; }).join('') + '</tr>';
+      }
+      continue;
+    }
+    closeTable();
+
+    if (/^#{1,2} /.test(trimmed)) { closeList(); out += '<h2>' + inlineFmt(trimmed.replace(/^#{1,2} /,'')) + '</h2>'; continue; }
+    if (/^### /.test(trimmed))     { closeList(); out += '<h3>' + inlineFmt(trimmed.slice(4)) + '</h3>'; continue; }
+    if (/^#### /.test(trimmed))    { closeList(); out += '<h4>' + inlineFmt(trimmed.slice(5)) + '</h4>'; continue; }
+
+    if (/^[-*] /.test(trimmed)) {
+      if (!inUl) { closeList(); out += '<ul>'; inUl = true; }
+      out += '<li>' + inlineFmt(trimmed.slice(2)) + '</li>';
+      continue;
+    }
+    if (/^\d+\. /.test(trimmed)) {
+      if (!inOl) { closeList(); out += '<ol>'; inOl = true; }
+      out += '<li>' + inlineFmt(trimmed.replace(/^\d+\. /,'')) + '</li>';
+      continue;
+    }
+    closeList();
+
+    if (/^---+$/.test(trimmed)) { out += '<hr>'; continue; }
+    if (trimmed === '') { out += '<br>'; continue; }
+    out += '<p>' + inlineFmt(line) + '</p>';
+  }
+  closeList(); closeTable();
+  return out;
 }
 
 function autoResize(el) {
@@ -2531,20 +2634,29 @@ async function sendChat() {
   autoResize(input);
 
   addMsg(text, 'user');
-  const thinking = addMsg('...', 'ai thinking');
+  const thinking = addMsg('ScolarIA réfléchit…', 'ai thinking');
+  const msgs = document.getElementById('chat-msgs');
 
   try {
     const res = await fetch('/api/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: text })
+      body: JSON.stringify({ message: text, history: chatHistory })
     });
     const data = await res.json();
-    thinking.textContent = data.reply || 'Pas de réponse.';
-  } catch {
-    thinking.textContent = 'Erreur de connexion.';
+    const reply = data.reply || data.error || 'Pas de réponse.';
+
+    chatHistory.push({ role: 'user', content: text });
+    chatHistory.push({ role: 'assistant', content: reply });
+    if (chatHistory.length > 24) chatHistory = chatHistory.slice(-24);
+
+    thinking.innerHTML = mdToHtml(reply);
+    thinking.classList.remove('thinking');
+  } catch(e) {
+    thinking.textContent = 'Erreur de connexion. Vérifie ta connexion internet.';
+    thinking.classList.remove('thinking');
   }
-  thinking.classList.remove('thinking');
+  msgs.scrollTop = msgs.scrollHeight;
 }
 </script>
 </body>

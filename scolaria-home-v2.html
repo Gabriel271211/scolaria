@@ -763,6 +763,186 @@ body::after {
 }
 .home-prog-lbl { font-size: 9px; color: var(--mu); font-weight: 600; }
 
+/* ── GÉNÉRATION (section Révisions) ── */
+.rev-gen-btn {
+  width: 100%;
+  padding: 18px;
+  border-radius: 16px;
+  background: var(--accent);
+  border: none;
+  color: #fff;
+  font-size: 17px;
+  font-weight: 800;
+  font-family: var(--fb);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  margin-bottom: 14px;
+  box-shadow: 0 4px 16px rgba(79,70,229,.38);
+  transition: opacity .15s, transform .1s;
+  -webkit-tap-highlight-color: transparent;
+}
+.rev-gen-btn:active { opacity: .88; transform: scale(.98); }
+.rev-gen-btn svg { width: 22px; height: 22px; stroke: #fff; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+.rev-choices {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.rev-choice {
+  border-radius: 14px;
+  padding: 13px 12px;
+  border: 1.5px solid var(--bord);
+  background: var(--card);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  font-family: var(--fb);
+  text-align: left;
+  transition: transform .1s, box-shadow .1s;
+  -webkit-tap-highlight-color: transparent;
+}
+.rev-choice:active { transform: scale(.97); }
+.rev-choice-icon {
+  width: 34px; height: 34px;
+  border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+}
+.rev-choice-icon svg { width: 17px; height: 17px; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.rev-choice-name { font-size: 13px; font-weight: 800; color: var(--tx); }
+.rev-choice-sub  { font-size: 10px; color: var(--mu); line-height: 1.3; }
+.rev-choice.combo {
+  grid-column: 1 / -1;
+  flex-direction: row;
+  align-items: center;
+  background: var(--accent-l);
+  border-color: var(--accent);
+  gap: 12px;
+}
+.rev-choice.combo .rev-choice-name { color: var(--accent); }
+
+.rev-carousel-wrap {
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  margin: 0 -16px;
+  padding: 0 16px 4px;
+  margin-bottom: 20px;
+}
+.rev-carousel-wrap::-webkit-scrollbar { display: none; }
+.rev-carousel { display: flex; gap: 8px; width: max-content; }
+.rev-car-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 8px;
+  background: var(--card);
+  border: 1.5px solid var(--bord);
+  border-radius: 14px;
+  width: 68px;
+  cursor: pointer;
+  font-family: var(--fb);
+  transition: background .12s;
+  -webkit-tap-highlight-color: transparent;
+}
+.rev-car-item:active { background: var(--bg); }
+.rev-car-icon {
+  width: 38px; height: 38px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+}
+.rev-car-icon svg { width: 19px; height: 19px; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.rev-car-lbl { font-size: 10px; font-weight: 700; color: var(--tx); text-align: center; line-height: 1.2; }
+
+.rev-decks-hdr {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.rev-new-btn {
+  font-size: 12px; color: var(--accent); background: none;
+  border: none; font-weight: 700; cursor: pointer; font-family: var(--fb);
+}
+.rev-deck-card {
+  background: var(--card);
+  border: 1px solid var(--bord);
+  border-radius: 14px;
+  padding: 13px 14px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: background .12s;
+  -webkit-tap-highlight-color: transparent;
+}
+.rev-deck-card:active { background: var(--bg); }
+.rev-deck-icon {
+  width: 42px; height: 42px;
+  border-radius: 12px;
+  background: var(--accent-l);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.rev-deck-icon svg { width: 20px; height: 20px; stroke: var(--accent); fill: none; stroke-width: 1.8; stroke-linecap: round; }
+.rev-deck-info { flex: 1; min-width: 0; }
+.rev-deck-name { font-size: 13px; font-weight: 700; color: var(--tx); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rev-deck-meta { font-size: 11px; color: var(--mu); margin-top: 2px; }
+.rev-deck-empty {
+  text-align: center; padding: 32px 16px;
+  color: var(--mu); font-size: 13px;
+  border: 1.5px dashed var(--bord);
+  border-radius: 14px; margin-bottom: 16px;
+}
+
+.rev-ai-bar {
+  background: var(--card);
+  border: 1.5px solid var(--bord);
+  border-radius: 16px;
+  padding: 13px 14px;
+  margin-top: 4px;
+}
+.rev-ai-label {
+  font-size: 10px; font-weight: 700;
+  color: var(--mu); text-transform: uppercase;
+  letter-spacing: .6px; margin-bottom: 9px;
+  display: flex; align-items: center; gap: 5px;
+}
+.rev-ai-label svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.rev-ai-row {
+  display: flex; gap: 8px; align-items: center;
+}
+.rev-ai-input {
+  flex: 1;
+  border: 1.5px solid var(--bord);
+  border-radius: 10px;
+  padding: 9px 12px;
+  font-size: 14px;
+  font-family: var(--fb);
+  color: var(--tx);
+  background: var(--bg);
+  outline: none;
+}
+.rev-ai-input:focus { border-color: var(--accent); }
+.rev-ai-send {
+  width: 38px; height: 38px;
+  border-radius: 10px;
+  background: var(--accent);
+  border: none;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; flex-shrink: 0;
+  transition: opacity .15s;
+}
+.rev-ai-send:active { opacity: .8; }
+.rev-ai-send svg { width: 16px; height: 16px; stroke: #fff; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
 /* ── CHAT ── */
 #s-chat {
   display: none;
@@ -1447,12 +1627,109 @@ body::after {
     <div id="dv-by-day"></div>
   </section>
 
-  <!-- RÉVISIONS -->
+  <!-- RÉVISIONS / GÉNÉRATION -->
   <section class="sec" id="s-revisions">
-    <div class="page-hdr">
-      <h1><span class="handwrite-title ht-purple">Révisions</span></h1>
+
+    <div class="page-hdr" style="margin-bottom:14px">
+      <h1><span class="handwrite-title ht-purple">Generation</span></h1>
     </div>
-    <div class="placeholder"><p>Section Révisions — bientôt</p></div>
+
+    <!-- GROS BOUTON GÉNÉRER -->
+    <button class="rev-gen-btn" onclick="revGenerate()">
+      <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      Generer
+    </button>
+
+    <!-- 4 CHOIX -->
+    <div class="rev-choices">
+      <button class="rev-choice" onclick="revChoice('fiche')">
+        <div class="rev-choice-icon" style="background:#f0fdf4">
+          <svg stroke="#16a34a" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
+        </div>
+        <div class="rev-choice-name">Fiche</div>
+        <div class="rev-choice-sub">Cours structure, pret a relire</div>
+      </button>
+      <button class="rev-choice" onclick="revChoice('flashcards')">
+        <div class="rev-choice-icon" style="background:#eef2ff">
+          <svg stroke="#4f46e5" viewBox="0 0 24 24"><rect x="4" y="6" width="16" height="12" rx="2"/><rect x="2" y="4" width="16" height="12" rx="2"/><line x1="5" y1="8" x2="14" y2="8"/><line x1="5" y1="11" x2="10" y2="11"/></svg>
+        </div>
+        <div class="rev-choice-name">Flashcards</div>
+        <div class="rev-choice-sub">Memorise par questions</div>
+      </button>
+      <button class="rev-choice" onclick="revChoice('resume')">
+        <div class="rev-choice-icon" style="background:#fff7ed">
+          <svg stroke="#f59e0b" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="11" x2="15" y2="11"/><line x1="3" y1="16" x2="18" y2="16"/></svg>
+        </div>
+        <div class="rev-choice-name">Resume</div>
+        <div class="rev-choice-sub">L&#39;essentiel en 30 sec</div>
+      </button>
+      <button class="rev-choice combo" onclick="revChoice('combo')">
+        <div class="rev-choice-icon" style="background:#eef2ff">
+          <svg stroke="#4f46e5" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <div>
+          <div class="rev-choice-name">Fiche + Flash</div>
+          <div class="rev-choice-sub">Les deux d&#39;un coup</div>
+        </div>
+      </button>
+    </div>
+
+    <!-- CAROUSEL OUTILS -->
+    <div class="home-section-title">Outils avances</div>
+    <div class="rev-carousel-wrap">
+      <div class="rev-carousel">
+        <button class="rev-car-item" onclick="revTool('maths')">
+          <div class="rev-car-icon" style="background:#eef2ff"><svg stroke="#4f46e5" viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/><path d="M17 8l4 4-4 4"/></svg></div>
+          <span class="rev-car-lbl">Maths</span>
+        </button>
+        <button class="rev-car-item" onclick="revTool('examen')">
+          <div class="rev-car-icon" style="background:#fdf4ff"><svg stroke="#a855f7" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>
+          <span class="rev-car-lbl">Examen</span>
+        </button>
+        <button class="rev-car-item" onclick="revTool('exporter')">
+          <div class="rev-car-icon" style="background:#f0fdf4"><svg stroke="#16a34a" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
+          <span class="rev-car-lbl">Exporter</span>
+        </button>
+        <button class="rev-car-item" onclick="revTool('epeler')">
+          <div class="rev-car-icon" style="background:#fff7ed"><svg stroke="#f59e0b" viewBox="0 0 24 24"><path d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/></svg></div>
+          <span class="rev-car-lbl">Epeler</span>
+        </button>
+        <button class="rev-car-item" onclick="revTool('interro')">
+          <div class="rev-car-icon" style="background:#fff1f2"><svg stroke="#f43f5e" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+          <span class="rev-car-lbl">Interro</span>
+        </button>
+        <button class="rev-car-item" onclick="revTool('blanc')">
+          <div class="rev-car-icon" style="background:#f0f9ff"><svg stroke="#0ea5e9" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg></div>
+          <span class="rev-car-lbl">Blanc</span>
+        </button>
+        <button class="rev-car-item" onclick="revTool('match')">
+          <div class="rev-car-icon" style="background:#fff8ec"><svg stroke="#c07010" viewBox="0 0 24 24"><path d="M4 7h16M4 12h10M4 17h13"/><path d="M18 5l4 7-4 7"/></svg></div>
+          <span class="rev-car-lbl">Match</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- MES DECKS -->
+    <div class="rev-decks-hdr">
+      <div class="home-section-title" style="margin-bottom:0">Mes decks</div>
+      <button class="rev-new-btn" onclick="revNewDeck()">+ Nouveau</button>
+    </div>
+    <div id="rev-decks-list"></div>
+
+    <!-- AIDE IA -->
+    <div class="rev-ai-bar">
+      <div class="rev-ai-label">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        Aide IA
+      </div>
+      <div class="rev-ai-row">
+        <input class="rev-ai-input" id="rev-ai-txt" type="text" placeholder="Genere des cartes sur..." />
+        <button class="rev-ai-send" onclick="revAiSend()">
+          <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
+    </div>
+
   </section>
 
   <!-- PROFIL -->
@@ -1765,6 +2042,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadDevoirs();
   renderDevoirs();
   updateHomeStats();
+  renderRevDecks();
 });
 
 function updateHomeStats() {
@@ -1790,6 +2068,78 @@ function updateHomeStats() {
     const el = document.getElementById('home-flash-count');
     if (el) el.textContent = cards;
   } catch(e) {}
+}
+
+/* ── GÉNÉRATION ── */
+function revGoChat(prompt) {
+  const inp = document.getElementById('chat-input');
+  if (inp) { inp.value = prompt; autoResize(inp); }
+  goSec('s-chat', document.querySelector('.nav-btn[onclick*="s-chat"]'));
+  setTimeout(() => inp && inp.focus(), 300);
+}
+
+function revGenerate() {
+  revGoChat('Genere-moi une fiche de revision complete sur : ');
+}
+
+function revChoice(type) {
+  const p = {
+    fiche:      'Genere-moi une fiche de revision complete sur : ',
+    flashcards: 'Cree-moi 10 flashcards question/reponse sur : ',
+    resume:     'Resume en 5 points cles : ',
+    combo:      'Genere a la fois une fiche ET des flashcards sur : '
+  };
+  revGoChat(p[type] || '');
+}
+
+function revTool(type) {
+  const p = {
+    maths:    'Aide-moi en maths sur : ',
+    examen:   'Prepare-moi pour un examen sur : ',
+    exporter: 'Exporte mes notes en liste structuree sur : ',
+    epeler:   'Aide-moi a epeler et definir : ',
+    interro:  'Lance-moi une interrogation ecrite sur : ',
+    blanc:    'Genere un sujet de devoir blanc sur : ',
+    match:    'Cree un exercice de matching sur : '
+  };
+  revGoChat(p[type] || '');
+}
+
+function revAiSend() {
+  const txt = document.getElementById('rev-ai-txt');
+  if (txt && txt.value.trim()) {
+    revGoChat('Genere des cartes sur : ' + txt.value.trim());
+    txt.value = '';
+  }
+}
+
+function revNewDeck() {
+  revGoChat('Cree-moi un deck de flashcards sur : ');
+}
+
+function renderRevDecks() {
+  const el = document.getElementById('rev-decks-list');
+  if (!el) return;
+  try {
+    const raw = localStorage.getItem('sk_cards');
+    const cards = raw ? JSON.parse(raw) : [];
+    if (!cards.length) {
+      el.innerHTML = '<div class="rev-deck-empty">Aucun deck encore.<br>Genere des flashcards et sauvegarde-les ici !</div>';
+      return;
+    }
+    const svgIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="1.8" stroke-linecap="round"><rect x="4" y="6" width="16" height="12" rx="2"/><rect x="2" y="4" width="16" height="12" rx="2"/></svg>';
+    el.innerHTML = cards.slice(0,8).map((c,i) =>
+      '<div class="rev-deck-card">' +
+        '<div class="rev-deck-icon">' + svgIcon + '</div>' +
+        '<div class="rev-deck-info">' +
+          '<div class="rev-deck-name">' + esc(c.q || c.sujet || ('Carte ' + (i+1))) + '</div>' +
+          '<div class="rev-deck-meta">1 carte</div>' +
+        '</div>' +
+      '</div>'
+    ).join('');
+  } catch(e) {
+    el.innerHTML = '<div class="rev-deck-empty">Aucun deck sauvegarde.</div>';
+  }
 }
 
 /* ── CHAT ── */

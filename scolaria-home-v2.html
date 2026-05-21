@@ -1396,6 +1396,84 @@ body::after {
   stroke-linecap: round;
   stroke-linejoin: round;
 }
+/* ── MODALES OUTILS ── */
+.tool-modal{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);display:none;align-items:flex-end;justify-content:center}
+.tool-modal.open{display:flex}
+.tm-sheet{background:var(--card);border-radius:22px 22px 0 0;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;padding:16px 16px max(16px,env(safe-area-inset-bottom));animation:tmup .28s ease}
+@keyframes tmup{from{transform:translateY(60%);opacity:.4}to{transform:none;opacity:1}}
+.tm-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.tm-ttl{font-size:17px;font-weight:800;color:var(--tx)}
+.tm-cls{width:32px;height:32px;border:1.5px solid var(--bord);border-radius:9px;background:var(--bg);color:var(--mu);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+/* POMODORO */
+.pring{position:relative;width:170px;height:170px;margin:0 auto 14px}
+.pring svg{transform:rotate(-90deg)}
+.ptr{fill:none;stroke:var(--bord);stroke-width:8}
+.ppr{fill:none;stroke:var(--accent);stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset 1s linear,stroke .5s}
+.pins{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.pdig{font-size:40px;font-weight:800;color:var(--tx);font-variant-numeric:tabular-nums;letter-spacing:1px;line-height:1}
+.psub{font-size:11px;color:var(--mu)}
+.pph{display:inline-block;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:4px 12px;border-radius:20px;background:var(--accent-l);color:var(--accent);margin-bottom:14px;font-weight:700}
+.pctrl{display:flex;justify-content:center;gap:10px;margin-bottom:16px}
+.pbtn{border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .15s}
+.pbtn:active{transform:scale(.92)}
+.pp{background:var(--accent);color:#fff;width:58px;height:58px;font-size:20px;box-shadow:0 6px 18px rgba(79,70,229,.45)}
+.pr,.ps{background:var(--bg);color:var(--mu);border:1.5px solid var(--bord);width:44px;height:44px;font-size:15px}
+.pstats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:6px}
+.pst{background:var(--bg);border:1px solid var(--bord);border-radius:12px;padding:12px 8px;text-align:center}
+.pstn{font-size:22px;font-weight:800;color:var(--accent);line-height:1}
+.pstl{font-size:10px;color:var(--mu);margin-top:4px;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+.pomo-quote{font-size:12px;color:var(--mu);text-align:center;margin-top:8px;font-style:italic;transition:opacity .3s;min-height:18px}
+/* CALCULATRICE */
+.calc-screen{background:var(--bg);border:1.5px solid var(--bord);border-radius:14px;padding:14px;text-align:right;margin-bottom:10px}
+.calc-expr{font-size:11px;color:var(--mu);min-height:16px;overflow:hidden;text-overflow:ellipsis}
+.calc-result{font-size:32px;font-weight:800;color:var(--tx);margin-top:2px;min-height:40px;overflow:hidden;text-overflow:ellipsis;font-variant-numeric:tabular-nums}
+.calc-row-sci{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:8px}
+.cb-sci{height:36px;border-radius:9px;border:1.5px solid var(--bord);background:var(--bg);color:var(--mu);font-size:11px;font-family:var(--fb);cursor:pointer;transition:all .15s}
+.cb-sci:active{background:var(--accent-l);color:var(--accent);border-color:var(--accent)}
+.calc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.calc-btn{height:52px;border-radius:14px;border:none;font-size:17px;font-family:var(--fb);font-weight:700;cursor:pointer;transition:transform .12s,opacity .12s}
+.calc-btn:active{transform:scale(.91);opacity:.8}
+.cb-num{background:var(--card);color:var(--tx);border:1px solid var(--bord)}
+.cb-op{background:var(--accent-l);color:var(--accent)}
+.cb-eq{background:var(--accent);color:#fff}
+.cb-clr{background:rgba(239,68,68,.12);color:var(--danger)}
+.cb-fn{background:var(--bg);color:var(--mu);border:1px solid var(--bord);font-size:13px}
+/* CONVERTISSEUR */
+.conv-box{background:var(--bg);border:1.5px solid var(--bord);border-radius:14px;padding:14px}
+.conv-cats{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.conv-cat{padding:5px 12px;border-radius:20px;border:1.5px solid var(--bord);background:transparent;color:var(--mu);font-size:11px;font-family:var(--fb);cursor:pointer;transition:all .2s;font-weight:600}
+.conv-cat.on{border-color:var(--accent);color:var(--accent);background:var(--accent-l)}
+.conv-row{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+.conv-inp{flex:1;background:var(--card);border:1.5px solid var(--bord);border-radius:10px;padding:10px 12px;color:var(--tx);font-size:18px;font-weight:700;font-family:var(--fb);outline:none;min-width:0}
+.conv-inp:focus{border-color:var(--accent)}
+.conv-unit{background:var(--card);border:1.5px solid var(--bord);border-radius:10px;padding:10px 8px;color:var(--tx);font-size:13px;font-family:var(--fb);outline:none;min-width:80px}
+.conv-result{font-size:26px;font-weight:800;color:var(--accent);text-align:center;padding:8px 0;font-variant-numeric:tabular-nums}
+/* CONJUGUEUR */
+.conj-box{background:var(--bg);border:1.5px solid var(--bord);border-radius:14px;padding:14px;margin-bottom:8px}
+.conj-title{font-size:13px;font-weight:800;margin-bottom:10px;color:var(--tx)}
+.conj-table{width:100%;border-collapse:collapse}
+.conj-table td{padding:6px 8px;font-size:13px;border-bottom:1px solid var(--bord)}
+.conj-table td:first-child{color:var(--mu);font-weight:600;width:38%}
+.conj-table td:last-child{color:var(--tx);font-weight:600}
+.conj-table tr:last-child td{border-bottom:none}
+/* MOYENNE */
+.mres{background:var(--accent-l);border:1.5px solid var(--accent);border-radius:16px;padding:20px 16px;text-align:center;margin-bottom:14px}
+.mbig{font-size:52px;font-weight:900;letter-spacing:-2px;line-height:1;color:var(--accent)}
+.mmsg{font-size:12px;color:var(--mu);margin-top:6px}
+.nr{display:flex;align-items:center;gap:8px;background:var(--bg);border:1.5px solid var(--bord);border-radius:11px;padding:10px 12px;margin-bottom:8px}
+.nr label{font-size:10px;color:var(--mu);font-weight:700;white-space:nowrap;text-transform:uppercase;letter-spacing:.4px}
+.nr input{flex:1;background:var(--card);border:1.5px solid var(--bord);border-radius:8px;padding:8px 10px;color:var(--tx);font-size:15px;font-family:var(--fb);outline:none;min-width:0}
+.nr input:focus{border-color:var(--accent)}
+.ndel{background:transparent;border:none;color:var(--mu);font-size:15px;cursor:pointer;flex-shrink:0;padding:4px}
+.madd{width:100%;padding:11px;background:transparent;border:1.5px dashed var(--bord);border-radius:11px;color:var(--mu);font-size:13px;font-family:var(--fb);cursor:pointer;margin-bottom:8px;font-weight:600}
+.mcalc{width:100%;padding:14px;background:var(--accent);border:none;border-radius:12px;color:#fff;font-size:14px;font-family:var(--fb);font-weight:800;cursor:pointer}
+/* CLÉ API GROQ */
+.groq-bar{background:var(--bg);border:1.5px solid var(--bord);border-radius:14px;padding:14px;margin-bottom:14px}
+.groq-bar label{font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:8px}
+.groq-row{display:flex;gap:8px}
+.groq-inp{flex:1;background:var(--card);border:1.5px solid var(--bord);border-radius:10px;padding:10px 12px;font-size:14px;font-family:var(--fb);color:var(--tx);outline:none}
+.groq-inp:focus{border-color:var(--accent)}
+.groq-save{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:10px 16px;font-size:13px;font-weight:700;font-family:var(--fb);cursor:pointer;flex-shrink:0}
 </style>
 </head>
 <body>
@@ -1629,23 +1707,23 @@ body::after {
     <!-- OUTILS (5 colonnes) -->
     <div class="home-section-title">Mes outils</div>
     <div class="home-tools" style="grid-template-columns:repeat(5,1fr);margin-bottom:20px">
-      <button class="home-tool">
+      <button class="home-tool" onclick="openTool('pomo')">
         <div class="home-tool-icon" style="background:#fff7ed"><svg viewBox="0 0 24 24" stroke="#c07010" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><line x1="12" y1="13" x2="12" y2="9"/><line x1="12" y1="13" x2="15" y2="14.5"/><rect x="9" y="2" width="6" height="3" rx="1" fill="#c07010" stroke="none"/></svg></div>
         <span class="home-tool-lbl">Pomodoro</span>
       </button>
-      <button class="home-tool">
+      <button class="home-tool" onclick="openTool('moy')">
         <div class="home-tool-icon" style="background:#eef2ff"><svg viewBox="0 0 24 24" stroke="#4f46e5" fill="none" stroke-width="2" stroke-linecap="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
         <span class="home-tool-lbl">Moyennes</span>
       </button>
-      <button class="home-tool">
+      <button class="home-tool" onclick="openTool('calc')">
         <div class="home-tool-icon" style="background:#f0fdf4"><svg viewBox="0 0 24 24" stroke="#16a34a" fill="none" stroke-width="2" stroke-linecap="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="12" y2="18"/></svg></div>
         <span class="home-tool-lbl">Calculer</span>
       </button>
-      <button class="home-tool">
+      <button class="home-tool" onclick="openTool('conj')">
         <div class="home-tool-icon" style="background:#fdf4ff"><svg viewBox="0 0 24 24" stroke="#a855f7" fill="none" stroke-width="2" stroke-linecap="round"><path d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/></svg></div>
         <span class="home-tool-lbl">Conjuguer</span>
       </button>
-      <button class="home-tool">
+      <button class="home-tool" onclick="openTool('conv')">
         <div class="home-tool-icon" style="background:#fff1f2"><svg viewBox="0 0 24 24" stroke="#f43f5e" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7L16 7M13 4.5L16 7L13 9.5M20 17L8 17M11 14.5L8 17L11 19.5"/></svg></div>
         <span class="home-tool-lbl">Convertir</span>
       </button>
@@ -1957,10 +2035,25 @@ body::after {
 
   <!-- PROFIL -->
   <section class="sec" id="s-profil">
-    <div class="page-hdr">
+    <div class="page-hdr" style="margin-bottom:6px">
       <h1><span class="handwrite-title ht-pink">Profil</span></h1>
     </div>
-    <div class="placeholder"><p>Section Profil — bientôt</p></div>
+    <div class="groq-bar">
+      <label>Clé API Groq (Chat IA)</label>
+      <div class="groq-row">
+        <input class="groq-inp" id="groq-key-inp" type="password" placeholder="gsk_..." autocomplete="off">
+        <button class="groq-save" onclick="saveGroqKey()">Enregistrer</button>
+      </div>
+      <div id="groq-status" style="font-size:11px;color:var(--mu);margin-top:7px">Crée une clé gratuite sur <strong>console.groq.com</strong></div>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--bord);border-radius:14px;padding:14px;font-size:13px;color:var(--mu);line-height:1.6">
+      <div style="font-weight:700;color:var(--tx);margin-bottom:6px">Comment obtenir ta clé Groq ?</div>
+      1. Va sur <strong>console.groq.com</strong><br>
+      2. Crée un compte gratuit (Gmail OK)<br>
+      3. API Keys → Create API Key<br>
+      4. Copie la clé (commence par <code style="background:var(--bg);padding:1px 5px;border-radius:4px">gsk_...</code>)<br>
+      5. Colle-la ici et clique Enregistrer
+    </div>
   </section>
 
 </main>
@@ -2638,13 +2731,25 @@ async function sendChat() {
   const msgs = document.getElementById('chat-msgs');
 
   try {
-    const res = await fetch('/api/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: text, history: chatHistory })
-    });
-    const data = await res.json();
-    const reply = data.reply || data.error || 'Pas de réponse.';
+    var reply;
+    var groqKey = localStorage.getItem('sk_groq') || '';
+
+    if (groqKey) {
+      /* ── Groq direct (client-side) ── */
+      var groqMsgs = [{ role: 'system', content: SCOLARIA_SYSTEM }];
+      chatHistory.slice(-12).forEach(function(h){ groqMsgs.push({ role: h.role, content: h.content }); });
+      groqMsgs.push({ role: 'user', content: text });
+      reply = await callGroq(groqMsgs);
+    } else {
+      /* ── Fallback : Anthropic via /api/chat ── */
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: text, history: chatHistory })
+      });
+      const data = await res.json();
+      reply = data.reply || data.error || 'Pas de réponse.';
+    }
 
     chatHistory.push({ role: 'user', content: text });
     chatHistory.push({ role: 'assistant', content: reply });
@@ -2653,11 +2758,446 @@ async function sendChat() {
     thinking.innerHTML = mdToHtml(reply);
     thinking.classList.remove('thinking');
   } catch(e) {
-    thinking.textContent = 'Erreur de connexion. Vérifie ta connexion internet.';
+    thinking.textContent = 'Erreur : ' + e.message;
     thinking.classList.remove('thinking');
   }
   msgs.scrollTop = msgs.scrollHeight;
 }
+
+/* ══ GROQ API ══ */
+var SCOLARIA_SYSTEM = 'Tu es ScolarIA, l\'assistant IA scolaire de Gabriel (3eme, France). Tu es precis, bienveillant et pedagogique. Reponds TOUJOURS en markdown : **gras**, listes, tableaux | Q | R |. Flashcards : tableau avec ligne ---|---. Conjugaison : tableau complet. Maths : etape par etape. Adapte au niveau 3eme.';
+
+function saveGroqKey() {
+  var inp = document.getElementById('groq-key-inp');
+  var key = inp ? inp.value.trim() : '';
+  if (!key.startsWith('gsk_')) {
+    document.getElementById('groq-status').textContent = 'La cle doit commencer par gsk_...';
+    document.getElementById('groq-status').style.color = 'var(--danger)';
+    return;
+  }
+  localStorage.setItem('sk_groq', key);
+  inp.value = '';
+  document.getElementById('groq-status').textContent = 'Cle enregistree ! Le chat IA est maintenant actif.';
+  document.getElementById('groq-status').style.color = 'var(--success)';
+}
+
+async function callGroq(messages) {
+  var key = localStorage.getItem('sk_groq') || '';
+  if (!key) throw new Error('Cle Groq manquante — va dans Profil pour la configurer');
+  var res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + key },
+    body: JSON.stringify({ model: 'llama-3.3-70b-versatile', max_tokens: 1800, messages: messages })
+  });
+  var data = await res.json();
+  if (data.error) throw new Error(data.error.message);
+  return data.choices[0].message.content;
+}
+
+/* ══ MODALES OUTILS ══ */
+function openTool(name) {
+  document.getElementById(name + '-modal').classList.add('open');
+  if (name === 'conv') initConv();
+  if (name === 'conj') setTimeout(function(){ var i = document.getElementById('conj-verb-inp'); if(i) i.focus(); }, 200);
+  if (name === 'moy') { if (!document.getElementById('nl').children.length) { addNR(); addNR(); addNR(); } }
+  if (name === 'pomo') initPomo();
+}
+
+function closeTool(name) {
+  document.getElementById(name + '-modal').classList.remove('open');
+}
+
+/* ══ POMODORO ══ */
+var PORC = 2 * Math.PI * 75;
+var poS = 25*60, poR = false, poI = null, poW = true, poC = 0, poF = 0, poSk = 0;
+var POMO_WORK = ['Tu es en mode focus.','25 minutes, tu peux le faire.','Eteins les notifs, c\'est ton moment.','Chaque pomodoro te rapproche de ton objectif.','Allez, concentration !'];
+var POMO_BREAK = ['Pause meritee. Leve-toi, bois de l\'eau.','5 minutes pour recharger les batteries.','Etire-toi, ton cerveau le merite.','Respire profondement. Le focus revient tout seul.'];
+
+function initPomo() { updPoRing(); }
+
+function updPoRing() {
+  var tot = poW ? 25*60 : 5*60;
+  var off = PORC * (1 - poS / tot);
+  var pr = document.getElementById('ppr');
+  if (pr) { pr.style.strokeDashoffset = off; pr.style.stroke = poW ? 'var(--accent)' : 'var(--success)'; }
+  var m = String(Math.floor(poS/60)).padStart(2,'0');
+  var s = String(poS%60).padStart(2,'0');
+  var dig = document.getElementById('pdig');
+  if (dig) dig.textContent = m + ':' + s;
+}
+
+function togglePomo() {
+  if (poR) {
+    clearInterval(poI); poR = false;
+    document.getElementById('ppbtn').textContent = '▶';
+    document.getElementById('psub').textContent = 'En pause...';
+  } else {
+    poR = true;
+    document.getElementById('ppbtn').textContent = '⏸';
+    document.getElementById('psub').textContent = poW ? 'Focus total !' : 'Pause meritee';
+    var q = poW ? POMO_WORK : POMO_BREAK;
+    var qel = document.getElementById('pomo-quote');
+    if (qel) qel.textContent = q[Math.floor(Math.random()*q.length)];
+    poI = setInterval(function() {
+      poS--;
+      if (poW) poF++;
+      updPoRing();
+      if (poS <= 0) poEnd();
+    }, 1000);
+  }
+}
+
+function poEnd() {
+  clearInterval(poI); poR = false;
+  document.getElementById('ppbtn').textContent = '▶';
+  if (poW) {
+    poC++; poSk++;
+    document.getElementById('pc').textContent = poC;
+    document.getElementById('psk').textContent = poSk;
+    document.getElementById('pf').textContent = Math.floor(poF/60);
+    poW = false; poS = 5*60;
+    var ph = document.getElementById('pph'); ph.textContent = 'PAUSE'; ph.style.background = 'rgba(22,163,74,.15)'; ph.style.color = 'var(--success)';
+    document.getElementById('psub').textContent = 'Pause 5 min !';
+    document.getElementById('pomo-quote').textContent = 'Bien merite ! Detends-toi.';
+  } else {
+    poW = true; poS = 25*60;
+    var ph2 = document.getElementById('pph'); ph2.textContent = 'TRAVAIL'; ph2.style.background = 'var(--accent-l)'; ph2.style.color = 'var(--accent)';
+    document.getElementById('psub').textContent = 'On repart !';
+  }
+  updPoRing();
+}
+
+function resetPomo() {
+  clearInterval(poI); poR = false; poW = true; poS = 25*60;
+  document.getElementById('ppbtn').textContent = '▶';
+  var ph = document.getElementById('pph'); ph.textContent = 'TRAVAIL'; ph.style.background = 'var(--accent-l)'; ph.style.color = 'var(--accent)';
+  document.getElementById('psub').textContent = 'Pret a bosser ?';
+  document.getElementById('pomo-quote').textContent = 'Lance le timer pour commencer';
+  updPoRing();
+}
+
+/* ══ CALCULATRICE ══ */
+var calcExpr = '';
+
+function calcInput(v) {
+  calcExpr += v;
+  document.getElementById('calc-expr').textContent = calcExpr;
+  try {
+    var r = Function('"use strict";return (' + calcExpr + ')')();
+    if (isFinite(r)) document.getElementById('calc-result').textContent = parseFloat(r.toFixed(10)).toString();
+  } catch(e) {}
+}
+
+function calcEquals() {
+  try {
+    var r = Function('"use strict";return (' + calcExpr + ')')();
+    var result = parseFloat(r.toFixed(10)).toString();
+    document.getElementById('calc-result').textContent = result;
+    document.getElementById('calc-expr').textContent = calcExpr + ' =';
+    calcExpr = result;
+  } catch(e) { document.getElementById('calc-result').textContent = 'Erreur'; }
+}
+
+function calcClear() { calcExpr = ''; document.getElementById('calc-expr').textContent = ''; document.getElementById('calc-result').textContent = '0'; }
+function calcDel() { calcExpr = calcExpr.slice(0,-1); document.getElementById('calc-expr').textContent = calcExpr; if (!calcExpr) document.getElementById('calc-result').textContent = '0'; }
+function calcSci(v) { calcInput(v); }
+
+/* ══ CONVERTISSEUR ══ */
+var CONV_DATA = {
+  longueur:    { units:['mm','cm','dm','m','km','pouce','pied','mile'], toM:{mm:1e-3,cm:0.01,dm:0.1,m:1,km:1000,pouce:0.0254,pied:0.3048,mile:1609.34} },
+  masse:       { units:['mg','g','kg','tonne','once','lb'],             toM:{mg:1e-6,g:0.001,kg:1,tonne:1000,once:0.02835,lb:0.4536} },
+  temperature: { units:['°C','°F','K'], toM:null },
+  vitesse:     { units:['m/s','km/h','mph'], toM:{'m/s':1,'km/h':0.2778,mph:0.4470} },
+  aire:        { units:['mm²','cm²','m²','km²','ha'], toM:{'mm²':1e-6,'cm²':1e-4,'m²':1,'km²':1e6,ha:1e4} },
+  volume:      { units:['mL','cL','dL','L','m³'],    toM:{mL:0.001,cL:0.01,dL:0.1,L:1,'m³':1000} }
+};
+var convCat = 'longueur';
+
+function initConv() { setConvCat('longueur', document.querySelector('.conv-cat')); }
+
+function setConvCat(cat, el) {
+  convCat = cat;
+  document.querySelectorAll('.conv-cat').forEach(function(b){ b.classList.remove('on'); });
+  if (el) el.classList.add('on');
+  var d = CONV_DATA[cat];
+  var from = document.getElementById('conv-from');
+  var to   = document.getElementById('conv-to');
+  if (!from || !to || !d) return;
+  from.innerHTML = d.units.map(function(u){ return '<option>' + u + '</option>'; }).join('');
+  to.innerHTML   = d.units.map(function(u,i){ return '<option' + (i===1?' selected':'') + '>' + u + '</option>'; }).join('');
+  doConvert();
+}
+
+function doConvert() {
+  var val  = parseFloat(document.getElementById('conv-val').value) || 0;
+  var from = document.getElementById('conv-from').value;
+  var to   = document.getElementById('conv-to').value;
+  var res  = document.getElementById('conv-result');
+  if (!res) return;
+  if (from === to) { res.textContent = val + ' ' + to; return; }
+  if (convCat === 'temperature') {
+    var r;
+    if (from==='°C'&&to==='°F') r=val*9/5+32;
+    else if (from==='°F'&&to==='°C') r=(val-32)*5/9;
+    else if (from==='°C'&&to==='K')  r=val+273.15;
+    else if (from==='K'&&to==='°C')  r=val-273.15;
+    else if (from==='°F'&&to==='K')  r=(val-32)*5/9+273.15;
+    else if (from==='K'&&to==='°F')  r=(val-273.15)*9/5+32;
+    else r = val;
+    res.textContent = parseFloat(r.toFixed(4)) + ' ' + to;
+    return;
+  }
+  var d = CONV_DATA[convCat];
+  if (!d) return;
+  var inM = val * (d.toM[from] || 1);
+  var result = inM / (d.toM[to] || 1);
+  res.textContent = parseFloat(result.toFixed(6)) + ' ' + to;
+}
+
+/* ══ CONJUGUEUR ══ */
+var CONJ_FR = {
+  aller:   { pres:['je vais','tu vas','il va','nous allons','vous allez','ils vont'],         impa:['j\'allais','tu allais','il allait','nous allions','vous alliez','ils allaient'],         fut:['j\'irai','tu iras','il ira','nous irons','vous irez','ils iront'] },
+  avoir:   { pres:['j\'ai','tu as','il a','nous avons','vous avez','ils ont'],                 impa:['j\'avais','tu avais','il avait','nous avions','vous aviez','ils avaient'],                 fut:['j\'aurai','tu auras','il aura','nous aurons','vous aurez','ils auront'] },
+  etre:    { pres:['je suis','tu es','il est','nous sommes','vous etes','ils sont'],            impa:['j\'etais','tu etais','il etait','nous etions','vous etiez','ils etaient'],            fut:['je serai','tu seras','il sera','nous serons','vous serez','ils seront'] },
+  faire:   { pres:['je fais','tu fais','il fait','nous faisons','vous faites','ils font'],      impa:['je faisais','tu faisais','il faisait','nous faisions','vous faisiez','ils faisaient'],      fut:['je ferai','tu feras','il fera','nous ferons','vous ferez','ils feront'] },
+  pouvoir: { pres:['je peux','tu peux','il peut','nous pouvons','vous pouvez','ils peuvent'],   impa:['je pouvais','tu pouvais','il pouvait','nous pouvions','vous pouviez','ils pouvaient'],   fut:['je pourrai','tu pourras','il pourra','nous pourrons','vous pourrez','ils pourront'] },
+  vouloir: { pres:['je veux','tu veux','il veut','nous voulons','vous voulez','ils veulent'],   impa:['je voulais','tu voulais','il voulait','nous voulions','vous vouliez','ils voulaient'],   fut:['je voudrai','tu voudras','il voudra','nous voudrons','vous voudrez','ils voudront'] },
+  venir:   { pres:['je viens','tu viens','il vient','nous venons','vous venez','ils viennent'], impa:['je venais','tu venais','il venait','nous venions','vous veniez','ils venaient'],          fut:['je viendrai','tu viendras','il viendra','nous viendrons','vous viendrez','ils viendront'] },
+  prendre: { pres:['je prends','tu prends','il prend','nous prenons','vous prenez','ils prennent'], impa:['je prenais','tu prenais','il prenait','nous prenions','vous preniez','ils prenaient'], fut:['je prendrai','tu prendras','il prendra','nous prendrons','vous prendrez','ils prendront'] },
+  savoir:  { pres:['je sais','tu sais','il sait','nous savons','vous savez','ils savent'],      impa:['je savais','tu savais','il savait','nous savions','vous saviez','ils savaient'],          fut:['je saurai','tu sauras','il saura','nous saurons','vous saurez','ils sauront'] },
+  voir:    { pres:['je vois','tu vois','il voit','nous voyons','vous voyez','ils voient'],       impa:['je voyais','tu voyais','il voyait','nous voyions','vous voyiez','ils voyaient'],          fut:['je verrai','tu verras','il verra','nous verrons','vous verrez','ils verront'] }
+};
+var PRONS_FR = ['je / j\'','tu','il / elle','nous','vous','ils / elles'];
+
+function doConj(verb) {
+  var res  = document.getElementById('conj-result');
+  var lang = document.getElementById('conj-lang') ? document.getElementById('conj-lang').value : 'fr';
+  if (!res || !verb || verb.length < 2) { if(res) res.innerHTML = ''; return; }
+  verb = verb.toLowerCase().trim();
+
+  if (lang === 'fr') {
+    var key = verb.replace(/[éèêë]/g,'e').replace(/[àâ]/g,'a').replace(/[îï]/g,'i');
+    var data = CONJ_FR[verb] || CONJ_FR[key];
+    if (data) {
+      res.innerHTML = buildConjTable(verb, 'Présent', PRONS_FR, data.pres) +
+                      buildConjTable(verb, 'Imparfait', PRONS_FR, data.impa) +
+                      buildConjTable(verb, 'Futur', PRONS_FR, data.fut);
+    } else if (verb.endsWith('er') && verb.length > 3) {
+      var stem = verb.slice(0,-2);
+      var pres = [stem+'e',stem+'es',stem+'e',stem+'ons',stem+'ez',stem+'ent'];
+      var impa = [stem+'ais',stem+'ais',stem+'ait',stem+'ions',stem+'iez',stem+'aient'];
+      var fut  = [stem+'erai',stem+'eras',stem+'era',stem+'erons',stem+'erez',stem+'eront'];
+      res.innerHTML = buildConjTable(verb,'Présent',PRONS_FR,pres) + buildConjTable(verb,'Imparfait',PRONS_FR,impa) + buildConjTable(verb,'Futur',PRONS_FR,fut);
+    } else if (verb.endsWith('ir') && verb.length > 3) {
+      var stem2 = verb.slice(0,-2);
+      var pres2 = [stem2+'is',stem2+'is',stem2+'it',stem2+'issons',stem2+'issez',stem2+'issent'];
+      res.innerHTML = buildConjTable(verb,'Présent',PRONS_FR,pres2);
+    } else {
+      res.innerHTML = '<div style="font-size:13px;color:var(--mu);padding:12px;text-align:center">Verbe non trouvé hors ligne.<br><small>Essaie : aller, avoir, être, faire, pouvoir, vouloir, venir, prendre, savoir, voir</small></div>';
+    }
+  } else if (lang === 'en') {
+    var prons = ['I','you','he/she','we','you','they'];
+    var s3    = verb.endsWith('s') || verb.endsWith('x') ? verb+'es' : verb+'s';
+    var pres  = [verb,verb,s3,verb,verb,verb];
+    var pp    = verb.endsWith('e') ? verb+'d' : verb+'ed';
+    var past  = [pp,pp,pp,pp,pp,pp];
+    res.innerHTML = buildConjTable(verb,'Present simple',prons,pres) + buildConjTable(verb,'Past simple',prons,past);
+  } else {
+    var suf = verb.endsWith('ar') ? ['o','as','a','amos','áis','an'] : verb.endsWith('er') ? ['o','es','e','emos','éis','en'] : ['o','es','e','imos','ís','en'];
+    var stem3 = verb.slice(0,-2);
+    var prons3 = ['yo','tú','él/ella','nosotros','vosotros','ellos'];
+    res.innerHTML = buildConjTable(verb,'Presente',prons3,suf.map(function(s){ return stem3+s; }));
+  }
+}
+
+function buildConjTable(verb, tense, prons, forms) {
+  if (!forms || !forms.length) return '';
+  return '<div class="conj-box"><div class="conj-title">' + esc(verb) + ' — ' + tense + '</div>' +
+    '<table class="conj-table">' +
+    prons.map(function(p,i){ return '<tr><td>' + p + '</td><td>' + (forms[i]||'') + '</td></tr>'; }).join('') +
+    '</table></div>';
+}
+
+/* ══ MOYENNE ══ */
+function addNR() {
+  var l = document.getElementById('nl');
+  var r = document.createElement('div');
+  r.className = 'nr';
+  r.innerHTML = '<label>Note</label><input type="number" placeholder="14" min="0" max="20" step="0.5" class="ni-i"><label style="margin-left:4px">Coef</label><input type="number" placeholder="1" min="0.5" value="1" class="ci-i" style="width:48px"><button class="ndel" onclick="this.closest(\'.nr\').remove()">✕</button>';
+  l.appendChild(r);
+}
+
+function calcMoy() {
+  var ns = document.querySelectorAll('#nl .ni-i');
+  var cs = document.querySelectorAll('#nl .ci-i');
+  var tot = 0, totC = 0;
+  ns.forEach(function(n,i){ var v=parseFloat(n.value),c=parseFloat(cs[i]?cs[i].value:1)||1; if(!isNaN(v)&&v>=0&&v<=20){tot+=v*c;totC+=c;} });
+  if (!totC) { document.getElementById('mbig').textContent='—'; document.getElementById('mmsg').textContent='Remplis au moins une note !'; return; }
+  var moy = (tot/totC).toFixed(2);
+  var col = moy>=14 ? 'var(--success)' : moy>=10 ? 'var(--accent)' : 'var(--danger)';
+  var msg = moy>=16?'Excellente moyenne !':moy>=14?'Tres bien !':moy>=12?'Bien, continue !':moy>=10?'Ca passe, encore un effort !':'Du travail en perspective...';
+  document.getElementById('mbig').style.color = col;
+  document.getElementById('mbig').textContent = moy + '/20';
+  document.getElementById('mmsg').textContent = msg;
+}
+
+/* Profil — init clé */
+document.addEventListener('DOMContentLoaded', function() {
+  var k = localStorage.getItem('sk_groq');
+  if (k) {
+    var st = document.getElementById('groq-status');
+    if (st) { st.textContent = 'Cle Groq active (' + k.slice(0,8) + '...).'; st.style.color = 'var(--success)'; }
+  }
+});
 </script>
+
+<!-- ══ MODALE POMODORO ══ -->
+<div class="tool-modal" id="pomo-modal" onclick="if(event.target===this)closeTool('pomo')">
+  <div class="tm-sheet">
+    <div class="tm-hdr">
+      <span class="tm-ttl">Pomodoro</span>
+      <button class="tm-cls" onclick="closeTool('pomo')">✕</button>
+    </div>
+    <div style="text-align:center">
+      <div class="pph" id="pph">TRAVAIL</div>
+      <div class="pring">
+        <svg viewBox="0 0 170 170" width="170" height="170">
+          <circle class="ptr" cx="85" cy="85" r="75"/>
+          <circle class="ppr" id="ppr" cx="85" cy="85" r="75" stroke-dasharray="471.24" stroke-dashoffset="0"/>
+        </svg>
+        <div class="pins">
+          <div class="pdig" id="pdig">25:00</div>
+          <div class="psub" id="psub">Prêt à bosser ?</div>
+        </div>
+      </div>
+      <div class="pctrl">
+        <button class="pbtn pr" onclick="resetPomo()">↺</button>
+        <button class="pbtn pp" id="ppbtn" onclick="togglePomo()">▶</button>
+        <button class="pbtn ps" onclick="poS=1">⏭</button>
+      </div>
+      <div class="pomo-quote" id="pomo-quote">Lance le timer pour commencer</div>
+    </div>
+    <div class="pstats" style="margin-top:16px">
+      <div class="pst"><div class="pstn" id="pc">0</div><div class="pstl">Pomodoros</div></div>
+      <div class="pst"><div class="pstn" id="pf">0</div><div class="pstl">min focus</div></div>
+      <div class="pst"><div class="pstn" id="psk">0</div><div class="pstl">Série</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODALE CALCULATRICE ══ -->
+<div class="tool-modal" id="calc-modal" onclick="if(event.target===this)closeTool('calc')">
+  <div class="tm-sheet">
+    <div class="tm-hdr">
+      <span class="tm-ttl">Calculatrice</span>
+      <button class="tm-cls" onclick="closeTool('calc')">✕</button>
+    </div>
+    <div class="calc-screen">
+      <div class="calc-expr" id="calc-expr"></div>
+      <div class="calc-result" id="calc-result">0</div>
+    </div>
+    <div class="calc-row-sci">
+      <button class="cb-sci" onclick="calcSci('Math.sin(')">sin</button>
+      <button class="cb-sci" onclick="calcSci('Math.cos(')">cos</button>
+      <button class="cb-sci" onclick="calcSci('Math.tan(')">tan</button>
+      <button class="cb-sci" onclick="calcSci('Math.sqrt(')">√</button>
+      <button class="cb-sci" onclick="calcSci('**2')">x²</button>
+    </div>
+    <div class="calc-row-sci">
+      <button class="cb-sci" onclick="calcSci('Math.log10(')">log</button>
+      <button class="cb-sci" onclick="calcSci('Math.PI')">π</button>
+      <button class="cb-sci" onclick="calcSci('(')">(</button>
+      <button class="cb-sci" onclick="calcSci(')')">)</button>
+      <button class="cb-sci" onclick="calcSci('%')">%</button>
+    </div>
+    <div class="calc-grid">
+      <button class="calc-btn cb-clr" onclick="calcClear()">C</button>
+      <button class="calc-btn cb-fn" onclick="calcDel()">⌫</button>
+      <button class="calc-btn cb-op" onclick="calcInput('**')">xⁿ</button>
+      <button class="calc-btn cb-op" onclick="calcInput('/')">÷</button>
+      <button class="calc-btn cb-num" onclick="calcInput('7')">7</button>
+      <button class="calc-btn cb-num" onclick="calcInput('8')">8</button>
+      <button class="calc-btn cb-num" onclick="calcInput('9')">9</button>
+      <button class="calc-btn cb-op" onclick="calcInput('*')">×</button>
+      <button class="calc-btn cb-num" onclick="calcInput('4')">4</button>
+      <button class="calc-btn cb-num" onclick="calcInput('5')">5</button>
+      <button class="calc-btn cb-num" onclick="calcInput('6')">6</button>
+      <button class="calc-btn cb-op" onclick="calcInput('-')">−</button>
+      <button class="calc-btn cb-num" onclick="calcInput('1')">1</button>
+      <button class="calc-btn cb-num" onclick="calcInput('2')">2</button>
+      <button class="calc-btn cb-num" onclick="calcInput('3')">3</button>
+      <button class="calc-btn cb-op" onclick="calcInput('+')">+</button>
+      <button class="calc-btn cb-num" onclick="calcInput('0')" style="grid-column:span 2">0</button>
+      <button class="calc-btn cb-num" onclick="calcInput('.')">.</button>
+      <button class="calc-btn cb-eq" onclick="calcEquals()">=</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODALE CONVERTISSEUR ══ -->
+<div class="tool-modal" id="conv-modal" onclick="if(event.target===this)closeTool('conv')">
+  <div class="tm-sheet">
+    <div class="tm-hdr">
+      <span class="tm-ttl">Convertisseur</span>
+      <button class="tm-cls" onclick="closeTool('conv')">✕</button>
+    </div>
+    <div class="conv-box">
+      <div class="conv-cats" id="conv-cats">
+        <button class="conv-cat on" onclick="setConvCat('longueur',this)">Longueur</button>
+        <button class="conv-cat" onclick="setConvCat('masse',this)">Masse</button>
+        <button class="conv-cat" onclick="setConvCat('temperature',this)">Temp.</button>
+        <button class="conv-cat" onclick="setConvCat('vitesse',this)">Vitesse</button>
+        <button class="conv-cat" onclick="setConvCat('aire',this)">Aire</button>
+        <button class="conv-cat" onclick="setConvCat('volume',this)">Volume</button>
+      </div>
+      <div class="conv-row">
+        <input class="conv-inp" id="conv-val" type="number" placeholder="0" oninput="doConvert()" value="1">
+        <select class="conv-unit" id="conv-from" onchange="doConvert()"></select>
+      </div>
+      <div style="text-align:center;color:var(--mu);font-size:22px;margin:4px 0">↕</div>
+      <div class="conv-row">
+        <div class="conv-result" id="conv-result">—</div>
+        <select class="conv-unit" id="conv-to" onchange="doConvert()"></select>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODALE CONJUGUEUR ══ -->
+<div class="tool-modal" id="conj-modal" onclick="if(event.target===this)closeTool('conj')">
+  <div class="tm-sheet">
+    <div class="tm-hdr">
+      <span class="tm-ttl">Conjugueur</span>
+      <button class="tm-cls" onclick="closeTool('conj')">✕</button>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:12px">
+      <input class="conv-inp" id="conj-verb-inp" type="text" placeholder="Ex: aller, avoir, être..." oninput="doConj(this.value)" style="font-size:16px;font-weight:700">
+      <select class="conv-unit" id="conj-lang" onchange="doConj(document.getElementById('conj-verb-inp').value)" style="min-width:80px">
+        <option value="fr">🇫🇷 FR</option>
+        <option value="en">🇬🇧 EN</option>
+        <option value="es">🇪🇸 ES</option>
+      </select>
+    </div>
+    <div id="conj-result"></div>
+  </div>
+</div>
+
+<!-- ══ MODALE MOYENNE ══ -->
+<div class="tool-modal" id="moy-modal" onclick="if(event.target===this)closeTool('moy')">
+  <div class="tm-sheet">
+    <div class="tm-hdr">
+      <span class="tm-ttl">Calculer ma moyenne</span>
+      <button class="tm-cls" onclick="closeTool('moy')">✕</button>
+    </div>
+    <div class="mres">
+      <div class="mbig" id="mbig">—</div>
+      <div class="mmsg" id="mmsg">Ajoute tes notes</div>
+    </div>
+    <div id="nl"></div>
+    <button class="madd" onclick="addNR()">＋ Ajouter une note</button>
+    <button class="mcalc" onclick="calcMoy()">Calculer ma moyenne</button>
+  </div>
+</div>
+
 </body>
 </html>

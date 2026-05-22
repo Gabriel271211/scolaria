@@ -1556,6 +1556,37 @@ body::after {
 .groq-inp{flex:1;background:var(--card);border:1.5px solid var(--bord);border-radius:10px;padding:10px 12px;font-size:14px;font-family:var(--fb);color:var(--tx);outline:none}
 .groq-inp:focus{border-color:var(--accent)}
 .groq-save{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:10px 16px;font-size:13px;font-weight:700;font-family:var(--fb);cursor:pointer;flex-shrink:0}
+/* ── VEILLE DE CONTRÔLE ── */
+.vc-day-btn{flex:1;padding:10px 4px;border:1.5px solid var(--bord);border-radius:10px;background:var(--bg);color:var(--mu);font-size:13px;font-weight:700;font-family:var(--fb);cursor:pointer;transition:all .15s;text-align:center}
+.vc-day-btn.on{background:#e84040;color:#fff;border-color:#e84040}
+.vc-inp-lbl{font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:6px}
+.vc-inp{width:100%;background:var(--bg);border:1.5px solid var(--bord);border-radius:10px;padding:11px 13px;color:var(--tx);font-size:14px;font-family:var(--fb);outline:none;transition:border-color .15s;margin-bottom:12px}
+.vc-inp:focus{border-color:#e84040}
+.vc-plan{font-size:14px;line-height:1.8;margin-top:8px}
+.vc-plan strong{font-weight:800;color:var(--tx)}
+/* ── PROFIL V2 ── */
+.prof-hero{background:linear-gradient(135deg,var(--accent) 0%,#7c3aed 100%);border-radius:20px;padding:26px 20px;text-align:center;margin-bottom:16px}
+.prof-av{font-size:44px;width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,.22);margin:0 auto 12px;cursor:pointer;border:3px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;transition:transform .18s;-webkit-tap-highlight-color:transparent}
+.prof-av:active{transform:scale(.94)}
+.prof-name{font-size:22px;font-weight:900;color:#fff;letter-spacing:-.4px}
+.prof-sub{font-size:12px;color:rgba(255,255,255,.72);margin-top:4px}
+.prof-stats-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px}
+.prof-stat{background:var(--card);border:1px solid var(--bord);border-radius:12px;padding:12px 8px;text-align:center}
+.prof-stat-n{font-size:22px;font-weight:900;color:var(--accent);line-height:1}
+.prof-stat-l{font-size:10px;font-weight:600;color:var(--mu);text-transform:uppercase;letter-spacing:.4px;margin-top:3px}
+.prof-card{background:var(--card);border:1px solid var(--bord);border-radius:16px;padding:16px;margin-bottom:12px}
+.prof-card-title{font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.5px;margin-bottom:14px}
+.prof-field{margin-bottom:12px}
+.prof-field:last-child{margin-bottom:0}
+.prof-field label{font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:5px}
+.prof-field input,.prof-field select{width:100%;background:var(--bg);border:1.5px solid var(--bord);border-radius:10px;padding:11px 13px;color:var(--tx);font-size:14px;font-family:var(--fb);outline:none;transition:border-color .15s;-webkit-appearance:none}
+.prof-field input:focus,.prof-field select:focus{border-color:var(--accent)}
+.prof-save-btn{width:100%;padding:14px;background:var(--accent);border:none;color:#fff;border-radius:14px;font-size:15px;font-family:var(--fb);font-weight:800;cursor:pointer;margin-bottom:12px;transition:opacity .15s;-webkit-tap-highlight-color:transparent}
+.prof-save-btn:active{opacity:.87}
+.prof-av-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid var(--bord)}
+.prof-av-btn{font-size:24px;background:var(--bg);border:2px solid var(--bord);border-radius:10px;padding:8px;cursor:pointer;transition:all .15s;text-align:center;-webkit-tap-highlight-color:transparent}
+.prof-av-btn.on{background:var(--accent-l);border-color:var(--accent)}
+.prof-reset-btn{width:100%;padding:11px;background:transparent;border:1.5px solid rgba(239,68,68,.35);color:var(--danger);border-radius:12px;font-size:13px;font-family:var(--fb);font-weight:700;cursor:pointer;margin-top:8px}
 </style>
 </head>
 <body>
@@ -1648,7 +1679,7 @@ body::after {
     <div class="home-section-title">Mes modules</div>
 
     <!-- MODULE 1 : VEILLE CONTROLE -->
-    <div class="home-mod-card" onclick="goSec('s-revisions',document.querySelector('.nav-btn[onclick*=s-revisions]'))">
+    <div class="home-mod-card" onclick="openVeilleControle()">
       <div class="home-mod-bar" style="background:#e84040"></div>
       <div class="home-mod-visual" style="background:linear-gradient(135deg,#fff5f5,#ffe8e8)">
         <svg width="260" height="108" viewBox="0 0 260 108" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2135,25 +2166,98 @@ body::after {
 
   <!-- PROFIL -->
   <section class="sec" id="s-profil">
-    <div class="page-hdr" style="margin-bottom:6px">
-      <h1><span class="handwrite-title ht-pink">Profil</span></h1>
+
+    <!-- Hero card -->
+    <div class="prof-hero">
+      <div class="prof-av" id="profil-avatar-display" onclick="toggleAvatarPicker()">🎓</div>
+      <div class="prof-name" id="profil-name-display">Mon Profil</div>
+      <div class="prof-sub" id="profil-sub-display">ScolarIA · Collégien</div>
     </div>
-    <div class="groq-bar">
-      <label>Clé API Groq (Chat IA)</label>
+
+    <!-- Stats -->
+    <div class="prof-stats-row">
+      <div class="prof-stat">
+        <div class="prof-stat-n" id="prof-streak">0</div>
+        <div class="prof-stat-l">🔥 Streak</div>
+      </div>
+      <div class="prof-stat">
+        <div class="prof-stat-n" id="prof-flash-n">0</div>
+        <div class="prof-stat-l">🃏 Flashcards</div>
+      </div>
+      <div class="prof-stat">
+        <div class="prof-stat-n" id="prof-devoirs-n">0</div>
+        <div class="prof-stat-l">✅ Devoirs</div>
+      </div>
+    </div>
+
+    <!-- Infos -->
+    <div class="prof-card">
+      <div class="prof-card-title">👤 Mes infos</div>
+      <div class="prof-field">
+        <label>Prénom</label>
+        <input type="text" id="profil-prenom" placeholder="ex: Gabriel, Léa..." maxlength="20">
+      </div>
+      <div class="prof-field">
+        <label>Niveau scolaire</label>
+        <select id="profil-classe">
+          <option value="">— Choisir —</option>
+          <option>6ème</option><option>5ème</option><option>4ème</option><option>3ème</option>
+          <option>2nde</option><option>1ère</option><option>Terminale</option>
+        </select>
+      </div>
+      <div class="prof-field">
+        <label>Matière préférée</label>
+        <select id="profil-matiere">
+          <option value="">— Choisir —</option>
+          <option>Maths</option><option>Français</option><option>Histoire-Géo</option>
+          <option>Physique-Chimie</option><option>SVT</option><option>Anglais</option>
+          <option>Espagnol</option><option>NSI</option><option>Philosophie</option><option>SES</option>
+        </select>
+      </div>
+      <div class="prof-field">
+        <label>Mon objectif</label>
+        <select id="profil-objectif">
+          <option value="">— Choisir —</option>
+          <option>Décrocher le Brevet</option>
+          <option>Avoir le Bac</option>
+          <option>Améliorer mes notes</option>
+          <option>Ne pas couler</option>
+          <option>Cartonner les interros</option>
+        </select>
+      </div>
+      <!-- Avatar picker -->
+      <div id="avatar-picker" style="display:none">
+        <div class="prof-av-grid" id="avatar-grid"></div>
+      </div>
+    </div>
+
+    <button class="prof-save-btn" onclick="saveProfile()">💾 Sauvegarder le profil</button>
+
+    <!-- Clé Groq -->
+    <div class="prof-card">
+      <div class="prof-card-title">⚡ Clé API Groq</div>
       <div class="groq-row">
         <input class="groq-inp" id="groq-key-inp" type="password" placeholder="gsk_..." autocomplete="off">
-        <button class="groq-save" onclick="saveGroqKey()">Enregistrer</button>
+        <button class="groq-save" onclick="saveGroqKey()">OK</button>
       </div>
-      <div id="groq-status" style="font-size:11px;color:var(--mu);margin-top:7px">Crée une clé gratuite sur <strong>console.groq.com</strong></div>
+      <div id="groq-status" style="font-size:11px;color:var(--mu);margin-top:8px">Crée une clé gratuite sur <strong>console.groq.com</strong></div>
+      <div style="font-size:12px;color:var(--mu);margin-top:10px;line-height:1.6;padding-top:10px;border-top:1px solid var(--bord)">
+        1. <strong>console.groq.com</strong> → compte gratuit (Gmail OK)<br>
+        2. API Keys → Create API Key<br>
+        3. Copie la clé <code style="background:var(--bg);padding:1px 5px;border-radius:4px;font-size:11px">gsk_...</code> et colle-la ci-dessus
+      </div>
     </div>
-    <div style="background:var(--card);border:1px solid var(--bord);border-radius:14px;padding:14px;font-size:13px;color:var(--mu);line-height:1.6">
-      <div style="font-weight:700;color:var(--tx);margin-bottom:6px">Comment obtenir ta clé Groq ?</div>
-      1. Va sur <strong>console.groq.com</strong><br>
-      2. Crée un compte gratuit (Gmail OK)<br>
-      3. API Keys → Create API Key<br>
-      4. Copie la clé (commence par <code style="background:var(--bg);padding:1px 5px;border-radius:4px">gsk_...</code>)<br>
-      5. Colle-la ici et clique Enregistrer
+
+    <!-- Données -->
+    <div class="prof-card" style="border-color:rgba(239,68,68,.2)">
+      <div class="prof-card-title" style="color:var(--danger)">⚠️ Données</div>
+      <button class="prof-reset-btn" onclick="if(confirm('Réinitialiser toutes tes données ScolarIA ?')){localStorage.clear();location.reload()}">Réinitialiser toutes mes données</button>
     </div>
+
+    <div style="text-align:center;font-size:11px;color:var(--mu);padding:8px 0 16px">
+      ScolarIA v2 · Fait par Gabriel · 2026
+    </div>
+
   </section>
 
 </main>
@@ -3671,16 +3775,182 @@ async function scanGenerate(type) {
   }
 }
 
-/* Profil — init clé (lit aussi l'ancienne clé sk_prof de la v1) */
+/* ══════════════════════════════════════════════
+   VEILLE DE CONTRÔLE
+══════════════════════════════════════════════ */
+var vcDays = 3;
+
+function openVeilleControle() {
+  document.getElementById('vc-modal').classList.add('open');
+  document.getElementById('vc-result').innerHTML = '';
+  document.getElementById('vc-matiere').value = '';
+  document.getElementById('vc-contenu').value = '';
+}
+function closeVeilleControle() {
+  document.getElementById('vc-modal').classList.remove('open');
+}
+function setVCDays(n, el) {
+  vcDays = n;
+  document.querySelectorAll('.vc-day-btn').forEach(function(b){ b.classList.remove('on'); });
+  el.classList.add('on');
+}
+async function generateVeilleControle() {
+  var mat = (document.getElementById('vc-matiere').value || '').trim();
+  var contenu = (document.getElementById('vc-contenu').value || '').trim();
+  if (!mat) { document.getElementById('vc-matiere').focus(); toast('Indique la matière !'); return; }
+  var res = document.getElementById('vc-result');
+  res.innerHTML = '<div class="rev-loading" style="padding:40px 20px"><div class="rev-spin"></div><div class="rev-loading-txt">Génération en cours...</div><div class="rev-loading-sub">ScolarIA prépare ton planning</div></div>';
+  var dayLabel = vcDays === 1 ? '1 jour' : vcDays + ' jours';
+  var prompt = 'Genere un planning de revision sur ' + dayLabel + ' pour preparer un controle de ' + mat +
+    (contenu ? ' sur le chapitre : ' + contenu : '') +
+    '. Format EXACT (utilise exactement cette structure) :\n' +
+    'JOUR 1 — [titre court]\n• [tache precise 1]\n• [tache precise 2]\n• [tache precise 3]\n\n' +
+    (vcDays >= 2 ? 'JOUR 2 — [titre]\n• ...\n• ...\n• ...\n\n' : '') +
+    (vcDays >= 3 ? 'JOUR 3 — [titre]\n• ...\n• ...\n\n' : '') +
+    'Sois concis, pratique, adapte au niveau 3eme. Pas de blabla, juste les taches.';
+  try {
+    var reply = '';
+    var key = getGroqKey();
+    if (key) {
+      reply = await callGroq([
+        { role: 'system', content: SCOLARIA_SYSTEM },
+        { role: 'user', content: prompt }
+      ]);
+    } else {
+      var r = await fetch('/api/chat', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ message: prompt, history: [] }) });
+      var d = await r.json();
+      reply = d.reply || d.content || '';
+    }
+    var html = '<div class="vc-plan rev-ia-result" style="margin-top:12px">' + mdToHtml(reply) + '</div>';
+    html += '<div style="display:flex;flex-direction:column;gap:8px;margin-top:12px">';
+    html += '<button class="rev-go-btn" style="margin-top:0" onclick="vcCreateFlash()">🃏 Créer des flashcards sur ce cours</button>';
+    html += '<button class="rev-go-btn" style="margin-top:0;background:var(--bg);color:var(--tx);border:1.5px solid var(--bord);box-shadow:none" onclick="generateVeilleControle()">Refaire le planning</button>';
+    html += '</div>';
+    res.innerHTML = html;
+  } catch(e) {
+    res.innerHTML = '<div class="rev-err-box">' + esc(e.message) + '<br><button onclick="generateVeilleControle()">Réessayer</button></div>';
+  }
+}
+function vcCreateFlash() {
+  var mat = (document.getElementById('vc-matiere').value || '').trim();
+  closeVeilleControle();
+  goSec('s-revisions', document.querySelector('.nav-btn[onclick*=s-revisions]'));
+  setTimeout(function() {
+    var inp = document.getElementById('rev-topic');
+    if (inp) inp.value = mat;
+    revPickType('flashcards', null);
+  }, 150);
+}
+
+/* ══════════════════════════════════════════════
+   PROFIL V2
+══════════════════════════════════════════════ */
+var AVATARS = ['🎓','📚','🧑‍💻','🦊','🦁','🐼','🦄','🌟','🔥','⚡','🎮','🚀','🎸','🏆','💡','🌈','🧠','✏️','🎯','🍀'];
+var userProfile = { prenom: '', classe: '', matiere: '', objectif: '', avatar: '🎓' };
+
+function loadProfile() {
+  try {
+    var s = localStorage.getItem('sk_prof');
+    if (s) {
+      var p = JSON.parse(s);
+      userProfile.prenom   = p.prenom   || '';
+      userProfile.classe   = p.classe   || '';
+      userProfile.matiere  = p.matiere  || '';
+      userProfile.objectif = p.objectif || '';
+      userProfile.avatar   = p.avatar   || '🎓';
+    }
+  } catch(e) {}
+  renderProfileUI();
+}
+
+function saveProfile() {
+  userProfile.prenom   = (document.getElementById('profil-prenom')  ? document.getElementById('profil-prenom').value.trim()  : '');
+  userProfile.classe   = (document.getElementById('profil-classe')  ? document.getElementById('profil-classe').value          : '');
+  userProfile.matiere  = (document.getElementById('profil-matiere') ? document.getElementById('profil-matiere').value         : '');
+  userProfile.objectif = (document.getElementById('profil-objectif')? document.getElementById('profil-objectif').value        : '');
+  try {
+    var existing = {};
+    try { existing = JSON.parse(localStorage.getItem('sk_prof') || '{}'); } catch(e2) {}
+    var toSave = Object.assign({}, existing, userProfile);
+    localStorage.setItem('sk_prof', JSON.stringify(toSave));
+  } catch(e) {}
+  renderProfileUI();
+  /* Update greeting */
+  userPrenom = userProfile.prenom;
+  var hg = document.getElementById('home-greeting');
+  if (hg && userPrenom) hg.textContent = 'Bonjour ' + userPrenom;
+  var cg = document.getElementById('chat-greeting');
+  if (cg) cg.textContent = userPrenom ? 'Salut ' + userPrenom + ' !' : 'Salut !';
+  toast('Profil sauvegardé ! 🎉');
+}
+
+function renderProfileUI() {
+  /* Hero */
+  var av = document.getElementById('profil-avatar-display');
+  if (av) av.textContent = userProfile.avatar;
+  var nm = document.getElementById('profil-name-display');
+  if (nm) nm.textContent = userProfile.prenom || 'Mon Profil';
+  var sub = document.getElementById('profil-sub-display');
+  if (sub) sub.textContent = (userProfile.classe || 'Collégien') + ' · ScolarIA';
+  /* Fields */
+  var pi = document.getElementById('profil-prenom');   if (pi) pi.value = userProfile.prenom;
+  var pc = document.getElementById('profil-classe');   if (pc) pc.value = userProfile.classe;
+  var pm = document.getElementById('profil-matiere');  if (pm) pm.value = userProfile.matiere;
+  var po = document.getElementById('profil-objectif'); if (po) po.value = userProfile.objectif;
+  /* Stats */
+  try {
+    var sk = localStorage.getItem('sk_streak');
+    var el = document.getElementById('prof-streak');
+    if (el) el.textContent = sk ? (JSON.parse(sk).count || 0) : 0;
+  } catch(e) {}
+  try {
+    var fl = localStorage.getItem('sk_cards');
+    var ef = document.getElementById('prof-flash-n');
+    if (ef) ef.textContent = fl ? JSON.parse(fl).length : 0;
+  } catch(e) {}
+  try {
+    var dv = localStorage.getItem('sk_devoirs');
+    var ed = document.getElementById('prof-devoirs-n');
+    if (ed) ed.textContent = dv ? JSON.parse(dv).filter(function(d){ return d.done; }).length : 0;
+  } catch(e) {}
+  /* Avatar grid */
+  renderAvatarGrid();
+}
+
+function renderAvatarGrid() {
+  var g = document.getElementById('avatar-grid');
+  if (!g) return;
+  g.innerHTML = AVATARS.map(function(a) {
+    var on = a === userProfile.avatar ? ' on' : '';
+    return '<button class="prof-av-btn' + on + '" onclick="pickAvatar(\'' + a + '\')">' + a + '</button>';
+  }).join('');
+}
+
+function pickAvatar(a) {
+  userProfile.avatar = a;
+  var av = document.getElementById('profil-avatar-display');
+  if (av) av.textContent = a;
+  renderAvatarGrid();
+}
+
+function toggleAvatarPicker() {
+  var p = document.getElementById('avatar-picker');
+  if (!p) return;
+  p.style.display = p.style.display === 'none' ? 'block' : 'none';
+  if (p.style.display === 'block') renderAvatarGrid();
+}
+
+/* Profil — init clé + chargement profil au démarrage */
 document.addEventListener('DOMContentLoaded', function() {
-  var k = getGroqKey(); /* getGroqKey() migre automatiquement sk_prof → sk_groq */
+  var k = getGroqKey();
   var st = document.getElementById('groq-status');
   if (k && st) {
-    st.textContent = 'Cle Groq active (' + k.slice(0,8) + '...) — Chat IA prêt !';
+    st.textContent = 'Clé Groq active (' + k.slice(0,8) + '...) — Chat IA prêt !';
     st.style.color = 'var(--success)';
     var inp = document.getElementById('groq-key-inp');
     if (inp) inp.placeholder = '••••••••••••••••';
   }
+  loadProfile();
 });
 </script>
 
@@ -3866,6 +4136,32 @@ document.addEventListener('DOMContentLoaded', function() {
       <button class="rev-go-btn" onclick="scanGenerate('fiche')">Générer une fiche</button>
       <button class="rev-go-btn" style="margin-top:8px;background:var(--bg);color:var(--tx);border:1.5px solid var(--bord)" onclick="scanGenerate('flash')">Générer des flashcards</button>
     </div>
+  </div>
+</div>
+
+<!-- ══ VEILLE DE CONTRÔLE ══ -->
+<div class="ia-modal" id="vc-modal" onclick="if(event.target===this)closeVeilleControle()">
+  <div class="ia-box">
+    <div class="ia-hdr">
+      <span class="ia-ttl">🚨 Veille de contrôle</span>
+      <button class="ia-cls" onclick="closeVeilleControle()">✕</button>
+    </div>
+    <label class="vc-inp-lbl">Matière *</label>
+    <input class="vc-inp" id="vc-matiere" type="text" placeholder="ex: Maths, Histoire, SVT..." maxlength="60">
+    <label class="vc-inp-lbl">Chapitre / Contenu (optionnel)</label>
+    <textarea class="vc-inp" id="vc-contenu" rows="2" placeholder="ex: Théorème de Pythagore, les fractions..." style="resize:none"></textarea>
+    <label class="vc-inp-lbl">Temps de révision</label>
+    <div style="display:flex;gap:7px;margin-bottom:14px">
+      <button class="vc-day-btn" onclick="setVCDays(1,this)">1 jour</button>
+      <button class="vc-day-btn" onclick="setVCDays(2,this)">2 jours</button>
+      <button class="vc-day-btn on" onclick="setVCDays(3,this)">3 jours</button>
+      <button class="vc-day-btn" onclick="setVCDays(5,this)">5 jours</button>
+    </div>
+    <button class="rev-go-btn" style="margin-top:0" onclick="generateVeilleControle()">
+      <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      Générer mon planning
+    </button>
+    <div id="vc-result"></div>
   </div>
 </div>
 

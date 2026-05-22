@@ -2676,10 +2676,10 @@ function showRevStep(n) {
 }
 
 var revDurLabels = {
-  flashcards: ['5 min · 5 cartes',     '15 min · 10 cartes',    '30 min · 20 cartes'],
-  fiche:      ['5 min · Courte',        '15 min · Complète',     '30 min · Détaillée'],
-  quiz:       ['5 min · 5 questions',   '15 min · 10 questions', '30 min · 20 questions'],
-  resume:     ['5 min · Bref',          '15 min · Développé',    '30 min · Approfondi']
+  flashcards: ['5 min · 5 cartes',            '15 min · 10 cartes',            '30 min · 20 cartes'],
+  fiche:      ['5 min · essentiel seulement', '15 min · toutes les sections',  '30 min · tout + exemples détaillés'],
+  quiz:       ['5 min · 5 questions',         '15 min · 10 questions',         '30 min · 20 questions'],
+  resume:     ['5 min · 3 points clés',       '15 min · 8 points développés',  '30 min · plan complet']
 };
 
 var REV_TYPE_LABELS = {
@@ -2781,12 +2781,20 @@ async function revStart() {
         'Les questions doivent porter UNIQUEMENT sur "' + topic + '". Aucun texte avant ni après le tableau.';
     }
   } else if (revCurType === 'fiche') {
+    var ficheDepth = {
+      express: 'PROFONDEUR EXPRESS : 3 sections MAXIMUM (les plus importantes uniquement). 2-3 puces très courtes par section. Aller droit au but.',
+      normal:  'PROFONDEUR NORMALE : 4-5 sections. 3-5 puces par section. Tous les points importants couverts.',
+      complet: 'PROFONDEUR COMPLÈTE : toutes les sections obligatoires de la matière. 5-8 puces par section avec sous-détails. Exemples développés step by step. Toutes les exceptions et pièges. Fiche exhaustive.'
+    };
+    var depthInstr = ficheDepth[revCurDur] || ficheDepth.normal;
     if (cours) {
       prompt = 'Fais une fiche de révision basée UNIQUEMENT sur ce cours.\n' +
+        depthInstr + '\n' +
         'FORMAT OBLIGATOIRE : ##FICHE##, TITRE:, MATIERE:, SECTION: (noms adaptés à la matière selon les règles reçues), RETENIR:, ##FINFICHE##.\n' +
         'ZÉRO paragraphe — tout en puces bullet. Respecte exactement les SECTIONS OBLIGATOIRES de la matière.\n\nCOURS :\n' + cours;
     } else {
       prompt = 'Fais une fiche de révision sur : ' + topic + '\n' +
+        depthInstr + '\n' +
         'FORMAT OBLIGATOIRE : ##FICHE##, TITRE:, MATIERE:, SECTION: (noms adaptés à la matière selon les règles reçues), RETENIR:, ##FINFICHE##.\n' +
         'ZÉRO paragraphe — tout en puces bullet. Respecte exactement les SECTIONS OBLIGATOIRES de la matière. Niveau 3ème.';
     }
@@ -2812,6 +2820,16 @@ async function revStart() {
   var detectedMat = (revCurType === 'fiche') ? detectMat(topic + ' ' + cours) : '';
   var activeSys = (revCurType === 'fiche') ? buildFicheSys(detectedMat) : SCOLARIA_SYSTEM;
 
+  /* Tokens max selon profondeur et type */
+  var revMaxTok = 1600;
+  if (revCurType === 'fiche') {
+    revMaxTok = revCurDur === 'express' ? 900 : revCurDur === 'complet' ? 2800 : 1600;
+  } else if (revCurType === 'quiz') {
+    revMaxTok = revCurDur === 'express' ? 800 : revCurDur === 'complet' ? 2200 : 1400;
+  } else if (revCurType === 'flashcards') {
+    revMaxTok = revCurDur === 'express' ? 700 : revCurDur === 'complet' ? 1800 : 1100;
+  }
+
   try {
     var reply = '';
     var groqKey = getGroqKey();
@@ -2819,7 +2837,7 @@ async function revStart() {
       reply = await callGroq([
         { role: 'system', content: activeSys },
         { role: 'user', content: prompt }
-      ]);
+      ], revMaxTok);
     } else {
       var res = await fetch('/api/chat', {
         method: 'POST',
@@ -3524,13 +3542,13 @@ function getGroqKey() {
   return key;
 }
 
-async function callGroq(messages) {
+async function callGroq(messages, maxTok) {
   var key = getGroqKey();
   if (!key) throw new Error('Cle Groq manquante — configure ta cle dans Profil (gsk_...)');
   var res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + key },
-    body: JSON.stringify({ model: 'llama-3.3-70b-versatile', max_tokens: 1800, messages: messages })
+    body: JSON.stringify({ model: 'llama-3.3-70b-versatile', max_tokens: maxTok || 1800, messages: messages })
   });
   var data = await res.json();
   if (data.error) throw new Error(data.error.message);

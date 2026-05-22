@@ -1587,6 +1587,9 @@ body::after {
 .prof-av-btn{font-size:24px;background:var(--bg);border:2px solid var(--bord);border-radius:10px;padding:8px;cursor:pointer;transition:all .15s;text-align:center;-webkit-tap-highlight-color:transparent}
 .prof-av-btn.on{background:var(--accent-l);border-color:var(--accent)}
 .prof-reset-btn{width:100%;padding:11px;background:transparent;border:1.5px solid rgba(239,68,68,.35);color:var(--danger);border-radius:12px;font-size:13px;font-family:var(--fb);font-weight:700;cursor:pointer;margin-top:8px}
+/* ── TOAST ── */
+#sk-toast{position:fixed;bottom:calc(var(--nav-h) + 16px);left:50%;transform:translateX(-50%) translateY(12px);background:rgba(20,20,20,.92);color:#fff;padding:11px 22px;border-radius:28px;font-size:13px;font-weight:600;z-index:9100;opacity:0;transition:opacity .22s,transform .22s;pointer-events:none;white-space:nowrap;max-width:88vw;text-align:center;backdrop-filter:blur(4px)}
+#sk-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 </style>
 </head>
 <body>
@@ -2350,6 +2353,16 @@ function onVVResize() {
 /* ── UTILS ── */
 function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
+var _toastTimer = null;
+function toast(msg) {
+  var t = document.getElementById('sk-toast');
+  if (!t) return;
+  t.textContent = msg;
+  t.classList.add('show');
+  if (_toastTimer) clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(function() { t.classList.remove('show'); }, 2800);
+}
+
 /* ── DEVOIRS ── */
 let devoirs = [], dvId = 1, dvShowDone = false;
 
@@ -2624,8 +2637,11 @@ function revPickType(type) {
   revCurType = type;
   document.querySelectorAll('.rev-type-btn').forEach(function(b) {
     b.classList.remove('sel');
+    /* Mark selected by matching onclick attribute */
+    if (b.getAttribute('onclick') && b.getAttribute('onclick').indexOf("'" + type + "'") >= 0) {
+      b.classList.add('sel');
+    }
   });
-  event.currentTarget.classList.add('sel');
   showRevStep(3);
   var labels = revDurLabels[type] || revDurLabels.flashcards;
   ['express','normal','complet'].forEach(function(dur, i) {
@@ -2643,8 +2659,8 @@ function revPickDur(dur) {
   revCurDur = dur;
   document.querySelectorAll('.rev-dur-btn').forEach(function(b) {
     b.classList.remove('sel');
+    if (b.dataset && b.dataset.dur === dur) b.classList.add('sel');
   });
-  event.currentTarget.classList.add('sel');
 }
 
 function revToggleCours() {
@@ -3838,7 +3854,7 @@ function vcCreateFlash() {
   setTimeout(function() {
     var inp = document.getElementById('rev-topic');
     if (inp) inp.value = mat;
-    revPickType('flashcards', null);
+    revPickType('flashcards');
   }, 150);
 }
 
@@ -3989,7 +4005,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 
 <!-- ══ MODALE OUTILS (calc / conv / conj) — un seul modal partagé ══ -->
-<div id="tool-modal" onclick="if(event.target===this)closeTool('tool')" style="position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(8px);z-index:300;display:none;align-items:flex-end;justify-content:center">
+<div id="tool-modal" class="tool-modal" onclick="if(event.target===this)closeTool('tool')" style="background:rgba(0,0,0,.8);backdrop-filter:blur(8px)">
   <div id="tool-box" style="background:var(--card);border:1px solid var(--bord);border-radius:22px 22px 0 0;padding:20px;width:100%;max-width:480px;animation:tmup .28s ease;max-height:88vh;overflow-y:auto;padding-bottom:max(20px,env(safe-area-inset-bottom))">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
       <div id="tool-title" style="font-size:16px;font-weight:800;color:var(--tx)">Outil</div>
@@ -4173,6 +4189,9 @@ document.addEventListener('DOMContentLoaded', function() {
   </div>
   <div id="rev-fs-body" style="flex:1;overflow-y:auto;padding:16px;font-size:14px;line-height:1.7"></div>
 </div>
+
+<!-- TOAST -->
+<div id="sk-toast"></div>
 
 </body>
 </html>

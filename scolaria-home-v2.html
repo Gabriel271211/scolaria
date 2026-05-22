@@ -1467,6 +1467,36 @@ body::after {
 .ndel{background:transparent;border:none;color:var(--mu);font-size:15px;cursor:pointer;flex-shrink:0;padding:4px}
 .madd{width:100%;padding:11px;background:transparent;border:1.5px dashed var(--bord);border-radius:11px;color:var(--mu);font-size:13px;font-family:var(--fb);cursor:pointer;margin-bottom:8px;font-weight:600}
 .mcalc{width:100%;padding:14px;background:var(--accent);border:none;border-radius:12px;color:#fff;font-size:14px;font-family:var(--fb);font-weight:800;cursor:pointer}
+/* ── QUIZ VOCAL ── */
+.vq-card{background:var(--bg);border:1.5px solid var(--bord);border-radius:18px;padding:20px;text-align:center;margin-top:8px}
+.vq-q{font-size:16px;font-weight:800;color:var(--tx);margin-bottom:18px;line-height:1.5}
+.vq-mic{width:70px;height:70px;border-radius:50%;background:var(--accent);border:none;color:#fff;cursor:pointer;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;transition:all .2s;box-shadow:0 4px 20px rgba(79,70,229,.35);flex-shrink:0}
+.vq-mic.listening{background:var(--danger);box-shadow:0 4px 20px rgba(239,68,68,.5);animation:vqpulse 1s ease-in-out infinite}
+@keyframes vqpulse{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.4),0 4px 20px rgba(239,68,68,.5)}50%{box-shadow:0 0 0 14px rgba(239,68,68,0),0 4px 20px rgba(239,68,68,.5)}}
+.vq-transcript{font-size:13px;color:var(--mu);min-height:22px;margin:8px 0 4px;font-style:italic;line-height:1.5}
+.vq-feedback{font-size:13px;font-weight:600;padding:10px 14px;border-radius:10px;margin-top:10px;line-height:1.5}
+.vq-ok{background:#dcfce7;color:#16a34a;border:1px solid #bbf7d0}
+.vq-ko{background:#fee2e2;color:#dc2626;border:1px solid #fca5a5}
+.vq-score-circle{width:80px;height:80px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:24px;font-weight:900;border:3px solid var(--accent);color:var(--accent);background:var(--accent-l)}
+/* ── MODAL PARTAGÉE ── */
+.ia-modal{position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.8);backdrop-filter:blur(8px);display:none;align-items:flex-end;justify-content:center}
+.ia-modal.open{display:flex}
+.ia-box{background:var(--card);border-radius:22px 22px 0 0;width:100%;max-width:480px;padding:20px;animation:tmup .28s ease;max-height:88vh;overflow-y:auto;padding-bottom:max(20px,env(safe-area-inset-bottom))}
+.ia-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.ia-ttl{font-size:16px;font-weight:800;color:var(--tx)}
+.ia-cls{background:transparent;border:none;color:var(--mu);font-size:18px;cursor:pointer;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:8px}
+/* Interro IA */
+.interro-q-box{background:var(--bg);border:1.5px solid var(--bord);border-radius:14px;padding:14px;font-size:14px;font-weight:700;line-height:1.55;margin-bottom:12px;color:var(--tx)}
+.interro-inp{width:100%;background:var(--card);border:1.5px solid var(--bord);border-radius:10px;padding:11px 12px;color:var(--tx);font-size:14px;font-family:var(--fb);outline:none;resize:none;min-height:70px;margin-bottom:10px}
+.interro-inp:focus{border-color:var(--accent)}
+.interro-feedback{border-radius:10px;padding:11px 13px;font-size:13px;line-height:1.55;margin-bottom:12px}
+.interro-ok{background:#dcfce7;color:#16a34a;border:1px solid #bbf7d0}
+.interro-ko{background:#fee2e2;color:#dc2626;border:1px solid #fca5a5}
+/* Scanner */
+.scan-drop{border:2px dashed var(--bord);border-radius:16px;padding:32px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:14px}
+.scan-drop:hover,.scan-drop.drag{border-color:var(--accent);background:var(--accent-l)}
+.scan-drop-icon{font-size:36px;margin-bottom:10px}
+.scan-drop-txt{font-size:13px;color:var(--mu);line-height:1.5}
 /* ── RÉVISIONS — CHARGEMENT IA ── */
 .rev-topic-wrap{margin-bottom:16px}
 .rev-topic-lbl{font-size:12px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:6px}
@@ -1659,7 +1689,7 @@ body::after {
     </div>
 
     <!-- MODULE 2 : SCAN DE COURS -->
-    <div class="home-mod-card" onclick="goSec('s-chat',document.querySelector('.nav-btn[onclick*=s-chat]'))">
+    <div class="home-mod-card" onclick="openScanCours()">
       <div class="home-mod-bar" style="background:var(--accent)"></div>
       <div class="home-mod-visual" style="background:linear-gradient(135deg,#f0f2ff,#e4e8ff)">
         <svg width="260" height="108" viewBox="0 0 260 108" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1714,7 +1744,7 @@ body::after {
     </div>
 
     <!-- MODULE 3 : QUIZ VOCAL -->
-    <div class="home-mod-card" onclick="goSec('s-revisions',document.querySelector('.nav-btn[onclick*=s-revisions]'))">
+    <div class="home-mod-card" onclick="openVocalQuiz()">
       <div class="home-mod-bar" style="background:#16a34a"></div>
       <div class="home-mod-visual" style="background:linear-gradient(135deg,#f0fdf4,#dcfce7)">
         <svg width="260" height="108" viewBox="0 0 260 108" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1756,9 +1786,9 @@ body::after {
       </div>
     </div>
 
-    <!-- OUTILS (5 colonnes) -->
+    <!-- OUTILS -->
     <div class="home-section-title">Mes outils</div>
-    <div class="home-tools" style="grid-template-columns:repeat(5,1fr);margin-bottom:20px">
+    <div class="home-tools" style="grid-template-columns:repeat(4,1fr);margin-bottom:20px">
       <button class="home-tool" onclick="openTool('pomo')">
         <div class="home-tool-icon" style="background:#fff7ed"><svg viewBox="0 0 24 24" stroke="#c07010" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><line x1="12" y1="13" x2="12" y2="9"/><line x1="12" y1="13" x2="15" y2="14.5"/><rect x="9" y="2" width="6" height="3" rx="1" fill="#c07010" stroke="none"/></svg></div>
         <span class="home-tool-lbl">Pomodoro</span>
@@ -1778,6 +1808,18 @@ body::after {
       <button class="home-tool" onclick="openTool('conv')">
         <div class="home-tool-icon" style="background:#fff1f2"><svg viewBox="0 0 24 24" stroke="#f43f5e" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7L16 7M13 4.5L16 7L13 9.5M20 17L8 17M11 14.5L8 17L11 19.5"/></svg></div>
         <span class="home-tool-lbl">Convertir</span>
+      </button>
+      <button class="home-tool" onclick="openVocalQuiz()">
+        <div class="home-tool-icon" style="background:#f0fdf4"><svg viewBox="0 0 24 24" stroke="#16a34a" fill="none" stroke-width="2" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 12a7 7 0 0014 0"/><line x1="12" y1="19" x2="12" y2="22"/></svg></div>
+        <span class="home-tool-lbl">Quiz Vocal</span>
+      </button>
+      <button class="home-tool" onclick="openInterroAI()">
+        <div class="home-tool-icon" style="background:#fff7ed"><svg viewBox="0 0 24 24" stroke="#f59e0b" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+        <span class="home-tool-lbl">Interro IA</span>
+      </button>
+      <button class="home-tool" onclick="openScanCours()">
+        <div class="home-tool-icon" style="background:#eef2ff"><svg viewBox="0 0 24 24" stroke="#4f46e5" fill="none" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+        <span class="home-tool-lbl">Scanner</span>
       </button>
     </div>
 
@@ -3282,6 +3324,353 @@ function calcMoy() {
   document.getElementById('mmsg').textContent = msg;
 }
 
+/* ══════════════════════════════════════════════
+   QUIZ VOCAL
+══════════════════════════════════════════════ */
+var vqCards=[], vqIdx=0, vqOk=0;
+var vqSpeech=null, vqListening=false, vqManualStop=false, vqCurrentAnswer='';
+
+function openVocalQuiz() {
+  document.getElementById('vq-modal').classList.add('open');
+  showVQForm();
+}
+function closeVocalQuiz() {
+  stopVocalListening();
+  document.getElementById('vq-modal').classList.remove('open');
+}
+function showVQForm() {
+  document.getElementById('vq-content').innerHTML =
+    '<label class="rev-topic-lbl">Sujet ou thème</label>' +
+    '<input id="vq-topic" class="rev-topic-inp" placeholder="ex: Pythagore, la photosynthèse..." style="margin-bottom:14px" oninput="this.classList.remove(\'err\')">' +
+    '<button class="rev-go-btn" onclick="startVQ()">' +
+      '<svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 12a7 7 0 0014 0"/><line x1="12" y1="19" x2="12" y2="22"/></svg>' +
+      'Générer les questions' +
+    '</button>';
+}
+async function startVQ() {
+  var topic = document.getElementById('vq-topic') ? document.getElementById('vq-topic').value.trim() : '';
+  if (!topic) { var i=document.getElementById('vq-topic'); if(i)i.classList.add('err'); return; }
+  document.getElementById('vq-content').innerHTML =
+    '<div class="rev-loading"><div class="rev-spin"></div>' +
+    '<div class="rev-loading-txt">Génération des questions...</div>' +
+    '<div class="rev-loading-sub">Quelques secondes</div></div>';
+  try {
+    var prompt = 'Génère exactement 8 flashcards sur "' + topic + '" (niveau 3ème). OBLIGATOIRE : tableau markdown | Question | Réponse | avec ---|--- en 2ème ligne. Uniquement le tableau.';
+    var reply;
+    var key = getGroqKey();
+    if (key) {
+      reply = await callGroq([{role:'system',content:SCOLARIA_SYSTEM},{role:'user',content:prompt}]);
+    } else {
+      var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:prompt,history:[]})});
+      var d=await r.json(); reply=d.reply||'';
+    }
+    vqCards = parseFlashCards(reply, 8);
+    if (!vqCards.length) throw new Error('Aucune question générée — réessaie avec un autre sujet');
+    vqIdx=0; vqOk=0;
+    renderVQCard();
+  } catch(e) {
+    document.getElementById('vq-content').innerHTML =
+      '<div class="rev-err-box">'+esc(e.message)+'<br><button onclick="showVQForm()">Réessayer</button></div>';
+  }
+}
+function renderVQCard() {
+  if (vqIdx >= vqCards.length) {
+    var pct = Math.round(vqOk / vqCards.length * 100);
+    var clr = pct>=80?'var(--success)':pct>=50?'var(--accent)':'var(--danger)';
+    document.getElementById('vq-content').innerHTML =
+      '<div style="text-align:center;padding:20px 0">' +
+        '<div class="vq-score-circle" style="border-color:'+clr+';color:'+clr+';background:'+clr+'22">'+pct+'%</div>' +
+        '<div style="font-size:20px;font-weight:900;color:var(--tx);margin-bottom:6px">'+(pct>=80?'Excellent !':pct>=50?'Bien joué !':'Continue !')+'</div>' +
+        '<div style="font-size:13px;color:var(--mu);margin-bottom:24px">'+vqOk+' / '+vqCards.length+' correctes</div>' +
+        '<button class="rev-go-btn" onclick="startVQ()">Rejouer</button>' +
+        '<button class="rev-ia-btn-sec" style="margin-top:10px" onclick="showVQForm()">Nouveau sujet</button>' +
+      '</div>';
+    return;
+  }
+  var card = vqCards[vqIdx];
+  vqCurrentAnswer=''; vqManualStop=false; vqListening=false;
+  document.getElementById('vq-content').innerHTML =
+    '<div style="text-align:center;font-size:12px;color:var(--mu);margin-bottom:8px;font-weight:700">'+(vqIdx+1)+' / '+vqCards.length+' &nbsp;·&nbsp; ✅ '+vqOk+'</div>' +
+    '<div class="vq-card">' +
+      '<div class="vq-q">'+esc(card.q)+'</div>' +
+      '<button class="vq-mic" id="vq-mic-btn" onclick="toggleVocalAnswer()" aria-label="Enregistrer">' +
+        '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 12a7 7 0 0014 0"/><line x1="12" y1="19" x2="12" y2="22"/></svg>' +
+      '</button>' +
+      '<div class="vq-transcript" id="vq-transcript">Appuie sur le micro et réponds à voix haute</div>' +
+      '<div class="vq-feedback" id="vq-feedback" style="display:none"></div>' +
+      '<div style="display:flex;gap:10px;margin-top:12px">' +
+        '<button id="vq-send-btn" onclick="vqSendAnswer()" style="display:none;flex:1;background:var(--accent);color:#fff;border:none;border-radius:12px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--fb)">Envoyer</button>' +
+        '<button id="vq-next-btn" onclick="vqNext()" style="display:none;flex:1;background:var(--success);color:#fff;border:none;border-radius:12px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--fb)">Suivant →</button>' +
+      '</div>' +
+    '</div>';
+}
+function toggleVocalAnswer() {
+  if (vqListening) { stopVocalListening(); return; }
+  vqCurrentAnswer=''; vqManualStop=false;
+  startVocalListening();
+}
+function startVocalListening() {
+  var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) { toast('Reconnaissance vocale non supportée — utilise Chrome'); return; }
+  vqSpeech = new SR();
+  vqSpeech.lang='fr-FR'; vqSpeech.continuous=false; vqSpeech.interimResults=true;
+  var segFinal='';
+  vqSpeech.onstart = function() {
+    vqListening=true; segFinal='';
+    var mb=document.getElementById('vq-mic-btn'); if(mb) mb.classList.add('listening');
+    var tr=document.getElementById('vq-transcript');
+    if(tr && !vqCurrentAnswer) tr.textContent='🎤 Parle... (reclique pour arrêter)';
+  };
+  vqSpeech.onresult = function(e) {
+    var interim='', final='';
+    for(var i=e.resultIndex;i<e.results.length;i++){
+      if(e.results[i].isFinal) final+=e.results[i][0].transcript;
+      else interim+=e.results[i][0].transcript;
+    }
+    if(final) segFinal+=final;
+    var shown=(vqCurrentAnswer+(vqCurrentAnswer&&(segFinal||interim)?' ':'')+segFinal+interim).trim();
+    var tr=document.getElementById('vq-transcript'); if(tr) tr.textContent=shown||'🎤 Parle...';
+  };
+  vqSpeech.onend = function() {
+    if(segFinal) {
+      vqCurrentAnswer=(vqCurrentAnswer+(vqCurrentAnswer?' ':'')+segFinal).trim();
+      var tr=document.getElementById('vq-transcript'); if(tr) tr.textContent=vqCurrentAnswer;
+    }
+    if(!vqManualStop && vqListening) { setTimeout(function(){if(!vqManualStop)startVocalListening();},120); return; }
+    vqListening=false;
+    var mb=document.getElementById('vq-mic-btn'); if(mb) mb.classList.remove('listening');
+    if(vqCurrentAnswer.trim()) { var sb=document.getElementById('vq-send-btn'); if(sb) sb.style.display='block'; }
+  };
+  vqSpeech.onerror = function(ev) {
+    if(ev.error==='no-speech'||ev.error==='aborted') return;
+    vqManualStop=true; vqListening=false;
+    var mb=document.getElementById('vq-mic-btn'); if(mb) mb.classList.remove('listening');
+    toast('Erreur micro : '+ev.error);
+  };
+  try{ vqSpeech.start(); } catch(e){ toast('Micro non disponible'); }
+}
+function stopVocalListening() {
+  vqManualStop=true; vqListening=false;
+  try{ if(vqSpeech) vqSpeech.stop(); }catch(e){}
+  var mb=document.getElementById('vq-mic-btn'); if(mb) mb.classList.remove('listening');
+}
+function vqSendAnswer() {
+  var t=(vqCurrentAnswer||'').trim();
+  if(!t){toast('Dicte d\'abord ta réponse');return;}
+  if(vqListening) stopVocalListening();
+  var sb=document.getElementById('vq-send-btn'); if(sb) sb.style.display='none';
+  checkVQAnswer(t);
+}
+async function checkVQAnswer(answer) {
+  var card=vqCards[vqIdx];
+  var fbEl=document.getElementById('vq-feedback'); if(!fbEl) return;
+  fbEl.style.display='block'; fbEl.textContent='⚡ Vérification...'; fbEl.className='vq-feedback';
+  var key=getGroqKey();
+  if(key) {
+    try{
+      var r=await callGroq([
+        {role:'system',content:'Tu corriges des réponses d\'élève. Réponds UNIQUEMENT par : CORRECT ou INCORRECT suivi d\'une phrase max.'},
+        {role:'user',content:'Question : '+card.q+'\nRéponse attendue : '+card.a+'\nRéponse élève : '+answer+'\nCorrect ?'}
+      ]);
+      var isOk=r.toLowerCase().startsWith('correct');
+      if(isOk){vqOk++; fbEl.className='vq-feedback vq-ok';}
+      else{fbEl.className='vq-feedback vq-ko';}
+      fbEl.textContent=r;
+    }catch(e){fbEl.className='vq-feedback vq-ko';fbEl.textContent='Réponse attendue : '+card.a;}
+  } else {
+    var sim=answer.toLowerCase().includes((card.a||'').toLowerCase().split(' ').slice(0,2).join(' ').toLowerCase());
+    if(sim){vqOk++;fbEl.className='vq-feedback vq-ok';fbEl.textContent='Bonne réponse ! Réponse attendue : '+card.a;}
+    else{fbEl.className='vq-feedback vq-ko';fbEl.textContent='Réponse attendue : '+card.a;}
+  }
+  var nb=document.getElementById('vq-next-btn'); if(nb) nb.style.display='block';
+}
+function vqNext(){ vqIdx++; renderVQCard(); }
+
+/* ══════════════════════════════════════════════
+   INTERROGATION IA
+══════════════════════════════════════════════ */
+var interroQs=[], interroIdx=0, interroScore=0;
+
+function openInterroAI() {
+  document.getElementById('interro-ai-modal').classList.add('open');
+  showInterroForm();
+}
+function closeInterroAI() { document.getElementById('interro-ai-modal').classList.remove('open'); }
+function showInterroForm() {
+  document.getElementById('interro-ai-content').innerHTML =
+    '<label class="rev-topic-lbl">Sujet</label>' +
+    '<input id="interro-topic" class="rev-topic-inp" placeholder="ex: La Révolution française, les fonctions..." style="margin-bottom:10px" oninput="this.classList.remove(\'err\')">' +
+    '<label class="rev-topic-lbl">Nombre de questions</label>' +
+    '<div style="display:flex;gap:8px;margin-bottom:14px">' +
+      '<button class="rev-dur-badge sel" id="iq-5" onclick="setIQ(5,this)" style="cursor:pointer;flex:1;padding:8px;border-radius:10px;border:1.5px solid var(--accent);background:var(--accent-l);color:var(--accent);font-weight:700;font-family:var(--fb);font-size:13px">5</button>' +
+      '<button class="rev-dur-badge" id="iq-10" onclick="setIQ(10,this)" style="cursor:pointer;flex:1;padding:8px;border-radius:10px;border:1.5px solid var(--bord);background:transparent;color:var(--mu);font-weight:700;font-family:var(--fb);font-size:13px">10</button>' +
+      '<button class="rev-dur-badge" id="iq-15" onclick="setIQ(15,this)" style="cursor:pointer;flex:1;padding:8px;border-radius:10px;border:1.5px solid var(--bord);background:transparent;color:var(--mu);font-weight:700;font-family:var(--fb);font-size:13px">15</button>' +
+    '</div>' +
+    '<button class="rev-go-btn" onclick="startInterroAI()">' +
+      '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>' +
+      'Lancer l\'interrogation' +
+    '</button>';
+  window._interroNb = 5;
+}
+function setIQ(n, el) {
+  window._interroNb = n;
+  document.querySelectorAll('#iq-5,#iq-10,#iq-15').forEach(function(b){
+    b.style.borderColor='var(--bord)'; b.style.background='transparent'; b.style.color='var(--mu)';
+  });
+  el.style.borderColor='var(--accent)'; el.style.background='var(--accent-l)'; el.style.color='var(--accent)';
+}
+async function startInterroAI() {
+  var topic=document.getElementById('interro-topic')?document.getElementById('interro-topic').value.trim():'';
+  if(!topic){var i=document.getElementById('interro-topic');if(i)i.classList.add('err');return;}
+  var nb=window._interroNb||5;
+  document.getElementById('interro-ai-content').innerHTML =
+    '<div class="rev-loading"><div class="rev-spin"></div><div class="rev-loading-txt">L\'IA prépare tes questions...</div></div>';
+  try {
+    var prompt='Génère '+nb+' questions variées (QCM, vrai/faux, réponse courte) sur "'+topic+'" niveau 3ème. Pour chaque question, utilise ce format exact (une par ligne) :\nQ: [question]\nR: [réponse attendue]\n';
+    var reply;
+    var key=getGroqKey();
+    if(key){reply=await callGroq([{role:'system',content:SCOLARIA_SYSTEM},{role:'user',content:prompt}]);}
+    else{var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:prompt,history:[]})});var d=await r.json();reply=d.reply||'';}
+    interroQs=parseInterroQs(reply);
+    if(!interroQs.length) throw new Error('Impossible de générer les questions — réessaie');
+    interroIdx=0; interroScore=0;
+    renderInterroQ();
+  } catch(e) {
+    document.getElementById('interro-ai-content').innerHTML='<div class="rev-err-box">'+esc(e.message)+'<br><button onclick="showInterroForm()">Réessayer</button></div>';
+  }
+}
+function parseInterroQs(text) {
+  var qs=[]; var lines=text.split('\n');
+  var curQ=null;
+  for(var i=0;i<lines.length;i++){
+    var l=lines[i].trim();
+    if(/^Q\s*:/i.test(l)) curQ={q:l.replace(/^Q\s*:\s*/i,'').trim(),a:''};
+    else if(/^R\s*:/i.test(l)&&curQ){curQ.a=l.replace(/^R\s*:\s*/i,'').trim();qs.push(curQ);curQ=null;}
+  }
+  return qs;
+}
+function renderInterroQ() {
+  if(interroIdx>=interroQs.length){
+    var pct=Math.round(interroScore/interroQs.length*100);
+    var clr=pct>=80?'var(--success)':pct>=50?'var(--accent)':'var(--danger)';
+    document.getElementById('interro-ai-content').innerHTML=
+      '<div style="text-align:center;padding:16px 0">' +
+        '<div class="vq-score-circle" style="border-color:'+clr+';color:'+clr+';background:'+clr+'22">'+pct+'%</div>' +
+        '<div style="font-size:20px;font-weight:900;margin-bottom:6px">'+(pct>=80?'Excellent !':pct>=50?'Bien joué !':'Continue !')+'</div>' +
+        '<div style="font-size:13px;color:var(--mu);margin-bottom:24px">'+interroScore+' / '+interroQs.length+' correctes</div>' +
+        '<button class="rev-go-btn" onclick="startInterroAI()">Rejouer</button>' +
+        '<button class="rev-ia-btn-sec" style="margin-top:10px" onclick="showInterroForm()">Nouveau sujet</button>' +
+      '</div>';
+    return;
+  }
+  var q=interroQs[interroIdx];
+  document.getElementById('interro-ai-content').innerHTML=
+    '<div style="font-size:12px;font-weight:700;color:var(--mu);margin-bottom:10px">'+(interroIdx+1)+' / '+interroQs.length+' &nbsp;·&nbsp; ✅ '+interroScore+'</div>' +
+    '<div class="interro-q-box">'+esc(q.q)+'</div>' +
+    '<textarea class="interro-inp" id="interro-ans" placeholder="Ta réponse..." rows="3"></textarea>' +
+    '<div id="interro-fb" class="interro-feedback" style="display:none"></div>' +
+    '<div style="display:flex;gap:10px">' +
+      '<button id="interro-val-btn" onclick="checkInterroAnswer()" style="flex:1;background:var(--accent);color:#fff;border:none;border-radius:12px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--fb)">Valider</button>' +
+      '<button id="interro-next-btn" onclick="interroAINext()" style="display:none;flex:1;background:var(--success);color:#fff;border:none;border-radius:12px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--fb)">Suivant →</button>' +
+    '</div>';
+  setTimeout(function(){var a=document.getElementById('interro-ans');if(a)a.focus();},200);
+}
+async function checkInterroAnswer() {
+  var ans=document.getElementById('interro-ans')?document.getElementById('interro-ans').value.trim():'';
+  if(!ans){toast('Écris ta réponse d\'abord');return;}
+  var q=interroQs[interroIdx];
+  var fb=document.getElementById('interro-fb'); if(!fb) return;
+  var vb=document.getElementById('interro-val-btn'); if(vb){vb.disabled=true;vb.textContent='⚡ Correction...';}
+  fb.style.display='block'; fb.textContent='Vérification...'; fb.className='interro-feedback';
+  var key=getGroqKey();
+  if(key){
+    try{
+      var r=await callGroq([
+        {role:'system',content:'Tu corriges des réponses d\'élève. Réponds par CORRECT ou INCORRECT, puis 1-2 phrases d\'explication claires.'},
+        {role:'user',content:'Question : '+q.q+'\nRéponse attendue : '+q.a+'\nRéponse élève : '+ans}
+      ]);
+      var ok=r.toLowerCase().startsWith('correct');
+      if(ok){interroScore++;fb.className='interro-feedback interro-ok';}
+      else{fb.className='interro-feedback interro-ko';}
+      fb.textContent=r;
+    }catch(e){fb.className='interro-feedback interro-ko';fb.textContent='Réponse attendue : '+q.a;}
+  } else {
+    fb.className='interro-feedback interro-ko';
+    fb.textContent='Réponse correcte : '+q.a;
+  }
+  if(vb)vb.style.display='none';
+  var nb=document.getElementById('interro-next-btn');if(nb)nb.style.display='block';
+}
+function interroAINext(){interroIdx++;renderInterroQ();}
+
+/* ══════════════════════════════════════════════
+   SCANNER DE COURS
+══════════════════════════════════════════════ */
+var scanImageData=null;
+
+function openScanCours() { document.getElementById('scan-modal').classList.add('open'); }
+function closeScanCours() {
+  document.getElementById('scan-modal').classList.remove('open');
+  scanImageData=null;
+  var prev=document.getElementById('scan-preview'); if(prev){prev.style.display='none';prev.src='';}
+  var res=document.getElementById('scan-result'); if(res) res.innerHTML='';
+  var acts=document.getElementById('scan-actions'); if(acts) acts.style.display='none';
+}
+function handleScanFile(file) {
+  if(!file) return;
+  var r=new FileReader();
+  r.onload=function(ev){
+    var prev=document.getElementById('scan-preview');
+    if(prev){prev.src=ev.target.result;prev.style.display='block';}
+    scanImageData={b64:ev.target.result.split(',')[1],mime:file.type||'image/jpeg',full:ev.target.result};
+    var drop=document.getElementById('scan-drop');
+    if(drop) drop.innerHTML='<div class="scan-drop-icon">✅</div><div class="scan-drop-txt"><strong>Image chargée</strong><br>Clique sur une option ci-dessous</div>';
+    var acts=document.getElementById('scan-actions'); if(acts) acts.style.display='block';
+  };
+  r.readAsDataURL(file);
+}
+async function scanGenerate(type) {
+  if(!scanImageData){toast('Charge une image d\'abord');return;}
+  var res=document.getElementById('scan-result');
+  var acts=document.getElementById('scan-actions'); if(acts) acts.style.display='none';
+  res.innerHTML='<div class="rev-loading" style="padding:30px 0"><div class="rev-spin"></div><div class="rev-loading-txt">ScolarIA analyse ton cours...</div></div>';
+  var prompt=type==='fiche'
+    ?'Voici la photo d\'un cours. Transcris et génère une fiche de révision structurée (titre, notions clés, définitions, exemples). Niveau 3ème.'
+    :'Voici la photo d\'un cours. Génère 8 flashcards | Question | Réponse | sous forme de tableau markdown ---|--- à partir de ce cours.';
+  try{
+    var key=getGroqKey();
+    var reply;
+    /* Groq supporte la vision avec llama-4-scout */
+    if(key){
+      var visRes=await fetch('https://api.groq.com/openai/v1/chat/completions',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},
+        body:JSON.stringify({
+          model:'meta-llama/llama-4-scout-17b-16e-instruct',
+          max_tokens:2000,
+          messages:[{role:'user',content:[
+            {type:'image_url',image_url:{url:scanImageData.full}},
+            {type:'text',text:prompt}
+          ]}]
+        })
+      });
+      var visData=await visRes.json();
+      if(visData.error) throw new Error(visData.error.message);
+      reply=visData.choices[0].message.content;
+    } else {
+      /* Pas de vision sans clé Groq → fallback texte */
+      reply=type==='fiche'
+        ?' **Configure ta clé Groq (dans Profil) pour analyser les images.** \n\nSans clé, tu peux coller ton cours en texte dans la section Révisions → Coller mon cours.'
+        :'Configure ta clé Groq pour utiliser la vision IA.';
+    }
+    res.innerHTML='<div class="rev-ia-result">'+mdToHtml(reply)+'</div>';
+    if(acts)acts.style.display='block';
+  }catch(e){
+    res.innerHTML='<div class="rev-err-box">'+esc(e.message)+'<br><button onclick="scanGenerate(\''+type+'\')">Réessayer</button></div>';
+    if(acts)acts.style.display='block';
+  }
+}
+
 /* Profil — init clé (lit aussi l'ancienne clé sk_prof de la v1) */
 document.addEventListener('DOMContentLoaded', function() {
   var k = getGroqKey(); /* getGroqKey() migre automatiquement sk_prof → sk_groq */
@@ -3431,6 +3820,52 @@ document.addEventListener('DOMContentLoaded', function() {
     <div id="nl"></div>
     <button class="madd" onclick="addNR()">＋ Ajouter une note</button>
     <button class="mcalc" onclick="calcMoy()">Calculer ma moyenne</button>
+  </div>
+</div>
+
+<!-- ══ QUIZ VOCAL ══ -->
+<div class="ia-modal" id="vq-modal" onclick="if(event.target===this)closeVocalQuiz()">
+  <div class="ia-box">
+    <div class="ia-hdr">
+      <span class="ia-ttl">Quiz Vocal</span>
+      <button class="ia-cls" onclick="closeVocalQuiz()">✕</button>
+    </div>
+    <div id="vq-content"></div>
+  </div>
+</div>
+
+<!-- ══ INTERROGATION IA ══ -->
+<div class="ia-modal" id="interro-ai-modal" onclick="if(event.target===this)closeInterroAI()">
+  <div class="ia-box">
+    <div class="ia-hdr">
+      <span class="ia-ttl">Interrogation IA</span>
+      <button class="ia-cls" onclick="closeInterroAI()">✕</button>
+    </div>
+    <div id="interro-ai-content"></div>
+  </div>
+</div>
+
+<!-- ══ SCANNER DE COURS ══ -->
+<div class="ia-modal" id="scan-modal" onclick="if(event.target===this)closeScanCours()">
+  <div class="ia-box">
+    <div class="ia-hdr">
+      <span class="ia-ttl">Scanner mon cours</span>
+      <button class="ia-cls" onclick="closeScanCours()">✕</button>
+    </div>
+    <div class="scan-drop" id="scan-drop" onclick="document.getElementById('scan-file').click()"
+         ondragover="event.preventDefault();this.classList.add('drag')"
+         ondragleave="this.classList.remove('drag')"
+         ondrop="event.preventDefault();this.classList.remove('drag');handleScanFile(event.dataTransfer.files[0])">
+      <div class="scan-drop-icon">📷</div>
+      <div class="scan-drop-txt"><strong>Photo ou fichier</strong><br>Clique ou glisse une image de tes notes</div>
+    </div>
+    <input type="file" id="scan-file" accept="image/*" capture="environment" style="display:none" onchange="handleScanFile(this.files[0])">
+    <img id="scan-preview" style="display:none;width:100%;border-radius:12px;margin-bottom:12px;max-height:200px;object-fit:cover">
+    <div id="scan-result"></div>
+    <div id="scan-actions" style="display:none">
+      <button class="rev-go-btn" onclick="scanGenerate('fiche')">Générer une fiche</button>
+      <button class="rev-go-btn" style="margin-top:8px;background:var(--bg);color:var(--tx);border:1.5px solid var(--bord)" onclick="scanGenerate('flash')">Générer des flashcards</button>
+    </div>
   </div>
 </div>
 

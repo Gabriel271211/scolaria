@@ -2782,9 +2782,13 @@ async function revStart() {
     }
   } else if (revCurType === 'fiche') {
     if (cours) {
-      prompt = 'Fais-moi une fiche de révision complète basée UNIQUEMENT sur ce cours. Utilise le FORMAT FICHE (##FICHE##...##FINFICHE## avec SECTION: et puces). ZÉRO paragraphe rédigé.\n\nCOURS :\n' + cours;
+      prompt = 'Fais une fiche de révision basée UNIQUEMENT sur ce cours.\n' +
+        'FORMAT OBLIGATOIRE : ##FICHE##, TITRE:, MATIERE:, SECTION: (noms adaptés à la matière selon les règles reçues), RETENIR:, ##FINFICHE##.\n' +
+        'ZÉRO paragraphe — tout en puces bullet. Respecte exactement les SECTIONS OBLIGATOIRES de la matière.\n\nCOURS :\n' + cours;
     } else {
-      prompt = 'Fais-moi une fiche de révision complète sur : ' + topic + '\nUtilise le FORMAT FICHE (##FICHE##...##FINFICHE## avec SECTION: et puces). ZÉRO paragraphe rédigé. Niveau 3ème.';
+      prompt = 'Fais une fiche de révision sur : ' + topic + '\n' +
+        'FORMAT OBLIGATOIRE : ##FICHE##, TITRE:, MATIERE:, SECTION: (noms adaptés à la matière selon les règles reçues), RETENIR:, ##FINFICHE##.\n' +
+        'ZÉRO paragraphe — tout en puces bullet. Respecte exactement les SECTIONS OBLIGATOIRES de la matière. Niveau 3ème.';
     }
   } else if (revCurType === 'quiz') {
     if (cours) {
@@ -2804,12 +2808,16 @@ async function revStart() {
     }
   }
 
+  /* Système adapté selon la matière pour les fiches */
+  var detectedMat = (revCurType === 'fiche') ? detectMat(topic + ' ' + cours) : '';
+  var activeSys = (revCurType === 'fiche') ? buildFicheSys(detectedMat) : SCOLARIA_SYSTEM;
+
   try {
     var reply = '';
     var groqKey = getGroqKey();
     if (groqKey) {
       reply = await callGroq([
-        { role: 'system', content: SCOLARIA_SYSTEM },
+        { role: 'system', content: activeSys },
         { role: 'user', content: prompt }
       ]);
     } else {
@@ -3353,6 +3361,140 @@ var SCOLARIA_SYSTEM = 'Tu es ScolarIA — assistant scolaire IA pour collégiens
 'FORMAT FLASH — utilise UNIQUEMENT quand on demande des flashcards :\n' +
 '| Question | Réponse |\n| --- | --- |\nToutes les questions portent UNIQUEMENT sur le sujet demandé.\n\n' +
 'En conversation normale : texte fluide, markdown simple. Format chat = pas de ##FICHE##.';
+
+/* ══ RÈGLES SPÉCIFIQUES PAR MATIÈRE ══ */
+var _matRules = {
+  "Maths":
+    "--- MATIERE : MATHEMATIQUES ---\n" +
+    "SECTIONS OBLIGATOIRES (utilise EXACTEMENT ces noms dans SECTION:) : Formule | Variables | Exemple resolu | Pieges\n" +
+    "• SECTION:Formule — la formule seule sur sa ligne, en gras (**formule**), rien d'autre\n" +
+    "• SECTION:Variables — definir chaque lettre/symbole (ex : a = longueur en m)\n" +
+    "• SECTION:Exemple resolu — vraies valeurs numeriques, chaque etape numerotee, resultat en gras + unite\n" +
+    "• SECTION:Pieges — erreurs classiques (signe negatif oublie, unite non convertie, division par zero)\n" +
+    "Regle absolue : unite obligatoire sur chaque grandeur. Jamais de variable sans definition.",
+
+  "Physique-Chimie":
+    "--- MATIERE : PHYSIQUE-CHIMIE ---\n" +
+    "SECTIONS OBLIGATOIRES : Formule | Variables | Loi | Exemple resolu | Pieges\n" +
+    "• SECTION:Formule — symboles avec unites (ex : U [V] = R [Ohm] x I [A]), en gras\n" +
+    "• SECTION:Variables — symbole → nom → unite SI\n" +
+    "• SECTION:Loi — ce que dit la loi, domaine d'application\n" +
+    "• SECTION:Exemple resolu — application numerique pas a pas, resultat + unite\n" +
+    "• SECTION:Pieges — erreurs d'unites, mauvais isolement, confusion de signes\n" +
+    "Regle : chaque etape de calcul sur sa propre puce numerotee.",
+
+  "Histoire-Geo":
+    "--- MATIERE : HISTOIRE-GEOGRAPHIE ---\n" +
+    "SECTIONS OBLIGATOIRES : Reperes chronologiques | Contexte | Acteurs cles | Causes et Consequences | Chiffres cles | Vocabulaire | Pieges brevet\n" +
+    "• SECTION:Reperes chronologiques — date → evenement en 6 mots max, ordre chronologique\n" +
+    "• SECTION:Acteurs cles — nom → role → dates importantes (1 ligne par personne)\n" +
+    "• SECTION:Causes et Consequences — 2 blocs distincts, chacun en puces\n" +
+    "• SECTION:Chiffres cles — victimes, superficies, populations — en gras\n" +
+    "• SECTION:Vocabulaire — terme → definition courte (1 ligne)\n" +
+    "• SECTION:Pieges brevet — dates confondues, noms mal orthographies, anachronismes",
+
+  "Francais":
+    "--- MATIERE : FRANCAIS ---\n" +
+    "SECTIONS OBLIGATOIRES : Regle | Exemples | Contre-exemples | Exceptions | Pieges\n" +
+    "• SECTION:Regle — enoncee en 1-2 puces claires\n" +
+    "• SECTION:Exemples — 3-5 exemples avec le point-cle en gras\n" +
+    "• SECTION:Contre-exemples — ce qui est FAUX et pourquoi\n" +
+    "• SECTION:Exceptions — listees une par une\n" +
+    "• SECTION:Pieges — confusions frequentes (a/a, ou/ou, ces/ses...), erreurs au brevet\n" +
+    "Si conjugaison : ajouter SECTION:Conjugaison avec tableau je/tu/il/nous/vous/ils en colonnes.",
+
+  "SVT":
+    "--- MATIERE : SVT ---\n" +
+    "SECTIONS OBLIGATOIRES : Vocabulaire | Structures et roles | Processus | Chiffres cles | Liens cause-effet | Exemples\n" +
+    "• SECTION:Vocabulaire — terme → definition exacte (1 ligne)\n" +
+    "• SECTION:Structures et roles — organe/cellule → role precis\n" +
+    "• SECTION:Processus — fleches textuelles A → B → C → D\n" +
+    "• SECTION:Chiffres cles — valeurs avec unites en gras\n" +
+    "• SECTION:Liens cause-effet — que se passe-t-il si X est absent ou en exces\n" +
+    "• SECTION:Exemples — maladie, espece, experience reelle",
+
+  "Anglais":
+    "--- MATIERE : ANGLAIS ---\n" +
+    "SECTIONS OBLIGATOIRES : Structure | Usage | Conjugaison | Exemples | Irreguliers | Pieges\n" +
+    "• SECTION:Structure — 1 ligne en gras (ex : S + HAVE + V-ed + complement)\n" +
+    "• SECTION:Usage — quand utiliser cette forme, marqueurs temporels (since, for, yesterday...)\n" +
+    "• SECTION:Conjugaison — tableau : affirmatif | negatif | interrogatif (avec traduction)\n" +
+    "• SECTION:Exemples — 5-6 phrases avec traduction, varier affirmatif/negatif/interrogatif\n" +
+    "• SECTION:Irreguliers — base → past simple → past participle\n" +
+    "• SECTION:Pieges — faux amis, prononciation piegeuse",
+
+  "Espagnol":
+    "--- MATIERE : ESPAGNOL ---\n" +
+    "SECTIONS OBLIGATOIRES : Structure | Conjugaison | Usage | Exemples | Irreguliers | Pieges\n" +
+    "• SECTION:Structure — 1 ligne en gras\n" +
+    "• SECTION:Conjugaison — tableau yo/tu/el/nosotros/vosotros/ellos (avec traduction)\n" +
+    "• SECTION:Usage — quand utiliser cette forme, marqueurs temporels\n" +
+    "• SECTION:Exemples — 5-6 phrases avec traduction francaise\n" +
+    "• SECTION:Irreguliers — verbes irreguliers importants du groupe\n" +
+    "• SECTION:Pieges — faux amis espagnol-francais, accents, accords",
+
+  "Philosophie":
+    "--- MATIERE : PHILOSOPHIE ---\n" +
+    "SECTIONS OBLIGATOIRES : Question centrale | Definitions | Distinctions | Arguments | Auteurs | Citations\n" +
+    "• SECTION:Question centrale — formulee en 1 phrase precise\n" +
+    "• SECTION:Definitions — terme → definition rigoureuse\n" +
+    "• SECTION:Distinctions — X vs Y : en quoi deux notions proches different\n" +
+    "• SECTION:Arguments — 1 puce = 1 argument + justification, numerotes\n" +
+    "• SECTION:Auteurs — nom → idee principale → oeuvre cle\n" +
+    "• SECTION:Citations — entre guillemets, 1 ligne max, auteur mentionne",
+
+  "SES":
+    "--- MATIERE : SES ---\n" +
+    "SECTIONS OBLIGATOIRES : Definitions | Mecanisme | Acteurs | Donnees chiffrees | Exemple concret | Theories et Auteurs | Nuances\n" +
+    "• SECTION:Definitions — concept → definition rigoureuse (1 ligne)\n" +
+    "• SECTION:Mecanisme — processus en fleches A → B → C\n" +
+    "• SECTION:Acteurs — agent/institution → role precis\n" +
+    "• SECTION:Donnees chiffrees — stats, taux, indices en gras (source + annee)\n" +
+    "• SECTION:Exemple concret — situation reelle recente\n" +
+    "• SECTION:Theories et Auteurs — nom → these → courant de pensee\n" +
+    "• SECTION:Nuances — ce qui contredit ou nuance le mecanisme",
+
+  "NSI":
+    "--- MATIERE : NSI ---\n" +
+    "SECTIONS OBLIGATOIRES : Syntaxe | Parametres | Exemple minimal | Exemple complet | Erreurs frequentes\n" +
+    "• SECTION:Syntaxe — code indenté correctement (Python, HTML, SQL selon la lecon)\n" +
+    "• SECTION:Parametres — nom → type attendu → role (1 puce par parametre)\n" +
+    "• SECTION:Exemple minimal — code le plus court qui illustre le concept\n" +
+    "• SECTION:Exemple complet — cas d'usage reel avec entree/sortie\n" +
+    "• SECTION:Erreurs frequentes — TypeError, IndexError, boucle infinie, = vs =="
+};
+
+/* Detecter la matière depuis le texte du sujet */
+function detectMat(text) {
+  var t = (text || '').toLowerCase();
+  if (/math|algèbre|algeb|géomét|geomet|calcul|équation|equation|fonction|triangle|probabilit|statist|théorème|theoreme|pythagore|thales|vecteur|fraction|puissance|racine|pgcd|ppcm/.test(t)) return 'Maths';
+  if (/physique|chimie|électr|electr|optique|force|énergie|energie|réaction|reaction|newton|courant|tension|résistance|resistance|vitesse|accélér|acceleration|atome|molécule|molecule/.test(t)) return 'Physique-Chimie';
+  if (/conjugaison|grammaire|orthographe|accord|participe|imparfait|subjonctif|conditionnel|impératif|infinitif|verbe|français|figure de style|roman|poème|narrateur|ponctuation|registre|tirade|sonnet/.test(t)) return 'Francais';
+  if (/histoire|guerre|révolution|empire|siècle|roi|reine|président|traité|moyen.age|antiquité|colonisation|débarquement|nazisme|shoah|fascisme|communisme|résistance|occupation/.test(t)) return 'Histoire-Geo';
+  if (/géograph|geograph|continent|pays|capitale|relief|climat|population|mondialisation|territoire|aménagement|migration|espace|zone/.test(t)) return 'Histoire-Geo';
+  if (/svt|biologie|écosystème|ecosysteme|cellule|organisme|génétique|genetique|évolution|evolution|respiration|digestion|nutriment|biodiversité|photosynthèse|photosynthese|gène|gene|adn|chromosome/.test(t)) return 'SVT';
+  if (/anglais|english|present perfect|past simple|tense|irregular|vocabulary|grammar|be going to|would|modal|should/.test(t)) return 'Anglais';
+  if (/espagnol|español|presente|pretérito|preterito|futuro|subjuntivo|ser|estar|haber/.test(t)) return 'Espagnol';
+  if (/philo|philosophie|liberté|liberte|conscience|vérité|verite|bonheur|justice|existence|morale|éthique|ethique/.test(t)) return 'Philosophie';
+  if (/\bses\b|sciences.éco|économie|economie|marché|entreprise|emploi|inflation|mondialisation|inégalit|chomage/.test(t)) return 'SES';
+  if (/nsi|python|algorithme|informatique|programme|code|boucle|récursion|recursion|complexité/.test(t)) return 'NSI';
+  return '';
+}
+
+/* Construire le system prompt enrichi pour les fiches */
+function buildFicheSys(mat) {
+  var base = SCOLARIA_SYSTEM;
+  if (mat && _matRules[mat]) {
+    return base + '\n\n' + _matRules[mat];
+  }
+  /* Fallback : instructions génériques multi-matière */
+  return base + '\n\n--- SECTIONS PAR MATIERE (detection auto) ---\n' +
+    '• Maths : Formule | Variables | Exemple resolu | Pieges\n' +
+    '• Histoire-Geo : Reperes chronologiques | Contexte | Acteurs | Causes et Consequences | Vocabulaire\n' +
+    '• Francais : Regle | Exemples | Contre-exemples | Exceptions | Pieges\n' +
+    '• SVT : Vocabulaire | Structures et roles | Processus | Chiffres | Exemples\n' +
+    '• Anglais/Espagnol : Structure | Conjugaison | Exemples | Pieges';
+}
 
 function saveGroqKey() {
   var inp = document.getElementById('groq-key-inp');

@@ -2769,18 +2769,50 @@ async function revStart() {
   /* Construire le prompt selon le type */
   var prompt = '';
   if (revCurType === 'flashcards') {
-    prompt = 'Genere exactement ' + limit + ' flashcards sur ' + subject + '. OBLIGATOIRE : tableau markdown | Question | Reponse | avec ligne ---|---. Aucun texte avant ou apres le tableau.';
-    if (cours) prompt += '\n\nCOURS A ANALYSER :\n' + cours;
-    else prompt += '\n\nSujet : ' + topic;
+    if (cours) {
+      prompt = 'Génère exactement ' + limit + ' flashcards basées UNIQUEMENT sur ce cours.\n' +
+        'FORMAT OBLIGATOIRE — uniquement ce tableau, rien d\'autre :\n' +
+        '| Question | Réponse |\n| --- | --- |\n| ... | ... |\n\n' +
+        'COURS :\n' + cours;
+    } else {
+      prompt = 'Génère exactement ' + limit + ' flashcards sur le sujet : "' + topic + '".\n' +
+        'FORMAT OBLIGATOIRE — uniquement ce tableau, rien d\'autre :\n' +
+        '| Question | Réponse |\n| --- | --- |\n| ... | ... |\n' +
+        'Les questions doivent porter UNIQUEMENT sur "' + topic + '". Aucun texte avant ni après le tableau.';
+    }
   } else if (revCurType === 'fiche') {
-    prompt = 'Genere une fiche de revision complete et structuree sur ' + subject + ' (niveau 3eme). Plan : introduction, cours avec sous-parties, definitions cles, exemples, pieges au brevet.';
-    if (cours) prompt += '\n\nCOURS :\n' + cours;
+    if (cours) {
+      prompt = 'Génère une fiche de révision structurée basée UNIQUEMENT sur ce cours (niveau 3ème).\n' +
+        'RÈGLES STRICTES :\n' +
+        '- Utilise UNIQUEMENT le contenu du cours fourni\n' +
+        '- Format texte structuré : ## titres, ### sous-titres, **définitions** en gras, listes\n' +
+        '- PAS de tableau | Q | R | — ce n\'est PAS des flashcards\n' +
+        '- PAS de contenu hors du cours\n\n' +
+        'COURS :\n' + cours;
+    } else {
+      prompt = 'Génère une fiche de révision complète sur le sujet EXACT : "' + topic + '" (niveau 3ème, brevet).\n' +
+        'RÈGLES STRICTES :\n' +
+        '- Reste UNIQUEMENT sur "' + topic + '" — aucune autre matière, aucun hors-sujet\n' +
+        '- Format texte structuré : ## titres, ### sous-titres, **termes importants** en gras\n' +
+        '- PAS de tableau | Q | R | — ce n\'est PAS des flashcards\n' +
+        '- Sections : Introduction · Notions clés · Exemples concrets · Points importants · Pièges au brevet';
+    }
   } else if (revCurType === 'quiz') {
-    prompt = 'Lance une interrogation de ' + limit + ' questions variees (QCM + vrai/faux + reponse courte) sur ' + subject + ' (niveau 3eme). Donne la correction complete a la fin.';
-    if (cours) prompt += '\n\nCOURS :\n' + cours;
+    if (cours) {
+      prompt = 'Génère une interrogation de ' + limit + ' questions basées UNIQUEMENT sur ce cours (niveau 3ème).\n' +
+        'Mix : QCM (4 choix), vrai/faux, réponse courte. Donne la correction complète à la fin.\n\n' +
+        'COURS :\n' + cours;
+    } else {
+      prompt = 'Génère une interrogation de ' + limit + ' questions sur : "' + topic + '" (niveau 3ème).\n' +
+        'Questions portant UNIQUEMENT sur "' + topic + '". Mix : QCM (4 choix), vrai/faux, réponse courte.\n' +
+        'Donne la correction complète à la fin.';
+    }
   } else {
-    prompt = 'Resume en ' + limit + ' points cles essentiels (liste numerotee, court et percutant) : ' + subject;
-    if (cours) prompt += '\n\nCOURS :\n' + cours;
+    if (cours) {
+      prompt = 'Résume ce cours en ' + limit + ' points clés essentiels (liste numérotée, court et percutant).\n\nCOURS :\n' + cours;
+    } else {
+      prompt = 'Résume "' + topic + '" en ' + limit + ' points clés essentiels pour le brevet (liste numérotée, court et percutant). Sujet UNIQUEMENT : "' + topic + '".';
+    }
   }
 
   try {
@@ -3190,7 +3222,7 @@ async function sendChat() {
 }
 
 /* ══ GROQ API ══ */
-var SCOLARIA_SYSTEM = 'Tu es ScolarIA, l\'assistant IA scolaire de Gabriel (3eme, France). Tu es precis, bienveillant et pedagogique. Reponds TOUJOURS en markdown : **gras**, listes, tableaux | Q | R |. Flashcards : tableau avec ligne ---|---. Conjugaison : tableau complet. Maths : etape par etape. Adapte au niveau 3eme.';
+var SCOLARIA_SYSTEM = 'Tu es ScolarIA, assistant scolaire IA pour collégiéns français (niveau 3ème). Tu es précis, bienveillant et pédagogique. Réponds en markdown clair. RÈGLE ABSOLUE : reste STRICTEMENT sur le sujet demandé — si le sujet est histoire, parle uniquement d\'histoire ; si c\'est les maths, uniquement les maths. Ne mélange JAMAIS les matières. N\'ajoute jamais du contenu non demandé.';
 
 function saveGroqKey() {
   var inp = document.getElementById('groq-key-inp');
@@ -3569,7 +3601,7 @@ async function startVQ() {
     '<div class="rev-loading-txt">Génération des questions...</div>' +
     '<div class="rev-loading-sub">Quelques secondes</div></div>';
   try {
-    var prompt = 'Génère exactement 8 flashcards sur "' + topic + '" (niveau 3ème). OBLIGATOIRE : tableau markdown | Question | Réponse | avec ---|--- en 2ème ligne. Uniquement le tableau.';
+    var prompt = 'Génère exactement 8 flashcards sur le sujet EXACT : "' + topic + '" (niveau 3ème).\nFORMAT OBLIGATOIRE — uniquement ce tableau, rien d\'autre :\n| Question | Réponse |\n| --- | --- |\nToutes les questions doivent porter UNIQUEMENT sur "' + topic + '".';
     var reply;
     var key = getGroqKey();
     if (key) {

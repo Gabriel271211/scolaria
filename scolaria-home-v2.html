@@ -2782,20 +2782,9 @@ async function revStart() {
     }
   } else if (revCurType === 'fiche') {
     if (cours) {
-      prompt = 'Génère une fiche de révision structurée basée UNIQUEMENT sur ce cours (niveau 3ème).\n' +
-        'RÈGLES STRICTES :\n' +
-        '- Utilise UNIQUEMENT le contenu du cours fourni\n' +
-        '- Format texte structuré : ## titres, ### sous-titres, **définitions** en gras, listes\n' +
-        '- PAS de tableau | Q | R | — ce n\'est PAS des flashcards\n' +
-        '- PAS de contenu hors du cours\n\n' +
-        'COURS :\n' + cours;
+      prompt = 'Fais-moi une fiche de révision complète basée UNIQUEMENT sur ce cours. Utilise le FORMAT FICHE (##FICHE##...##FINFICHE## avec SECTION: et puces). ZÉRO paragraphe rédigé.\n\nCOURS :\n' + cours;
     } else {
-      prompt = 'Génère une fiche de révision complète sur le sujet EXACT : "' + topic + '" (niveau 3ème, brevet).\n' +
-        'RÈGLES STRICTES :\n' +
-        '- Reste UNIQUEMENT sur "' + topic + '" — aucune autre matière, aucun hors-sujet\n' +
-        '- Format texte structuré : ## titres, ### sous-titres, **termes importants** en gras\n' +
-        '- PAS de tableau | Q | R | — ce n\'est PAS des flashcards\n' +
-        '- Sections : Introduction · Notions clés · Exemples concrets · Points importants · Pièges au brevet';
+      prompt = 'Fais-moi une fiche de révision complète sur : ' + topic + '\nUtilise le FORMAT FICHE (##FICHE##...##FINFICHE## avec SECTION: et puces). ZÉRO paragraphe rédigé. Niveau 3ème.';
     }
   } else if (revCurType === 'quiz') {
     if (cours) {
@@ -2896,15 +2885,8 @@ function openRevFullscreen() {
     } catch(e) {}
     updateStreak();
     updateHomeProgression();
-    /* Rendu style manuscrit / carnet papier */
-    body.innerHTML =
-      '<div class="fwrap-paper">' +
-        '<div class="fiche-paper-hdr">' +
-          '<div class="fiche-paper-badge">&#128196; Fiche de révision · ScolarIA</div>' +
-          '<div class="fiche-paper-title">' + esc(topic) + '</div>' +
-        '</div>' +
-        '<div class="fiche-paper-body">' + mdToHtml(window._revLastReply || '') + '</div>' +
-      '</div>';
+    /* Rendu avec parseFicheV2 (sections colorées, style manuscrit) */
+    body.innerHTML = parseFicheV2(window._revLastReply || '', topic);
     body.className = 'paper-bg';
   } else {
     body.innerHTML = mdToHtml(window._revLastReply || '');
@@ -3151,6 +3133,133 @@ function mdToHtml(text) {
   return out;
 }
 
+/* ══════════════════════════════════════════════
+   PARSER FICHE — FORMAT ##FICHE##...##FINFICHE##
+   (même format que l'ancienne version)
+══════════════════════════════════════════════ */
+function parseFicheV2(text, topic) {
+  /* Extraire le bloc entre ##FICHE## et ##FINFICHE## */
+  var block = text;
+  var m = text.match(/##FICHE##([\s\S]*?)(?:##FINFICHE##|$)/);
+  if (m) block = m[1];
+
+  /* Extraire titre et matière */
+  var titre = ((block.match(/^TITRE:([^\n]+)/im) || [])[1] || topic || 'Fiche').trim();
+  var mat   = ((block.match(/^MATIERE:([^\n]+)/im) || [])[1] || '').trim().toLowerCase();
+
+  /* Couleur selon la matière */
+  var MC = { histoire:'#dc2626', 'géo':'#d97706', géographie:'#d97706', maths:'#059669',
+             français:'#0891b2', physique:'#6366f1', chimie:'#6366f1', svt:'#16a34a',
+             biologie:'#16a34a', anglais:'#0891b2', espagnol:'#ea580c',
+             philo:'#6d28d9', ses:'#ea580c' };
+  var accentCol = '#6366f1';
+  for (var k in MC) { if (mat.indexOf(k) >= 0) { accentCol = MC[k]; break; } }
+
+  var PALS = [
+    {c:'#6366f1',bg:'rgba(99,102,241,.08)'},  {c:'#059669',bg:'rgba(5,150,105,.08)'},
+    {c:'#d97706',bg:'rgba(217,119,6,.08)'},   {c:'#dc2626',bg:'rgba(220,38,38,.08)'},
+    {c:'#0891b2',bg:'rgba(8,145,178,.08)'},   {c:'#16a34a',bg:'rgba(22,163,74,.08)'},
+    {c:'#ea580c',bg:'rgba(234,88,12,.08)'}
+  ];
+
+  /* Parser les sections */
+  var lines = block.split('\n');
+  var sections = [], cur = null, retenirLines = [], inRetenir = false;
+  for (var i = 0; i < lines.length; i++) {
+    var ln = lines[i];
+    if (/^(TITRE|MATIERE|NIVEAU):/i.test(ln)) continue;
+    if (ln.startsWith('##FIN')) break;
+    if (ln.startsWith('SECTION:')) {
+      if (cur && cur.lines.length) sections.push({ name: cur.name, lines: cur.lines });
+      cur = { name: ln.slice(8).trim(), lines: [] };
+      inRetenir = false;
+    } else if (ln.startsWith('RETENIR:')) {
+      if (cur && cur.lines.length) sections.push({ name: cur.name, lines: cur.lines });
+      cur = null; inRetenir = true;
+    } else if (ln.startsWith('MINITEST:')) {
+      if (cur && cur.lines.length) sections.push({ name: cur.name, lines: cur.lines });
+      cur = null; inRetenir = false;
+    } else if (cur !== null) {
+      cur.lines.push(ln);
+    } else if (inRetenir && ln.trim()) {
+      retenirLines.push(ln.trim());
+    }
+  }
+  if (cur && cur.lines.length) sections.push({ name: cur.name, lines: cur.lines });
+
+  /* Rendu du contenu d'une section */
+  function fmtB(s) {
+    s = s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    return s.replace(/\*\*([^*\n]+)\*\*/g,
+      '<strong style="color:' + accentCol + ';background:rgba(99,102,241,.08);padding:0 3px;border-radius:3px">$1</strong>');
+  }
+  function renderLines(ls) {
+    var html = '', ulItems = [];
+    function flushUl() {
+      if (!ulItems.length) return;
+      html += '<ul style="margin:4px 0;padding:0;list-style:none">' +
+        ulItems.map(function(x) {
+          return '<li style="display:flex;gap:7px;margin-bottom:3px;line-height:1.55;font-size:13px">' +
+            '<span style="color:' + accentCol + ';flex-shrink:0;font-size:11px;margin-top:2px">▸</span>' +
+            '<span>' + x + '</span></li>';
+        }).join('') + '</ul>';
+      ulItems = [];
+    }
+    ls.forEach(function(ln) {
+      var t = ln.trim();
+      if (!t) { flushUl(); return; }
+      if (/^[•\-→▸\*]\s+/.test(t)) {
+        ulItems.push(fmtB(t.replace(/^[•\-→▸\*]\s+/, '')));
+      } else if (/^\d+[.)]\s+/.test(t)) {
+        flushUl();
+        html += '<div style="margin-bottom:4px;font-size:13px;line-height:1.55">' + fmtB(t) + '</div>';
+      } else if (/^\|.+\|/.test(t)) {
+        flushUl();
+        html += '<div style="font-size:12px;font-family:monospace;margin:2px 0;opacity:.85">' + fmtB(t) + '</div>';
+      } else {
+        flushUl();
+        html += '<div style="margin-bottom:3px;font-size:13px">' + fmtB(t) + '</div>';
+      }
+    });
+    flushUl();
+    return html;
+  }
+
+  /* Rendu des sections */
+  var secHtml = sections.map(function(s, i) {
+    var p = PALS[i % PALS.length];
+    return '<div class="fsec" style="border-left:3px solid ' + p.c + ';background:' + p.bg + ';padding:10px 14px;margin-bottom:1px">' +
+      '<div class="fsec-label" style="color:' + p.c + ';font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-bottom:6px">📌 ' + esc(s.name) + '</div>' +
+      '<div class="fsec-body" style="font-family:var(--fb),sans-serif">' + renderLines(s.lines) + '</div></div>';
+  }).join('');
+
+  /* Bloc À RETENIR */
+  var retenirHtml = '';
+  if (retenirLines.length) {
+    retenirHtml = '<div class="fsec" style="border-left:3px solid #f59e0b;background:rgba(245,158,11,.08);padding:10px 14px">' +
+      '<div class="fsec-label" style="color:#d97706;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-bottom:6px">⭐ À RETENIR</div>' +
+      '<ul style="margin:0;padding:0;list-style:none">' +
+        retenirLines.map(function(l) {
+          return '<li style="display:flex;gap:7px;margin-bottom:3px;font-size:13px;line-height:1.55">' +
+            '<span style="color:#f59e0b;flex-shrink:0">▸</span><span>' + fmtB(l.replace(/^[•\-]\s*/,'')) + '</span></li>';
+        }).join('') + '</ul></div>';
+  }
+
+  /* Si pas de sections (l'IA n'a pas utilisé le format) — fallback mdToHtml */
+  if (!sections.length) {
+    return '<div class="fwrap-paper"><div class="fiche-paper-hdr">' +
+      '<div class="fiche-paper-badge">&#128196; Fiche de révision · ScolarIA</div>' +
+      '<div class="fiche-paper-title">' + esc(titre) + '</div></div>' +
+      '<div class="fiche-paper-body" style="padding:12px 16px">' + mdToHtml(text) + '</div></div>';
+  }
+
+  return '<div class="fwrap-paper"><div class="fiche-paper-hdr">' +
+    '<div class="fiche-paper-badge">&#128196; Fiche de révision · ScolarIA</div>' +
+    '<div class="fiche-paper-title">' + esc(titre) + '</div>' +
+    (mat ? '<div style="font-family:\'Caveat\',cursive;font-size:13px;color:#6b5824;margin-top:3px;opacity:.85">' + esc(mat.charAt(0).toUpperCase() + mat.slice(1)) + ' · 3ème</div>' : '') +
+    '</div><div class="fiche-paper-body">' + secHtml + retenirHtml + '</div></div>';
+}
+
 function autoResize(el) {
   el.style.height = 'auto';
   el.style.height = Math.min(el.scrollHeight, 96) + 'px';
@@ -3222,7 +3331,28 @@ async function sendChat() {
 }
 
 /* ══ GROQ API ══ */
-var SCOLARIA_SYSTEM = 'Tu es ScolarIA, assistant scolaire IA pour collégiéns français (niveau 3ème). Tu es précis, bienveillant et pédagogique. Réponds en markdown clair. RÈGLE ABSOLUE : reste STRICTEMENT sur le sujet demandé — si le sujet est histoire, parle uniquement d\'histoire ; si c\'est les maths, uniquement les maths. Ne mélange JAMAIS les matières. N\'ajoute jamais du contenu non demandé.';
+var SCOLARIA_SYSTEM = 'Tu es ScolarIA — assistant scolaire IA pour collégiens français (3ème).\n\n' +
+'RÈGLE N°1 — NE POSE JAMAIS DE QUESTION non demandée : tu expliques et tu t\'arrêtes.\n' +
+'RÈGLE N°2 — Reste STRICTEMENT sur le sujet demandé. Histoire = histoire uniquement. Maths = maths uniquement. Ne mélange jamais les matières.\n' +
+'RÈGLE N°3 — Fautes d\'orthographe : ne les signale JAMAIS. Comprends le sens et réponds directement.\n' +
+'RÈGLE N°4 — Interdit absolu : "Bien sûr !", "Absolument !", reformuler la question avant de répondre, poser une question non demandée.\n\n' +
+'FORMAT FICHE — utilise UNIQUEMENT quand on demande une fiche/révision :\n' +
+'RÈGLE ABSOLUE : ZÉRO PARAGRAPHE. Tout en listes à puces (• item), numérotées (1. item) ou tableaux markdown. Une puce = une info max 15 mots. **Gras** sur mots-clés/formules/dates. JAMAIS de phrases rédigées.\n\n' +
+'##FICHE##\n' +
+'TITRE:[sujet exact demandé]\n' +
+'MATIERE:[histoire|maths|français|physique|chimie|svt|anglais|espagnol|géo|philo|ses|autre]\n' +
+'SECTION:[nom de section adapté au contenu réel]\n' +
+'• [puce concise]\n' +
+'• [puce concise]\n' +
+'SECTION:[autre nom adapté]\n' +
+'• [puce]\n' +
+'RETENIR:\n' +
+'• [point clé à mémoriser]\n' +
+'• [point clé]\n' +
+'##FINFICHE##\n\n' +
+'FORMAT FLASH — utilise UNIQUEMENT quand on demande des flashcards :\n' +
+'| Question | Réponse |\n| --- | --- |\nToutes les questions portent UNIQUEMENT sur le sujet demandé.\n\n' +
+'En conversation normale : texte fluide, markdown simple. Format chat = pas de ##FICHE##.';
 
 function saveGroqKey() {
   var inp = document.getElementById('groq-key-inp');

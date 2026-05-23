@@ -2512,14 +2512,113 @@ function toggleDv(id) {
 function delDv(id) { devoirs = devoirs.filter(d => d.id !== id); saveDv(); renderDevoirs(); }
 function filterDone() { dvShowDone = !dvShowDone; renderDevoirs(); }
 
-function scanDevoir(e) {
-  const f = e.target.files[0]; if (!f) return;
+function todayStr() {
+  var d = new Date();
+  var days = ['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'];
+  var months = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+  return days[d.getDay()] + ' ' + d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
+}
+
+function smartUrgence(dateStr) {
+  if (!dateStr || dateStr === '?') return 'semaine';
+  var now = new Date();
+  var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  var dayNames = ['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'];
+  var monthNames = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+  var s = dateStr.toLowerCase().trim();
+  if (s.includes('demain') || s.includes('tomorrow')) return 'urgent';
+  if (s.includes('aujourd') || s.includes('ce soir') || s.includes('maintenant')) return 'urgent';
+  if (s.includes('semaine prochaine') || s.includes('lundi prochain') || s.includes('mardi prochain') || s.includes('mercredi prochain') || s.includes('jeudi prochain') || s.includes('vendredi prochain')) return 'plus';
+  var targetDate = null;
+  for (var di = 0; di < 7; di++) {
+    if (s.includes(dayNames[di])) {
+      var todayDay = today.getDay();
+      var daysUntil = (di - todayDay + 7) % 7;
+      if (daysUntil === 0) daysUntil = 7;
+      targetDate = new Date(today);
+      targetDate.setDate(today.getDate() + daysUntil);
+      break;
+    }
+  }
+  if (!targetDate) {
+    var dateMatch = s.match(/(\d{1,2})[\/\-\s](\d{1,2})/);
+    if (dateMatch) {
+      targetDate = new Date(now.getFullYear(), parseInt(dateMatch[2]) - 1, parseInt(dateMatch[1]));
+      if (targetDate < today) targetDate.setFullYear(now.getFullYear() + 1);
+    }
+    if (!targetDate) {
+      for (var mi = 0; mi < monthNames.length; mi++) {
+        if (s.includes(monthNames[mi])) {
+          var numMatch = s.match(new RegExp('(\\d{1,2})\\s*(?:er)?\\s*(?:' + monthNames[mi] + ')'));
+          var day = numMatch ? parseInt(numMatch[1]) : 1;
+          targetDate = new Date(now.getFullYear(), mi, day);
+          if (targetDate < today) targetDate.setFullYear(now.getFullYear() + 1);
+          break;
+        }
+      }
+    }
+  }
+  if (targetDate) {
+    var diff = Math.ceil((targetDate - today) / (1000 * 60 * 60 * 24));
+    if (diff <= 2) return 'urgent';
+    if (diff <= 7) return 'semaine';
+    return 'plus';
+  }
+  return 'semaine';
+}
+
+async function scanDevoir(e) {
+  var f = e.target.files[0]; if (!f) return;
   e.target.value = '';
-  const inp = document.getElementById('chat-input');
-  const reader = new FileReader();
-  reader.onload = ev => {
-    if (inp) inp.value = 'Lis ce devoir sur la photo et ajoute-le à ma liste avec la matiere, la description et la date si visible.';
-    goSec('s-chat', document.querySelector('.nav-btn[onclick*="s-chat"]'));
+  var key = getGroqKey();
+  if (!key) { toast('❌ Configure ta clé Groq dans Profil'); return; }
+  toast('⏳ Analyse de la photo...', 8000);
+  var reader = new FileReader();
+  reader.onload = async function(ev) {
+    var dataUrl = ev.target.result;
+    var b64 = dataUrl.split(',')[1];
+    var mime = f.type || 'image/jpeg';
+    if (!['image/jpeg','image/png','image/gif','image/webp'].includes(mime)) mime = 'image/jpeg';
+    try {
+      var today = todayStr();
+      var res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + key },
+        body: JSON.stringify({
+          model: 'meta-llama/llama-4-maverick-17b-128e-instruct',
+          max_tokens: 1200,
+          messages: [
+            { role: 'system', content: 'Tu lis des screenshots d\'agendas scolaires et photos de cahiers. Aujourd\'hui on est ' + today + '. Réponds UNIQUEMENT avec un JSON valide : {"devoirs":[{"mat":"Maths","desc":"description courte","date":"date exacte comme lundi 17 mars"}]}. Mets la date exacte du jour de rendu. Si aucun devoir visible : {"devoirs":[]}.' },
+            { role: 'user', content: [
+              { type: 'image_url', image_url: { url: 'data:' + mime + ';base64,' + b64 } },
+              { type: 'text', text: 'Extrais tous les devoirs et leurs dates de rendu visibles sur cette image.' }
+            ]}
+          ]
+        })
+      });
+      var data = await res.json();
+      if (data.error) throw new Error(data.error.message);
+      var text = data.choices[0].message.content || '';
+      var parsed = null;
+      var jsonMatch = text.match(/\{[\s\S]*\}/);
+      if (jsonMatch) { try { parsed = JSON.parse(jsonMatch[0]); } catch(e2) {} }
+      if (!parsed) { try { parsed = JSON.parse(text); } catch(e2) {} }
+      if (!parsed || !parsed.devoirs) throw new Error('Réponse inattendue');
+      if (parsed.devoirs.length) {
+        parsed.devoirs.forEach(function(d) {
+          var urgCalc = smartUrgence(d.date || '');
+          devoirs.push({ id: dvId++, mat: d.mat || 'Divers', desc: d.desc || '', date: d.date || '?', urg: urgCalc, done: false });
+        });
+        saveDv(); renderDevoirs();
+        goSec('s-devoirs', document.querySelector('.nav-btn[onclick*="s-devoirs"]'));
+        toast('✅ ' + parsed.devoirs.length + ' devoir(s) importé(s) !');
+      } else {
+        toast('ℹ️ Aucun devoir détecté sur la photo');
+      }
+    } catch(err) {
+      console.error('scanDevoir:', err);
+      toast('❌ ' + (err.message || 'Erreur').slice(0, 60));
+    }
   };
   reader.readAsDataURL(f);
 }

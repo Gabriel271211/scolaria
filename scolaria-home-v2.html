@@ -2153,7 +2153,10 @@ body::after {
       <div class="home-section-title" style="margin-top:26px;margin-bottom:10px">Mes decks</div>
       <div id="rev-decks-s1"></div>
       <div id="rev-hist-section" style="display:none">
-        <div class="home-section-title" style="margin-top:20px;margin-bottom:10px">Historique &amp; favoris</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:20px;margin-bottom:10px">
+          <div class="home-section-title" style="margin:0">Historique &amp; favoris</div>
+          <button onclick="clearHist()" style="font-size:11px;color:var(--mu);background:none;border:none;cursor:pointer;font-family:var(--fb);font-weight:600;padding:4px 0;-webkit-tap-highlight-color:transparent">Tout effacer</button>
+        </div>
         <div class="home-gen-card" style="margin-bottom:20px" id="rev-hist-list"></div>
       </div>
     </div>
@@ -3659,6 +3662,10 @@ function _updateFsStar(isFav) {
 
 function deleteHist(id) {
   saveHist(loadHist().filter(function(x){ return x.id !== id; }));
+  renderHist();
+}
+function clearHist() {
+  saveHist([]);
   renderHist();
 }
 

@@ -1245,27 +1245,6 @@ body::after {
   max-width: 270px;
   text-align: center;
 }
-#chat-quote-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 9.5px;
-  font-weight: 700;
-  letter-spacing: 1.4px;
-  text-transform: uppercase;
-  color: var(--accent);
-  opacity: 0.65;
-  margin-bottom: 7px;
-}
-#chat-quote-label::before,
-#chat-quote-label::after {
-  content: '';
-  display: block;
-  width: 18px;
-  height: 1px;
-  background: var(--accent);
-  opacity: 0.35;
-}
 #chat-quote-txt {
   font-size: 13.5px;
   color: var(--tx);
@@ -1939,14 +1918,14 @@ body::after {
       </button>
     </div>
 
-    <!-- DERNIERES GENERATIONS -->
-    <div class="home-section-title">Dernieres generations</div>
+    <!-- ACCES RAPIDE -->
+    <div class="home-section-title">Acces rapide</div>
     <div class="home-gen-card">
       <div class="home-gen-row" onclick="goSec('s-chat',document.querySelector('.nav-btn[onclick*=s-chat]'))">
         <div class="home-gen-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
         <div class="home-gen-info">
-          <div class="home-gen-title">Historique chats</div>
-          <div class="home-gen-sub">0 fiche generee</div>
+          <div class="home-gen-title">Chat IA</div>
+          <div class="home-gen-sub" id="gen-chat-sub">Pose une question à l'IA</div>
         </div>
         <div class="home-gen-chev"><svg viewBox="0 0 8 14"><path d="M1.5 1.5L6.5 7L1.5 12.5"/></svg></div>
       </div>
@@ -1954,15 +1933,15 @@ body::after {
         <div class="home-gen-icon"><svg viewBox="0 0 24 24"><rect x="4" y="6" width="16" height="12" rx="2"/><rect x="2" y="4" width="16" height="12" rx="2"/><line x1="5" y1="8" x2="14" y2="8"/><line x1="5" y1="11" x2="10" y2="11"/></svg></div>
         <div class="home-gen-info">
           <div class="home-gen-title">Flashcards</div>
-          <div class="home-gen-sub">SRS actif</div>
+          <div class="home-gen-sub" id="gen-flash-sub">Aucune flashcard</div>
         </div>
         <div class="home-gen-chev"><svg viewBox="0 0 8 14"><path d="M1.5 1.5L6.5 7L1.5 12.5"/></svg></div>
       </div>
-      <div class="home-gen-row">
-        <div class="home-gen-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg></div>
+      <div class="home-gen-row" onclick="goSec('s-devoirs',document.querySelector('.nav-btn[onclick*=s-devoirs]'))">
+        <div class="home-gen-icon"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>
         <div class="home-gen-info">
-          <div class="home-gen-title">Rechercher</div>
-          <div class="home-gen-sub">Dans tout ScolarIA</div>
+          <div class="home-gen-title">Devoirs</div>
+          <div class="home-gen-sub" id="gen-dv-sub">Tout est à jour</div>
         </div>
         <div class="home-gen-chev"><svg viewBox="0 0 8 14"><path d="M1.5 1.5L6.5 7L1.5 12.5"/></svg></div>
       </div>
@@ -2466,6 +2445,7 @@ function goSec(id, btn) {
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   if (btn) btn.classList.add('active');
+  if (id === 's-home') updateHomeStats();
 }
 
 function toggleDrawer() {
@@ -2597,7 +2577,7 @@ function toggleDv(id) {
     if (dc) dc.textContent = devoirs.filter(function(x){ return !x.done; }).length;
   }
 }
-function delDv(id) { devoirs = devoirs.filter(d => d.id !== id); saveDv(); renderDevoirs(); }
+function delDv(id) { devoirs = devoirs.filter(d => d.id !== id); saveDv(); renderDevoirs(); updateHomeStats(); }
 function filterDone() { dvShowDone = !dvShowDone; renderDevoirs(); }
 
 function todayStr() {
@@ -2705,7 +2685,7 @@ async function scanDevoir(e) {
           parsed.devoirs.forEach(function(d) {
             devoirs.push({ id: dvId++, mat: d.mat || 'Divers', desc: d.desc || '', date: d.date || '?', urg: smartUrgence(d.date || ''), done: false });
           });
-          saveDv(); renderDevoirs();
+          saveDv(); renderDevoirs(); updateHomeStats();
           goSec('s-devoirs', document.querySelector('.nav-btn[onclick*="s-devoirs"]'));
           toast('✅ ' + parsed.devoirs.length + ' devoir(s) importé(s) !');
         } else {
@@ -2765,7 +2745,7 @@ function moSave() {
   const urg  = document.getElementById('mo-urg')?.value || 'semaine';
   if (!desc) { document.getElementById('mo-desc').style.borderColor = 'var(--danger)'; return; }
   devoirs.push({id: dvId++, mat, desc, date, urg, done: false});
-  saveDv(); renderDevoirs(); closeMo();
+  saveDv(); renderDevoirs(); closeMo(); updateHomeStats();
 }
 function closeMo() { document.getElementById('mo').classList.remove('open'); }
 function moOut(e) { if (e.target === document.getElementById('mo')) closeMo(); }
@@ -2848,17 +2828,45 @@ function updateHomeStats() {
   /* Prénom accueil */
   var hg = document.getElementById('home-greeting');
   if (hg && userPrenom) hg.textContent = 'Bonjour ' + userPrenom;
+
   /* Devoirs restants */
+  var dvActive = devoirs.filter(function(d){ return !d.done; }).length;
+  var dvDone   = devoirs.filter(function(d){ return d.done; }).length;
   var dc = document.getElementById('home-devoirs-count');
-  if (dc) dc.textContent = devoirs.filter(function(d){ return !d.done; }).length;
+  if (dc) dc.textContent = dvActive;
+  var pdn = document.getElementById('prof-devoirs-n');
+  if (pdn) pdn.textContent = dvDone;
+
   /* Flashcards enregistrées */
+  var cards = 0;
   try {
     var fl = localStorage.getItem('sk_cards');
-    var cards = fl ? JSON.parse(fl).length : 0;
-    var el = document.getElementById('home-flash-count');
-    if (el) el.textContent = cards;
+    cards = fl ? JSON.parse(fl).length : 0;
   } catch(e) {}
-  /* Streak + progression (via fonctions dédiées) */
+  var elF = document.getElementById('home-flash-count');
+  if (elF) elF.textContent = cards;
+  var pfn = document.getElementById('prof-flash-n');
+  if (pfn) pfn.textContent = cards;
+
+  /* Section accès rapide — sous-titres dynamiques */
+  var genChatSub = document.getElementById('gen-chat-sub');
+  if (genChatSub) {
+    var msgs = chatHistory.length;
+    genChatSub.textContent = msgs > 0 ? msgs + ' message' + (msgs > 1 ? 's' : '') + ' en cours' : 'Pose une question à l\'IA';
+  }
+  var genFlashSub = document.getElementById('gen-flash-sub');
+  if (genFlashSub) {
+    genFlashSub.textContent = cards > 0 ? cards + ' carte' + (cards > 1 ? 's' : '') + ' enregistrée' + (cards > 1 ? 's' : '') : 'Aucune flashcard';
+  }
+  var genDvSub = document.getElementById('gen-dv-sub');
+  if (genDvSub) {
+    var urgents = devoirs.filter(function(d){ return !d.done && d.urg === 'urgent'; }).length;
+    if (dvActive === 0) genDvSub.textContent = 'Tout est à jour';
+    else if (urgents > 0) genDvSub.textContent = urgents + ' urgent' + (urgents > 1 ? 's' : '') + ' · ' + dvActive + ' au total';
+    else genDvSub.textContent = dvActive + ' devoir' + (dvActive > 1 ? 's' : '') + ' restant' + (dvActive > 1 ? 's' : '');
+  }
+
+  /* Streak + progression */
   updateStreak();
   updateHomeProgression();
 }

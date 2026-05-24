@@ -1395,22 +1395,6 @@ body::after {
   fill: none;
 }
 
-#chat-interro {
-  width: 100%;
-  padding: 11px;
-  border-radius: 12px;
-  border: none;
-  background: var(--accent);
-  color: #fff;
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
-  font-family: var(--fb);
-  margin-bottom: 8px;
-  transition: opacity .15s;
-  -webkit-tap-highlight-color: transparent;
-}
-#chat-interro:active { opacity: .85; }
 
 .chat-input-row {
   display: flex;
@@ -1557,10 +1541,16 @@ body::after {
 .interro-ok{background:#dcfce7;color:#16a34a;border:1px solid #bbf7d0}
 .interro-ko{background:#fee2e2;color:#dc2626;border:1px solid #fca5a5}
 /* Scanner */
-.scan-drop{border:2px dashed var(--bord);border-radius:16px;padding:32px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:14px}
-.scan-drop:hover,.scan-drop.drag{border-color:var(--accent);background:var(--accent-l)}
-.scan-drop-icon{font-size:36px;margin-bottom:10px}
-.scan-drop-txt{font-size:13px;color:var(--mu);line-height:1.5}
+/* ── SCAN CHOICE ── */
+.scan-opt-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.scan-opt-btn{display:flex;flex-direction:column;align-items:center;gap:10px;padding:22px 10px;background:var(--card);border:1.5px solid var(--bord);border-radius:16px;cursor:pointer;font-family:var(--fb);transition:all .15s;-webkit-tap-highlight-color:transparent;text-align:center;width:100%}
+.scan-opt-btn:active{opacity:.88;transform:scale(.97)}
+.scan-opt-btn.so-accent{background:var(--accent-l);border-color:var(--accent)}
+.scan-opt-icon{width:48px;height:48px;border-radius:13px;display:flex;align-items:center;justify-content:center}
+.scan-opt-icon svg{width:24px;height:24px;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.scan-opt-name{font-size:13px;font-weight:700;color:var(--tx);line-height:1.2}
+.so-accent .scan-opt-name{color:var(--accent)}
+.scan-opt-sub{font-size:11px;color:var(--mu)}
 /* ── RÉVISIONS — CHARGEMENT IA ── */
 .rev-topic-wrap{margin-bottom:16px}
 .rev-topic-lbl{font-size:12px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:6px}
@@ -2073,7 +2063,6 @@ body::after {
         </div>
         <h2><span class="handwrite-title ht-blue" style="font-size:52px" id="chat-greeting">Salut !</span></h2>
         <div id="chat-quote-card">
-          <div id="chat-quote-label">pensée du jour</div>
           <p id="chat-quote-txt"></p>
         </div>
       </div>
@@ -2735,12 +2724,20 @@ function dvAiHelp() {
   var inp = document.getElementById('chat-input');
   if (inp) inp.value = 'Aide-moi à planifier mes devoirs de la semaine.';
   goSec('s-chat', document.querySelector('.nav-btn[onclick*="s-chat"]'));
+  setTimeout(function() {
+    var i = document.getElementById('chat-input');
+    if (i) { autoResize(i); i.focus(); }
+  }, 50);
 }
 function dvAiHelpOne(id) {
   var d = devoirs.find(function(x){ return x.id === id; }); if (!d) return;
   var inp = document.getElementById('chat-input');
   if (inp) inp.value = 'Aide-moi pour ce devoir : ' + d.mat + ' — "' + d.desc + '" (à rendre ' + d.date + ').';
   goSec('s-chat', document.querySelector('.nav-btn[onclick*="s-chat"]'));
+  setTimeout(function() {
+    var i = document.getElementById('chat-input');
+    if (i) { autoResize(i); i.focus(); }
+  }, 50);
 }
 
 /* ── MODAL DEVOIR ── */
@@ -4887,16 +4884,20 @@ document.addEventListener('DOMContentLoaded', function() {
       <span class="ia-ttl">Scanner mon cours</span>
       <button class="ia-cls" onclick="closeScanCours()">✕</button>
     </div>
-    <div id="scan-choice" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
-      <button onclick="document.getElementById('scan-file-cam').click()" style="display:flex;flex-direction:column;align-items:center;gap:8px;padding:22px 10px;background:var(--accent-l);border:2px solid var(--accent);border-radius:16px;cursor:pointer;font-family:var(--fb);transition:all .15s">
-        <span style="font-size:32px">📷</span>
-        <span style="font-size:13px;font-weight:700;color:var(--accent)">Prendre une photo</span>
-        <span style="font-size:11px;color:var(--mu)">Ouvre l'appareil photo</span>
+    <div class="scan-opt-grid" id="scan-choice">
+      <button class="scan-opt-btn so-accent" onclick="document.getElementById('scan-file-cam').click()">
+        <div class="scan-opt-icon" style="background:var(--accent)">
+          <svg viewBox="0 0 24 24" stroke="#fff"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        </div>
+        <div class="scan-opt-name">Appareil photo</div>
+        <div class="scan-opt-sub">Prendre une photo</div>
       </button>
-      <button onclick="document.getElementById('scan-file-gal').click()" style="display:flex;flex-direction:column;align-items:center;gap:8px;padding:22px 10px;background:var(--card);border:2px solid var(--bord);border-radius:16px;cursor:pointer;font-family:var(--fb);transition:all .15s">
-        <span style="font-size:32px">🖼️</span>
-        <span style="font-size:13px;font-weight:700;color:var(--tx)">Ma galerie</span>
-        <span style="font-size:11px;color:var(--mu)">Choisir une image</span>
+      <button class="scan-opt-btn" onclick="document.getElementById('scan-file-gal').click()">
+        <div class="scan-opt-icon" style="background:var(--bg)">
+          <svg viewBox="0 0 24 24" stroke="var(--accent)"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        </div>
+        <div class="scan-opt-name">Ma galerie</div>
+        <div class="scan-opt-sub">Choisir une image</div>
       </button>
     </div>
     <input type="file" id="scan-file-cam" accept="image/*" capture="camera" style="display:none" onchange="handleScanFile(this.files[0]);document.getElementById('scan-choice').style.display='none'">

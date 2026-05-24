@@ -3650,13 +3650,103 @@ async function sendChat() {
     saveChatLS();
     updateHomeStats();
 
-    thinking.innerHTML = mdToHtml(reply);
-    thinking.classList.remove('thinking');
+    var detectedType = detectChatType(reply);
+    if (detectedType) {
+      var chatTopic = extractChatTopic(text);
+      var chatLabels = { fiche: 'Fiche', flashcards: 'Flashcards', quiz: 'Interrogation', resume: 'Resume' };
+      var chatLabel = chatLabels[detectedType] || 'Resultat';
+      window._revLastReply = reply;
+      window._revLastLabel = chatLabel;
+      window._revLastTopic = chatTopic;
+      window._revLastType  = detectedType;
+      addToHist(detectedType, chatTopic, chatLabel, reply);
+      renderFavs();
+      if (detectedType === 'flashcards') {
+        var chatCards = parseFlashCards(reply, 20);
+        if (chatCards.length > 0) saveRevDeck(chatTopic, chatCards);
+      }
+      var isChatFav = (function(){ var h=loadHist(); for(var i=0;i<h.length;i++){if(h[i].id===_histCurrentId)return h[i].fav;} return false; })();
+      var cff = isChatFav ? '#f59e0b' : 'none';
+      var cfs = isChatFav ? '#f59e0b' : 'var(--mu)';
+      var chatIcos = { fiche: '<path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/>', flashcards: '<rect x="4" y="6" width="16" height="12" rx="2"/><rect x="2" y="4" width="16" height="12" rx="2"/>', quiz: '<circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>' };
+      var chatIco = chatIcos[detectedType] || chatIcos.fiche;
+      thinking.className = 'msg msg-ai';
+      thinking.style.maxWidth = '100%';
+      thinking.style.padding = '8px';
+      thinking.innerHTML =
+        '<div class="rev-result-preview" onclick="openRevFullscreen()" style="margin:0">' +
+          '<div class="rev-result-preview-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + chatIco + '</svg></div>' +
+          '<div class="rev-result-preview-info">' +
+            '<div class="rev-result-preview-name">' + chatLabel + ' prete !</div>' +
+            '<div class="rev-result-preview-sub">' + esc(chatTopic) + '</div>' +
+          '</div>' +
+          '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--mu)" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>' +
+        '</div>' +
+        '<div style="display:flex;gap:8px;margin-top:8px">' +
+          '<button onclick="openRevFullscreen()" style="flex:1;padding:11px;border:none;border-radius:12px;background:var(--accent);color:#fff;font-size:13px;font-weight:800;font-family:var(--fb);cursor:pointer">Voir</button>' +
+          '<button id="chat-fav-btn" onclick="toggleFavChat()" style="width:44px;height:44px;border-radius:12px;border:1.5px solid var(--bord);background:var(--bg);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;-webkit-tap-highlight-color:transparent">' +
+            '<svg id="chat-fav-ico" viewBox="0 0 24 24" width="18" height="18" fill="' + cff + '" stroke="' + cfs + '" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>' +
+          '</button>' +
+        '</div>';
+    } else {
+      thinking.innerHTML = mdToHtml(reply);
+      thinking.classList.remove('thinking');
+    }
   } catch(e) {
     thinking.textContent = 'Erreur : ' + e.message;
     thinking.classList.remove('thinking');
   }
   msgs.scrollTop = msgs.scrollHeight;
+}
+
+function detectChatType(reply) {
+  if (reply.indexOf('##FICHE##') !== -1) return 'fiche';
+  var lines = reply.split('\n');
+  var tableRows = lines.filter(function(l) {
+    var t = l.trim();
+    return t.startsWith('|') && t.endsWith('|') && !(/^\|\s*[-:]+/).test(t);
+  });
+  if (tableRows.length >= 3) return 'flashcards';
+  return null;
+}
+
+function extractChatTopic(text) {
+  var cuts = [
+    'fiche de révision complète sur : ',
+    'fiche de révision sur : ',
+    'flashcards question/réponse sur : ',
+    'flashcards sur : ',
+    'interrogation de 8 questions (QCM + réponse courte) sur : ',
+    'interrogation sur : ',
+    'Résume en 7 points clés : ',
+    'résumé sur : ',
+    'fiche sur ',
+    'flashcard sur '
+  ];
+  var lower = text.toLowerCase();
+  for (var i = 0; i < cuts.length; i++) {
+    var idx = lower.indexOf(cuts[i].toLowerCase());
+    if (idx !== -1) return text.substring(idx + cuts[i].length).trim().replace(/["""]/g, '');
+  }
+  return text.substring(0, 50).trim();
+}
+
+function toggleFavChat() {
+  if (!_histCurrentId) return;
+  var h = loadHist();
+  var isFav = false;
+  for (var i = 0; i < h.length; i++) {
+    if (h[i].id === _histCurrentId) { h[i].fav = !h[i].fav; isFav = h[i].fav; break; }
+  }
+  saveHist(h);
+  renderHist();
+  renderFavs();
+  var ico = document.getElementById('chat-fav-ico');
+  if (ico) {
+    ico.setAttribute('fill', isFav ? '#f59e0b' : 'none');
+    ico.setAttribute('stroke', isFav ? '#f59e0b' : 'var(--mu)');
+  }
+  _updateFsStar(isFav);
 }
 
 /* ══════════════════════════════════════════════

@@ -1241,33 +1241,72 @@ body::after {
 
 /* ── PHRASE DU JOUR ── */
 #chat-quote-card {
-  margin: 14px auto 0;
-  max-width: 260px;
+  margin: 16px auto 0;
+  max-width: 270px;
   text-align: center;
-  position: relative;
 }
-#chat-quote-card::before {
-  content: '\201C';
-  font-family: Georgia, serif;
-  font-size: 52px;
+#chat-quote-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
   color: var(--accent);
-  opacity: 0.18;
-  position: absolute;
-  top: -18px;
-  left: 50%;
-  transform: translateX(-50%);
-  line-height: 1;
-  pointer-events: none;
+  opacity: 0.65;
+  margin-bottom: 7px;
+}
+#chat-quote-label::before,
+#chat-quote-label::after {
+  content: '';
+  display: block;
+  width: 18px;
+  height: 1px;
+  background: var(--accent);
+  opacity: 0.35;
 }
 #chat-quote-txt {
-  font-size: 13px;
-  color: var(--mu);
+  font-size: 13.5px;
+  color: var(--tx);
   line-height: 1.65;
-  font-style: italic;
-  letter-spacing: 0.01em;
-  position: relative;
-  z-index: 1;
+  font-weight: 500;
+  opacity: 0.72;
 }
+
+/* ── THEME SWITCH (Profil) ── */
+.theme-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2px 0;
+}
+.theme-row-info { flex: 1; }
+.theme-row-title { font-size: 14px; font-weight: 700; color: var(--tx); }
+.theme-row-sub   { font-size: 12px; color: var(--mu); margin-top: 2px; }
+.theme-sw {
+  width: 50px; height: 28px;
+  border-radius: 14px;
+  background: var(--bord);
+  position: relative;
+  cursor: pointer;
+  transition: background .28s;
+  flex-shrink: 0;
+  border: 1.5px solid var(--bord);
+}
+.theme-sw.on { background: var(--accent); border-color: var(--accent); }
+.theme-sw-knob {
+  position: absolute;
+  top: 3px; left: 3px;
+  width: 20px; height: 20px;
+  background: #fff;
+  border-radius: 50%;
+  transition: transform .28s cubic-bezier(.4,0,.2,1);
+  box-shadow: 0 1px 5px rgba(0,0,0,.22);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px;
+}
+.theme-sw.on .theme-sw-knob { transform: translateX(22px); }
 
 .msg {
   max-width: 82%;
@@ -1699,14 +1738,6 @@ body::after {
         <div class="dm-desc">Physique, SVT, Maths</div>
       </div>
     </a>
-    <p style="margin-top:16px">Réglages</p>
-    <div class="drawer-mode" onclick="toggleTheme()" id="theme-toggle-btn">
-      <div class="dm-icon" id="theme-toggle-icon" style="font-size:20px;background:var(--bg)">🌙</div>
-      <div class="dm-info">
-        <div class="dm-name" id="theme-toggle-label">Mode nuit</div>
-        <div class="dm-desc">Passer en thème sombre</div>
-      </div>
-    </div>
   </div>
 </div>
 
@@ -1891,7 +1922,7 @@ body::after {
 
     <!-- OUTILS -->
     <div class="home-section-title">Mes outils</div>
-    <div class="home-tools" style="grid-template-columns:repeat(4,1fr);margin-bottom:20px">
+    <div class="home-tools" style="grid-template-columns:repeat(3,1fr);margin-bottom:20px">
       <button class="home-tool" onclick="openTool('pomo')">
         <div class="home-tool-icon" style="background:#fff7ed"><svg viewBox="0 0 24 24" stroke="#c07010" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><line x1="12" y1="13" x2="12" y2="9"/><line x1="12" y1="13" x2="15" y2="14.5"/><rect x="9" y="2" width="6" height="3" rx="1" fill="#c07010" stroke="none"/></svg></div>
         <span class="home-tool-lbl">Pomodoro</span>
@@ -2042,6 +2073,7 @@ body::after {
         </div>
         <h2><span class="handwrite-title ht-blue" style="font-size:52px" id="chat-greeting">Salut !</span></h2>
         <div id="chat-quote-card">
+          <div id="chat-quote-label">pensée du jour</div>
           <p id="chat-quote-txt"></p>
         </div>
       </div>
@@ -2313,6 +2345,20 @@ body::after {
 
     <button class="prof-save-btn" onclick="saveProfile()">💾 Sauvegarder le profil</button>
 
+    <!-- Apparence -->
+    <div class="prof-card" style="margin-bottom:12px">
+      <div class="prof-card-title">🎨 Apparence</div>
+      <div class="theme-row" onclick="toggleTheme()" style="cursor:pointer">
+        <div class="theme-row-info">
+          <div class="theme-row-title" id="theme-row-title">Mode nuit</div>
+          <div class="theme-row-sub" id="theme-row-sub">Activer le thème sombre</div>
+        </div>
+        <div class="theme-sw" id="theme-sw">
+          <div class="theme-sw-knob" id="theme-sw-knob">🌙</div>
+        </div>
+      </div>
+    </div>
+
     <!-- Clé Groq -->
     <div class="prof-card">
       <div class="prof-card-title">⚡ Clé API Groq</div>
@@ -2398,33 +2444,31 @@ body::after {
 
 <script>
 /* ── THÈME ── */
+function _applyThemeUI(isDark) {
+  var sw    = document.getElementById('theme-sw');
+  var knob  = document.getElementById('theme-sw-knob');
+  var title = document.getElementById('theme-row-title');
+  var sub   = document.getElementById('theme-row-sub');
+  if (isDark) {
+    if (sw) sw.classList.add('on');
+    if (knob) knob.textContent = '☀️';
+    if (title) title.textContent = 'Mode nuit';
+    if (sub) sub.textContent = 'Désactiver le thème sombre';
+  } else {
+    if (sw) sw.classList.remove('on');
+    if (knob) knob.textContent = '🌙';
+    if (title) title.textContent = 'Mode nuit';
+    if (sub) sub.textContent = 'Activer le thème sombre';
+  }
+}
 function toggleTheme() {
   var isDark = document.body.classList.toggle('dark');
   localStorage.setItem('sk_theme', isDark ? 'dark' : 'light');
-  var icon = document.getElementById('theme-toggle-icon');
-  var label = document.getElementById('theme-toggle-label');
-  var desc = document.querySelector('#theme-toggle-btn .dm-desc');
-  if (isDark) {
-    if (icon) icon.textContent = '☀️';
-    if (label) label.textContent = 'Mode jour';
-    if (desc) desc.textContent = 'Passer en thème clair';
-  } else {
-    if (icon) icon.textContent = '🌙';
-    if (label) label.textContent = 'Mode nuit';
-    if (desc) desc.textContent = 'Passer en thème sombre';
-  }
+  _applyThemeUI(isDark);
 }
 (function initTheme() {
   var saved = localStorage.getItem('sk_theme');
-  if (saved === 'dark') {
-    document.body.classList.add('dark');
-    var icon = document.getElementById('theme-toggle-icon');
-    var label = document.getElementById('theme-toggle-label');
-    var desc = document.querySelector('#theme-toggle-btn .dm-desc');
-    if (icon) icon.textContent = '☀️';
-    if (label) label.textContent = 'Mode jour';
-    if (desc) desc.textContent = 'Passer en thème clair';
-  }
+  if (saved === 'dark') { document.body.classList.add('dark'); _applyThemeUI(true); }
 })();
 
 /* ── NAVIGATION ── */
@@ -2688,17 +2732,15 @@ async function scanDevoir(e) {
 }
 
 function dvAiHelp() {
-  const inp = document.getElementById('chat-input');
-  if (inp) { inp.value = 'Aide-moi à planifier mes devoirs de la semaine.'; autoResize(inp); }
+  var inp = document.getElementById('chat-input');
+  if (inp) inp.value = 'Aide-moi à planifier mes devoirs de la semaine.';
   goSec('s-chat', document.querySelector('.nav-btn[onclick*="s-chat"]'));
-  setTimeout(function(){ var i = document.getElementById('chat-input'); if(i) i.focus(); }, 320);
 }
 function dvAiHelpOne(id) {
-  const d = devoirs.find(x => x.id === id); if (!d) return;
-  const inp = document.getElementById('chat-input');
-  if (inp) { inp.value = `Aide-moi pour ce devoir : ${d.mat} — "${d.desc}" (à rendre ${d.date}).`; autoResize(inp); }
+  var d = devoirs.find(function(x){ return x.id === id; }); if (!d) return;
+  var inp = document.getElementById('chat-input');
+  if (inp) inp.value = 'Aide-moi pour ce devoir : ' + d.mat + ' — "' + d.desc + '" (à rendre ' + d.date + ').';
   goSec('s-chat', document.querySelector('.nav-btn[onclick*="s-chat"]'));
-  setTimeout(function(){ var i = document.getElementById('chat-input'); if(i) i.focus(); }, 320);
 }
 
 /* ── MODAL DEVOIR ── */
@@ -4325,6 +4367,9 @@ function closeScanCours() {
   var prev=document.getElementById('scan-preview'); if(prev){prev.style.display='none';prev.src='';}
   var res=document.getElementById('scan-result'); if(res) res.innerHTML='';
   var acts=document.getElementById('scan-actions'); if(acts) acts.style.display='none';
+  var choice=document.getElementById('scan-choice'); if(choice) choice.style.display='grid';
+  var camInp=document.getElementById('scan-file-cam'); if(camInp) camInp.value='';
+  var galInp=document.getElementById('scan-file-gal'); if(galInp) galInp.value='';
 }
 function handleScanFile(file) {
   if(!file) return;
@@ -4842,14 +4887,20 @@ document.addEventListener('DOMContentLoaded', function() {
       <span class="ia-ttl">Scanner mon cours</span>
       <button class="ia-cls" onclick="closeScanCours()">✕</button>
     </div>
-    <div class="scan-drop" id="scan-drop" onclick="document.getElementById('scan-file').click()"
-         ondragover="event.preventDefault();this.classList.add('drag')"
-         ondragleave="this.classList.remove('drag')"
-         ondrop="event.preventDefault();this.classList.remove('drag');handleScanFile(event.dataTransfer.files[0])">
-      <div class="scan-drop-icon">📷</div>
-      <div class="scan-drop-txt"><strong>Photo ou fichier</strong><br>Clique ou glisse une image de tes notes</div>
+    <div id="scan-choice" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+      <button onclick="document.getElementById('scan-file-cam').click()" style="display:flex;flex-direction:column;align-items:center;gap:8px;padding:22px 10px;background:var(--accent-l);border:2px solid var(--accent);border-radius:16px;cursor:pointer;font-family:var(--fb);transition:all .15s">
+        <span style="font-size:32px">📷</span>
+        <span style="font-size:13px;font-weight:700;color:var(--accent)">Prendre une photo</span>
+        <span style="font-size:11px;color:var(--mu)">Ouvre l'appareil photo</span>
+      </button>
+      <button onclick="document.getElementById('scan-file-gal').click()" style="display:flex;flex-direction:column;align-items:center;gap:8px;padding:22px 10px;background:var(--card);border:2px solid var(--bord);border-radius:16px;cursor:pointer;font-family:var(--fb);transition:all .15s">
+        <span style="font-size:32px">🖼️</span>
+        <span style="font-size:13px;font-weight:700;color:var(--tx)">Ma galerie</span>
+        <span style="font-size:11px;color:var(--mu)">Choisir une image</span>
+      </button>
     </div>
-    <input type="file" id="scan-file" accept="image/*" style="display:none" onchange="handleScanFile(this.files[0])">
+    <input type="file" id="scan-file-cam" accept="image/*" capture="camera" style="display:none" onchange="handleScanFile(this.files[0]);document.getElementById('scan-choice').style.display='none'">
+    <input type="file" id="scan-file-gal" accept="image/*" style="display:none" onchange="handleScanFile(this.files[0]);document.getElementById('scan-choice').style.display='none'">
     <img id="scan-preview" style="display:none;width:100%;border-radius:12px;margin-bottom:12px;max-height:200px;object-fit:cover">
     <div id="scan-result"></div>
     <div id="scan-actions" style="display:none">

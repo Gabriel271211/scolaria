@@ -744,6 +744,29 @@ body::after {
 .home-gen-sub { font-size: 11px; color: var(--mu); margin-top: 1px; }
 .home-gen-chev svg { width: 8px; height: 14px; stroke: var(--bord); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
+/* ── HISTORIQUE & FAVORIS ── */
+.hist-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 11px 14px; border-bottom: 1px solid var(--bord);
+  -webkit-tap-highlight-color: transparent; transition: background .12s;
+}
+.hist-row:last-child { border-bottom: none; }
+.hist-row:active { background: var(--bg); }
+.hist-icon {
+  width: 36px; height: 36px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.hist-icon svg { width: 17px; height: 17px; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.hist-info { flex: 1; min-width: 0; cursor: pointer; }
+.hist-title { font-size: 13px; font-weight: 700; color: var(--tx); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hist-sub   { font-size: 11px; color: var(--mu); margin-top: 1px; }
+.hist-star  { background: none; border: none; cursor: pointer; padding: 6px 4px; flex-shrink: 0; display: flex; align-items: center; -webkit-tap-highlight-color: transparent; }
+.hist-star svg { width: 18px; height: 18px; transition: all .15s; }
+.hist-del   { background: none; border: none; cursor: pointer; padding: 6px 4px; flex-shrink: 0; display: flex; align-items: center; opacity: .45; -webkit-tap-highlight-color: transparent; }
+.hist-del:active { opacity: 1; }
+.hist-del svg { width: 14px; height: 14px; stroke: var(--mu); fill: none; stroke-width: 2; stroke-linecap: round; }
+.hist-empty { text-align: center; padding: 20px; font-size: 13px; color: var(--mu); }
+
 /* ── PROGRESSION RINGS ── */
 .home-prog-card {
   background: var(--card);
@@ -2129,6 +2152,10 @@ body::after {
       </button>
       <div class="home-section-title" style="margin-top:26px;margin-bottom:10px">Mes decks</div>
       <div id="rev-decks-s1"></div>
+      <div id="rev-hist-section" style="display:none">
+        <div class="home-section-title" style="margin-top:20px;margin-bottom:10px">Historique &amp; favoris</div>
+        <div class="home-gen-card" style="margin-bottom:20px" id="rev-hist-list"></div>
+      </div>
     </div>
 
     <!-- ÉTAPE 2 : TYPE -->
@@ -2813,11 +2840,13 @@ function showQuote() {
   if (txt) txt.textContent = QUOTES[Math.floor(Math.random() * QUOTES.length)];
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', function() {
   loadPrenom();
   showQuote();
   loadDevoirs();
   renderDevoirs();
+  renderHist();
+  loadChatLS();
   updateHomeStats();
   renderRevDecks();
   updateStreak();
@@ -3116,20 +3145,28 @@ function openRevFullscreen() {
   document.getElementById('rev-fs-title').textContent = label + (topic ? ' — ' + topic : '');
 
   if (type === 'fiche') {
-    /* Incrémenter le compteur de fiches pour la progression */
     try {
       var n = parseInt(localStorage.getItem('sk_fiche_count') || '0') + 1;
       localStorage.setItem('sk_fiche_count', String(n));
     } catch(e) {}
     updateStreak();
     updateHomeProgression();
-    /* Rendu avec parseFicheV2 (sections colorées, style manuscrit) */
     body.innerHTML = parseFicheV2(window._revLastReply || '', topic);
     body.className = 'paper-bg';
   } else {
     body.innerHTML = mdToHtml(window._revLastReply || '');
     body.className = '';
   }
+  /* Sauvegarder dans l'historique */
+  if (window._revLastReply) {
+    addToHist(type, topic, label, window._revLastReply);
+  }
+  /* Mettre a jour l'etoile selon fav */
+  (function() {
+    var h = loadHist();
+    var cur = h.length ? h[0] : null;
+    _updateFsStar(cur ? cur.fav : false);
+  })();
   fs.style.display = 'flex';
 }
 function closeRevFullscreen() {
@@ -3558,6 +3595,8 @@ async function sendChat() {
     chatHistory.push({ role: 'user', content: text });
     chatHistory.push({ role: 'assistant', content: reply });
     if (chatHistory.length > 24) chatHistory = chatHistory.slice(-24);
+    saveChatLS();
+    updateHomeStats();
 
     thinking.innerHTML = mdToHtml(reply);
     thinking.classList.remove('thinking');
@@ -3566,6 +3605,135 @@ async function sendChat() {
     thinking.classList.remove('thinking');
   }
   msgs.scrollTop = msgs.scrollHeight;
+}
+
+/* ══════════════════════════════════════════════
+   HISTORIQUE & FAVORIS
+══════════════════════════════════════════════ */
+var _histCurrentId = null;
+var HIST_TYPE_META = {
+  fiche:      { label:'Fiche',        bg:'#f0fdf4', stroke:'#16a34a', svgPath:'<path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/>' },
+  flashcards: { label:'Flashcards',   bg:'#eef2ff', stroke:'#4f46e5', svgPath:'<rect x="4" y="6" width="16" height="12" rx="2"/><rect x="2" y="4" width="16" height="12" rx="2"/>' },
+  quiz:       { label:'Interrogation',bg:'#fff1f2', stroke:'#f43f5e', svgPath:'<circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>' },
+  resume:     { label:'Resume',       bg:'#fff7ed', stroke:'#f59e0b', svgPath:'<line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="11" x2="15" y2="11"/><line x1="3" y1="16" x2="18" y2="16"/>' }
+};
+
+function loadHist() {
+  try { return JSON.parse(localStorage.getItem('sk_hist') || '[]'); } catch(e) { return []; }
+}
+function saveHist(h) { try { localStorage.setItem('sk_hist', JSON.stringify(h)); } catch(e) {} }
+
+function addToHist(type, topic, label, content) {
+  var h = loadHist();
+  var idx = -1;
+  for (var i = 0; i < h.length; i++) { if (h[i].type === type && h[i].topic === topic) { idx = i; break; } }
+  var fav = idx >= 0 ? h[idx].fav : false;
+  if (idx >= 0) h.splice(idx, 1);
+  var newItem = { id: Date.now(), type: type, topic: topic, label: label, content: content, date: new Date().toLocaleDateString('fr-FR'), fav: fav };
+  h.unshift(newItem);
+  if (h.length > 25) h = h.slice(0, 25);
+  saveHist(h);
+  _histCurrentId = newItem.id;
+  renderHist();
+}
+
+function toggleFav(id) {
+  var h = loadHist();
+  var isFav = false;
+  for (var i = 0; i < h.length; i++) {
+    if (h[i].id === id) { h[i].fav = !h[i].fav; isFav = h[i].fav; break; }
+  }
+  saveHist(h);
+  renderHist();
+  if (_histCurrentId === id) _updateFsStar(isFav);
+}
+function toggleFavCurrent() {
+  if (_histCurrentId) toggleFav(_histCurrentId);
+}
+function _updateFsStar(isFav) {
+  var ico = document.getElementById('rev-fs-star-ico');
+  if (!ico) return;
+  ico.setAttribute('fill', isFav ? '#f59e0b' : 'none');
+  ico.setAttribute('stroke', isFav ? '#f59e0b' : 'var(--mu)');
+}
+
+function deleteHist(id) {
+  saveHist(loadHist().filter(function(x){ return x.id !== id; }));
+  renderHist();
+}
+
+function reopenHist(id) {
+  var h = loadHist();
+  for (var i = 0; i < h.length; i++) {
+    if (h[i].id !== id) continue;
+    var item = h[i];
+    window._revLastReply = item.content;
+    window._revLastTopic = item.topic;
+    window._revLastLabel = item.label;
+    window._revLastType  = item.type;
+    _histCurrentId = item.id;
+    openRevFullscreen();
+    return;
+  }
+}
+
+function renderHist() {
+  var section = document.getElementById('rev-hist-section');
+  var list    = document.getElementById('rev-hist-list');
+  if (!section || !list) return;
+  var h = loadHist();
+  if (!h.length) { section.style.display = 'none'; return; }
+  section.style.display = 'block';
+  var sorted = h.slice().sort(function(a, b) {
+    if (a.fav && !b.fav) return -1;
+    if (!a.fav && b.fav) return 1;
+    return b.id - a.id;
+  });
+  list.innerHTML = sorted.map(function(item) {
+    var m = HIST_TYPE_META[item.type] || HIST_TYPE_META.fiche;
+    var sf = item.fav ? '#f59e0b' : 'none';
+    var ss = item.fav ? '#f59e0b' : 'var(--mu)';
+    return '<div class="hist-row">' +
+      '<div class="hist-icon" style="background:' + m.bg + '">' +
+        '<svg viewBox="0 0 24 24" stroke="' + m.stroke + '" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + m.svgPath + '</svg>' +
+      '</div>' +
+      '<div class="hist-info" onclick="reopenHist(' + item.id + ')">' +
+        '<div class="hist-title">' + esc(item.topic) + '</div>' +
+        '<div class="hist-sub">' + m.label + ' &middot; ' + item.date + '</div>' +
+      '</div>' +
+      '<button class="hist-star" onclick="toggleFav(' + item.id + ')">' +
+        '<svg viewBox="0 0 24 24" fill="' + sf + '" stroke="' + ss + '" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>' +
+      '</button>' +
+      '<button class="hist-del" onclick="deleteHist(' + item.id + ')">' +
+        '<svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
+      '</button>' +
+    '</div>';
+  }).join('');
+}
+
+/* ══════════════════════════════════════════════
+   CHAT PERSISTANT
+══════════════════════════════════════════════ */
+function saveChatLS() {
+  try { localStorage.setItem('sk_chat', JSON.stringify(chatHistory.slice(-20))); } catch(e) {}
+}
+function loadChatLS() {
+  try {
+    var h = JSON.parse(localStorage.getItem('sk_chat') || '[]');
+    if (!h.length) return;
+    chatHistory = h;
+    var msgs = document.getElementById('chat-msgs');
+    var welcome = msgs ? msgs.querySelector('.chat-welcome') : null;
+    if (welcome) welcome.remove();
+    h.forEach(function(m) {
+      var div = document.createElement('div');
+      div.className = 'msg msg-' + (m.role === 'user' ? 'user' : 'ai');
+      div.innerHTML = m.role === 'user' ? esc(m.content) : mdToHtml(m.content);
+      if (msgs) msgs.appendChild(div);
+    });
+    if (msgs) msgs.scrollTop = msgs.scrollHeight;
+    updateHomeStats();
+  } catch(e) {}
 }
 
 /* ══ GROQ API ══ */
@@ -4947,9 +5115,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <!-- ══ PLEIN ÉCRAN RÉSULTAT IA ══ -->
 <div id="rev-fullscreen" style="display:none;position:fixed;inset:0;z-index:500;background:var(--bg);flex-direction:column;overflow:hidden">
-  <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--bg);border-bottom:1px solid var(--bord);flex-shrink:0">
+  <div style="display:flex;align-items:center;gap:10px;padding:14px 16px;background:var(--bg);border-bottom:1px solid var(--bord);flex-shrink:0">
     <button onclick="closeRevFullscreen()" style="width:36px;height:36px;border-radius:10px;border:1.5px solid var(--bord);background:var(--card);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--tx);font-size:18px;flex-shrink:0">&#8249;</button>
     <div id="rev-fs-title" style="font-size:15px;font-weight:800;color:var(--tx);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></div>
+    <button id="rev-fs-star" onclick="toggleFavCurrent()" title="Favori" style="width:36px;height:36px;border-radius:10px;border:1.5px solid var(--bord);background:var(--card);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;-webkit-tap-highlight-color:transparent">
+      <svg id="rev-fs-star-ico" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--mu)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+    </button>
   </div>
   <div id="rev-fs-body" style="flex:1;overflow-y:auto;padding:16px;font-size:14px;line-height:1.7"></div>
 </div>

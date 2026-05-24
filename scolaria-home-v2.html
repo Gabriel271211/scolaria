@@ -2162,6 +2162,13 @@ body::after {
       </button>
       <div class="home-section-title" style="margin-top:26px;margin-bottom:10px">Mes decks</div>
       <div id="rev-decks-s1"></div>
+      <div id="rev-fav-section" style="display:none">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:18px;margin-bottom:6px">
+          <span style="font-size:11px;font-weight:700;color:var(--mu);letter-spacing:.5px;text-transform:uppercase">Favoris</span>
+          <button onclick="openHistPanel()" style="font-size:11px;color:var(--accent);background:none;border:none;cursor:pointer;font-family:var(--fb);font-weight:600;padding:4px 0;-webkit-tap-highlight-color:transparent">Tout voir</button>
+        </div>
+        <div id="rev-fav-list" style="margin-bottom:16px"></div>
+      </div>
     </div>
 
     <!-- ÉTAPE 2 : TYPE -->
@@ -2852,6 +2859,7 @@ document.addEventListener('DOMContentLoaded', function() {
   loadDevoirs();
   renderDevoirs();
   renderHist();
+  renderFavs();
   loadChatLS();
   updateHomeStats();
   renderRevDecks();
@@ -2919,7 +2927,7 @@ function showRevStep(n) {
     var el = document.getElementById('rev-s' + i);
     if (el) el.style.display = (i === n) ? 'block' : 'none';
   }
-  if (n === 1) renderRevDecks();
+  if (n === 1) { renderRevDecks(); renderFavs(); }
 }
 
 var revDurLabels = {
@@ -3689,6 +3697,7 @@ function toggleFav(id) {
   }
   saveHist(h);
   renderHist();
+  renderFavs();
   if (_histCurrentId === id) _updateFsStar(isFav);
 }
 function toggleFavCurrent() {
@@ -3703,6 +3712,7 @@ function toggleFavGen() {
   }
   saveHist(h);
   renderHist();
+  renderFavs();
   var ico = document.getElementById('gen-fav-ico');
   if (ico) {
     ico.setAttribute('fill', isFav ? '#f59e0b' : 'none');
@@ -3720,10 +3730,12 @@ function _updateFsStar(isFav) {
 function deleteHist(id) {
   saveHist(loadHist().filter(function(x){ return x.id !== id; }));
   renderHist();
+  renderFavs();
 }
 function clearHist() {
   saveHist([]);
   renderHist();
+  renderFavs();
 }
 
 function reopenHist(id) {
@@ -3751,6 +3763,30 @@ function openHistPanel() {
 function closeHistPanel() {
   var p = document.getElementById('hist-panel');
   if (p) p.style.display = 'none';
+}
+
+function renderFavs() {
+  var section = document.getElementById('rev-fav-section');
+  var list    = document.getElementById('rev-fav-list');
+  if (!section || !list) return;
+  var h = loadHist().filter(function(x){ return x.fav; });
+  if (!h.length) { section.style.display = 'none'; return; }
+  section.style.display = 'block';
+  list.innerHTML = h.map(function(item) {
+    var m = HIST_TYPE_META[item.type] || HIST_TYPE_META.fiche;
+    return '<div class="hist-row">' +
+      '<div class="hist-icon" style="background:' + m.bg + '">' +
+        '<svg viewBox="0 0 24 24" stroke="' + m.stroke + '" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + m.svgPath + '</svg>' +
+      '</div>' +
+      '<div class="hist-info" onclick="reopenHist(' + item.id + ')">' +
+        '<div class="hist-title">' + esc(item.topic) + '</div>' +
+        '<div class="hist-sub">' + m.label + ' &middot; ' + item.date + '</div>' +
+      '</div>' +
+      '<button class="hist-star" onclick="toggleFav(' + item.id + ')">' +
+        '<svg viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>' +
+      '</button>' +
+    '</div>';
+  }).join('');
 }
 
 function renderHist() {

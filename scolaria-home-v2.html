@@ -3102,6 +3102,7 @@ async function revStart() {
         return;
       }
       revStartSession(cards);
+      saveRevDeck(topic || 'Cours', cards);
       addToHist('flashcards', topic || 'Cours', 'Flashcards', reply);
     } else {
       var label = typeLabels[revCurType] || 'Resultat';
@@ -3295,28 +3296,56 @@ function revShowResult() {
     '</div>';
 }
 
+function saveRevDeck(name, cards) {
+  try {
+    var decks = JSON.parse(localStorage.getItem('sk_decks') || '[]');
+    var idx = -1;
+    for (var i = 0; i < decks.length; i++) { if (decks[i].name === name) { idx = i; break; } }
+    var d = { id: Date.now(), name: name, cards: cards, date: new Date().toLocaleDateString('fr-FR',{day:'numeric',month:'short'}), count: cards.length };
+    if (idx >= 0) { decks[idx] = d; } else { decks.unshift(d); }
+    if (decks.length > 20) decks = decks.slice(0, 20);
+    localStorage.setItem('sk_decks', JSON.stringify(decks));
+  } catch(e) {}
+}
+function deleteRevDeck(id) {
+  try {
+    var decks = JSON.parse(localStorage.getItem('sk_decks') || '[]');
+    localStorage.setItem('sk_decks', JSON.stringify(decks.filter(function(d){ return d.id !== id; })));
+    renderRevDecks();
+  } catch(e) {}
+}
+function launchRevDeck(id) {
+  try {
+    var decks = JSON.parse(localStorage.getItem('sk_decks') || '[]');
+    for (var i = 0; i < decks.length; i++) {
+      if (decks[i].id === id && decks[i].cards) { revStartSession(decks[i].cards); return; }
+    }
+  } catch(e) {}
+}
 function renderRevDecks() {
   var el = document.getElementById('rev-decks-s1');
   if (!el) return;
   try {
-    var raw = localStorage.getItem('sk_cards');
-    var cards = raw ? JSON.parse(raw) : [];
-    if (!cards.length) {
-      el.innerHTML = '<div class="rev-deck-empty">Aucun deck encore — lance une session pour commencer !</div>';
+    var decks = JSON.parse(localStorage.getItem('sk_decks') || '[]');
+    if (!decks.length) {
+      el.innerHTML = '<div class="rev-deck-empty">Génère des flashcards pour créer ton premier deck !</div>';
       return;
     }
-    var svgIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="1.8" stroke-linecap="round"><rect x="4" y="6" width="16" height="12" rx="2"/><rect x="2" y="4" width="16" height="12" rx="2"/></svg>';
-    el.innerHTML = cards.slice(0,6).map(function(c, i) {
-      return '<div class="rev-deck-card">' +
-        '<div class="rev-deck-icon">' + svgIcon + '</div>' +
+    var ico = '<svg viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="6" width="16" height="12" rx="2"/><rect x="2" y="4" width="16" height="12" rx="2"/></svg>';
+    el.innerHTML = decks.slice(0,8).map(function(d) {
+      return '<div class="rev-deck-card" style="cursor:pointer" onclick="launchRevDeck(' + d.id + ')">' +
+        '<div class="rev-deck-icon">' + ico + '</div>' +
         '<div class="rev-deck-info">' +
-          '<div class="rev-deck-name">' + esc(c.q || c.sujet || ('Carte ' + (i+1))) + '</div>' +
-          '<div class="rev-deck-meta">1 carte</div>' +
+          '<div class="rev-deck-name">' + esc(d.name) + '</div>' +
+          '<div class="rev-deck-meta">' + d.count + ' carte' + (d.count > 1 ? 's' : '') + ' &middot; ' + d.date + '</div>' +
         '</div>' +
+        '<button onclick="event.stopPropagation();deleteRevDeck(' + d.id + ')" style="background:none;border:none;cursor:pointer;padding:6px;opacity:.4;display:flex;align-items:center;-webkit-tap-highlight-color:transparent">' +
+          '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="var(--mu)" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg>' +
+        '</button>' +
       '</div>';
     }).join('');
   } catch(e) {
-    el.innerHTML = '<div class="rev-deck-empty">Aucun deck sauvegarde.</div>';
+    el.innerHTML = '<div class="rev-deck-empty">Aucun deck sauvegardé.</div>';
   }
 }
 

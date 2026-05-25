@@ -609,7 +609,6 @@ body::after {
   transition: background .15s;
   -webkit-tap-highlight-color: transparent;
 }
-.home-tool { background: var(--card); border: 1px solid var(--bord); }
 .home-tool:active { background: var(--bg); }
 .home-tool-icon {
   width: 36px; height: 36px;
@@ -797,7 +796,7 @@ body::after {
 }
 .home-prog-lbl { font-size: 9px; color: var(--mu); font-weight: 600; }
 
-/* ── RÉVISIONS WIZARD ── */
+/* ══ RÉVISIONS ══ */
 .rev-work-btn {
   width: 100%; padding: 22px 24px;
   border-radius: 20px;
@@ -972,127 +971,6 @@ body::after {
 .rev-restart { width: 100%; padding: 14px; border-radius: 14px; background: var(--accent); border: none; color: #fff; font-size: 15px; font-weight: 800; font-family: var(--fb); cursor: pointer; margin-bottom: 10px; -webkit-tap-highlight-color: transparent; }
 .rev-home-back { width: 100%; padding: 14px; border-radius: 14px; background: transparent; border: 1.5px solid var(--bord); color: var(--mu); font-size: 15px; font-weight: 700; font-family: var(--fb); cursor: pointer; -webkit-tap-highlight-color: transparent; }
 .rev-deck-card {
-  background: var(--card); border: 1px solid var(--bord);
-  border-radius: 14px; padding: 13px 14px; margin-bottom: 8px;
-  display: flex; align-items: center; gap: 12px;
-  cursor: pointer; transition: background .12s; -webkit-tap-highlight-color: transparent;
-}
-.rev-deck-card:active { background: var(--bg); }
-.rev-deck-icon { width: 42px; height: 42px; border-radius: 12px; background: var(--accent-l); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.rev-deck-icon svg { width: 20px; height: 20px; stroke: var(--accent); fill: none; stroke-width: 1.8; stroke-linecap: round; }
-.rev-deck-info { flex: 1; min-width: 0; }
-.rev-deck-name { font-size: 13px; font-weight: 700; color: var(--tx); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.rev-deck-meta { font-size: 11px; color: var(--mu); margin-top: 2px; }
-.rev-deck-empty { text-align: center; padding: 28px 16px; color: var(--mu); font-size: 13px; border: 1.5px dashed var(--bord); border-radius: 14px; margin-bottom: 16px; line-height: 1.5; }
-
-/* ── ANCIEN (garder pour compat) ── */
-.rev-gen-btn {
-  width: 100%;
-  padding: 18px;
-  border-radius: 16px;
-  background: var(--accent);
-  border: none;
-  color: #fff;
-  font-size: 17px;
-  font-weight: 800;
-  font-family: var(--fb);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  cursor: pointer;
-  margin-bottom: 14px;
-  box-shadow: 0 4px 16px rgba(79,70,229,.38);
-  transition: opacity .15s, transform .1s;
-  -webkit-tap-highlight-color: transparent;
-}
-.rev-gen-btn:active { opacity: .88; transform: scale(.98); }
-.rev-gen-btn svg { width: 22px; height: 22px; stroke: #fff; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-
-.rev-choices {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-bottom: 20px;
-}
-.rev-choice {
-  border-radius: 14px;
-  padding: 13px 12px;
-  border: 1.5px solid var(--bord);
-  background: var(--card);
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  cursor: pointer;
-  font-family: var(--fb);
-  text-align: left;
-  transition: transform .1s, box-shadow .1s;
-  -webkit-tap-highlight-color: transparent;
-}
-.rev-choice:active { transform: scale(.97); }
-.rev-choice-icon {
-  width: 34px; height: 34px;
-  border-radius: 9px;
-  display: flex; align-items: center; justify-content: center;
-}
-.rev-choice-icon svg { width: 17px; height: 17px; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-.rev-choice-name { font-size: 13px; font-weight: 800; color: var(--tx); }
-.rev-choice-sub  { font-size: 10px; color: var(--mu); line-height: 1.3; }
-.rev-choice.combo {
-  grid-column: 1 / -1;
-  flex-direction: row;
-  align-items: center;
-  background: var(--accent-l);
-  border-color: var(--accent);
-  gap: 12px;
-}
-.rev-choice.combo .rev-choice-name { color: var(--accent); }
-
-.rev-carousel-wrap {
-  overflow-x: auto;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
-  margin: 0 -16px;
-  padding: 0 16px 4px;
-  margin-bottom: 20px;
-}
-.rev-carousel-wrap::-webkit-scrollbar { display: none; }
-.rev-carousel { display: flex; gap: 8px; width: max-content; }
-.rev-car-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  padding: 12px 8px;
-  background: var(--card);
-  border: 1.5px solid var(--bord);
-  border-radius: 14px;
-  width: 68px;
-  cursor: pointer;
-  font-family: var(--fb);
-  transition: background .12s;
-  -webkit-tap-highlight-color: transparent;
-}
-.rev-car-item:active { background: var(--bg); }
-.rev-car-icon {
-  width: 38px; height: 38px;
-  border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
-}
-.rev-car-icon svg { width: 19px; height: 19px; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-.rev-car-lbl { font-size: 10px; font-weight: 700; color: var(--tx); text-align: center; line-height: 1.2; }
-
-.rev-decks-hdr {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 10px;
-}
-.rev-new-btn {
-  font-size: 12px; color: var(--accent); background: none;
-  border: none; font-weight: 700; cursor: pointer; font-family: var(--fb);
-}
-.rev-deck-card {
   background: var(--card);
   border: 1px solid var(--bord);
   border-radius: 14px;
@@ -1165,7 +1043,7 @@ body::after {
 .rev-ai-send:active { opacity: .8; }
 .rev-ai-send svg { width: 16px; height: 16px; stroke: #fff; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
-/* ── CHAT ── */
+/* ══ CHAT IA ══ */
 #s-chat {
   display: none;
   flex-direction: column;
@@ -1639,9 +1517,6 @@ body::after {
 .prof-field input:focus,.prof-field select:focus{border-color:var(--accent)}
 .prof-save-btn{width:100%;padding:14px;background:var(--accent);border:none;color:#fff;border-radius:14px;font-size:15px;font-family:var(--fb);font-weight:800;cursor:pointer;margin-bottom:12px;transition:opacity .15s;-webkit-tap-highlight-color:transparent}
 .prof-save-btn:active{opacity:.87}
-.prof-av-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid var(--bord)}
-.prof-av-btn{font-size:24px;background:var(--bg);border:2px solid var(--bord);border-radius:10px;padding:8px;cursor:pointer;transition:all .15s;text-align:center;-webkit-tap-highlight-color:transparent}
-.prof-av-btn.on{background:var(--accent-l);border-color:var(--accent)}
 .prof-reset-btn{width:100%;padding:11px;background:transparent;border:1.5px solid rgba(239,68,68,.35);color:var(--danger);border-radius:12px;font-size:13px;font-family:var(--fb);font-weight:700;cursor:pointer;margin-top:8px}
 /* ── TOAST ── */
 #sk-toast{position:fixed;bottom:calc(var(--nav-h) + 16px);left:50%;transform:translateX(-50%) translateY(12px);background:rgba(20,20,20,.92);color:#fff;padding:11px 22px;border-radius:28px;font-size:13px;font-weight:600;z-index:9100;opacity:0;transition:opacity .22s,transform .22s;pointer-events:none;white-space:nowrap;max-width:88vw;text-align:center;backdrop-filter:blur(4px)}
@@ -1682,9 +1557,71 @@ body::after {
 .prof-av-btn.on{background:rgba(79,70,229,.1);border-color:var(--accent);box-shadow:0 0 0 3px rgba(79,70,229,.15);transform:scale(1.1)}
 .prof-av-btn:active{transform:scale(.94)}
 .avatar-section-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--mu);margin:12px 0 6px;grid-column:1/-1}
+
+/* ── LOGIN OVERLAY ── */
+#fb-login{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:32px;overflow-y:auto}
+#fb-login .fb-logo{font-size:30px;font-weight:900;color:var(--tx)}
+#fb-login .fb-logo em{color:var(--accent);font-style:normal}
+#fb-login .fb-sub{font-size:13px;color:var(--mu);text-align:center;max-width:280px;line-height:1.5;margin:0}
+#fb-login-status{display:flex;align-items:center;gap:10px;color:var(--mu);font-size:13px}
+@keyframes fb-spin{to{transform:rotate(360deg)}}
+.fb-spinner{width:20px;height:20px;border:2.5px solid var(--bord);border-top-color:var(--accent);border-radius:50%;animation:fb-spin .7s linear infinite;flex-shrink:0}
+#fb-auth-forms{width:100%;max-width:320px;display:none;flex-direction:column;gap:10px}
+.fb-tabs{display:flex;background:var(--card);border:1.5px solid var(--bord);border-radius:12px;padding:3px;gap:3px}
+.fb-tab{flex:1;border:none;background:transparent;border-radius:9px;padding:9px 8px;font-size:13px;font-weight:600;color:var(--mu);cursor:pointer;transition:all .18s;-webkit-tap-highlight-color:transparent}
+.fb-tab.active{background:var(--accent);color:#fff}
+.fb-input{width:100%;box-sizing:border-box;border:1.5px solid var(--bord);border-radius:12px;padding:13px 14px;font-size:14px;background:var(--card);color:var(--tx);outline:none;-webkit-appearance:none}
+.fb-input:focus{border-color:var(--accent)}
+.fb-submit{width:100%;border:none;background:var(--accent);color:#fff;border-radius:12px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.fb-submit:active{opacity:.85}
+.fb-link{background:none;border:none;color:var(--mu);font-size:12px;cursor:pointer;padding:0;text-decoration:underline;align-self:flex-end}
+.fb-sep{display:flex;align-items:center;gap:10px;color:var(--mu);font-size:12px;width:100%}
+.fb-sep::before,.fb-sep::after{content:'';flex:1;border-top:1px solid var(--bord)}
+#fb-login-btn{display:none;align-items:center;gap:12px;background:var(--card);border:1.5px solid var(--bord);border-radius:12px;padding:13px 20px;font-size:14px;font-weight:600;cursor:pointer;color:var(--tx);-webkit-tap-highlight-color:transparent;width:100%;justify-content:center}
+#fb-login-btn:active{opacity:.8}
+#fb-login-err{display:none;font-size:12px;color:#ef4444;text-align:center;padding:8px 12px;background:#fef2f2;border-radius:10px;width:100%;box-sizing:border-box}
+.drawer-user{padding:10px 0 4px;border-top:1px solid var(--bord);margin-top:8px}
+.drawer-user-row{display:flex;align-items:center;gap:10px;padding:8px 4px;border-radius:10px}
+.drawer-user-avatar{width:34px;height:34px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid var(--bord)}
+.drawer-user-name{font-size:13px;font-weight:600;color:var(--tx)}
+.drawer-user-email{font-size:11px;color:var(--mu)}
+.dm-logout .dm-name{color:#ef4444}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
 <body>
+
+<!-- LOGIN OVERLAY -->
+<div id="fb-login">
+  <div style="font-size:44px">🎓</div>
+  <div class="fb-logo">Scolar<em>IA</em></div>
+  <p class="fb-sub">Ton espace scolaire personnel</p>
+
+  <!-- Spinner pendant la vérification de session -->
+  <div id="fb-login-status">
+    <div class="fb-spinner"></div>
+    <span>Vérification en cours…</span>
+  </div>
+
+  <!-- Formulaires (affichés après vérification) -->
+  <div id="fb-auth-forms">
+    <div class="fb-tabs">
+      <button class="fb-tab active" id="fb-tab-login" onclick="switchFbMode('login')">Connexion</button>
+      <button class="fb-tab" id="fb-tab-reg" onclick="switchFbMode('register')">Créer un compte</button>
+    </div>
+    <input type="email" id="fb-email" class="fb-input" placeholder="Email" autocomplete="email">
+    <input type="password" id="fb-pass" class="fb-input" placeholder="Mot de passe" autocomplete="current-password">
+    <input type="password" id="fb-pass2" class="fb-input" placeholder="Confirmer le mot de passe" style="display:none" autocomplete="new-password">
+    <button class="fb-submit" id="fb-submit" onclick="submitFbAuth()">Se connecter</button>
+    <button class="fb-link" id="fb-forgot" onclick="resetPassword()">Mot de passe oublié ?</button>
+    <div id="fb-login-err"></div>
+    <div class="fb-sep"><span>ou</span></div>
+    <button id="fb-login-btn" onclick="loginWithGoogle()">
+      <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#4285F4" d="M47.53 24.56c0-1.56-.14-3.06-.4-4.5H24v8.51h13.22c-.57 2.94-2.3 5.42-4.9 7.1v5.9h7.93c4.64-4.27 7.28-10.57 7.28-17.01z"/><path fill="#34A853" d="M24 48c6.48 0 11.91-2.15 15.88-5.82l-7.93-5.9c-2.15 1.44-4.9 2.29-7.95 2.29-6.12 0-11.3-4.14-13.14-9.7H2.64v6.09C6.6 42.85 14.78 48 24 48z"/><path fill="#FBBC05" d="M10.86 28.87A14.68 14.68 0 0 1 10 24c0-1.7.29-3.34.86-4.87v-6.09H2.64A23.97 23.97 0 0 0 0 24c0 3.88.93 7.55 2.64 10.96l8.22-6.09z"/><path fill="#EA4335" d="M24 9.57c3.45 0 6.54 1.19 8.98 3.51l6.73-6.73C35.9 2.38 30.47 0 24 0 14.78 0 6.6 5.15 2.64 13.04l8.22 6.09C12.7 13.71 17.88 9.57 24 9.57z"/></svg>
+      Continuer avec Google
+    </button>
+  </div>
+</div>
 
 <!-- HEADER -->
 <header id="hdr">
@@ -1706,6 +1643,15 @@ body::after {
   <div id="drawer-hdr">
     <div id="drawer-logo">Scolar<em>IA</em></div>
     <div id="drawer-sub">Choisis un mode</div>
+    <div id="drawer-user-info" style="display:none">
+      <div class="drawer-user-row">
+        <img class="drawer-user-avatar" src="" alt="">
+        <div>
+          <div class="drawer-user-name"></div>
+          <div class="drawer-user-email"></div>
+        </div>
+      </div>
+    </div>
   </div>
   <div id="drawer-modes">
     <p>Modes</p>
@@ -1731,6 +1677,15 @@ body::after {
       </div>
     </a>
     <p style="margin-top:16px">Outils</p>
+    <div class="drawer-mode" onclick="newChat()">
+      <div class="dm-icon" style="background:#eef2ff">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#4f46e5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+      </div>
+      <div class="dm-info">
+        <div class="dm-name">Nouveau chat</div>
+        <div class="dm-desc">Effacer et recommencer</div>
+      </div>
+    </div>
     <div class="drawer-mode" onclick="openHistPanel()">
       <div class="dm-icon" style="background:#fff7ed">
         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
@@ -1738,6 +1693,17 @@ body::after {
       <div class="dm-info">
         <div class="dm-name">Historique</div>
         <div class="dm-desc">Fiches, flashcards, quiz...</div>
+      </div>
+    </div>
+    <div class="drawer-user">
+      <div class="drawer-mode dm-logout" onclick="logout()">
+        <div class="dm-icon" style="background:#fef2f2">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        </div>
+        <div class="dm-info">
+          <div class="dm-name">Déconnexion</div>
+          <div class="dm-desc">Changer de compte</div>
+        </div>
       </div>
     </div>
   </div>
@@ -2451,7 +2417,42 @@ body::after {
 </nav>
 
 <script>
-/* ── THÈME ── */
+/*
+ * ════════════════════════════════════════════════════════════
+ *  ScolarIA — scolaria-home-v2.html  (JS)
+ *  Chercher "══ X ══" pour naviguer vers une section.
+ * ────────────────────────────────────────────────────────────
+ *   1.  THÈME              — dark/light, navigation, drawer
+ *   2.  UTILITAIRES        — esc(), toast()
+ *   3.  DEVOIRS            — CRUD, rendu, aide IA par devoir
+ *   4.  TIMER DEVOIR       — chrono modal par devoir
+ *   5.  PRÉNOM & CITATIONS — loadPrenom(), showQuote()
+ *   6.  ACCUEIL            — updateHomeStats(), progression
+ *   7.  RÉVISIONS          — wizard type/durée, flashcards, decks
+ *   8.  CHAT IA            — messages, raccourcis, rendu Markdown
+ *   9.  PARSER FICHE       — parseFicheV2() (##FICHE## → HTML)
+ *  10.  HISTORIQUE & FAVORIS
+ *  11.  CHAT PERSISTANT    — saveChatLS(), loadChatLS()
+ *  12.  GROQ API           — callGroq(), système prompt
+ *  13.  RÈGLES PAR MATIÈRE — _matRules, detectMat()
+ *  14.  MODALES OUTILS     — openTool(), closeTool()
+ *  15.  POMODORO           — timer focus 25/5
+ *  16.  CALCULATRICE
+ *  17.  CONVERTISSEUR
+ *  18.  CONJUGUEUR
+ *  19.  MOYENNE
+ *  20.  QUIZ VOCAL         — speech recognition
+ *  21.  INTERROGATION IA   — QCM + réponse courte générés par IA
+ *  22.  SCANNER DE COURS   — photo → résumé (vision IA)
+ *  23.  VEILLE DE CONTRÔLE — flashcards J-N
+ *  24.  PROFIL V2          — avatar, préférences, localStorage
+ *  25.  STREAK             — système flame quotidien
+ *  26.  PROGRESSION        — anneaux connectés aux vraies données
+ *  27.  DÉMARRAGE          — DOMContentLoaded
+ * ════════════════════════════════════════════════════════════
+ */
+
+/* ══ THÈME ══ */
 function _applyThemeUI(isDark) {
   var sw    = document.getElementById('theme-sw');
   var knob  = document.getElementById('theme-sw-knob');
@@ -2510,20 +2511,20 @@ function onVVResize() {
   bar.style.transform = 'translateY(-' + Math.max(0, offset) + 'px)';
 }
 
-/* ── UTILS ── */
+/* ══ UTILITAIRES ══ */
 function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
 var _toastTimer = null;
-function toast(msg) {
+function toast(msg, ms) {
   var t = document.getElementById('sk-toast');
   if (!t) return;
   t.textContent = msg;
   t.classList.add('show');
   if (_toastTimer) clearTimeout(_toastTimer);
-  _toastTimer = setTimeout(function() { t.classList.remove('show'); }, 2800);
+  _toastTimer = setTimeout(function() { t.classList.remove('show'); }, ms || 2800);
 }
 
-/* ── DEVOIRS ── */
+/* ══ DEVOIRS ══ */
 let devoirs = [], dvId = 1, dvShowDone = false;
 
 function loadDevoirs() {
@@ -2541,7 +2542,7 @@ function loadDevoirs() {
   } catch(e) { devoirs = []; }
 }
 
-function saveDv() { try { localStorage.setItem('sk_dv', JSON.stringify(devoirs)); } catch(e) {} }
+function saveDv() { try { localStorage.setItem('sk_dv', JSON.stringify(devoirs)); } catch(e) {} scheduleSync(); }
 
 function renderDevoirs() {
   const el = document.getElementById('dv-by-day');
@@ -2740,15 +2741,6 @@ async function scanDevoir(e) {
   reader.readAsDataURL(f);
 }
 
-function dvAiHelp() {
-  var inp = document.getElementById('chat-input');
-  if (inp) inp.value = 'Aide-moi à planifier mes devoirs de la semaine.';
-  goSec('s-chat', document.querySelector('.nav-btn[onclick*="s-chat"]'));
-  setTimeout(function() {
-    var i = document.getElementById('chat-input');
-    if (i) { autoResize(i); i.focus(); }
-  }, 50);
-}
 function dvAiHelpOne(id) {
   var d = devoirs.find(function(x){ return x.id === id; }); if (!d) return;
   var inp = document.getElementById('chat-input');
@@ -2790,7 +2782,7 @@ function moSave() {
 function closeMo() { document.getElementById('mo').classList.remove('open'); }
 function moOut(e) { if (e.target === document.getElementById('mo')) closeMo(); }
 
-/* ── TIMER ── */
+/* ══ TIMER DEVOIR ══ */
 let tmI, tmR = false, tmS = 25*60, tmTot = 25*60;
 function openTm(id) {
   const d = devoirs.find(x => x.id === id);
@@ -2823,7 +2815,7 @@ function toggleTm() {
   } else { clearInterval(tmI); tmR = false; btn.textContent = 'Reprendre'; }
 }
 
-/* ── PROFIL ── */
+/* ══ PRÉNOM & CITATIONS ══ */
 let userPrenom = '';
 function loadPrenom() {
   try {
@@ -2834,7 +2826,6 @@ function loadPrenom() {
   if (el) el.textContent = userPrenom ? 'Salut ' + userPrenom + ' !' : 'Salut !';
 }
 
-/* ── PHRASE DU JOUR ── */
 const QUOTES = [
   "Chaque matin est une nouvelle chance. Profite-en.",
   "Tu es plus fort que tu ne le crois. Prouve-le aujourd'hui.",
@@ -2853,20 +2844,7 @@ function showQuote() {
   if (txt) txt.textContent = QUOTES[Math.floor(Math.random() * QUOTES.length)];
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-  loadPrenom();
-  showQuote();
-  loadDevoirs();
-  renderDevoirs();
-  renderHist();
-  renderFavs();
-  loadChatLS();
-  updateHomeStats();
-  renderRevDecks();
-  updateStreak();
-  updateHomeProgression();
-});
-
+/* ══ ACCUEIL ══ */
 function updateHomeStats() {
   /* Prénom accueil */
   var hg = document.getElementById('home-greeting');
@@ -2883,8 +2861,8 @@ function updateHomeStats() {
   /* Flashcards enregistrées */
   var cards = 0;
   try {
-    var fl = localStorage.getItem('sk_cards');
-    cards = fl ? JSON.parse(fl).length : 0;
+    var decks = JSON.parse(localStorage.getItem('sk_decks') || '[]');
+    cards = decks.reduce(function(s, d){ return s + (d.count || 0); }, 0);
   } catch(e) {}
   var elF = document.getElementById('home-flash-count');
   if (elF) elF.textContent = cards;
@@ -2914,7 +2892,7 @@ function updateHomeStats() {
   updateHomeProgression();
 }
 
-/* ── RÉVISIONS WIZARD ── */
+/* ══ RÉVISIONS ══ */
 var revCurType = 'flashcards';
 var revCurDur  = 'express';
 var revCoursOn = false;
@@ -3317,6 +3295,7 @@ function saveRevDeck(name, cards) {
     if (decks.length > 20) decks = decks.slice(0, 20);
     localStorage.setItem('sk_decks', JSON.stringify(decks));
   } catch(e) {}
+  scheduleSync();
 }
 function deleteRevDeck(id) {
   try {
@@ -3324,6 +3303,7 @@ function deleteRevDeck(id) {
     localStorage.setItem('sk_decks', JSON.stringify(decks.filter(function(d){ return d.id !== id; })));
     renderRevDecks();
   } catch(e) {}
+  scheduleSync();
 }
 function launchRevDeck(id) {
   try {
@@ -3360,15 +3340,18 @@ function renderRevDecks() {
   }
 }
 
-function revGoChat(prompt) {
-  var inp = document.getElementById('chat-input');
-  if (inp) { inp.value = prompt; autoResize(inp); }
-  goSec('s-chat', document.querySelector('.nav-btn[onclick*="s-chat"]'));
-  setTimeout(function() { if (inp) inp.focus(); }, 300);
-}
-
-/* ── CHAT ── */
+/* ══ CHAT IA ══ */
 var chatHistory = [];
+
+function newChat() {
+  chatHistory = [];
+  saveChatLS();
+  _histCurrentId = null;
+  var msgs = document.getElementById('chat-msgs');
+  if (msgs) msgs.innerHTML = _chatWelcomeHTML;
+  closeDrawer();
+  goSec('s-chat', document.querySelector('#nav button[onclick*="s-chat"]'));
+}
 
 const SHORTCUTS = {
   fiche:   'Génère-moi une fiche de révision complète sur : ',
@@ -3731,23 +3714,7 @@ function extractChatTopic(text) {
   return text.substring(0, 50).trim();
 }
 
-function toggleFavChat() {
-  if (!_histCurrentId) return;
-  var h = loadHist();
-  var isFav = false;
-  for (var i = 0; i < h.length; i++) {
-    if (h[i].id === _histCurrentId) { h[i].fav = !h[i].fav; isFav = h[i].fav; break; }
-  }
-  saveHist(h);
-  renderHist();
-  renderFavs();
-  var ico = document.getElementById('chat-fav-ico');
-  if (ico) {
-    ico.setAttribute('fill', isFav ? '#f59e0b' : 'none');
-    ico.setAttribute('stroke', isFav ? '#f59e0b' : 'var(--mu)');
-  }
-  _updateFsStar(isFav);
-}
+function toggleFavChat() { if (_histCurrentId) toggleFav(_histCurrentId, 'chat-fav-ico'); }
 
 /* ══════════════════════════════════════════════
    HISTORIQUE & FAVORIS
@@ -3763,7 +3730,7 @@ var HIST_TYPE_META = {
 function loadHist() {
   try { return JSON.parse(localStorage.getItem('sk_hist') || '[]'); } catch(e) { return []; }
 }
-function saveHist(h) { try { localStorage.setItem('sk_hist', JSON.stringify(h)); } catch(e) {} }
+function saveHist(h) { try { localStorage.setItem('sk_hist', JSON.stringify(h)); } catch(e) {} scheduleSync(); }
 
 function addToHist(type, topic, label, content) {
   var h = loadHist();
@@ -3779,7 +3746,7 @@ function addToHist(type, topic, label, content) {
   renderHist();
 }
 
-function toggleFav(id) {
+function toggleFav(id, extraIconId) {
   var h = loadHist();
   var isFav = false;
   for (var i = 0; i < h.length; i++) {
@@ -3789,27 +3756,16 @@ function toggleFav(id) {
   renderHist();
   renderFavs();
   if (_histCurrentId === id) _updateFsStar(isFav);
-}
-function toggleFavCurrent() {
-  if (_histCurrentId) toggleFav(_histCurrentId);
-}
-function toggleFavGen() {
-  if (!_histCurrentId) return;
-  var h = loadHist();
-  var isFav = false;
-  for (var i = 0; i < h.length; i++) {
-    if (h[i].id === _histCurrentId) { h[i].fav = !h[i].fav; isFav = h[i].fav; break; }
+  if (extraIconId) {
+    var ico = document.getElementById(extraIconId);
+    if (ico) {
+      ico.setAttribute('fill', isFav ? '#f59e0b' : 'none');
+      ico.setAttribute('stroke', isFav ? '#f59e0b' : 'var(--mu)');
+    }
   }
-  saveHist(h);
-  renderHist();
-  renderFavs();
-  var ico = document.getElementById('gen-fav-ico');
-  if (ico) {
-    ico.setAttribute('fill', isFav ? '#f59e0b' : 'none');
-    ico.setAttribute('stroke', isFav ? '#f59e0b' : 'var(--mu)');
-  }
-  _updateFsStar(isFav);
 }
+function toggleFavCurrent() { if (_histCurrentId) toggleFav(_histCurrentId); }
+function toggleFavGen()     { if (_histCurrentId) toggleFav(_histCurrentId, 'gen-fav-ico'); }
 function _updateFsStar(isFav) {
   var ico = document.getElementById('rev-fs-star-ico');
   if (!ico) return;
@@ -3919,6 +3875,7 @@ function renderHist() {
 ══════════════════════════════════════════════ */
 function saveChatLS() {
   try { localStorage.setItem('sk_chat', JSON.stringify(chatHistory.slice(-20))); } catch(e) {}
+  scheduleSync();
 }
 function loadChatLS() {
   try {
@@ -4949,7 +4906,7 @@ function updateHomeProgression() {
   } catch(e) {}
   /* 4. Objectifs : devoirs cochés / total */
   try {
-    var dvs = JSON.parse(localStorage.getItem('sk_devoirs') || '[]');
+    var dvs = JSON.parse(localStorage.getItem('sk_dv') || '[]');
     var objPct = dvs.length > 0 ? Math.round(dvs.filter(function(d){ return d.done; }).length / dvs.length * 100) : 0;
     updateProgRing('prog-obj', objPct, '#e84040');
   } catch(e) {}
@@ -5000,6 +4957,7 @@ function saveProfile() {
   var cg = document.getElementById('chat-greeting');
   if (cg) cg.textContent = userPrenom ? 'Salut ' + userPrenom + ' !' : 'Salut !';
   toast('Profil sauvegardé !');
+  scheduleSync();
 }
 
 function renderProfileUI() {
@@ -5019,15 +4977,12 @@ function renderProfileUI() {
   var streakEl = document.getElementById('prof-streak');
   if (streakEl) streakEl.textContent = getStreakCount();
   try {
-    var fl = localStorage.getItem('sk_cards');
+    var profDecks = JSON.parse(localStorage.getItem('sk_decks') || '[]');
     var ef = document.getElementById('prof-flash-n');
-    if (ef) ef.textContent = fl ? JSON.parse(fl).length : 0;
+    if (ef) ef.textContent = profDecks.reduce(function(s, d){ return s + (d.count || 0); }, 0);
   } catch(e) {}
-  try {
-    var dv = localStorage.getItem('sk_devoirs');
-    var ed = document.getElementById('prof-devoirs-n');
-    if (ed) ed.textContent = dv ? JSON.parse(dv).filter(function(d){ return d.done; }).length : 0;
-  } catch(e) {}
+  var ed = document.getElementById('prof-devoirs-n');
+  if (ed) ed.textContent = devoirs.filter(function(d){ return d.done; }).length;
 }
 
 var AVATAR_SECTIONS = [
@@ -5081,8 +5036,24 @@ function toggleAvatarPicker() {
   if (!open) renderAvatarGrid();
 }
 
-/* Profil — init clé + chargement profil au démarrage */
-document.addEventListener('DOMContentLoaded', function() {
+/* ══ DÉMARRAGE ══ */
+var _chatWelcomeHTML = '';
+
+function initApp() {
+  var _cm = document.getElementById('chat-msgs');
+  if (_cm) _chatWelcomeHTML = _cm.innerHTML;
+  loadPrenom();
+  showQuote();
+  loadDevoirs();
+  renderDevoirs();
+  renderHist();
+  renderFavs();
+  loadChatLS();
+  updateHomeStats();
+  renderRevDecks();
+  updateStreak();
+  updateHomeProgression();
+  /* Groq key status */
   var k = getGroqKey();
   var st = document.getElementById('groq-status');
   if (k && st) {
@@ -5092,6 +5063,213 @@ document.addEventListener('DOMContentLoaded', function() {
     if (inp) inp.placeholder = '••••••••••••••••';
   }
   loadProfile();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  /* initApp() est appelé par Supabase auth après syncFromCloud().
+     Fallback si Supabase n'est pas disponible. */
+  if (typeof supabase === 'undefined') initApp();
+});
+
+</script>
+
+<!-- SUPABASE AUTH + SYNC -->
+<script>
+/* ══ SUPABASE AUTH + SYNC ══ */
+var _supa = supabase.createClient(
+  'https://vefnkztjmodchvmspukh.supabase.co',
+  'sb_publishable_OVVDWsvA2-0dJuTdQREYVw_kSiTu7Ge'
+);
+var currentUser = null;
+var _syncTimer  = null;
+
+var SYNC_KEYS = [
+  'sk_dv','sk_prof','sk_decks','sk_hist','sk_chat',
+  'sk_fiche_count','sk_flash_stats','sk_quiz_stats','sk_streak'
+];
+
+/* ── Sync ── */
+function scheduleSync() {
+  if (!currentUser) return;
+  clearTimeout(_syncTimer);
+  _syncTimer = setTimeout(syncToCloud, 3000);
+}
+
+async function syncToCloud() {
+  if (!currentUser) return;
+  var data = {};
+  SYNC_KEYS.forEach(function(k) {
+    var v = localStorage.getItem(k);
+    if (v !== null) data[k] = v;
+  });
+  for (var i = 0; i < localStorage.length; i++) {
+    var key = localStorage.key(i);
+    if (key && key.startsWith('sk_day_')) data[key] = localStorage.getItem(key);
+  }
+  try {
+    await _supa.from('user_data').upsert({ user_id: currentUser.id, data: data }, { onConflict: 'user_id' });
+  } catch(e) {
+    console.warn('syncToCloud échoué:', e.message);
+  }
+}
+
+async function syncFromCloud() {
+  if (!currentUser) return;
+  try {
+    var res = await _supa.from('user_data').select('data').eq('user_id', currentUser.id).single();
+    if (res.error || !res.data || !res.data.data) return;
+    var remote = res.data.data;
+    Object.keys(remote).forEach(function(k) {
+      if (k.startsWith('sk_')) {
+        try { localStorage.setItem(k, remote[k]); } catch(e2) {}
+      }
+    });
+  } catch(e) {
+    console.warn('syncFromCloud échoué:', e.message);
+  }
+}
+
+/* ── Messages d'erreur Supabase → français ── */
+function _supaErrMsg(msg) {
+  if (!msg) return 'Une erreur est survenue.';
+  if (msg.indexOf('already registered') !== -1 || msg.indexOf('already been registered') !== -1) return 'Cet email est déjà utilisé.';
+  if (msg.indexOf('Password should be at least') !== -1) return 'Mot de passe trop court (6 caractères minimum).';
+  if (msg.indexOf('Invalid login credentials') !== -1 || msg.indexOf('invalid_credentials') !== -1) return 'Email ou mot de passe incorrect.';
+  if (msg.indexOf('User not found') !== -1) return 'Aucun compte avec cet email.';
+  if (msg.indexOf('invalid email') !== -1 || msg.indexOf('Invalid email') !== -1) return 'Adresse email invalide.';
+  if (msg.indexOf('Too many') !== -1 || msg.indexOf('rate limit') !== -1) return 'Trop de tentatives. Réessaie dans quelques minutes.';
+  if (msg.indexOf('network') !== -1 || msg.indexOf('fetch') !== -1) return 'Erreur réseau. Vérifie ta connexion.';
+  return msg;
+}
+
+/* ── Helpers UI ── */
+function _fbSetLoading(on) {
+  var sub = document.getElementById('fb-submit');
+  if (sub) { sub.disabled = on; sub.textContent = on ? 'Chargement…' : (window._fbMode === 'register' ? 'Créer le compte' : 'Se connecter'); }
+}
+
+function _fbShowErr(msg) {
+  var el = document.getElementById('fb-login-err');
+  if (!el) return;
+  el.textContent = typeof msg === 'string' ? msg : _supaErrMsg((msg && msg.message) || '');
+  el.style.color = '';
+  el.style.display = 'block';
+}
+
+function _fbHideErr() {
+  var el = document.getElementById('fb-login-err');
+  if (el) el.style.display = 'none';
+}
+
+/* ── Mode connexion / inscription ── */
+window._fbMode = 'login';
+function switchFbMode(mode) {
+  window._fbMode = mode;
+  document.getElementById('fb-tab-login').classList.toggle('active', mode === 'login');
+  document.getElementById('fb-tab-reg').classList.toggle('active', mode === 'register');
+  var pass2  = document.getElementById('fb-pass2');
+  var forgot = document.getElementById('fb-forgot');
+  var sub    = document.getElementById('fb-submit');
+  if (pass2)  pass2.style.display  = mode === 'register' ? '' : 'none';
+  if (forgot) forgot.style.display = mode === 'login'    ? '' : 'none';
+  if (sub)    sub.textContent      = mode === 'register' ? 'Créer le compte' : 'Se connecter';
+  _fbHideErr();
+}
+
+/* ── Inscription / Connexion email+password ── */
+async function submitFbAuth() {
+  _fbHideErr();
+  var email = (document.getElementById('fb-email').value || '').trim();
+  var pass  = document.getElementById('fb-pass').value || '';
+  if (!email || !pass) { _fbShowErr('Remplis tous les champs.'); return; }
+  _fbSetLoading(true);
+
+  if (window._fbMode === 'register') {
+    var pass2 = document.getElementById('fb-pass2').value || '';
+    if (pass !== pass2) { _fbSetLoading(false); _fbShowErr('Les mots de passe ne correspondent pas.'); return; }
+    var res = await _supa.auth.signUp({ email: email, password: pass });
+    if (res.error) { _fbSetLoading(false); _fbShowErr(res.error); return; }
+    /* Supabase envoie un email de confirmation — informer l'utilisateur */
+    var el = document.getElementById('fb-login-err');
+    if (el) { el.textContent = 'Compte créé ! Vérifie ton email pour confirmer.'; el.style.color = 'var(--success)'; el.style.display = 'block'; }
+    _fbSetLoading(false);
+  } else {
+    var res = await _supa.auth.signInWithPassword({ email: email, password: pass });
+    if (res.error) { _fbSetLoading(false); _fbShowErr(res.error); return; }
+    /* onAuthStateChange va prendre le relais */
+  }
+}
+
+/* ── Mot de passe oublié ── */
+async function resetPassword() {
+  var email = (document.getElementById('fb-email').value || '').trim();
+  if (!email) { _fbShowErr('Entre ton email d\'abord.'); return; }
+  var res = await _supa.auth.resetPasswordForEmail(email);
+  var el = document.getElementById('fb-login-err');
+  if (res.error) {
+    if (el) { el.textContent = _supaErrMsg(res.error.message); el.style.color = ''; el.style.display = 'block'; }
+  } else {
+    if (el) { el.textContent = 'Email de réinitialisation envoyé !'; el.style.color = 'var(--success)'; el.style.display = 'block'; }
+  }
+}
+
+/* ── Connexion Google ── */
+async function loginWithGoogle() {
+  _fbHideErr();
+  var res = await _supa.auth.signInWithOAuth({
+    provider: 'google',
+    options: { redirectTo: window.location.href }
+  });
+  if (res.error) _fbShowErr(res.error);
+}
+
+/* ── Déconnexion ── */
+async function logout() {
+  await _supa.auth.signOut();
+  var theme = localStorage.getItem('sk_theme');
+  var groq  = localStorage.getItem('sk_groq');
+  localStorage.clear();
+  if (theme) localStorage.setItem('sk_theme', theme);
+  if (groq)  localStorage.setItem('sk_groq', groq);
+  window.location.reload();
+}
+
+/* ── Mise à jour de l'avatar dans le drawer ── */
+function _updateDrawerUser(user) {
+  var info = document.getElementById('drawer-user-info');
+  var sub  = document.getElementById('drawer-sub');
+  if (!info || !user) return;
+  var meta = (user.user_metadata) || {};
+  var av = info.querySelector('.drawer-user-avatar');
+  var nm = info.querySelector('.drawer-user-name');
+  var em = info.querySelector('.drawer-user-email');
+  if (av) { av.src = meta.avatar_url || meta.picture || ''; av.style.display = (meta.avatar_url || meta.picture) ? '' : 'none'; }
+  if (nm) nm.textContent = meta.full_name || meta.name || 'Mon compte';
+  if (em) em.textContent = user.email || '';
+  info.style.display = 'block';
+  if (sub) sub.style.display = 'none';
+}
+
+/* ── Écoute des changements de session ── */
+_supa.auth.onAuthStateChange(function(event, session) {
+  var overlay  = document.getElementById('fb-login');
+  var status   = document.getElementById('fb-login-status');
+  var forms    = document.getElementById('fb-auth-forms');
+  var loginBtn = document.getElementById('fb-login-btn');
+
+  if (session && session.user) {
+    currentUser = session.user;
+    _updateDrawerUser(session.user);
+    syncFromCloud().then(function() {
+      if (overlay) overlay.style.display = 'none';
+      initApp();
+    });
+  } else {
+    currentUser = null;
+    if (status)   status.style.display   = 'none';
+    if (forms)    forms.style.display    = 'flex';
+    if (loginBtn) loginBtn.style.display = 'flex';
+  }
 });
 </script>
 

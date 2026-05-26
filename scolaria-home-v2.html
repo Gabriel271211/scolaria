@@ -1572,6 +1572,9 @@ body::after {
 .fb-tab.active{background:var(--accent);color:#fff}
 .fb-input{width:100%;box-sizing:border-box;border:1.5px solid var(--bord);border-radius:12px;padding:13px 14px;font-size:14px;background:var(--card);color:var(--tx);outline:none;-webkit-appearance:none}
 .fb-input:focus{border-color:var(--accent)}
+.fb-pw-wrap{position:relative;width:100%}
+.fb-pw-wrap .fb-input{padding-right:44px}
+.fb-eye{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--mu);padding:4px;display:flex;align-items:center;justify-content:center}
 .fb-submit{width:100%;border:none;background:var(--accent);color:#fff;border-radius:12px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .fb-submit:active{opacity:.85}
 .fb-link{background:none;border:none;color:var(--mu);font-size:12px;cursor:pointer;padding:0;text-decoration:underline;align-self:flex-end}
@@ -1610,8 +1613,18 @@ body::after {
       <button class="fb-tab" id="fb-tab-reg" onclick="switchFbMode('register')">Créer un compte</button>
     </div>
     <input type="email" id="fb-email" class="fb-input" placeholder="Email" autocomplete="email">
-    <input type="password" id="fb-pass" class="fb-input" placeholder="Mot de passe" autocomplete="current-password">
-    <input type="password" id="fb-pass2" class="fb-input" placeholder="Confirmer le mot de passe" style="display:none" autocomplete="new-password">
+    <div class="fb-pw-wrap">
+      <input type="password" id="fb-pass" class="fb-input" placeholder="Mot de passe" autocomplete="current-password">
+      <button class="fb-eye" type="button" onclick="togglePwVis('fb-pass',this)" tabindex="-1">
+        <svg id="eye-icon-1" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+      </button>
+    </div>
+    <div class="fb-pw-wrap" id="fb-pass2-wrap" style="display:none">
+      <input type="password" id="fb-pass2" class="fb-input" placeholder="Confirmer le mot de passe" autocomplete="new-password">
+      <button class="fb-eye" type="button" onclick="togglePwVis('fb-pass2',this)" tabindex="-1">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+      </button>
+    </div>
     <button class="fb-submit" id="fb-submit" onclick="submitFbAuth()">Se connecter</button>
     <button class="fb-link" id="fb-forgot" onclick="resetPassword()">Mot de passe oublié ?</button>
     <div id="fb-login-err"></div>
@@ -5156,13 +5169,24 @@ function _fbHideErr() {
   if (el) el.style.display = 'none';
 }
 
+/* ── Afficher/cacher le mot de passe ── */
+function togglePwVis(inputId, btn) {
+  var inp = document.getElementById(inputId);
+  if (!inp) return;
+  var show = inp.type === 'password';
+  inp.type = show ? 'text' : 'password';
+  btn.innerHTML = show
+    ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>'
+    : '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+}
+
 /* ── Mode connexion / inscription ── */
 window._fbMode = 'login';
 function switchFbMode(mode) {
   window._fbMode = mode;
   document.getElementById('fb-tab-login').classList.toggle('active', mode === 'login');
   document.getElementById('fb-tab-reg').classList.toggle('active', mode === 'register');
-  var pass2  = document.getElementById('fb-pass2');
+  var pass2  = document.getElementById('fb-pass2-wrap');
   var forgot = document.getElementById('fb-forgot');
   var sub    = document.getElementById('fb-submit');
   if (pass2)  pass2.style.display  = mode === 'register' ? '' : 'none';

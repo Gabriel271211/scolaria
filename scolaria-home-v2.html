@@ -2356,6 +2356,26 @@ body::after {
       </div>
     </div>
 
+    <!-- Sécurité -->
+    <div class="prof-card" style="margin-bottom:12px">
+      <div class="prof-card-title">🔒 Sécurité</div>
+      <div style="font-size:13px;color:var(--mu);margin-bottom:10px" id="sec-email-display"></div>
+      <div class="fb-pw-wrap" style="margin-bottom:8px">
+        <input type="password" id="sec-pass-new" class="fb-input" placeholder="Nouveau mot de passe" autocomplete="new-password">
+        <button class="fb-eye" type="button" onclick="togglePwVis('sec-pass-new',this)" tabindex="-1">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+      </div>
+      <div class="fb-pw-wrap" style="margin-bottom:10px">
+        <input type="password" id="sec-pass-confirm" class="fb-input" placeholder="Confirmer le nouveau mot de passe" autocomplete="new-password">
+        <button class="fb-eye" type="button" onclick="togglePwVis('sec-pass-confirm',this)" tabindex="-1">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+      </div>
+      <button class="prof-save-btn" style="margin:0" onclick="changePassword()">🔑 Changer le mot de passe</button>
+      <div id="sec-msg" style="font-size:12px;margin-top:8px;display:none"></div>
+    </div>
+
     <!-- Données -->
     <div class="prof-card" style="border-color:rgba(239,68,68,.2)">
       <div class="prof-card-title" style="color:var(--danger)">⚠️ Données</div>
@@ -4942,7 +4962,34 @@ function loadProfile() {
       userProfile.avatar   = p.avatar   || '🎓';
     }
   } catch(e) {}
+  /* Afficher l'email connecté dans la section sécurité */
+  var emailEl = document.getElementById('sec-email-display');
+  if (emailEl && currentUser) emailEl.textContent = 'Compte : ' + (currentUser.email || '');
   renderProfileUI();
+}
+
+/* ── Changer le mot de passe ── */
+async function changePassword() {
+  var np  = (document.getElementById('sec-pass-new')     || {}).value || '';
+  var nc  = (document.getElementById('sec-pass-confirm') || {}).value || '';
+  var msg = document.getElementById('sec-msg');
+  if (!np || !nc) { _secMsg('Remplis les deux champs.', false); return; }
+  if (np.length < 6) { _secMsg('Mot de passe trop court (6 caractères minimum).', false); return; }
+  if (np !== nc)  { _secMsg('Les mots de passe ne correspondent pas.', false); return; }
+  var res = await _supa.auth.updateUser({ password: np });
+  if (res.error) { _secMsg(res.error.message, false); }
+  else {
+    _secMsg('Mot de passe changé avec succès !', true);
+    document.getElementById('sec-pass-new').value     = '';
+    document.getElementById('sec-pass-confirm').value = '';
+  }
+}
+function _secMsg(txt, ok) {
+  var el = document.getElementById('sec-msg');
+  if (!el) return;
+  el.textContent  = txt;
+  el.style.color  = ok ? 'var(--success)' : 'var(--danger)';
+  el.style.display = 'block';
 }
 
 function saveProfile() {

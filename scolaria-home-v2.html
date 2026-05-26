@@ -1589,6 +1589,38 @@ body::after {
 .drawer-user-name{font-size:13px;font-weight:600;color:var(--tx)}
 .drawer-user-email{font-size:11px;color:var(--mu)}
 .dm-logout .dm-name{color:#ef4444}
+
+/* ══ ONBOARDING DUOLINGO ══ */
+#onboarding{position:fixed;inset:0;background:var(--bg);z-index:9999;display:none;flex-direction:column;overflow:hidden}
+#ob-topbar{display:flex;align-items:center;gap:12px;padding:16px 20px 8px;flex-shrink:0}
+#ob-back-btn{background:none;border:none;font-size:22px;color:var(--mu);cursor:pointer;padding:4px 8px;border-radius:8px;line-height:1;flex-shrink:0}
+#ob-bar-wrap{flex:1;height:12px;background:var(--bord);border-radius:99px;overflow:hidden}
+#ob-bar-fill{height:100%;background:var(--accent);border-radius:99px;transition:width .4s ease}
+#ob-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 24px 40px;overflow-y:auto}
+.ob-mascot{font-size:64px;margin-bottom:16px;animation:obBounce .6s ease}
+@keyframes obBounce{0%{transform:scale(.6);opacity:0}70%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
+.ob-q{font-size:22px;font-weight:800;color:var(--tx);text-align:center;margin-bottom:8px;line-height:1.3}
+.ob-sub{font-size:14px;color:var(--mu);text-align:center;margin-bottom:28px}
+.ob-inp{width:100%;max-width:320px;box-sizing:border-box;border:2.5px solid var(--bord);border-radius:16px;padding:16px 18px;font-size:18px;font-weight:600;background:var(--card);color:var(--tx);outline:none;text-align:center;transition:border-color .2s}
+.ob-inp:focus{border-color:var(--accent)}
+.ob-cards{display:flex;flex-direction:column;gap:12px;width:100%;max-width:340px}
+.ob-card{border:2.5px solid var(--bord);border-radius:16px;padding:16px 20px;background:var(--card);cursor:pointer;display:flex;align-items:center;gap:14px;transition:all .15s;font-size:15px;font-weight:600;color:var(--tx)}
+.ob-card:active{transform:scale(.97)}
+.ob-card.selected{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,var(--card))}
+.ob-card-icon{font-size:26px;flex-shrink:0}
+.ob-card-label{flex:1}
+.ob-card-check{width:22px;height:22px;border-radius:50%;border:2px solid var(--bord);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.ob-card.selected .ob-card-check{background:var(--accent);border-color:var(--accent);color:#fff}
+.ob-avatar-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;width:100%;max-width:340px}
+.ob-av{font-size:32px;width:70px;height:70px;border-radius:16px;border:2.5px solid var(--bord);background:var(--card);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.ob-av.selected{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,var(--card));transform:scale(1.08)}
+#ob-footer{padding:16px 24px;padding-bottom:max(20px,env(safe-area-inset-bottom));flex-shrink:0}
+.ob-btn{width:100%;padding:17px;border:none;border-radius:16px;font-size:16px;font-weight:800;cursor:pointer;transition:all .15s;letter-spacing:.3px}
+.ob-btn-primary{background:var(--accent);color:#fff}
+.ob-btn-primary:disabled{background:var(--bord);color:var(--mu);cursor:not-allowed}
+.ob-finish-wrap{display:flex;flex-direction:column;align-items:center;gap:8px}
+.ob-finish-wrap .ob-mascot{font-size:80px}
+.ob-xp-badge{background:linear-gradient(135deg,#f59e0b,#f97316);color:#fff;border-radius:16px;padding:14px 28px;font-size:15px;font-weight:700;margin:8px 0}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
@@ -1628,6 +1660,18 @@ body::after {
     <button class="fb-submit" id="fb-submit" onclick="submitFbAuth()">Se connecter</button>
     <button class="fb-link" id="fb-forgot" onclick="resetPassword()">Mot de passe oublié ?</button>
     <div id="fb-login-err"></div>
+  </div>
+</div>
+
+<!-- ONBOARDING -->
+<div id="onboarding">
+  <div id="ob-topbar">
+    <button id="ob-back-btn" onclick="obBack()">‹</button>
+    <div id="ob-bar-wrap"><div id="ob-bar-fill" style="width:0%"></div></div>
+  </div>
+  <div id="ob-body"></div>
+  <div id="ob-footer">
+    <button class="ob-btn ob-btn-primary" id="ob-next-btn" onclick="obNext()">Continuer</button>
   </div>
 </div>
 
@@ -5316,6 +5360,162 @@ function _updateDrawerUser(user) {
   if (sub) sub.style.display = 'none';
 }
 
+/* ══ ONBOARDING ══ */
+var _obStep = 0;
+var _obAnswers = { prenom:'', classe:'', objectif:'', avatar:'🎓' };
+var _obSteps = [
+  { type:'text',   mascot:'👋', q:'Comment tu t\'appelles ?',      sub:'Ton prénom pour personnaliser ScolarIA', placeholder:'Ton prénom…' },
+  { type:'cards',  mascot:'🏫', q:'Tu es en quelle classe ?',       sub:'Choisis ton niveau', options:[
+    { icon:'🟢', label:'6ème', val:'6ème' },
+    { icon:'🔵', label:'5ème', val:'5ème' },
+    { icon:'🟠', label:'4ème', val:'4ème' },
+    { icon:'🔴', label:'3ème', val:'3ème' }
+  ]},
+  { type:'cards',  mascot:'🎯', q:'Quel est ton objectif ?',        sub:'On adapte ScolarIA pour toi', options:[
+    { icon:'⭐', label:'Avoir de bonnes notes',   val:'bonnes-notes' },
+    { icon:'📜', label:'Réussir le brevet',        val:'brevet' },
+    { icon:'📈', label:'Me remettre à niveau',     val:'niveau' },
+    { icon:'🚀', label:'Progresser chaque jour',   val:'progresser' }
+  ]},
+  { type:'avatar', mascot:'😎', q:'Choisis ton avatar',             sub:'Tu pourras le changer plus tard' },
+  { type:'finish', mascot:'🎉', q:'',                                sub:'' }
+];
+
+function startOnboarding() {
+  _obStep = 0;
+  _obAnswers = { prenom:'', classe:'', objectif:'', avatar:'🎓' };
+  var el = document.getElementById('onboarding');
+  if (el) el.style.display = 'flex';
+  _obRender();
+}
+
+function _obRender() {
+  var step  = _obSteps[_obStep];
+  var total = _obSteps.length - 1;
+  var pct   = Math.round((_obStep / total) * 100);
+  var fill  = document.getElementById('ob-bar-fill');
+  var back  = document.getElementById('ob-back-btn');
+  var btn   = document.getElementById('ob-next-btn');
+  var body  = document.getElementById('ob-body');
+  var foot  = document.getElementById('ob-footer');
+  if (fill) fill.style.width = pct + '%';
+  if (back) back.style.visibility = _obStep > 0 ? 'visible' : 'hidden';
+
+  if (step.type === 'finish') {
+    if (btn)  btn.style.display = 'none';
+    if (foot) foot.style.display = 'none';
+    body.innerHTML =
+      '<div class="ob-finish-wrap">' +
+        '<div class="ob-mascot">🎉</div>' +
+        '<div class="ob-q">C\'est parti, ' + _esc(_obAnswers.prenom) + ' !</div>' +
+        '<div class="ob-sub">Ton espace ScolarIA est prêt</div>' +
+        '<div class="ob-xp-badge">+50 XP de bienvenue 🌟</div>' +
+        '<button class="ob-btn ob-btn-primary" style="margin-top:20px;max-width:320px;width:100%" onclick="obFinish()">Commencer ScolarIA 🚀</button>' +
+      '</div>';
+    return;
+  }
+
+  if (foot) foot.style.display = '';
+  if (btn)  btn.style.display  = '';
+
+  var html = '<div class="ob-mascot">' + step.mascot + '</div>' +
+             '<div class="ob-q">' + step.q + '</div>' +
+             '<div class="ob-sub">' + step.sub + '</div>';
+
+  if (step.type === 'text') {
+    html += '<input class="ob-inp" id="ob-inp" type="text" placeholder="' + step.placeholder + '" maxlength="20" oninput="_obCheckBtn()" onkeydown="if(event.key===\'Enter\')obNext()">';
+    body.innerHTML = html;
+    var inp = document.getElementById('ob-inp');
+    if (inp) { inp.value = _obAnswers.prenom; inp.focus(); }
+    _obCheckBtn();
+  } else if (step.type === 'cards') {
+    html += '<div class="ob-cards">';
+    step.options.forEach(function(opt) {
+      var sel = (_obStep === 1 ? _obAnswers.classe : _obAnswers.objectif) === opt.val;
+      html += '<div class="ob-card' + (sel ? ' selected' : '') + '" onclick="_obSelectCard(this,\'' + opt.val + '\')">' +
+        '<span class="ob-card-icon">' + opt.icon + '</span>' +
+        '<span class="ob-card-label">' + opt.label + '</span>' +
+        '<span class="ob-card-check">' + (sel ? '✓' : '') + '</span>' +
+        '</div>';
+    });
+    html += '</div>';
+    body.innerHTML = html;
+    _obCheckBtn();
+  } else if (step.type === 'avatar') {
+    var avs = ['🎓','😎','🦊','🐼','🦁','🐸','🚀','⭐','🎮','🎵','⚽','🍕'];
+    html += '<div class="ob-avatar-grid">';
+    avs.forEach(function(av) {
+      html += '<div class="ob-av' + (av === _obAnswers.avatar ? ' selected' : '') + '" onclick="_obSelectAv(this,\'' + av + '\')">' + av + '</div>';
+    });
+    html += '</div>';
+    body.innerHTML = html;
+    if (btn) { btn.disabled = false; }
+  }
+}
+
+function _esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function _obCheckBtn() {
+  var btn  = document.getElementById('ob-next-btn');
+  var step = _obSteps[_obStep];
+  if (!btn) return;
+  if (step.type === 'text') {
+    var v = (document.getElementById('ob-inp') || {}).value || '';
+    btn.disabled = v.trim().length < 1;
+  } else if (step.type === 'cards') {
+    var val = _obStep === 1 ? _obAnswers.classe : _obAnswers.objectif;
+    btn.disabled = !val;
+  } else {
+    btn.disabled = false;
+  }
+}
+
+function _obSelectCard(el, val) {
+  var cards = el.parentNode.querySelectorAll('.ob-card');
+  cards.forEach(function(c) { c.classList.remove('selected'); c.querySelector('.ob-card-check').textContent = ''; });
+  el.classList.add('selected');
+  el.querySelector('.ob-card-check').textContent = '✓';
+  if (_obStep === 1) _obAnswers.classe    = val;
+  else               _obAnswers.objectif  = val;
+  _obCheckBtn();
+}
+
+function _obSelectAv(el, av) {
+  var avs = el.parentNode.querySelectorAll('.ob-av');
+  avs.forEach(function(a) { a.classList.remove('selected'); });
+  el.classList.add('selected');
+  _obAnswers.avatar = av;
+}
+
+function obNext() {
+  var step = _obSteps[_obStep];
+  if (step.type === 'text') {
+    var v = ((document.getElementById('ob-inp') || {}).value || '').trim();
+    if (!v) return;
+    _obAnswers.prenom = v;
+  }
+  _obStep++;
+  _obRender();
+}
+
+function obBack() {
+  if (_obStep > 0) { _obStep--; _obRender(); }
+}
+
+function obFinish() {
+  userProfile.prenom   = _obAnswers.prenom;
+  userProfile.classe   = _obAnswers.classe;
+  userProfile.avatar   = _obAnswers.avatar;
+  userProfile.objectif = _obAnswers.objectif;
+  try {
+    localStorage.setItem('sk_prof', JSON.stringify(userProfile));
+  } catch(e) {}
+  scheduleSync();
+  var el = document.getElementById('onboarding');
+  if (el) el.style.display = 'none';
+  initApp();
+}
+
 /* ── Écoute des changements de session ── */
 _supa.auth.onAuthStateChange(function(event, session) {
   var overlay  = document.getElementById('fb-login');
@@ -5328,7 +5528,13 @@ _supa.auth.onAuthStateChange(function(event, session) {
     _updateDrawerUser(session.user);
     syncFromCloud().then(function() {
       if (overlay) overlay.style.display = 'none';
-      initApp();
+      var prof = null;
+      try { prof = JSON.parse(localStorage.getItem('sk_prof') || 'null'); } catch(e) {}
+      if (!prof || !prof.prenom) {
+        startOnboarding();
+      } else {
+        initApp();
+      }
     });
   } else {
     currentUser = null;

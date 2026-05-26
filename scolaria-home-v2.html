@@ -3421,6 +3421,9 @@ function newChat() {
   _histCurrentId = null;
   var msgs = document.getElementById('chat-msgs');
   if (msgs) msgs.innerHTML = _chatWelcomeHTML;
+  /* Remettre le bon prénom dans le greeting */
+  var cg = document.getElementById('chat-greeting');
+  if (cg) cg.textContent = userPrenom ? 'Salut ' + userPrenom + ' !' : 'Salut !';
   closeDrawer();
   goSec('s-chat', document.querySelector('#nav button[onclick*="s-chat"]'));
 }

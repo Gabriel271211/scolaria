@@ -1580,8 +1580,6 @@ body::after {
 .fb-link{background:none;border:none;color:var(--mu);font-size:12px;cursor:pointer;padding:0;text-decoration:underline;align-self:flex-end}
 .fb-sep{display:flex;align-items:center;gap:10px;color:var(--mu);font-size:12px;width:100%}
 .fb-sep::before,.fb-sep::after{content:'';flex:1;border-top:1px solid var(--bord)}
-#fb-login-btn{display:none;align-items:center;gap:12px;background:var(--card);border:1.5px solid var(--bord);border-radius:12px;padding:13px 20px;font-size:14px;font-weight:600;cursor:pointer;color:var(--tx);-webkit-tap-highlight-color:transparent;width:100%;justify-content:center}
-#fb-login-btn:active{opacity:.8}
 #fb-login-err{display:none;font-size:12px;color:#ef4444;text-align:center;padding:8px 12px;background:#fef2f2;border-radius:10px;width:100%;box-sizing:border-box}
 .drawer-user{padding:10px 0 4px;border-top:1px solid var(--bord);margin-top:8px}
 .drawer-user-row{display:flex;align-items:center;gap:10px;padding:8px 4px;border-radius:10px}
@@ -1662,26 +1660,6 @@ body::after {
     <div id="fb-login-err"></div>
   </div>
 
-  <!-- Formulaire réinitialisation mot de passe (affiché après clic lien email) -->
-  <div id="fb-recovery-form" style="display:none;width:100%;display:none;flex-direction:column;gap:12px">
-    <div style="font-size:36px;text-align:center">🔑</div>
-    <p style="text-align:center;font-weight:700;font-size:17px;margin:0">Nouveau mot de passe</p>
-    <p style="text-align:center;color:var(--mu);font-size:13px;margin:0">Choisis un nouveau mot de passe pour ton compte.</p>
-    <div class="fb-pw-wrap">
-      <input type="password" id="fb-rec-pass" class="fb-input" placeholder="Nouveau mot de passe" autocomplete="new-password">
-      <button class="fb-eye" type="button" onclick="togglePwVis('fb-rec-pass',this)" tabindex="-1">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-      </button>
-    </div>
-    <div class="fb-pw-wrap">
-      <input type="password" id="fb-rec-pass2" class="fb-input" placeholder="Confirmer le mot de passe" autocomplete="new-password">
-      <button class="fb-eye" type="button" onclick="togglePwVis('fb-rec-pass2',this)" tabindex="-1">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-      </button>
-    </div>
-    <button class="fb-submit" onclick="confirmNewPassword()">Enregistrer le mot de passe</button>
-    <div id="fb-rec-err"></div>
-  </div>
 </div>
 
 <!-- ONBOARDING -->
@@ -2519,7 +2497,7 @@ body::after {
  *   2.  UTILITAIRES        — esc(), toast()
  *   3.  DEVOIRS            — CRUD, rendu, aide IA par devoir
  *   4.  TIMER DEVOIR       — chrono modal par devoir
- *   5.  PRÉNOM & CITATIONS — loadPrenom(), showQuote()
+ *   5.  PRÉNOM & CITATIONS — showQuote()
  *   6.  ACCUEIL            — updateHomeStats(), progression
  *   7.  RÉVISIONS          — wizard type/durée, flashcards, decks
  *   8.  CHAT IA            — messages, raccourcis, rendu Markdown
@@ -2910,14 +2888,6 @@ function toggleTm() {
 
 /* ══ PRÉNOM & CITATIONS ══ */
 let userPrenom = '';
-function loadPrenom() {
-  try {
-    const s = localStorage.getItem('sk_prof');
-    if (s) userPrenom = (JSON.parse(s).prenom || '').trim();
-  } catch(e) {}
-  const el = document.getElementById('chat-greeting');
-  if (el) el.textContent = userPrenom ? 'Salut ' + userPrenom + ' !' : 'Salut !';
-}
 
 const QUOTES = [
   "Chaque matin est une nouvelle chance. Profite-en.",
@@ -5342,56 +5312,6 @@ async function submitFbAuth() {
   }
 }
 
-/* ── Mot de passe oublié ── */
-async function resetPassword() {
-  var email = (document.getElementById('fb-email').value || '').trim();
-  if (!email) { _fbShowErr('Entre ton email d\'abord.'); return; }
-  var res = await _supa.auth.resetPasswordForEmail(email);
-  var el = document.getElementById('fb-login-err');
-  if (res.error) {
-    if (el) { el.textContent = _supaErrMsg(res.error.message); el.style.color = ''; el.style.display = 'block'; }
-  } else {
-    if (el) { el.textContent = 'Email de réinitialisation envoyé !'; el.style.color = 'var(--success)'; el.style.display = 'block'; }
-  }
-}
-
-/* ── Confirmer le nouveau mot de passe (après lien email) ── */
-async function confirmNewPassword() {
-  var np  = (document.getElementById('fb-rec-pass').value  || '').trim();
-  var np2 = (document.getElementById('fb-rec-pass2').value || '').trim();
-  var err = document.getElementById('fb-rec-err');
-  if (!np || !np2) { if (err) { err.textContent = 'Remplis les deux champs.'; err.style.color=''; err.style.display='block'; } return; }
-  if (np.length < 6) { if (err) { err.textContent = 'Mot de passe trop court (6 caractères minimum).'; err.style.color=''; err.style.display='block'; } return; }
-  if (np !== np2) { if (err) { err.textContent = 'Les mots de passe ne correspondent pas.'; err.style.color=''; err.style.display='block'; } return; }
-  if (err) err.style.display = 'none';
-  var res = await _supa.auth.updateUser({ password: np });
-  if (res.error) {
-    if (err) { err.textContent = _supaErrMsg(res.error.message); err.style.color=''; err.style.display='block'; }
-  } else {
-    if (err) { err.textContent = 'Mot de passe changé ! Connexion en cours…'; err.style.color='var(--success)'; err.style.display='block'; }
-    /* onAuthStateChange va gérer la suite */
-  }
-}
-
-/* ── Afficher le formulaire de récupération ── */
-function _showRecoveryForm() {
-  var forms = document.getElementById('fb-auth-forms');
-  var rec   = document.getElementById('fb-recovery-form');
-  var status = document.getElementById('fb-login-status');
-  if (forms)  forms.style.display  = 'none';
-  if (status) status.style.display = 'none';
-  if (rec)    rec.style.display    = 'flex';
-}
-
-/* ── Connexion Google ── */
-async function loginWithGoogle() {
-  _fbHideErr();
-  var res = await _supa.auth.signInWithOAuth({
-    provider: 'google',
-    options: { redirectTo: window.location.href }
-  });
-  if (res.error) _fbShowErr(res.error);
-}
 
 /* ── Déconnexion ── */
 async function logout() {
@@ -5578,17 +5498,9 @@ function obFinish() {
 
 /* ── Écoute des changements de session ── */
 _supa.auth.onAuthStateChange(function(event, session) {
-  var overlay  = document.getElementById('fb-login');
-  var status   = document.getElementById('fb-login-status');
-  var forms    = document.getElementById('fb-auth-forms');
-  var loginBtn = document.getElementById('fb-login-btn');
-
-  /* Lien "mot de passe oublié" cliqué → montrer le formulaire de nouveau mdp */
-  if (event === 'PASSWORD_RECOVERY') {
-    if (overlay) overlay.style.display = 'flex';
-    _showRecoveryForm();
-    return;
-  }
+  var overlay = document.getElementById('fb-login');
+  var status  = document.getElementById('fb-login-status');
+  var forms   = document.getElementById('fb-auth-forms');
 
   if (session && session.user) {
     currentUser = session.user;
@@ -5605,9 +5517,8 @@ _supa.auth.onAuthStateChange(function(event, session) {
     });
   } else {
     currentUser = null;
-    if (status)   status.style.display   = 'none';
-    if (forms)    forms.style.display    = 'flex';
-    if (loginBtn) loginBtn.style.display = 'flex';
+    if (status) status.style.display = 'none';
+    if (forms)  forms.style.display  = 'flex';
   }
 });
 </script>

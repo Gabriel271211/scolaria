@@ -1661,6 +1661,27 @@ body::after {
     <button class="fb-link" id="fb-forgot" onclick="resetPassword()">Mot de passe oublié ?</button>
     <div id="fb-login-err"></div>
   </div>
+
+  <!-- Formulaire réinitialisation mot de passe (affiché après clic lien email) -->
+  <div id="fb-recovery-form" style="display:none;width:100%;display:none;flex-direction:column;gap:12px">
+    <div style="font-size:36px;text-align:center">🔑</div>
+    <p style="text-align:center;font-weight:700;font-size:17px;margin:0">Nouveau mot de passe</p>
+    <p style="text-align:center;color:var(--mu);font-size:13px;margin:0">Choisis un nouveau mot de passe pour ton compte.</p>
+    <div class="fb-pw-wrap">
+      <input type="password" id="fb-rec-pass" class="fb-input" placeholder="Nouveau mot de passe" autocomplete="new-password">
+      <button class="fb-eye" type="button" onclick="togglePwVis('fb-rec-pass',this)" tabindex="-1">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+      </button>
+    </div>
+    <div class="fb-pw-wrap">
+      <input type="password" id="fb-rec-pass2" class="fb-input" placeholder="Confirmer le mot de passe" autocomplete="new-password">
+      <button class="fb-eye" type="button" onclick="togglePwVis('fb-rec-pass2',this)" tabindex="-1">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+      </button>
+    </div>
+    <button class="fb-submit" onclick="confirmNewPassword()">Enregistrer le mot de passe</button>
+    <div id="fb-rec-err"></div>
+  </div>
 </div>
 
 <!-- ONBOARDING -->
@@ -5326,6 +5347,34 @@ async function resetPassword() {
   }
 }
 
+/* ── Confirmer le nouveau mot de passe (après lien email) ── */
+async function confirmNewPassword() {
+  var np  = (document.getElementById('fb-rec-pass').value  || '').trim();
+  var np2 = (document.getElementById('fb-rec-pass2').value || '').trim();
+  var err = document.getElementById('fb-rec-err');
+  if (!np || !np2) { if (err) { err.textContent = 'Remplis les deux champs.'; err.style.color=''; err.style.display='block'; } return; }
+  if (np.length < 6) { if (err) { err.textContent = 'Mot de passe trop court (6 caractères minimum).'; err.style.color=''; err.style.display='block'; } return; }
+  if (np !== np2) { if (err) { err.textContent = 'Les mots de passe ne correspondent pas.'; err.style.color=''; err.style.display='block'; } return; }
+  if (err) err.style.display = 'none';
+  var res = await _supa.auth.updateUser({ password: np });
+  if (res.error) {
+    if (err) { err.textContent = _supaErrMsg(res.error.message); err.style.color=''; err.style.display='block'; }
+  } else {
+    if (err) { err.textContent = 'Mot de passe changé ! Connexion en cours…'; err.style.color='var(--success)'; err.style.display='block'; }
+    /* onAuthStateChange va gérer la suite */
+  }
+}
+
+/* ── Afficher le formulaire de récupération ── */
+function _showRecoveryForm() {
+  var forms = document.getElementById('fb-auth-forms');
+  var rec   = document.getElementById('fb-recovery-form');
+  var status = document.getElementById('fb-login-status');
+  if (forms)  forms.style.display  = 'none';
+  if (status) status.style.display = 'none';
+  if (rec)    rec.style.display    = 'flex';
+}
+
 /* ── Connexion Google ── */
 async function loginWithGoogle() {
   _fbHideErr();
@@ -5525,6 +5574,13 @@ _supa.auth.onAuthStateChange(function(event, session) {
   var status   = document.getElementById('fb-login-status');
   var forms    = document.getElementById('fb-auth-forms');
   var loginBtn = document.getElementById('fb-login-btn');
+
+  /* Lien "mot de passe oublié" cliqué → montrer le formulaire de nouveau mdp */
+  if (event === 'PASSWORD_RECOVERY') {
+    if (overlay) overlay.style.display = 'flex';
+    _showRecoveryForm();
+    return;
+  }
 
   if (session && session.user) {
     currentUser = session.user;

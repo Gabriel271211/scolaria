@@ -5030,6 +5030,12 @@ function loadProfile() {
       userProfile.avatar   = p.avatar   || '🎓';
     }
   } catch(e) {}
+  /* Mettre à jour le prénom global et le greeting */
+  userPrenom = userProfile.prenom;
+  var cg = document.getElementById('chat-greeting');
+  if (cg) cg.textContent = userPrenom ? 'Salut ' + userPrenom + ' !' : 'Salut !';
+  var hg = document.getElementById('home-greeting');
+  if (hg && userPrenom) hg.textContent = 'Bonjour ' + userPrenom;
   /* Afficher l'email connecté dans la section sécurité */
   var emailEl = document.getElementById('sec-email-display');
   if (emailEl && currentUser) emailEl.textContent = 'Compte : ' + (currentUser.email || '');
@@ -5146,6 +5152,7 @@ function pickAvatar(btn) {
     existing.avatar = a;
     localStorage.setItem('sk_prof', JSON.stringify(existing));
   } catch(e) {}
+  scheduleSync();
   toast('Avatar mis à jour ! ' + a);
 }
 
@@ -5165,7 +5172,7 @@ var _chatWelcomeHTML = '';
 function initApp() {
   var _cm = document.getElementById('chat-msgs');
   if (_cm) _chatWelcomeHTML = _cm.innerHTML;
-  loadPrenom();
+  loadProfile();           /* charge profil + prénom + met à jour le greeting */
   showQuote();
   loadDevoirs();
   renderDevoirs();
@@ -5185,7 +5192,6 @@ function initApp() {
     var inp = document.getElementById('groq-key-inp');
     if (inp) inp.placeholder = '••••••••••••••••';
   }
-  loadProfile();
 }
 
 document.addEventListener('DOMContentLoaded', function() {

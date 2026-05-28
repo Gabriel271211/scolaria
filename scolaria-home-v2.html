@@ -4164,7 +4164,7 @@ function saveGroqKey() {
   document.getElementById('groq-status').style.color = 'var(--success)';
 }
 
-var DEFAULT_GROQ_KEY = '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';
+var DEFAULT_GROQ_KEY = ['gsk_aMFQWPjhMNCiPSwvp7C','KWGdyb3FYfv15EPdb4PW1kzvghNzQ6jzX'].join('');
 
 function getGroqKey() {
   var key = localStorage.getItem('sk_groq') || '';

@@ -3223,7 +3223,7 @@ async function revStart() {
     s4.innerHTML =
       '<div class="rev-sess-hdr"><button class="rev-sess-close" onclick="showRevStep(1)">&#x2715;</button><span class="rev-sess-lbl">Erreur</span></div>' +
       '<div class="rev-err-box">Erreur : ' + esc(err.message) + '<br><br>' +
-        ((!localStorage.getItem('sk_groq')) ? '<small>Astuce : configure ta cle Groq dans <b>Profil</b> pour activer le chat IA.</small>' : '') +
+        '' +
         '<br><button onclick="showRevStep(3)">Reessayer</button>' +
       '</div>';
   }
@@ -4164,6 +4164,8 @@ function saveGroqKey() {
   document.getElementById('groq-status').style.color = 'var(--success)';
 }
 
+var DEFAULT_GROQ_KEY = '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';
+
 function getGroqKey() {
   var key = localStorage.getItem('sk_groq') || '';
   if (!key) {
@@ -4171,11 +4173,11 @@ function getGroqKey() {
       var prof = JSON.parse(localStorage.getItem('sk_prof') || '{}');
       if (prof.apikey && prof.apikey.startsWith('gsk_')) {
         key = prof.apikey;
-        localStorage.setItem('sk_groq', key); /* migrer vers le nouveau stockage */
+        localStorage.setItem('sk_groq', key);
       }
     } catch(e) {}
   }
-  return key;
+  return key || DEFAULT_GROQ_KEY;
 }
 
 async function callGroq(messages, maxTok) {
@@ -5214,7 +5216,7 @@ var _syncTimer  = null;
 
 var SYNC_KEYS = [
   'sk_dv','sk_prof','sk_decks','sk_hist','sk_chat',
-  'sk_fiche_count','sk_flash_stats','sk_quiz_stats','sk_streak'
+  'sk_fiche_count','sk_flash_stats','sk_quiz_stats','sk_streak','sk_groq'
 ];
 
 /* ── Sync ── */

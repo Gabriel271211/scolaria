@@ -4425,7 +4425,7 @@ async function doConj(verb) {
       return;
     }
     /* Verbe irrégulier non trouvé → fallback IA */
-    var groqKey = localStorage.getItem('sk_groq') || '';
+    var groqKey = getGroqKey();
     if (groqKey) {
       res.innerHTML = '<div class="conj-ai-loading"><span class="conj-ai-spin"></span>ScolarIA conjugue...</div>';
       try {
@@ -4446,7 +4446,7 @@ async function doConj(verb) {
     var past  = [pp,pp,pp,pp,pp,pp];
     /* Pour EN aussi : si clé Groq → enrichir avec présent perfect + futur */
     res.innerHTML = buildConjTable(verb,'Present simple',prons,pres) + buildConjTable(verb,'Past simple',prons,past);
-    var groqKeyEn = localStorage.getItem('sk_groq') || '';
+    var groqKeyEn = getGroqKey();
     if (groqKeyEn) {
       res.innerHTML += '<div class="conj-ai-loading"><span class="conj-ai-spin"></span>More tenses via IA...</div>';
       try {

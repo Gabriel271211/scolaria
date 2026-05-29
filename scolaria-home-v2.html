@@ -1265,6 +1265,7 @@ body::after {
 
 .chat-sc-toggle {
   flex-shrink: 0;
+  margin-left: auto;
   width: 38px; height: 32px;
   display: flex; align-items: center; justify-content: center;
   border-radius: 20px;
@@ -4138,10 +4139,12 @@ function saveChatLS() {
 }
 function loadChatLS() {
   try {
-    var h = JSON.parse(localStorage.getItem('sk_chat') || '[]');
-    if (!h.length) return;
-    chatHistory = h;
     var msgs = document.getElementById('chat-msgs');
+    /* Évite les doublons si initApp() est rappelé par l'auth */
+    if (msgs) Array.prototype.forEach.call(msgs.querySelectorAll('.msg'), function(m){ m.remove(); });
+    var h = JSON.parse(localStorage.getItem('sk_chat') || '[]');
+    if (!h.length) { resetShortcuts(); return; }
+    chatHistory = h;
     var welcome = msgs ? msgs.querySelector('.chat-welcome') : null;
     if (welcome) welcome.remove();
     h.forEach(function(m) {
@@ -5373,7 +5376,7 @@ var _chatWelcomeHTML = '';
 
 function initApp() {
   var _cm = document.getElementById('chat-msgs');
-  if (_cm) _chatWelcomeHTML = _cm.innerHTML;
+  if (_cm && !_chatWelcomeHTML) _chatWelcomeHTML = _cm.innerHTML;
   loadProfile();           /* charge profil + prénom + met à jour le greeting */
   showQuote();
   loadDevoirs();

@@ -2,7 +2,15 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#4F46E5">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="ScolarIA">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='120' fill='%236366f1'/%3E%3Ctext x='256' y='372' font-size='320' text-anchor='middle' font-family='sans-serif' font-weight='800' fill='%23fff'%3ES%3C/text%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='120' fill='%236366f1'/%3E%3Ctext x='256' y='372' font-size='320' text-anchor='middle' font-family='sans-serif' font-weight='800' fill='%23fff'%3ES%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap" rel="stylesheet">
 <title>ScolarIA</title>
@@ -1238,15 +1246,40 @@ body::after {
   transition: transform .1s;
 }
 
+.chat-sc-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+}
 .chat-shortcuts {
   display: flex;
   gap: 6px;
-  margin-bottom: 8px;
+  flex: 1;
+  min-width: 0;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
 }
 .chat-shortcuts::-webkit-scrollbar { display: none; }
+
+.chat-sc-toggle {
+  flex-shrink: 0;
+  width: 38px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 20px;
+  border: 1.5px solid var(--bord);
+  background: var(--card);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: all .15s;
+}
+.chat-sc-toggle:active { background: var(--bg); }
+.chat-sc-toggle svg {
+  width: 18px; height: 18px;
+  fill: var(--mu);
+  stroke: none;
+}
 
 .chat-sc {
   flex-shrink: 0;
@@ -2097,7 +2130,11 @@ body::after {
       </div>
     </div>
     <div id="chat-bar">
-      <div class="chat-shortcuts">
+      <div class="chat-sc-bar">
+      <button class="chat-sc-toggle" id="chat-sc-toggle" onclick="toggleShortcuts()" style="display:none" aria-label="Raccourcis">
+        <svg viewBox="0 0 24 24" stroke="var(--mu)"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>
+      </button>
+      <div class="chat-shortcuts" id="chat-shortcuts">
         <button class="chat-sc" onclick="chatShortcut('fiche')">
           <svg viewBox="0 0 24 24" stroke="#10b981"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
           Fiche
@@ -2130,6 +2167,7 @@ body::after {
           <svg viewBox="0 0 24 24" stroke="#16a34a"><path d="M3 7V5a2 2 0 012-2h2M17 3h2a2 2 0 012 2v2M21 17v2a2 2 0 01-2 2h-2M7 21H5a2 2 0 01-2-2v-2"/><line x1="3" y1="12" x2="21" y2="12"/></svg>
           Scan cours
         </button>
+      </div>
       </div>
       <div class="chat-input-row">
         <textarea id="chat-input" placeholder="Pose ta question..." rows="1"
@@ -3412,6 +3450,7 @@ function newChat() {
   _histCurrentId = null;
   var msgs = document.getElementById('chat-msgs');
   if (msgs) msgs.innerHTML = _chatWelcomeHTML;
+  resetShortcuts();
   /* Remettre le bon prénom dans le greeting */
   var cg = document.getElementById('chat-greeting');
   if (cg) cg.textContent = userPrenom ? 'Salut ' + userPrenom + ' !' : 'Salut !';
@@ -3443,6 +3482,29 @@ function chatShortcut(type) {
   }
   autoResize(input);
   input.focus();
+}
+
+/* ══ RACCOURCIS REPLIABLES ══ */
+var _chatStarted = false;
+function collapseShortcuts() {
+  if (_chatStarted) return;
+  _chatStarted = true;
+  var sc = document.getElementById('chat-shortcuts');
+  var tg = document.getElementById('chat-sc-toggle');
+  if (sc) sc.style.display = 'none';
+  if (tg) tg.style.display = 'flex';
+}
+function toggleShortcuts() {
+  var sc = document.getElementById('chat-shortcuts');
+  if (!sc) return;
+  sc.style.display = (sc.style.display === 'none') ? 'flex' : 'none';
+}
+function resetShortcuts() {
+  _chatStarted = false;
+  var sc = document.getElementById('chat-shortcuts');
+  var tg = document.getElementById('chat-sc-toggle');
+  if (sc) sc.style.display = 'flex';
+  if (tg) tg.style.display = 'none';
 }
 
 function mdToHtml(text) {
@@ -3667,14 +3729,40 @@ async function sendChat() {
   input.value = '';
   autoResize(input);
   updateStreak();
+  collapseShortcuts();
 
   addMsg(text, 'user');
   const thinking = addMsg('ScolarIA réfléchit…', 'ai thinking');
   const msgs = document.getElementById('chat-msgs');
 
+  /* Fiche / flashcards → résultat en carte (pas de streaming).
+     Tout le reste (questions, interrogations, résumés…) → streaming. */
+  var _structured = /\bfiches?\b|\bflashcards?\b/i.test(text);
+
   try {
     var reply;
     var groqKey = getGroqKey();
+
+    if (groqKey && !_structured) {
+      /* ── Streaming token par token ── */
+      var sMsgs = [{ role: 'system', content: SCOLARIA_SYSTEM }];
+      chatHistory.slice(-12).forEach(function(h){ sMsgs.push({ role: h.role, content: h.content }); });
+      sMsgs.push({ role: 'user', content: text });
+      thinking.classList.remove('thinking');
+      thinking.style.maxWidth = '100%';
+      reply = await callGroqStream(sMsgs, function(full){
+        thinking.innerHTML = mdToHtml(full);
+        msgs.scrollTop = msgs.scrollHeight;
+      });
+      chatHistory.push({ role: 'user', content: text });
+      chatHistory.push({ role: 'assistant', content: reply });
+      if (chatHistory.length > 24) chatHistory = chatHistory.slice(-24);
+      saveChatLS();
+      updateHomeStats();
+      thinking.innerHTML = mdToHtml(reply);
+      msgs.scrollTop = msgs.scrollHeight;
+      return;
+    }
 
     if (groqKey) {
       /* ── Groq direct (client-side) ── */
@@ -3958,6 +4046,7 @@ function loadChatLS() {
       if (msgs) msgs.appendChild(div);
     });
     if (msgs) msgs.scrollTop = msgs.scrollHeight;
+    collapseShortcuts();
     updateHomeStats();
   } catch(e) {}
 }
@@ -4161,6 +4250,42 @@ async function callGroq(messages, maxTok) {
   var data = await res.json();
   if (data.error) throw new Error(data.error.message);
   return data.choices[0].message.content;
+}
+
+async function callGroqStream(messages, onToken, maxTok) {
+  var key = getGroqKey();
+  if (!key) throw new Error('Cle Groq manquante — configure ta cle dans Profil (gsk_...)');
+  var res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + key },
+    body: JSON.stringify({ model: 'llama-3.3-70b-versatile', max_tokens: maxTok || 1800, messages: messages, stream: true })
+  });
+  if (!res.ok || !res.body) {
+    var ed = null; try { ed = await res.json(); } catch(e) {}
+    throw new Error(ed && ed.error ? ed.error.message : 'Erreur API Groq (' + res.status + ')');
+  }
+  var reader = res.body.getReader();
+  var decoder = new TextDecoder();
+  var full = '', buf = '';
+  while (true) {
+    var chunk = await reader.read();
+    if (chunk.done) break;
+    buf += decoder.decode(chunk.value, { stream: true });
+    var lines = buf.split('\n');
+    buf = lines.pop();
+    for (var i = 0; i < lines.length; i++) {
+      var ln = lines[i].trim();
+      if (ln.indexOf('data:') !== 0) continue;
+      var payload = ln.slice(5).trim();
+      if (payload === '[DONE]') continue;
+      try {
+        var j = JSON.parse(payload);
+        var delta = j.choices && j.choices[0] && j.choices[0].delta && j.choices[0].delta.content;
+        if (delta) { full += delta; onToken(full); }
+      } catch(e) {}
+    }
+  }
+  return full;
 }
 
 /* ══ MODALES OUTILS ══ */
@@ -5170,6 +5295,11 @@ document.addEventListener('DOMContentLoaded', function() {
   /* initApp() est appelé par Supabase auth après syncFromCloud().
      Fallback si Supabase n'est pas disponible. */
   if (typeof supabase === 'undefined') initApp();
+
+  /* ══ PWA — service worker (offline + installable) ══ */
+  if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+    navigator.serviceWorker.register('sw.js').catch(function(){});
+  }
 });
 
 </script>

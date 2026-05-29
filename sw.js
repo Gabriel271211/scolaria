@@ -1,9 +1,9 @@
-const CACHE = 'scolaria-v2';
+const CACHE = 'scolaria-v3';
 const API_HOSTS = ['groq.com', 'supabase.co', 'googleapis.com', 'anthropic.com', 'generativelanguage'];
 
 self.addEventListener('install', e => {
   self.skipWaiting();
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(['./', './scolaria-home-v2.html']).catch(() => {})));
+  e.waitUntil(caches.open(CACHE).then(c => c.addAll(['./', './scolaria-home-v2.html', './logo.svg']).catch(() => {})));
 });
 
 self.addEventListener('activate', e => {

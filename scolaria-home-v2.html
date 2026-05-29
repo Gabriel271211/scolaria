@@ -9,8 +9,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="ScolarIA">
 <link rel="manifest" href="manifest.json">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='120' fill='%236366f1'/%3E%3Ctext x='256' y='372' font-size='320' text-anchor='middle' font-family='sans-serif' font-weight='800' fill='%23fff'%3ES%3C/text%3E%3C/svg%3E">
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='120' fill='%236366f1'/%3E%3Ctext x='256' y='372' font-size='320' text-anchor='middle' font-family='sans-serif' font-weight='800' fill='%23fff'%3ES%3C/text%3E%3C/svg%3E">
+<link rel="icon" type="image/svg+xml" href="logo.svg">
+<link rel="apple-touch-icon" href="logo.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap" rel="stylesheet">
 <title>ScolarIA</title>
@@ -1791,7 +1791,25 @@ body.mode-leaving { opacity: 0; pointer-events: none; }
   <div id="drawer-modes">
     <p>Modes</p>
     <div class="drawer-mode active" onclick="closeDrawer()">
-      <div class="dm-icon">SC</div>
+      <div class="dm-icon dm-icon-logo">
+        <svg viewBox="0 0 512 512" width="30" height="30" aria-hidden="true">
+          <defs>
+            <linearGradient id="dmLogoGrad" x1="140" y1="400" x2="380" y2="110" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#5eead4"/>
+              <stop offset="0.45" stop-color="#5b9df9"/>
+              <stop offset="1" stop-color="#9b7cf6"/>
+            </linearGradient>
+            <radialGradient id="dmLogoGlow" cx="0.5" cy="0.5" r="0.5">
+              <stop offset="0" stop-color="#ffffff" stop-opacity="0.98"/>
+              <stop offset="0.55" stop-color="#ffffff" stop-opacity="0.35"/>
+              <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <path d="M368 150 C368 96 300 80 248 96 C196 112 168 156 200 196 C224 226 288 232 312 262 C344 302 316 360 256 376 C196 392 140 372 140 312" fill="none" stroke="url(#dmLogoGrad)" stroke-width="64" stroke-linecap="round"/>
+          <circle cx="252" cy="238" r="72" fill="url(#dmLogoGlow)"/>
+          <path d="M252 192 Q252 238 298 238 Q252 238 252 284 Q252 238 206 238 Q252 238 252 192 Z" fill="#ffffff"/>
+        </svg>
+      </div>
       <div class="dm-info">
         <div class="dm-name">ScolarIA</div>
         <div class="dm-desc">Chat, devoirs, révisions</div>

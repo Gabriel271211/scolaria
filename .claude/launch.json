@@ -4,7 +4,7 @@
     {
       "name": "scolaria",
       "runtimeExecutable": "python",
-      "runtimeArgs": ["-c", "import os,http.server,socketserver; os.chdir('C:/Users/silva/OneDrive/Bureau/scolaria'); port=int(os.environ.get('PORT',8000)); httpd=socketserver.TCPServer(('',port),http.server.SimpleHTTPRequestHandler); httpd.serve_forever()"],
+      "runtimeArgs": ["-c", "import os,http.server,socketserver; os.chdir('C:/Users/silva/OneDrive/Bureau/scolaria2.0'); port=int(os.environ.get('PORT',8000)); httpd=socketserver.TCPServer(('',port),http.server.SimpleHTTPRequestHandler); httpd.serve_forever()"],
       "autoPort": true
     }
   ]

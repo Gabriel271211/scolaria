@@ -155,6 +155,8 @@ body::after {
   padding: 12px 12px 0;
   flex: 1;
 }
+body { transition: opacity .24s ease; }
+body.mode-leaving { opacity: 0; pointer-events: none; }
 #drawer-modes p {
   font-size: 10px;
   font-weight: 700;
@@ -367,9 +369,30 @@ body::after {
   margin-bottom: 8px;
   border-left-width: 3px;
   transition: opacity .2s;
+  position: relative;
+  overflow: hidden;
+  touch-action: pan-y;
 }
 .dvc.done { opacity: .35; }
-.dvm { display: flex; align-items: center; gap: 10px; }
+.dvsw {
+  position: absolute;
+  inset: 0;
+  background: var(--success);
+  display: flex;
+  align-items: center;
+  padding-left: 22px;
+  color: #fff;
+  opacity: 0;
+  pointer-events: none;
+}
+.dvsw svg { width: 24px; height: 24px; stroke: #fff; fill: none; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.dvm {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  background: var(--card);
+}
 .dvck {
   width: 22px; height: 22px;
   border-radius: 50%;
@@ -1774,14 +1797,14 @@ body::after {
         <div class="dm-desc">Chat, devoirs, révisions</div>
       </div>
     </div>
-    <a class="drawer-mode" href="scolaria-langues.html">
+    <a class="drawer-mode" href="scolaria-langues.html" onclick="return navMode(event,'scolaria-langues.html')">
       <div class="dm-icon">LA</div>
       <div class="dm-info">
         <div class="dm-name">Langues</div>
         <div class="dm-desc">Anglais & Espagnol</div>
       </div>
     </a>
-    <a class="drawer-mode" href="scolaria-sciences.html">
+    <a class="drawer-mode" href="scolaria-sciences.html" onclick="return navMode(event,'scolaria-sciences.html')">
       <div class="dm-icon">SI</div>
       <div class="dm-info">
         <div class="dm-name">Sciences</div>
@@ -2640,6 +2663,16 @@ function closeDrawer() {
   document.getElementById('drawer-overlay').classList.remove('open');
 }
 
+/* Transition douce entre les modes (langues / sciences) */
+function navMode(ev, url) {
+  if (ev) ev.preventDefault();
+  haptic(12);
+  closeDrawer();
+  document.body.classList.add('mode-leaving');
+  setTimeout(function(){ window.location.href = url; }, 240);
+  return false;
+}
+
 /* ── CLAVIER MOBILE ── */
 if (window.visualViewport) {
   window.visualViewport.addEventListener('resize', onVVResize);
@@ -2654,6 +2687,12 @@ function onVVResize() {
 
 /* ══ UTILITAIRES ══ */
 function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+/* ── RETOUR HAPTIQUE (vibration mobile) ── */
+function haptic(ms){ try { if (navigator.vibrate) navigator.vibrate(ms || 8); } catch(e) {} }
+document.addEventListener('click', function(e){
+  if (e.target.closest('button, .nav-btn, .chat-sc, .dvck, .drawer-mode, .rev-type-btn, .rev-dur-btn, .home-mod-card, .chat-sc-toggle')) haptic(8);
+}, { passive: true });
 
 var _toastTimer = null;
 function toast(msg, ms) {
@@ -2724,6 +2763,7 @@ function renderDevoirs() {
 function buildDvCard(d, urgColor) {
   const color = urgColor[d.urg] || 'var(--bord)';
   return `<div class="dvc${d.done?' done':''}" id="dvc_${d.id}" data-urg="${d.urg}" style="border-left-color:${color}" onclick="this.classList.toggle('expanded')">
+    <div class="dvsw"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
     <div class="dvm">
       <div class="dvck${d.done?' on':''}" onclick="event.stopPropagation();toggleDv(${d.id})">
         <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
@@ -2761,6 +2801,65 @@ function toggleDv(id) {
 }
 function delDv(id) { devoirs = devoirs.filter(d => d.id !== id); saveDv(); renderDevoirs(); updateHomeStats(); }
 function filterDone() { dvShowDone = !dvShowDone; renderDevoirs(); }
+
+/* ── SWIPE POUR MARQUER FAIT (avec résistance + retour si < moitié) ── */
+(function initDvSwipe(){
+  var sx=0, sy=0, card=null, row=null, bg=null, w=0, drag=false, decided=false, horiz=false;
+  function reset(){ card=null; row=null; bg=null; drag=false; decided=false; horiz=false; }
+  function onStart(e){
+    var c = e.target.closest('.dvc');
+    if (!c) return;
+    if (e.target.closest('.dv-btn') || e.target.closest('.dvck')) return; /* boutons + coche : ancien système */
+    var t = e.touches[0];
+    sx = t.clientX; sy = t.clientY;
+    card = c; row = c.querySelector('.dvm'); bg = c.querySelector('.dvsw');
+    w = c.offsetWidth; drag = true; decided = false; horiz = false;
+    if (row) row.style.transition = 'none';
+  }
+  function onMove(e){
+    if (!drag || !row) return;
+    var t = e.touches[0];
+    var dx = t.clientX - sx, dy = t.clientY - sy;
+    if (!decided) {
+      if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return;
+      horiz = Math.abs(dx) > Math.abs(dy);
+      decided = true;
+      if (!horiz) { drag = false; return; } /* scroll vertical : on laisse */
+    }
+    if (dx < 0) dx = 0;            /* swipe vers la droite uniquement */
+    e.preventDefault();
+    var move = dx * 0.65;          /* résistance : il faut pousser plus loin */
+    row.style.transform = 'translateX(' + move + 'px)';
+    if (bg) bg.style.opacity = Math.min(1, dx / (w * 0.5));
+  }
+  function onEnd(e){
+    if (!drag || !row) { reset(); return; }
+    var dx = e.changedTouches[0].clientX - sx;
+    var _card = card, _row = row, _bg = bg, _w = w, _horiz = horiz;
+    _row.style.transition = 'transform .25s cubic-bezier(.4,0,.2,1)';
+    if (_horiz && dx >= _w * 0.5) {
+      _row.style.transform = 'translateX(' + _w + 'px)';
+      if (_bg) _bg.style.opacity = 1;
+      var id = parseInt(_card.id.replace('dvc_', ''), 10);
+      haptic(18);
+      setTimeout(function(){ toggleDv(id); }, 200);
+    } else {
+      _row.style.transform = 'translateX(0)';
+      if (_bg) _bg.style.opacity = 0;
+    }
+    reset();
+  }
+  function bind(){
+    var c = document.getElementById('dv-by-day');
+    if (!c) return;
+    c.addEventListener('touchstart', onStart, { passive: true });
+    c.addEventListener('touchmove',  onMove,  { passive: false });
+    c.addEventListener('touchend',   onEnd,   { passive: true });
+    c.addEventListener('touchcancel',onEnd,   { passive: true });
+  }
+  if (document.readyState !== 'loading') bind();
+  else document.addEventListener('DOMContentLoaded', bind);
+})();
 
 function todayStr() {
   var d = new Date();
@@ -4476,8 +4575,30 @@ function togglePomo() {
   }
 }
 
+function pomoAlert() {
+  try { if (navigator.vibrate) navigator.vibrate([200, 100, 200, 100, 200]); } catch(e) {}
+  try {
+    var Ctx = window.AudioContext || window.webkitAudioContext;
+    if (!Ctx) return;
+    var ac = new Ctx();
+    var notes = [880, 1108, 1318];
+    notes.forEach(function(freq, i) {
+      var o = ac.createOscillator(), g = ac.createGain();
+      o.type = 'sine'; o.frequency.value = freq;
+      o.connect(g); g.connect(ac.destination);
+      var t = ac.currentTime + i * 0.18;
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(0.25, t + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 0.16);
+      o.start(t); o.stop(t + 0.18);
+    });
+    setTimeout(function(){ try { ac.close(); } catch(e) {} }, 1000);
+  } catch(e) {}
+}
+
 function poEnd() {
   clearInterval(poI); poR = false;
+  pomoAlert();
   document.getElementById('ppbtn').textContent = '▶';
   if (poW) {
     poC++; poSk++;

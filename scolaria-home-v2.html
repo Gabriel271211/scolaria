@@ -1337,6 +1337,33 @@ body::after {
 }
 #chat-input::placeholder { color: var(--mu); }
 
+.chat-photo {
+  width: 34px; height: 34px;
+  border-radius: 10px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: opacity .15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.chat-photo:active { opacity: .6; }
+.chat-photo svg {
+  width: 21px; height: 21px;
+  stroke: var(--mu); fill: none;
+  stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+}
+
+.chat-img {
+  display: block;
+  max-width: 200px;
+  max-height: 240px;
+  width: auto;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
 .chat-send {
   width: 34px; height: 34px;
   border-radius: 10px;
@@ -2131,9 +2158,6 @@ body::after {
     </div>
     <div id="chat-bar">
       <div class="chat-sc-bar">
-      <button class="chat-sc-toggle" id="chat-sc-toggle" onclick="toggleShortcuts()" style="display:none" aria-label="Raccourcis">
-        <svg viewBox="0 0 24 24" stroke="var(--mu)"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>
-      </button>
       <div class="chat-shortcuts" id="chat-shortcuts">
         <button class="chat-sc" onclick="chatShortcut('fiche')">
           <svg viewBox="0 0 24 24" stroke="#10b981"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
@@ -2168,8 +2192,15 @@ body::after {
           Scan cours
         </button>
       </div>
+      <button class="chat-sc-toggle" id="chat-sc-toggle" onclick="toggleShortcuts()" style="display:none" aria-label="Raccourcis">
+        <svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>
+      </button>
       </div>
       <div class="chat-input-row">
+        <button class="chat-photo" onclick="document.getElementById('chat-photo-inp').click()" aria-label="Ajouter une photo">
+          <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        </button>
+        <input type="file" id="chat-photo-inp" accept="image/*" style="display:none" onchange="chatPhoto(event)">
         <textarea id="chat-input" placeholder="Pose ta question..." rows="1"
           oninput="autoResize(this)" onkeydown="chatKey(event)"></textarea>
         <button class="chat-send" onclick="sendChat()">
@@ -3482,6 +3513,80 @@ function chatShortcut(type) {
   }
   autoResize(input);
   input.focus();
+}
+
+/* ══ PHOTO DANS LE CHAT (vision IA) ══ */
+async function chatPhoto(e) {
+  var f = e.target.files[0]; if (!f) return;
+  e.target.value = '';
+  var key = getGroqKey();
+  if (!key) { toast('❌ Configure ta clé Groq dans Profil pour analyser les photos'); return; }
+  var reader = new FileReader();
+  reader.onload = async function(ev) {
+    var dataUrl = ev.target.result;
+    var b64 = dataUrl.split(',')[1];
+    var mime = f.type || 'image/jpeg';
+    if (!['image/jpeg','image/png','image/gif','image/webp'].includes(mime)) mime = 'image/jpeg';
+
+    var input = document.getElementById('chat-input');
+    var question = input ? input.value.trim() : '';
+    if (input) { input.value = ''; autoResize(input); }
+    collapseShortcuts();
+    updateStreak();
+
+    var msgs = document.getElementById('chat-msgs');
+    var welcome = msgs ? msgs.querySelector('.chat-welcome') : null;
+    if (welcome) welcome.remove();
+    var u = document.createElement('div');
+    u.className = 'msg msg-user';
+    u.innerHTML = '<img src="' + dataUrl + '" class="chat-img">' +
+      (question ? '<div style="margin-top:6px">' + esc(question) + '</div>' : '');
+    if (msgs) msgs.appendChild(u);
+
+    var thinking = addMsg('ScolarIA analyse la photo…', 'ai thinking');
+    if (msgs) msgs.scrollTop = msgs.scrollHeight;
+
+    var prompt = question || 'Analyse cette photo de mon cours. Explique le contenu clairement, niveau 3ème. Si c\'est un exercice, aide-moi à le résoudre étape par étape.';
+    var VISION_MODELS = [
+      'meta-llama/llama-4-maverick-17b-128e-instruct',
+      'meta-llama/llama-4-scout-17b-16e-instruct'
+    ];
+    var lastErr = 'Modèle vision indisponible';
+    for (var mi = 0; mi < VISION_MODELS.length; mi++) {
+      try {
+        var res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + key },
+          body: JSON.stringify({
+            model: VISION_MODELS[mi], max_tokens: 1800,
+            messages: [
+              { role: 'system', content: SCOLARIA_SYSTEM },
+              { role: 'user', content: [
+                { type: 'image_url', image_url: { url: 'data:' + mime + ';base64,' + b64 } },
+                { type: 'text', text: prompt }
+              ]}
+            ]
+          })
+        });
+        var data = await res.json();
+        if (data.error) { lastErr = data.error.message; continue; }
+        var reply = (data.choices && data.choices[0] && data.choices[0].message.content) || '';
+        thinking.classList.remove('thinking');
+        thinking.style.maxWidth = '100%';
+        thinking.innerHTML = mdToHtml(reply);
+        chatHistory.push({ role: 'user', content: '[Photo envoyée] ' + prompt });
+        chatHistory.push({ role: 'assistant', content: reply });
+        if (chatHistory.length > 24) chatHistory = chatHistory.slice(-24);
+        saveChatLS();
+        updateHomeStats();
+        if (msgs) msgs.scrollTop = msgs.scrollHeight;
+        return;
+      } catch(err) { lastErr = err.message; }
+    }
+    thinking.classList.remove('thinking');
+    thinking.textContent = 'Erreur : ' + lastErr.slice(0, 80);
+  };
+  reader.readAsDataURL(f);
 }
 
 /* ══ RACCOURCIS REPLIABLES ══ */

@@ -2689,9 +2689,9 @@ function onVVResize() {
 function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
 /* ── RETOUR HAPTIQUE (vibration mobile) ── */
-function haptic(ms){ try { if (navigator.vibrate) navigator.vibrate(ms || 8); } catch(e) {} }
+function haptic(ms){ try { if (navigator.vibrate) navigator.vibrate(ms || 22); } catch(e) {} }
 document.addEventListener('click', function(e){
-  if (e.target.closest('button, .nav-btn, .chat-sc, .dvck, .drawer-mode, .rev-type-btn, .rev-dur-btn, .home-mod-card, .chat-sc-toggle')) haptic(8);
+  if (e.target.closest('button, .nav-btn, .chat-sc, .dvck, .drawer-mode, .rev-type-btn, .rev-dur-btn, .home-mod-card, .chat-sc-toggle')) haptic(22);
 }, { passive: true });
 
 var _toastTimer = null;
@@ -2841,7 +2841,7 @@ function filterDone() { dvShowDone = !dvShowDone; renderDevoirs(); }
       _row.style.transform = 'translateX(' + _w + 'px)';
       if (_bg) _bg.style.opacity = 1;
       var id = parseInt(_card.id.replace('dvc_', ''), 10);
-      haptic(18);
+      haptic(35);
       setTimeout(function(){ toggleDv(id); }, 200);
     } else {
       _row.style.transform = 'translateX(0)';
@@ -4576,23 +4576,30 @@ function togglePomo() {
 }
 
 function pomoAlert() {
-  try { if (navigator.vibrate) navigator.vibrate([200, 100, 200, 100, 200]); } catch(e) {}
+  try { if (navigator.vibrate) navigator.vibrate([350, 120, 350, 120, 350, 120, 450]); } catch(e) {}
   try {
     var Ctx = window.AudioContext || window.webkitAudioContext;
     if (!Ctx) return;
     var ac = new Ctx();
-    var notes = [880, 1108, 1318];
-    notes.forEach(function(freq, i) {
-      var o = ac.createOscillator(), g = ac.createGain();
-      o.type = 'sine'; o.frequency.value = freq;
-      o.connect(g); g.connect(ac.destination);
-      var t = ac.currentTime + i * 0.18;
-      g.gain.setValueAtTime(0.0001, t);
-      g.gain.exponentialRampToValueAtTime(0.25, t + 0.02);
-      g.gain.exponentialRampToValueAtTime(0.0001, t + 0.16);
-      o.start(t); o.stop(t + 0.18);
-    });
-    setTimeout(function(){ try { ac.close(); } catch(e) {} }, 1000);
+    if (ac.state === 'suspended') { try { ac.resume(); } catch(e) {} }
+    var master = ac.createGain();
+    master.gain.value = 0.9;
+    master.connect(ac.destination);
+    // Carillon ascendant joué 2 fois pour bien se faire entendre
+    var notes = [880, 1108, 1318, 1760];
+    for (var rep = 0; rep < 2; rep++) {
+      notes.forEach(function(freq, i) {
+        var o = ac.createOscillator(), g = ac.createGain();
+        o.type = 'triangle'; o.frequency.value = freq;
+        o.connect(g); g.connect(master);
+        var t = ac.currentTime + rep * 0.95 + i * 0.2;
+        g.gain.setValueAtTime(0.0001, t);
+        g.gain.exponentialRampToValueAtTime(0.6, t + 0.02);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + 0.32);
+        o.start(t); o.stop(t + 0.34);
+      });
+    }
+    setTimeout(function(){ try { ac.close(); } catch(e) {} }, 2500);
   } catch(e) {}
 }
 

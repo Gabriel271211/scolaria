@@ -2939,7 +2939,7 @@ async function scanDevoir(e) {
     var lastErr = 'Modèle vision indisponible';
     for (var mi = 0; mi < VISION_MODELS.length; mi++) {
       try {
-        var res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        var res = await fetch(GROQ_PROXY, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + key },
           body: JSON.stringify({
@@ -3654,7 +3654,7 @@ async function chatPhoto(e) {
     var lastErr = 'Modèle vision indisponible';
     for (var mi = 0; mi < VISION_MODELS.length; mi++) {
       try {
-        var res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        var res = await fetch(GROQ_PROXY, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + key },
           body: JSON.stringify({
@@ -4430,26 +4430,23 @@ function saveGroqKey() {
   document.getElementById('groq-status').style.color = 'var(--success)';
 }
 
-var DEFAULT_GROQ_KEY = ['gsk_aMFQWPjhMNCiPSwvp7C','KWGdyb3FYfv15EPdb4PW1kzvghNzQ6jzX'].join('');
+/* L'app n'appelle plus Groq en direct : tout passe par une Edge Function
+   Supabase (groq-proxy) qui garde la clé GROQ_API_KEY cote serveur.
+   La cle Groq n'est donc jamais exposee dans le code public. */
+var GROQ_PROXY = 'https://vefnkztjmodchvmspukh.supabase.co/functions/v1/groq-proxy';
+var SUPA_ANON = 'sb_publishable_OVVDWsvA2-0dJuTdQREYVw_kSiTu7Ge';
 
 function getGroqKey() {
-  var key = localStorage.getItem('sk_groq') || '';
-  if (!key) {
-    try {
-      var prof = JSON.parse(localStorage.getItem('sk_prof') || '{}');
-      if (prof.apikey && prof.apikey.startsWith('gsk_')) {
-        key = prof.apikey;
-        localStorage.setItem('sk_groq', key);
-      }
-    } catch(e) {}
-  }
-  return key || DEFAULT_GROQ_KEY;
+  // L'IA est toujours dispo via le proxy. On renvoie la cle publique
+  // Supabase : elle sert uniquement d'en-tete d'appel a la fonction,
+  // ce n'est PAS la cle Groq (qui reste secrete cote serveur).
+  return SUPA_ANON;
 }
 
 async function callGroq(messages, maxTok) {
   var key = getGroqKey();
   if (!key) throw new Error('Cle Groq manquante — configure ta cle dans Profil (gsk_...)');
-  var res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+  var res = await fetch(GROQ_PROXY, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + key },
     body: JSON.stringify({ model: 'llama-3.3-70b-versatile', max_tokens: maxTok || 1800, messages: messages })
@@ -4462,7 +4459,7 @@ async function callGroq(messages, maxTok) {
 async function callGroqStream(messages, onToken, maxTok) {
   var key = getGroqKey();
   if (!key) throw new Error('Cle Groq manquante — configure ta cle dans Profil (gsk_...)');
-  var res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+  var res = await fetch(GROQ_PROXY, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + key },
     body: JSON.stringify({ model: 'llama-3.3-70b-versatile', max_tokens: maxTok || 1800, messages: messages, stream: true })
@@ -5159,7 +5156,7 @@ async function scanGenerate(type) {
     var reply;
     /* Groq supporte la vision avec llama-4-scout */
     if(key){
-      var visRes=await fetch('https://api.groq.com/openai/v1/chat/completions',{
+      var visRes=await fetch(GROQ_PROXY,{
         method:'POST',
         headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},
         body:JSON.stringify({

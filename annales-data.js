@@ -1172,7 +1172,7 @@ const ANNALES = {
             id: "pc_mv_01",
             titre: "La masse volumique du cuivre",
             diff: "moyen",
-            enonce: "Un echantillon de cuivre a une masse de 89 g et un volume de 10 cm3.",
+            enonce: "Pour son TP, Lea pese un echantillon de cuivre : il a une masse de 89 g et un volume de 10 cm3.",
             questions: [
               "Rappelle la formule de la masse volumique.",
               "Calcule la masse volumique du cuivre en g/cm3.",
@@ -1191,7 +1191,7 @@ const ANNALES = {
             id: "pc_mv_02",
             titre: "Concentration d'eau salee",
             diff: "facile",
-            enonce: "On dissout 20 g de sel dans 250 mL d'eau.",
+            enonce: "Maxime dissout 20 g de sel dans 250 mL d'eau.",
             questions: [
               "Donne la formule de la concentration en masse.",
               "Calcule la concentration en g/L.",
@@ -1210,7 +1210,7 @@ const ANNALES = {
             id: "pc_mv_03",
             titre: "Huile et eau",
             diff: "moyen",
-            enonce: "Une bouteille contient 1,5 L d'huile dont la masse volumique est 0,92 g/mL.",
+            enonce: "Sofia verse 1,5 L d'huile, de masse volumique 0,92 g/mL, dans une bouteille.",
             questions: [
               "Convertis le volume en mL.",
               "Calcule la masse d'huile.",
@@ -1229,7 +1229,7 @@ const ANNALES = {
             id: "pc_mv_04",
             titre: "Or ou argent ?",
             diff: "moyen",
-            enonce: "Un bijou de masse 96,5 g a un volume de 5 cm3. On hesite entre l'argent (10,5 g/cm3) et l'or (19,3 g/cm3).",
+            enonce: "Un bijoutier examine un bijou de masse 96,5 g et de volume 5 cm3. Il hesite entre l'argent (10,5 g/cm3) et l'or (19,3 g/cm3).",
             questions: [
               "Calcule la masse volumique du bijou.",
               "De quel metal s'agit-il ?",
@@ -1248,7 +1248,7 @@ const ANNALES = {
             id: "pc_mv_05",
             titre: "Convertir les unites",
             diff: "moyen",
-            enonce: "L'eau a une masse volumique de 1000 kg/m3.",
+            enonce: "Yanis sait que l'eau a une masse volumique de 1000 kg/m3 et veut convertir cette valeur.",
             questions: [
               "A combien de g/cm3 cela correspond-il ?",
               "Quelle est la masse de 1 L d'eau ?",
@@ -1267,7 +1267,7 @@ const ANNALES = {
             id: "pc_mv_06",
             titre: "Une boisson sucree",
             diff: "facile",
-            enonce: "On prepare une boisson en dissolvant 30 g de sucre dans 0,5 L d'eau.",
+            enonce: "Clara prepare une boisson en dissolvant 30 g de sucre dans 0,5 L d'eau.",
             questions: [
               "Calcule la concentration en sucre (en g/L).",
               "Si on ajoute encore de l'eau, la concentration augmente-t-elle ou diminue-t-elle ?",
@@ -1286,7 +1286,7 @@ const ANNALES = {
             id: "pc_mv_07",
             titre: "Flotte ou coule ?",
             diff: "facile",
-            enonce: "On place dans l'eau (1 g/cm3) trois materiaux : liege (0,24 g/cm3), glace (0,92 g/cm3), fer (7,9 g/cm3).",
+            enonce: "Pour son TP, Adam place dans l'eau (1 g/cm3) trois materiaux : du liege (0,24 g/cm3), de la glace (0,92 g/cm3) et du fer (7,9 g/cm3).",
             questions: [
               "Lesquels flottent sur l'eau ?",
               "Lequel coule ?",
@@ -1305,7 +1305,8 @@ const ANNALES = {
             id: "pc_mv_08",
             titre: "Mesurer un volume par deplacement",
             diff: "moyen",
-            enonce: "Une eprouvette contient 50 mL d'eau. On y plonge un caillou : le niveau monte a 65 mL. Le caillou a une masse de 40 g.",
+            enonce: "Lina remplit une eprouvette avec 50 mL d'eau. Elle y plonge un caillou : le niveau monte a 65 mL (voir figure). Le caillou a une masse de 40 g.",
+            schema: `<svg width="100%" viewBox="0 0 200 200" role="img" xmlns="http://www.w3.org/2000/svg"><title>Mesure d'un volume par deplacement d'eau</title><desc>Un objet plonge dans l'eprouvette fait monter le niveau d'eau.</desc><path d="M70,30 L70,155 A22 12 0 0 0 114,155 L114,30" fill="none" stroke="currentColor" stroke-width="2"/><g stroke="currentColor" stroke-width="1"><line x1="70" y1="55" x2="80" y2="55"/><line x1="70" y1="80" x2="80" y2="80"/><line x1="70" y1="105" x2="80" y2="105"/><line x1="70" y1="130" x2="80" y2="130"/></g><line x1="70" y1="70" x2="114" y2="70" stroke="currentColor" stroke-width="1.5"/><polygon points="80,135 98,126 108,140 92,152" fill="currentColor" fill-opacity="0.3" stroke="currentColor" stroke-width="1.5"/><text x="120" y="68" font-size="11" fill="currentColor" font-family="sans-serif">niveau d'eau</text><text x="120" y="142" font-size="11" fill="currentColor" font-family="sans-serif">objet</text></svg>`,
             questions: [
               "Quel est le volume du caillou ?",
               "Calcule sa masse volumique.",
@@ -1324,7 +1325,7 @@ const ANNALES = {
             id: "pc_mv_09",
             titre: "L'air a-t-il une masse ?",
             diff: "difficile",
-            enonce: "L'air a une masse volumique d'environ 1,2 g/L.",
+            enonce: "Noa se demande si l'air a une masse. On donne la masse volumique de l'air : environ 1,2 g/L.",
             questions: [
               "L'air a-t-il une masse ?",
               "Quelle est la masse de l'air contenu dans une piece de 30 m3 ? (1 m3 = 1000 L)",
@@ -1343,7 +1344,7 @@ const ANNALES = {
             id: "pc_mv_10",
             titre: "Eau potable et nitrates",
             diff: "moyen",
-            enonce: "Une eau est potable si sa concentration en nitrates ne depasse pas 50 mg/L. On mesure 30 mg de nitrates dans 0,5 L.",
+            enonce: "Une eau est potable si sa concentration en nitrates ne depasse pas 50 mg/L. Le laboratoire ou travaille Sarah mesure 30 mg de nitrates dans 0,5 L d'eau.",
             questions: [
               "Calcule la concentration en nitrates (en mg/L).",
               "Cette eau est-elle potable selon ce critere ?",
@@ -1362,7 +1363,8 @@ const ANNALES = {
             id: "pc_mv_11",
             titre: "Trois liquides en couches",
             diff: "facile",
-            enonce: "On verse doucement dans un tube : du miel (1,4 g/mL), de l'eau (1,0 g/mL) et de l'huile (0,9 g/mL).",
+            enonce: "Au labo, Eva verse doucement dans un tube du miel (1,4 g/mL), de l'eau (1,0 g/mL), puis de l'huile (0,9 g/mL). Trois couches se forment (voir figure).",
+            schema: `<svg width="100%" viewBox="0 0 180 200" role="img" xmlns="http://www.w3.org/2000/svg"><title>Trois liquides non miscibles</title><desc>Miel au fond, eau au milieu, huile au-dessus.</desc><path d="M68,30 L68,160 A18 10 0 0 0 104,160 L104,30" fill="none" stroke="currentColor" stroke-width="2"/><line x1="68" y1="120" x2="104" y2="120" stroke="currentColor" stroke-width="1.5"/><line x1="68" y1="90" x2="104" y2="90" stroke="currentColor" stroke-width="1.5"/><text x="110" y="148" font-size="11" fill="currentColor" font-family="sans-serif">miel</text><text x="110" y="108" font-size="11" fill="currentColor" font-family="sans-serif">eau</text><text x="110" y="76" font-size="11" fill="currentColor" font-family="sans-serif">huile</text></svg>`,
             questions: [
               "Quel liquide se place tout en bas ?",
               "Quel liquide se place tout en haut ?",
@@ -1381,7 +1383,7 @@ const ANNALES = {
             id: "pc_mv_12",
             titre: "La couronne en or",
             diff: "difficile",
-            enonce: "Une couronne de masse 579 g semble en or. On la plonge dans une eprouvette : le niveau d'eau passe de 100 mL a 130 mL. Masse volumique de l'or pur : 19,3 g/cm3.",
+            enonce: "Un antiquaire confie a Rayan une couronne de masse 579 g, qui semble en or. Plongee dans une eprouvette, le niveau d'eau passe de 100 mL a 130 mL. Masse volumique de l'or pur : 19,3 g/cm3.",
             questions: [
               "Quel est le volume de la couronne ?",
               "Calcule sa masse volumique.",
@@ -1400,7 +1402,8 @@ const ANNALES = {
             id: "pc_mv_13",
             titre: "Identifier un metal inconnu",
             diff: "expert",
-            enonce: "On cherche a identifier un metal. Echantillon : masse 212,5 g. Plonge dans 50 mL d'eau, le niveau monte a 75 mL. Donnees : aluminium 2,7 g/cm3 ; fer 7,9 g/cm3 ; cuivre 8,5 g/cm3.",
+            enonce: "Chloe cherche a identifier un metal. Son echantillon a une masse de 212,5 g. Plonge dans 50 mL d'eau, le niveau monte a 75 mL (voir figure). Donnees : aluminium 2,7 g/cm3 ; fer 7,9 g/cm3 ; cuivre 8,5 g/cm3.",
+            schema: `<svg width="100%" viewBox="0 0 200 200" role="img" xmlns="http://www.w3.org/2000/svg"><title>Mesure d'un volume par deplacement d'eau</title><desc>L'echantillon plonge fait monter le niveau de 50 a 75 mL.</desc><path d="M70,30 L70,155 A22 12 0 0 0 114,155 L114,30" fill="none" stroke="currentColor" stroke-width="2"/><g stroke="currentColor" stroke-width="1"><line x1="70" y1="60" x2="80" y2="60"/><line x1="70" y1="85" x2="80" y2="85"/><line x1="70" y1="110" x2="80" y2="110"/><line x1="70" y1="135" x2="80" y2="135"/></g><line x1="70" y1="72" x2="114" y2="72" stroke="currentColor" stroke-width="1.5"/><polygon points="82,132 100,124 109,138 93,150" fill="currentColor" fill-opacity="0.3" stroke="currentColor" stroke-width="1.5"/><text x="120" y="70" font-size="11" fill="currentColor" font-family="sans-serif">75 mL</text><text x="120" y="142" font-size="11" fill="currentColor" font-family="sans-serif">metal</text></svg>`,
             questions: [
               "Calcule le volume de l'echantillon.",
               "Calcule sa masse volumique.",
@@ -1421,7 +1424,7 @@ const ANNALES = {
             id: "pc_mv_14",
             titre: "La masse d'un liquide",
             diff: "difficile",
-            enonce: "Un recipient vide a une masse de 120 g. Rempli de 200 mL d'un liquide, l'ensemble a une masse de 280 g.",
+            enonce: "Un recipient vide pese par Nathan a une masse de 120 g. Rempli de 200 mL d'un liquide, l'ensemble a une masse de 280 g.",
             questions: [
               "Quelle est la masse du liquide seul ?",
               "Calcule la masse volumique du liquide (en g/mL).",

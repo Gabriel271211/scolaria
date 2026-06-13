@@ -2477,21 +2477,6 @@ body.mode-leaving { opacity: 0; pointer-events: none; }
       </div>
     </div>
 
-    <!-- Clé Groq -->
-    <div class="prof-card">
-      <div class="prof-card-title">⚡ Clé API Groq</div>
-      <div class="groq-row">
-        <input class="groq-inp" id="groq-key-inp" type="password" placeholder="gsk_..." autocomplete="off">
-        <button class="groq-save" onclick="saveGroqKey()">OK</button>
-      </div>
-      <div id="groq-status" style="font-size:11px;color:var(--mu);margin-top:8px">Crée une clé gratuite sur <strong>console.groq.com</strong></div>
-      <div style="font-size:12px;color:var(--mu);margin-top:10px;line-height:1.6;padding-top:10px;border-top:1px solid var(--bord)">
-        1. <strong>console.groq.com</strong> → compte gratuit (Gmail OK)<br>
-        2. API Keys → Create API Key<br>
-        3. Copie la clé <code style="background:var(--bg);padding:1px 5px;border-radius:4px;font-size:11px">gsk_...</code> et colle-la ci-dessus
-      </div>
-    </div>
-
     <!-- Sécurité -->
     <div class="prof-card" style="margin-bottom:12px">
       <div class="prof-card-title">🔒 Sécurité</div>
@@ -2919,8 +2904,7 @@ function smartUrgence(dateStr) {
 async function scanDevoir(e) {
   var f = e.target.files[0]; if (!f) return;
   e.target.value = '';
-  var key = getGroqKey();
-  if (!key) { toast('❌ Configure ta clé Groq dans Profil'); return; }
+  var key = SUPA_ANON;
   toast('⏳ Analyse de la photo...', 8000);
   var VISION_MODELS = [
     'meta-llama/llama-4-maverick-17b-128e-instruct',
@@ -3296,22 +3280,10 @@ async function revStart() {
   }
 
   try {
-    var reply = '';
-    var groqKey = getGroqKey();
-    if (groqKey) {
-      reply = await callGroq([
-        { role: 'system', content: activeSys },
-        { role: 'user', content: prompt }
-      ], revMaxTok);
-    } else {
-      var res = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: prompt, history: [] })
-      });
-      var data = await res.json();
-      reply = data.reply || data.error || 'Pas de reponse.';
-    }
+    var reply = await callGroq([
+      { role: 'system', content: activeSys },
+      { role: 'user', content: prompt }
+    ], revMaxTok);
 
     if (revCurType === 'flashcards') {
       var cards = parseFlashCards(reply, limit);
@@ -3619,8 +3591,7 @@ function chatShortcut(type) {
 async function chatPhoto(e) {
   var f = e.target.files[0]; if (!f) return;
   e.target.value = '';
-  var key = getGroqKey();
-  if (!key) { toast('❌ Configure ta clé Groq dans Profil pour analyser les photos'); return; }
+  var key = SUPA_ANON;
   var reader = new FileReader();
   reader.onload = async function(ev) {
     var dataUrl = ev.target.result;
@@ -3946,9 +3917,8 @@ async function sendChat() {
 
   try {
     var reply;
-    var groqKey = getGroqKey();
 
-    if (groqKey && !_structured) {
+    if (!_structured) {
       /* ── Streaming token par token ── */
       var sMsgs = [{ role: 'system', content: SCOLARIA_SYSTEM }];
       chatHistory.slice(-12).forEach(function(h){ sMsgs.push({ role: h.role, content: h.content }); });
@@ -3969,22 +3939,11 @@ async function sendChat() {
       return;
     }
 
-    if (groqKey) {
-      /* ── Groq direct (client-side) ── */
-      var groqMsgs = [{ role: 'system', content: SCOLARIA_SYSTEM }];
-      chatHistory.slice(-12).forEach(function(h){ groqMsgs.push({ role: h.role, content: h.content }); });
-      groqMsgs.push({ role: 'user', content: text });
-      reply = await callGroq(groqMsgs);
-    } else {
-      /* ── Fallback : Anthropic via /api/chat ── */
-      const res = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: text, history: chatHistory })
-      });
-      const data = await res.json();
-      reply = data.reply || data.error || 'Pas de réponse.';
-    }
+    /* ── Fiche / flashcards : réponse en une fois ── */
+    var groqMsgs = [{ role: 'system', content: SCOLARIA_SYSTEM }];
+    chatHistory.slice(-12).forEach(function(h){ groqMsgs.push({ role: h.role, content: h.content }); });
+    groqMsgs.push({ role: 'user', content: text });
+    reply = await callGroq(groqMsgs);
 
     chatHistory.push({ role: 'user', content: text });
     chatHistory.push({ role: 'assistant', content: reply });
@@ -4416,39 +4375,16 @@ function buildFicheSys(mat) {
     '• Anglais/Espagnol : Structure | Conjugaison | Exemples | Pieges';
 }
 
-function saveGroqKey() {
-  var inp = document.getElementById('groq-key-inp');
-  var key = inp ? inp.value.trim() : '';
-  if (!key.startsWith('gsk_')) {
-    document.getElementById('groq-status').textContent = 'La cle doit commencer par gsk_...';
-    document.getElementById('groq-status').style.color = 'var(--danger)';
-    return;
-  }
-  localStorage.setItem('sk_groq', key);
-  inp.value = '';
-  document.getElementById('groq-status').textContent = 'Cle enregistree ! Le chat IA est maintenant actif.';
-  document.getElementById('groq-status').style.color = 'var(--success)';
-}
-
 /* L'app n'appelle plus Groq en direct : tout passe par une Edge Function
    Supabase (groq-proxy) qui garde la clé GROQ_API_KEY cote serveur.
    La cle Groq n'est donc jamais exposee dans le code public. */
 var GROQ_PROXY = 'https://vefnkztjmodchvmspukh.supabase.co/functions/v1/groq-proxy';
 var SUPA_ANON = 'sb_publishable_OVVDWsvA2-0dJuTdQREYVw_kSiTu7Ge';
 
-function getGroqKey() {
-  // L'IA est toujours dispo via le proxy. On renvoie la cle publique
-  // Supabase : elle sert uniquement d'en-tete d'appel a la fonction,
-  // ce n'est PAS la cle Groq (qui reste secrete cote serveur).
-  return SUPA_ANON;
-}
-
 async function callGroq(messages, maxTok) {
-  var key = getGroqKey();
-  if (!key) throw new Error('Cle Groq manquante — configure ta cle dans Profil (gsk_...)');
   var res = await fetch(GROQ_PROXY, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + key },
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + SUPA_ANON },
     body: JSON.stringify({ model: 'llama-3.3-70b-versatile', max_tokens: maxTok || 1800, messages: messages })
   });
   var data = await res.json();
@@ -4457,11 +4393,9 @@ async function callGroq(messages, maxTok) {
 }
 
 async function callGroqStream(messages, onToken, maxTok) {
-  var key = getGroqKey();
-  if (!key) throw new Error('Cle Groq manquante — configure ta cle dans Profil (gsk_...)');
   var res = await fetch(GROQ_PROXY, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + key },
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + SUPA_ANON },
     body: JSON.stringify({ model: 'llama-3.3-70b-versatile', max_tokens: maxTok || 1800, messages: messages, stream: true })
   });
   if (!res.ok || !res.body) {
@@ -4752,19 +4686,14 @@ async function doConj(verb) {
       res.innerHTML = buildConjTable(verb,'Présent',PRONS_FR,pres2);
       return;
     }
-    /* Verbe irrégulier non trouvé → fallback IA */
-    var groqKey = getGroqKey();
-    if (groqKey) {
-      res.innerHTML = '<div class="conj-ai-loading"><span class="conj-ai-spin"></span>ScolarIA conjugue...</div>';
-      try {
-        var p = 'Conjugue le verbe francais "' + verb + '" en donnant des tableaux markdown pour : Present, Imparfait, Futur simple, Conditionnel present. Format : | Pronom | Forme | avec ---|--- en 2eme ligne.';
-        var reply = await callGroq([{role:'system',content:SCOLARIA_SYSTEM},{role:'user',content:p}]);
-        res.innerHTML = '<div class="conj-box"><div class="conj-title">Conjugaison de "' + esc(verb) + '" (IA)</div>' + mdToHtml(reply) + '</div>';
-      } catch(e) {
-        res.innerHTML = '<div style="color:var(--danger);font-size:13px;padding:12px;text-align:center">Erreur : ' + esc(e.message) + '</div>';
-      }
-    } else {
-      res.innerHTML = '<div style="font-size:13px;color:var(--mu);padding:12px;text-align:center">Verbe irrégulier non trouvé hors ligne.<br><small>Configure ta clé Groq dans <b>Profil</b> pour la conjugaison IA.<br>Verbes disponibles : aller, avoir, être, faire, pouvoir, vouloir, venir, prendre, savoir, voir</small></div>';
+    /* Verbe irrégulier non trouvé → conjugaison via IA */
+    res.innerHTML = '<div class="conj-ai-loading"><span class="conj-ai-spin"></span>ScolarIA conjugue...</div>';
+    try {
+      var p = 'Conjugue le verbe francais "' + verb + '" en donnant des tableaux markdown pour : Present, Imparfait, Futur simple, Conditionnel present. Format : | Pronom | Forme | avec ---|--- en 2eme ligne.';
+      var reply = await callGroq([{role:'system',content:SCOLARIA_SYSTEM},{role:'user',content:p}]);
+      res.innerHTML = '<div class="conj-box"><div class="conj-title">Conjugaison de "' + esc(verb) + '" (IA)</div>' + mdToHtml(reply) + '</div>';
+    } catch(e) {
+      res.innerHTML = '<div style="color:var(--danger);font-size:13px;padding:12px;text-align:center">Erreur : ' + esc(e.message) + '</div>';
     }
   } else if (lang === 'en') {
     var prons = ['I','you','he/she','we','you','they'];
@@ -4772,21 +4701,18 @@ async function doConj(verb) {
     var pres  = [verb,verb,s3,verb,verb,verb];
     var pp    = verb.endsWith('e') ? verb+'d' : verb+'ed';
     var past  = [pp,pp,pp,pp,pp,pp];
-    /* Pour EN aussi : si clé Groq → enrichir avec présent perfect + futur */
+    /* Présent + passé en local, puis enrichissement IA (present perfect + futur) */
     res.innerHTML = buildConjTable(verb,'Present simple',prons,pres) + buildConjTable(verb,'Past simple',prons,past);
-    var groqKeyEn = getGroqKey();
-    if (groqKeyEn) {
-      res.innerHTML += '<div class="conj-ai-loading"><span class="conj-ai-spin"></span>More tenses via IA...</div>';
-      try {
-        var pe = 'Conjugate the English verb "' + verb + '" in markdown tables | Pronoun | Form | for: Present Perfect, Future (will), Conditional (would). Keep it concise.';
-        var re = await callGroq([{role:'system',content:SCOLARIA_SYSTEM},{role:'user',content:pe}]);
-        var old = document.getElementById('conj-result');
-        if (old) {
-          var loading = old.querySelector('.conj-ai-loading');
-          if (loading) loading.outerHTML = mdToHtml(re);
-        }
-      } catch(e2) { /* silencieux */ }
-    }
+    res.innerHTML += '<div class="conj-ai-loading"><span class="conj-ai-spin"></span>More tenses via IA...</div>';
+    try {
+      var pe = 'Conjugate the English verb "' + verb + '" in markdown tables | Pronoun | Form | for: Present Perfect, Future (will), Conditional (would). Keep it concise.';
+      var re = await callGroq([{role:'system',content:SCOLARIA_SYSTEM},{role:'user',content:pe}]);
+      var old = document.getElementById('conj-result');
+      if (old) {
+        var loading = old.querySelector('.conj-ai-loading');
+        if (loading) loading.outerHTML = mdToHtml(re);
+      }
+    } catch(e2) { /* silencieux */ }
   } else {
     var suf = verb.endsWith('ar') ? ['o','as','a','amos','áis','an'] : verb.endsWith('er') ? ['o','es','e','emos','éis','en'] : ['o','es','e','imos','ís','en'];
     var stem3 = verb.slice(0,-2);
@@ -4859,13 +4785,7 @@ async function startVQ() {
   try {
     var prompt = 'Génère exactement 8 flashcards sur le sujet EXACT : "' + topic + '" (niveau 3ème).\nFORMAT OBLIGATOIRE — uniquement ce tableau, rien d\'autre :\n| Question | Réponse |\n| --- | --- |\nToutes les questions doivent porter UNIQUEMENT sur "' + topic + '".';
     var reply;
-    var key = getGroqKey();
-    if (key) {
-      reply = await callGroq([{role:'system',content:SCOLARIA_SYSTEM},{role:'user',content:prompt}]);
-    } else {
-      var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:prompt,history:[]})});
-      var d=await r.json(); reply=d.reply||'';
-    }
+    reply = await callGroq([{role:'system',content:SCOLARIA_SYSTEM},{role:'user',content:prompt}]);
     vqCards = parseFlashCards(reply, 8);
     if (!vqCards.length) throw new Error('Aucune question générée — réessaie avec un autre sujet');
     vqIdx=0; vqOk=0;
@@ -4976,23 +4896,16 @@ async function checkVQAnswer(answer) {
   var card=vqCards[vqIdx];
   var fbEl=document.getElementById('vq-feedback'); if(!fbEl) return;
   fbEl.style.display='block'; fbEl.textContent='⚡ Vérification...'; fbEl.className='vq-feedback';
-  var key=getGroqKey();
-  if(key) {
-    try{
-      var r=await callGroq([
-        {role:'system',content:'Tu corriges des réponses d\'élève. Réponds UNIQUEMENT par : CORRECT ou INCORRECT suivi d\'une phrase max.'},
-        {role:'user',content:'Question : '+card.q+'\nRéponse attendue : '+card.a+'\nRéponse élève : '+answer+'\nCorrect ?'}
-      ]);
-      var isOk=r.toLowerCase().startsWith('correct');
-      if(isOk){vqOk++; fbEl.className='vq-feedback vq-ok';}
-      else{fbEl.className='vq-feedback vq-ko';}
-      fbEl.textContent=r;
-    }catch(e){fbEl.className='vq-feedback vq-ko';fbEl.textContent='Réponse attendue : '+card.a;}
-  } else {
-    var sim=answer.toLowerCase().includes((card.a||'').toLowerCase().split(' ').slice(0,2).join(' ').toLowerCase());
-    if(sim){vqOk++;fbEl.className='vq-feedback vq-ok';fbEl.textContent='Bonne réponse ! Réponse attendue : '+card.a;}
-    else{fbEl.className='vq-feedback vq-ko';fbEl.textContent='Réponse attendue : '+card.a;}
-  }
+  try{
+    var r=await callGroq([
+      {role:'system',content:'Tu corriges des réponses d\'élève. Réponds UNIQUEMENT par : CORRECT ou INCORRECT suivi d\'une phrase max.'},
+      {role:'user',content:'Question : '+card.q+'\nRéponse attendue : '+card.a+'\nRéponse élève : '+answer+'\nCorrect ?'}
+    ]);
+    var isOk=r.toLowerCase().startsWith('correct');
+    if(isOk){vqOk++; fbEl.className='vq-feedback vq-ok';}
+    else{fbEl.className='vq-feedback vq-ko';}
+    fbEl.textContent=r;
+  }catch(e){fbEl.className='vq-feedback vq-ko';fbEl.textContent='Réponse attendue : '+card.a;}
   var nb=document.getElementById('vq-next-btn'); if(nb) nb.style.display='block';
 }
 function vqNext(){ vqIdx++; renderVQCard(); }
@@ -5038,10 +4951,7 @@ async function startInterroAI() {
     '<div class="rev-loading"><div class="rev-spin"></div><div class="rev-loading-txt">L\'IA prépare tes questions...</div></div>';
   try {
     var prompt='Génère '+nb+' questions variées (QCM, vrai/faux, réponse courte) sur "'+topic+'" niveau 3ème. Pour chaque question, utilise ce format exact (une par ligne) :\nQ: [question]\nR: [réponse attendue]\n';
-    var reply;
-    var key=getGroqKey();
-    if(key){reply=await callGroq([{role:'system',content:SCOLARIA_SYSTEM},{role:'user',content:prompt}]);}
-    else{var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:prompt,history:[]})});var d=await r.json();reply=d.reply||'';}
+    var reply=await callGroq([{role:'system',content:SCOLARIA_SYSTEM},{role:'user',content:prompt}]);
     interroQs=parseInterroQs(reply);
     if(!interroQs.length) throw new Error('Impossible de générer les questions — réessaie');
     interroIdx=0; interroScore=0;
@@ -5093,22 +5003,16 @@ async function checkInterroAnswer() {
   var fb=document.getElementById('interro-fb'); if(!fb) return;
   var vb=document.getElementById('interro-val-btn'); if(vb){vb.disabled=true;vb.textContent='⚡ Correction...';}
   fb.style.display='block'; fb.textContent='Vérification...'; fb.className='interro-feedback';
-  var key=getGroqKey();
-  if(key){
-    try{
-      var r=await callGroq([
-        {role:'system',content:'Tu corriges des réponses d\'élève. Réponds par CORRECT ou INCORRECT, puis 1-2 phrases d\'explication claires.'},
-        {role:'user',content:'Question : '+q.q+'\nRéponse attendue : '+q.a+'\nRéponse élève : '+ans}
-      ]);
-      var ok=r.toLowerCase().startsWith('correct');
-      if(ok){interroScore++;fb.className='interro-feedback interro-ok';}
-      else{fb.className='interro-feedback interro-ko';}
-      fb.textContent=r;
-    }catch(e){fb.className='interro-feedback interro-ko';fb.textContent='Réponse attendue : '+q.a;}
-  } else {
-    fb.className='interro-feedback interro-ko';
-    fb.textContent='Réponse correcte : '+q.a;
-  }
+  try{
+    var r=await callGroq([
+      {role:'system',content:'Tu corriges des réponses d\'élève. Réponds par CORRECT ou INCORRECT, puis 1-2 phrases d\'explication claires.'},
+      {role:'user',content:'Question : '+q.q+'\nRéponse attendue : '+q.a+'\nRéponse élève : '+ans}
+    ]);
+    var ok=r.toLowerCase().startsWith('correct');
+    if(ok){interroScore++;fb.className='interro-feedback interro-ok';}
+    else{fb.className='interro-feedback interro-ko';}
+    fb.textContent=r;
+  }catch(e){fb.className='interro-feedback interro-ko';fb.textContent='Réponse attendue : '+q.a;}
   if(vb)vb.style.display='none';
   var nb=document.getElementById('interro-next-btn');if(nb)nb.style.display='block';
 }
@@ -5152,31 +5056,22 @@ async function scanGenerate(type) {
     ?'Voici la photo d\'un cours. Transcris et génère une fiche de révision structurée (titre, notions clés, définitions, exemples). Niveau 3ème.'
     :'Voici la photo d\'un cours. Génère 8 flashcards | Question | Réponse | sous forme de tableau markdown ---|--- à partir de ce cours.';
   try{
-    var key=getGroqKey();
-    var reply;
-    /* Groq supporte la vision avec llama-4-scout */
-    if(key){
-      var visRes=await fetch(GROQ_PROXY,{
-        method:'POST',
-        headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},
-        body:JSON.stringify({
-          model:'meta-llama/llama-4-scout-17b-16e-instruct',
-          max_tokens:2000,
-          messages:[{role:'user',content:[
-            {type:'image_url',image_url:{url:scanImageData.full}},
-            {type:'text',text:prompt}
-          ]}]
-        })
-      });
-      var visData=await visRes.json();
-      if(visData.error) throw new Error(visData.error.message);
-      reply=visData.choices[0].message.content;
-    } else {
-      /* Pas de vision sans clé Groq → fallback texte */
-      reply=type==='fiche'
-        ?' **Configure ta clé Groq (dans Profil) pour analyser les images.** \n\nSans clé, tu peux coller ton cours en texte dans la section Révisions → Coller mon cours.'
-        :'Configure ta clé Groq pour utiliser la vision IA.';
-    }
+    /* Vision via le proxy Groq (llama-4-scout) */
+    var visRes=await fetch(GROQ_PROXY,{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+SUPA_ANON},
+      body:JSON.stringify({
+        model:'meta-llama/llama-4-scout-17b-16e-instruct',
+        max_tokens:2000,
+        messages:[{role:'user',content:[
+          {type:'image_url',image_url:{url:scanImageData.full}},
+          {type:'text',text:prompt}
+        ]}]
+      })
+    });
+    var visData=await visRes.json();
+    if(visData.error) throw new Error(visData.error.message);
+    var reply=visData.choices[0].message.content;
     res.innerHTML='<div class="rev-ia-result">'+mdToHtml(reply)+'</div>';
     if(acts)acts.style.display='block';
   }catch(e){
@@ -5219,18 +5114,10 @@ async function generateVeilleControle() {
     (vcDays >= 3 ? 'JOUR 3 — [titre]\n• ...\n• ...\n\n' : '') +
     'Sois concis, pratique, adapte au niveau 3eme. Pas de blabla, juste les taches.';
   try {
-    var reply = '';
-    var key = getGroqKey();
-    if (key) {
-      reply = await callGroq([
-        { role: 'system', content: SCOLARIA_SYSTEM },
-        { role: 'user', content: prompt }
-      ]);
-    } else {
-      var r = await fetch('/api/chat', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ message: prompt, history: [] }) });
-      var d = await r.json();
-      reply = d.reply || d.content || '';
-    }
+    var reply = await callGroq([
+      { role: 'system', content: SCOLARIA_SYSTEM },
+      { role: 'user', content: prompt }
+    ]);
     var html = '<div class="vc-plan rev-ia-result" style="margin-top:12px">' + mdToHtml(reply) + '</div>';
     html += '<div style="display:flex;flex-direction:column;gap:8px;margin-top:12px">';
     html += '<button class="rev-go-btn" style="margin-top:0" onclick="vcCreateFlash()">🃏 Créer des flashcards sur ce cours</button>';
@@ -5513,15 +5400,6 @@ function initApp() {
   renderRevDecks();
   updateStreak();
   updateHomeProgression();
-  /* Groq key status */
-  var k = getGroqKey();
-  var st = document.getElementById('groq-status');
-  if (k && st) {
-    st.textContent = 'Clé Groq active (' + k.slice(0,8) + '...) — Chat IA prêt !';
-    st.style.color = 'var(--success)';
-    var inp = document.getElementById('groq-key-inp');
-    if (inp) inp.placeholder = '••••••••••••••••';
-  }
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -5549,7 +5427,7 @@ var _syncTimer  = null;
 
 var SYNC_KEYS = [
   'sk_dv','sk_prof','sk_decks','sk_hist','sk_chat',
-  'sk_fiche_count','sk_flash_stats','sk_quiz_stats','sk_streak','sk_groq'
+  'sk_fiche_count','sk_flash_stats','sk_quiz_stats','sk_streak'
 ];
 
 /* ── Sync ── */
@@ -5680,10 +5558,8 @@ async function submitFbAuth() {
 async function logout() {
   await _supa.auth.signOut();
   var theme = localStorage.getItem('sk_theme');
-  var groq  = localStorage.getItem('sk_groq');
   localStorage.clear();
   if (theme) localStorage.setItem('sk_theme', theme);
-  if (groq)  localStorage.setItem('sk_groq', groq);
   window.location.reload();
 }
 

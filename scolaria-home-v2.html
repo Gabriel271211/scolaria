@@ -6343,7 +6343,7 @@ function annChatHtml(){
   return '<div class="ann-chat">'+
     '<div class="ann-chat-hd"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Coach IA &middot; explique-moi</div>'+
     '<div class="ann-quick">'+
-      '<button onclick="annQuick(\'Explique-moi cet exercice simplement\')">Explique-moi</button>'+
+      '<button onclick="annQuick(\'Explique-moi la methode pour resoudre cet exercice, etape par etape\')">Explique-moi</button>'+
       '<button onclick="annQuick(\'Donne-moi juste un indice pour demarrer, sans la reponse\')">Un indice</button>'+
       '<button onclick="annQuick(\'Par ou je commence ?\')">Par ou commencer ?</button>'+
     '</div>'+
@@ -6375,13 +6375,13 @@ function annSend(){
   var q=ta.value.trim(); if(!q) return;
   ta.value=''; ta.style.height='auto';
   annChatMsgs.push({ role:'user', content:q });
-  var sys={ role:'system', content:"Tu es un professeur de college bienveillant qui aide un eleve de 3eme avec un exercice de brevet. Reponds en francais, simplement, etape par etape. Ne donne pas tout de suite la reponse finale sauf si l eleve la demande clairement. Voici l exercice et sa correction de reference :\n\n"+annChatCtx };
+  var sys={ role:'system', content:"Tu es un professeur de maths et de physique-chimie de college, patient et tres clair. Tu aides un eleve de 3eme a comprendre UN exercice precis du brevet.\n\nREGLES IMPORTANTES :\n- Reste concentre UNIQUEMENT sur cet exercice et sur la question que pose l'eleve. Ne parle de rien d'autre.\n- Explique la METHODE etape par etape, avec des phrases courtes et simples (l'eleve a 14 ans).\n- Rappelle d'abord la formule ou la propriete utile, puis montre comment l'appliquer ICI, avec les valeurs de l'enonce.\n- Si l'eleve demande un indice, donne seulement la prochaine etape, sans donner le resultat final.\n- Si l'eleve demande la solution, detaille le calcul jusqu'au resultat, puis donne la reponse.\n- N'invente aucune donnee : utilise seulement l'enonce ci-dessous.\n- Quand l'eleve dit qu'il n'a pas compris, reformule ton explication plus simplement (d'autres mots, un petit exemple concret) jusqu'a ce qu'il comprenne, mais SANS ajouter d'etapes inutiles ni partir sur autre chose.\n- Reste bref et va droit au but : reponds a ce qui est demande, sans bla-bla et sans poser de question en retour a l'eleve.\n\nVoici l'exercice (enonce, questions et correction de reference) :\n\n"+annChatCtx };
   var msgs=[sys].concat(annChatMsgs.map(function(m){ return { role:m.role, content:m.content }; }));
   annChatMsgs.push({ role:'assistant', content:'' });
   var idx=annChatMsgs.length-1;
   annRenderChat();
   var btn=document.getElementById('ann-send'); if(btn) btn.disabled=true;
-  callGroqStream(msgs, function(full){ annChatMsgs[idx].content=full; annRenderChat(); }, 900).then(function(){
+  callGroqStream(msgs, function(full){ annChatMsgs[idx].content=full; annRenderChat(); }, 1100).then(function(){
     if(btn) btn.disabled=false;
   }).catch(function(err){
     annChatMsgs[idx].content='Oups, une erreur est survenue : '+err.message;

@@ -1670,6 +1670,75 @@ body.mode-leaving { opacity: 0; pointer-events: none; }
 .drawer-user-avatar{width:34px;height:34px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid var(--bord)}
 .drawer-user-name{font-size:13px;font-weight:600;color:var(--tx)}
 .drawer-user-email{font-size:11px;color:var(--mu)}
+
+/* ── ANNALES BREVET ── */
+#s-annales{padding:14px 14px 28px}
+.ann-back{display:inline-flex;align-items:center;gap:6px;background:none;border:none;color:var(--mu);font-size:13px;font-weight:600;cursor:pointer;padding:4px 0;margin-bottom:8px;font-family:var(--fb)}
+.ann-back svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ann-h1{font-size:23px;font-weight:800;letter-spacing:-.5px;margin-bottom:3px}
+.ann-sub{font-size:13px;color:var(--mu);margin-bottom:16px;line-height:1.4}
+.ann-choice{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--bord);border-radius:16px;padding:16px;margin-bottom:12px;cursor:pointer;transition:transform .1s}
+.ann-choice:active{transform:scale(.985)}
+.ann-choice-ic{width:46px;height:46px;border-radius:13px;background:var(--accent-l);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ann-choice-ic svg{width:24px;height:24px;stroke:var(--accent);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.ann-choice-tx{flex:1}
+.ann-choice-tt{font-size:15px;font-weight:700}
+.ann-choice-ds{font-size:12px;color:var(--mu);margin-top:2px;line-height:1.35}
+.ann-choice-ar{color:var(--mu);font-size:22px;font-weight:700}
+.ann-chip{display:inline-flex;align-items:center;background:var(--accent-l);color:var(--accent);font-size:11px;font-weight:700;padding:4px 11px;border-radius:20px;margin-bottom:14px}
+.ann-row{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--bord);border-radius:14px;padding:13px 14px;margin-bottom:9px;cursor:pointer;transition:transform .1s}
+.ann-row:active{transform:scale(.99)}
+.ann-row-n{width:30px;height:30px;border-radius:9px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:var(--mu);flex-shrink:0}
+.ann-row-tx{flex:1;min-width:0}
+.ann-row-tt{font-size:14px;font-weight:600;line-height:1.25}
+.ann-row-ds{font-size:11px;color:var(--mu);margin-top:2px}
+.ann-row-ar{color:var(--mu);font-size:18px;font-weight:700}
+.ann-diff{font-size:10px;font-weight:700;padding:3px 9px;border-radius:10px;flex-shrink:0;text-transform:capitalize}
+.ann-diff.facile{background:#eafaf0;color:#16a34a}
+.ann-diff.moyen{background:#fff4e5;color:#c07010}
+.ann-diff.difficile{background:#fdecec;color:#ef4444}
+body.dark .ann-diff.facile{background:#10291b}
+body.dark .ann-diff.moyen{background:#2a2110}
+body.dark .ann-diff.difficile{background:#2a1414}
+.ann-exo{background:var(--card);border:1px solid var(--bord);border-radius:18px;padding:18px;margin-bottom:14px}
+.ann-exo-top{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:11px}
+.ann-exo-badge{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;background:var(--accent-l);color:var(--accent)}
+.ann-exo-tt{font-size:17px;font-weight:800;letter-spacing:-.3px;margin-bottom:10px;line-height:1.2}
+.ann-exo-enonce{font-size:14.5px;line-height:1.6;margin-bottom:12px}
+.ann-exo table{width:100%;border-collapse:collapse;font-size:12.5px;margin:2px 0 14px}
+.ann-exo td{border:1px solid var(--bord);padding:6px 8px;text-align:center}
+.ann-exo td.ann-th{color:var(--mu);font-weight:700;background:var(--bg)}
+.ann-schema{background:var(--bg);border:1px solid var(--bord);border-radius:12px;padding:10px;margin:2px 0 14px}
+.ann-q{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--mu);margin-bottom:8px}
+.ann-exo ol{margin:0 0 4px;padding-left:22px}
+.ann-exo ol li{font-size:14px;line-height:1.55;margin-bottom:6px}
+.ann-corr-btn{margin-top:8px}
+.ann-corr{margin-top:14px;border-top:1px dashed var(--bord);padding-top:14px;display:none}
+.ann-corr.show{display:block}
+.ann-corr-tt{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--success);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.ann-corr-step{font-size:13.5px;line-height:1.6;margin-bottom:8px}
+.ann-corr-step b{color:var(--accent)}
+.ann-piege{margin-top:10px;background:#fff8ec;border:1px solid #f0d28a;border-radius:12px;padding:10px 12px;font-size:12.5px;line-height:1.5;color:#8a5a10;display:flex;gap:8px}
+body.dark .ann-piege{background:#2a2110;border-color:#5a4516;color:#e0b860}
+.ann-piege svg{width:16px;height:16px;flex-shrink:0;margin-top:1px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ann-chat{background:var(--card);border:1px solid var(--bord);border-radius:18px;padding:14px;margin-bottom:6px}
+.ann-chat-hd{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;margin-bottom:10px}
+.ann-chat-hd svg{width:18px;height:18px;stroke:var(--accent);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ann-quick{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:10px}
+.ann-quick button{font-size:12px;font-weight:600;background:var(--bg);border:1px solid var(--bord);color:var(--tx);padding:7px 11px;border-radius:20px;cursor:pointer;font-family:var(--fb)}
+.ann-quick button:active{background:var(--accent-l)}
+.ann-chat-msgs{display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
+.ann-msg{font-size:13.5px;line-height:1.55;padding:9px 12px;border-radius:13px;max-width:90%;white-space:pre-wrap;word-wrap:break-word}
+.ann-msg.u{align-self:flex-end;background:var(--accent);color:#fff;border-bottom-right-radius:4px}
+.ann-msg.a{align-self:flex-start;background:var(--bg);color:var(--tx);border-bottom-left-radius:4px}
+.ann-chat-empty{font-size:12px;color:var(--mu);text-align:center;padding:6px 4px;line-height:1.5}
+.ann-chatbar{display:flex;gap:8px;align-items:flex-end}
+.ann-chatbar textarea{flex:1;resize:none;border:1.5px solid var(--bord);background:var(--bg);border-radius:12px;padding:10px 12px;font-size:14px;font-family:var(--fb);color:var(--tx);max-height:90px;line-height:1.4}
+.ann-chatbar textarea:focus{outline:none;border-color:var(--accent)}
+.ann-send{width:42px;height:42px;border-radius:12px;background:var(--accent);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
+.ann-send svg{width:19px;height:19px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ann-send:disabled{opacity:.5}
+.ann-empty{text-align:center;color:var(--mu);font-size:13px;padding:26px 12px;line-height:1.5}
 .dm-logout .dm-name{color:#ef4444}
 
 /* ══ ONBOARDING DUOLINGO ══ */
@@ -1828,6 +1897,15 @@ body.mode-leaving { opacity: 0; pointer-events: none; }
       <div class="dm-info">
         <div class="dm-name">Historique</div>
         <div class="dm-desc">Fiches, flashcards, quiz...</div>
+      </div>
+    </div>
+    <div class="drawer-mode" onclick="annOpen()">
+      <div class="dm-icon" style="background:#eafaf0">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg>
+      </div>
+      <div class="dm-info">
+        <div class="dm-name">Annales Brevet</div>
+        <div class="dm-desc">Exercices type brevet + correction</div>
       </div>
     </div>
     <div class="drawer-user">
@@ -2507,6 +2585,14 @@ body.mode-leaving { opacity: 0; pointer-events: none; }
       ScolarIA v2 · Fait par Gabriel · 2026
     </div>
 
+  </section>
+
+  <!-- ANNALES BREVET -->
+  <section class="sec" id="s-annales">
+    <button class="ann-back" id="ann-back" onclick="annBack()" style="display:none">
+      <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg> Retour
+    </button>
+    <div id="ann-view"></div>
   </section>
 
 </main>
@@ -6008,5 +6094,293 @@ _supa.auth.onAuthStateChange(function(event, session) {
 <!-- TOAST -->
 <div id="sk-toast"></div>
 
+<!-- ══ ANNALES BREVET (donnees + logique) ══ -->
+<script src="annales-data.js"></script>
+<script>
+var annStack = [];
+var annChatMsgs = [];
+var annChatCtx = '';
+
+function annSetBack(show){ var b=document.getElementById('ann-back'); if(b) b.style.display = show ? 'inline-flex' : 'none'; }
+
+function annOpen(){
+  closeDrawer();
+  if(typeof ANNALES === 'undefined'){ toast('Donnees des exercices indisponibles'); return; }
+  document.querySelectorAll('.sec').forEach(function(s){ s.classList.remove('active'); });
+  document.querySelectorAll('.nav-btn').forEach(function(b){ b.classList.remove('active'); });
+  var sec=document.getElementById('s-annales'); if(sec) sec.classList.add('active');
+  annHome();
+}
+
+function annBack(){
+  var d=annStack.pop();
+  if(!d){ annHome(); return; }
+  var f=window[d[0]];
+  if(typeof f==='function'){ f.apply(null, d.slice(1)); } else { annHome(); }
+}
+
+/* ── ECRANS ── */
+function annHome(){
+  annStack=[];
+  annSetBack(false);
+  document.getElementById('ann-view').innerHTML =
+    '<div class="ann-h1">Annales Brevet</div>'+
+    '<div class="ann-sub">Entraine-toi sur des exercices type brevet, avec correction detaillee et un coach IA.</div>'+
+    '<div class="ann-choice" onclick="annGoMatieres(\'gen\')">'+
+      '<div class="ann-choice-ic"><svg viewBox="0 0 24 24"><path d="M9 2h6M10 2v6.5L5.2 18A2 2 0 0 0 7 21h10a2 2 0 0 0 1.8-3L14 8.5V2"/><path d="M8 15h8"/></svg></div>'+
+      '<div class="ann-choice-tx"><div class="ann-choice-tt">Demander un exercice</div><div class="ann-choice-ds">Choisis une matiere et un chapitre. On te sort un exo, different a chaque fois.</div></div>'+
+      '<div class="ann-choice-ar">&#8250;</div>'+
+    '</div>'+
+    '<div class="ann-choice" onclick="annGoMatieres(\'lib\')">'+
+      '<div class="ann-choice-ic"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>'+
+      '<div class="ann-choice-tx"><div class="ann-choice-tt">Bibliotheque d\'exercices</div><div class="ann-choice-ds">Parcours tous les exos par matiere et chapitre, puis choisis celui que tu veux.</div></div>'+
+      '<div class="ann-choice-ar">&#8250;</div>'+
+    '</div>';
+}
+
+function annGoMatieres(mode){ annStack.push(['annHome']); annMatieres(mode); }
+function annMatieres(mode){
+  annSetBack(true);
+  var html='<div class="ann-chip">'+(mode==='gen'?'Demander un exercice':'Bibliotheque')+'</div>'+
+    '<div class="ann-h1" style="font-size:20px">Choisis une matiere</div>'+
+    '<div class="ann-sub">D\'autres matieres arriveront bientot.</div>';
+  Object.keys(ANNALES).forEach(function(matId){
+    var m=ANNALES[matId]; var n=0; m.themes.forEach(function(t){ n+=t.exos.length; });
+    html+='<div class="ann-row" onclick="annGoChapitres(\''+mode+'\',\''+matId+'\')">'+
+      '<div class="ann-row-n">'+esc(m.nom.replace(/[^A-Za-z]/g,'').slice(0,2).toUpperCase())+'</div>'+
+      '<div class="ann-row-tx"><div class="ann-row-tt">'+esc(m.nom)+'</div><div class="ann-row-ds">'+n+' exercices &middot; '+m.themes.length+' chapitres</div></div>'+
+      '<div class="ann-row-ar">&#8250;</div></div>';
+  });
+  document.getElementById('ann-view').innerHTML=html;
+}
+
+function annGoChapitres(mode,matId){ annStack.push(['annMatieres',mode]); annChapitres(mode,matId); }
+function annChapitres(mode,matId){
+  annSetBack(true);
+  var m=ANNALES[matId]; var seen=annSeenGet();
+  var html='<div class="ann-chip">'+esc(m.nom)+'</div>'+
+    '<div class="ann-h1" style="font-size:20px">Choisis un chapitre</div>'+
+    '<div class="ann-sub">'+(mode==='gen'?'On te donnera un exercice au hasard du chapitre.':'Tu choisiras ensuite ton exercice dans la liste.')+'</div>';
+  m.themes.forEach(function(t,i){
+    var key=annThemeKey(matId,t.id); var arr=seen[key]||[]; var tot=t.exos.length;
+    var sub=(mode==='gen') ? (arr.length>=tot ? 'Tous vus &middot; l\'IA en genere un nouveau' : (arr.length+' / '+tot+' deja vus')) : (tot+' exercices');
+    var leaf=(mode==='gen') ? 'annPickAndShow' : 'annGoExoList';
+    html+='<div class="ann-row" onclick="'+leaf+'(\''+matId+'\',\''+t.id+'\')">'+
+      '<div class="ann-row-n">'+(i+1)+'</div>'+
+      '<div class="ann-row-tx"><div class="ann-row-tt">'+esc(t.titre)+'</div><div class="ann-row-ds">'+sub+'</div></div>'+
+      '<div class="ann-row-ar">&#8250;</div></div>';
+  });
+  document.getElementById('ann-view').innerHTML=html;
+}
+
+function annGoExoList(matId,themeId){ annStack.push(['annChapitres','lib',matId]); annExoList(matId,themeId); }
+function annExoList(matId,themeId){
+  annSetBack(true);
+  var th=annGetTheme(matId,themeId); if(!th){ annHome(); return; }
+  var html='<div class="ann-chip">'+esc(th.titre)+'</div>'+
+    '<div class="ann-h1" style="font-size:20px">Choisis un exercice</div>'+
+    '<div class="ann-sub">'+th.exos.length+' exercices disponibles.</div>';
+  th.exos.forEach(function(e,i){
+    var nq=e.questions?e.questions.length:0;
+    html+='<div class="ann-row" onclick="annGoExo(\''+matId+'\',\''+themeId+'\',\''+e.id+'\')">'+
+      '<div class="ann-row-n">'+(i+1)+'</div>'+
+      '<div class="ann-row-tx"><div class="ann-row-tt">'+esc(e.titre)+'</div><div class="ann-row-ds">'+nq+' questions</div></div>'+
+      '<span class="ann-diff '+esc(e.diff||'moyen')+'">'+esc(e.diff||'moyen')+'</span></div>';
+  });
+  document.getElementById('ann-view').innerHTML=html;
+}
+
+/* ── DONNEES / SUIVI ── */
+function annThemeKey(matId,themeId){ return matId+'/'+themeId; }
+function annGetTheme(matId,themeId){
+  var m=ANNALES[matId]; if(!m) return null;
+  for(var i=0;i<m.themes.length;i++){ if(m.themes[i].id===themeId) return m.themes[i]; }
+  return null;
+}
+function annSeenGet(){ try{ return JSON.parse(localStorage.getItem('sk_ann_seen')||'{}'); }catch(e){ return {}; } }
+function annSeenSave(o){ try{ localStorage.setItem('sk_ann_seen', JSON.stringify(o)); }catch(e){} }
+
+function annPickExo(matId,themeId){
+  var th=annGetTheme(matId,themeId); if(!th) return null;
+  var key=annThemeKey(matId,themeId);
+  var seen=annSeenGet(); var arr=seen[key]||[];
+  var remaining=th.exos.filter(function(e){ return arr.indexOf(e.id)<0; });
+  if(remaining.length===0){ return { exhausted:true, theme:th }; }
+  var pick=remaining[Math.floor(Math.random()*remaining.length)];
+  arr.push(pick.id); seen[key]=arr; annSeenSave(seen);
+  return { exo:pick, theme:th };
+}
+
+/* ── AFFICHAGE EXERCICE ── */
+function annPickAndShow(matId,themeId){ annStack.push(['annChapitres','gen',matId]); annPickAndRender(matId,themeId); }
+function annPickAndRender(matId,themeId){
+  var r=annPickExo(matId,themeId);
+  if(!r){ toast('Aucun exercice'); return; }
+  if(r.exhausted){ annGenerateExo(matId,themeId,r.theme); return; }
+  annRenderExo(matId,themeId,r.exo,true);
+}
+
+function annGoExo(matId,themeId,exoId){ annStack.push(['annExoList',matId,themeId]); annShowExo(matId,themeId,exoId,false); }
+function annShowExo(matId,themeId,exoId,fromGen){
+  var th=annGetTheme(matId,themeId); var e=null;
+  if(th){ for(var i=0;i<th.exos.length;i++){ if(th.exos[i].id===exoId){ e=th.exos[i]; break; } } }
+  if(!e){ annHome(); return; }
+  annRenderExo(matId,themeId,e,!!fromGen);
+}
+
+function annTableHtml(rows){
+  var h='<table>';
+  rows.forEach(function(r,ri){
+    h+='<tr>';
+    r.forEach(function(c){ h+='<td'+(ri===0?' class="ann-th"':'')+'>'+esc(c)+'</td>'; });
+    h+='</tr>';
+  });
+  return h+'</table>';
+}
+
+function annCorrIcon(){ return '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>'; }
+function annPiegeHtml(p){ return '<div class="ann-piege"><svg viewBox="0 0 24 24"><path d="M12 9v4M12 17h.01M10.3 3.86l-8.5 14.7A1.5 1.5 0 0 0 3.1 21h17.8a1.5 1.5 0 0 0 1.3-2.44l-8.5-14.7a1.5 1.5 0 0 0-2.6 0z"/></svg><div><b>Piege brevet :</b> '+esc(p)+'</div></div>'; }
+
+function annRenderExo(matId,themeId,e,fromGen){
+  annSetBack(true);
+  var th=annGetTheme(matId,themeId);
+  var html='<div class="ann-exo">';
+  html+='<div class="ann-exo-top"><span class="ann-exo-badge">'+esc(th?th.titre:'')+'</span><span class="ann-diff '+esc(e.diff||'moyen')+'">'+esc(e.diff||'moyen')+'</span></div>';
+  html+='<div class="ann-exo-tt">'+esc(e.titre||'Exercice')+'</div>';
+  html+='<div class="ann-exo-enonce">'+esc(e.enonce||'').replace(/\n/g,'<br>')+'</div>';
+  if(e.schema){ html+='<div class="ann-schema">'+e.schema+'</div>'; }
+  if(e.table && e.table.length){ html+=annTableHtml(e.table); }
+  if(e.questions && e.questions.length){
+    html+='<div class="ann-q">Questions</div><ol>';
+    e.questions.forEach(function(q){ html+='<li>'+esc(q)+'</li>'; });
+    html+='</ol>';
+  }
+  html+='<button class="btn btn-primary btn-full ann-corr-btn" onclick="annToggleCorr(this)">Voir la correction</button>';
+  html+='<div class="ann-corr"><div class="ann-corr-tt">'+annCorrIcon()+'Correction</div>';
+  if(e.correction && e.correction.length){
+    e.correction.forEach(function(c,i){ html+='<div class="ann-corr-step"><b>'+(i+1)+'.</b> '+esc(c)+'</div>'; });
+  }
+  if(e.piege){ html+=annPiegeHtml(e.piege); }
+  html+='</div>';
+  if(fromGen){ html+='<button class="btn btn-ghost btn-full" style="margin-top:10px" onclick="annPickAndRender(\''+matId+'\',\''+themeId+'\')">Un autre exercice</button>'; }
+  html+='</div>';
+  html+=annChatHtml();
+  var v=document.getElementById('ann-view');
+  v.innerHTML=html;
+  if(v.parentNode) v.parentNode.scrollTop=0;
+  var ctx='EXERCICE : '+(e.titre||'')+'\n'+(e.enonce||'')+'\n';
+  if(e.questions) ctx+='QUESTIONS :\n'+e.questions.map(function(q,i){ return (i+1)+'. '+q; }).join('\n')+'\n';
+  if(e.correction) ctx+='CORRECTION :\n'+e.correction.map(function(c,i){ return (i+1)+'. '+c; }).join('\n')+'\n';
+  if(e.piege) ctx+='PIEGE : '+e.piege;
+  annChatReset(ctx);
+  annRenderChat();
+}
+
+function annToggleCorr(btn){
+  var corr=btn.parentNode.querySelector('.ann-corr');
+  if(!corr) return;
+  var show=corr.classList.toggle('show');
+  btn.textContent = show ? 'Masquer la correction' : 'Voir la correction';
+  if(show) haptic(18);
+}
+
+/* ── GENERATION IA (quand la bibliotheque du theme est vide) ── */
+function annGenerateExo(matId,themeId,th){
+  annSetBack(true);
+  var v=document.getElementById('ann-view');
+  v.innerHTML='<div class="ann-exo"><div class="ann-exo-top"><span class="ann-exo-badge">'+esc(th.titre)+'</span></div><div class="ann-empty">Tu as fait tous les exercices de ce chapitre.<br>L\'IA t\'en prepare un nouveau...</div></div>';
+  var sys="Tu rediges des exercices scolaires clairs et corrects, en francais, niveau college (3eme).";
+  var usr="Cree UN exercice type brevet original sur le theme : "+th.titre+". Niveau 3eme, calculs simples et exacts. "+
+    "Respecte EXACTEMENT ce format, sans rien ecrire d autre :\n"+
+    "TITRE: <titre court>\n<enonce puis 3 ou 4 questions numerotees 1. 2. 3.>\n===CORRECTION===\n<correction detaillee, question par question>\nPIEGE: <un piege classique du brevet a retenir>";
+  callGroq([{role:'system',content:sys},{role:'user',content:usr}],1200).then(function(txt){
+    annRenderGenExo(matId,themeId,th,txt);
+  }).catch(function(err){
+    v.innerHTML='<div class="ann-exo"><div class="ann-empty">Erreur : '+esc(err.message)+'<br><br><button class="btn btn-ghost" onclick="annPickAndRender(\''+matId+'\',\''+themeId+'\')">Reessayer</button></div></div>';
+  });
+}
+
+function annRenderGenExo(matId,themeId,th,txt){
+  annSetBack(true);
+  var title='Exercice', piege='';
+  var mt=txt.match(/TITRE:\s*([^\n]+)/i); if(mt) title=mt[1].trim();
+  var parts=txt.split(/===\s*CORRECTION\s*===/i);
+  var top=(parts[0]||txt).replace(/TITRE:\s*[^\n]+\n?/i,'').trim();
+  var rest=parts[1]||'';
+  var pm=rest.match(/PIEGE\s*:?\s*([\s\S]*)$/i);
+  if(pm){ piege=pm[1].trim(); rest=rest.slice(0,pm.index); }
+  var corr=rest.trim();
+  var html='<div class="ann-exo">';
+  html+='<div class="ann-exo-top"><span class="ann-exo-badge">'+esc(th.titre)+'</span><span class="ann-diff moyen">genere par IA</span></div>';
+  html+='<div class="ann-exo-tt">'+esc(title)+'</div>';
+  html+='<div class="ann-exo-enonce">'+esc(top).replace(/\n/g,'<br>')+'</div>';
+  html+='<button class="btn btn-primary btn-full ann-corr-btn" onclick="annToggleCorr(this)">Voir la correction</button>';
+  html+='<div class="ann-corr"><div class="ann-corr-tt">'+annCorrIcon()+'Correction</div>';
+  html+='<div class="ann-corr-step">'+esc(corr).replace(/\n/g,'<br>')+'</div>';
+  if(piege){ html+=annPiegeHtml(piege); }
+  html+='</div>';
+  html+='<button class="btn btn-ghost btn-full" style="margin-top:10px" onclick="annPickAndRender(\''+matId+'\',\''+themeId+'\')">Un autre exercice</button>';
+  html+='</div>';
+  html+=annChatHtml();
+  var v=document.getElementById('ann-view');
+  v.innerHTML=html;
+  if(v.parentNode) v.parentNode.scrollTop=0;
+  var ctx='EXERCICE (genere) : '+title+'\n'+top+'\nCORRECTION :\n'+corr+(piege?'\nPIEGE : '+piege:'');
+  annChatReset(ctx);
+  annRenderChat();
+}
+
+/* ── MINI CHAT IA ── */
+function annChatHtml(){
+  return '<div class="ann-chat">'+
+    '<div class="ann-chat-hd"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Coach IA &middot; explique-moi</div>'+
+    '<div class="ann-quick">'+
+      '<button onclick="annQuick(\'Explique-moi cet exercice simplement\')">Explique-moi</button>'+
+      '<button onclick="annQuick(\'Donne-moi juste un indice pour demarrer, sans la reponse\')">Un indice</button>'+
+      '<button onclick="annQuick(\'Par ou je commence ?\')">Par ou commencer ?</button>'+
+    '</div>'+
+    '<div class="ann-chat-msgs" id="ann-chat-msgs"></div>'+
+    '<div class="ann-chatbar"><textarea id="ann-chat-input" rows="1" placeholder="Pose ta question sur l\'exercice..." oninput="annAutoGrow(this)" onkeydown="annKey(event)"></textarea>'+
+    '<button class="ann-send" id="ann-send" onclick="annSend()"><svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button></div>'+
+    '</div>';
+}
+
+function annChatReset(ctx){ annChatMsgs=[]; annChatCtx=ctx; }
+function annAutoGrow(ta){ ta.style.height='auto'; ta.style.height=Math.min(90,ta.scrollHeight)+'px'; }
+function annKey(ev){ if(ev.key==='Enter' && !ev.shiftKey){ ev.preventDefault(); annSend(); } }
+function annQuick(t){ var ta=document.getElementById('ann-chat-input'); if(ta) ta.value=t; annSend(); }
+
+function annRenderChat(){
+  var box=document.getElementById('ann-chat-msgs'); if(!box) return;
+  if(!annChatMsgs.length){ box.innerHTML='<div class="ann-chat-empty">Bloque sur l\'exercice ? Demande une explication, un indice, ou fais verifier ta reponse.</div>'; return; }
+  var h='';
+  annChatMsgs.forEach(function(m){
+    if(m.role==='assistant' && !m.content){ h+='<div class="ann-msg a">...</div>'; return; }
+    h+='<div class="ann-msg '+(m.role==='user'?'u':'a')+'">'+esc(m.content)+'</div>';
+  });
+  box.innerHTML=h;
+  box.scrollTop=box.scrollHeight;
+}
+
+function annSend(){
+  var ta=document.getElementById('ann-chat-input'); if(!ta) return;
+  var q=ta.value.trim(); if(!q) return;
+  ta.value=''; ta.style.height='auto';
+  annChatMsgs.push({ role:'user', content:q });
+  var sys={ role:'system', content:"Tu es un professeur de college bienveillant qui aide un eleve de 3eme avec un exercice de brevet. Reponds en francais, simplement, etape par etape. Ne donne pas tout de suite la reponse finale sauf si l eleve la demande clairement. Voici l exercice et sa correction de reference :\n\n"+annChatCtx };
+  var msgs=[sys].concat(annChatMsgs.map(function(m){ return { role:m.role, content:m.content }; }));
+  annChatMsgs.push({ role:'assistant', content:'' });
+  var idx=annChatMsgs.length-1;
+  annRenderChat();
+  var btn=document.getElementById('ann-send'); if(btn) btn.disabled=true;
+  callGroqStream(msgs, function(full){ annChatMsgs[idx].content=full; annRenderChat(); }, 900).then(function(){
+    if(btn) btn.disabled=false;
+  }).catch(function(err){
+    annChatMsgs[idx].content='Oups, une erreur est survenue : '+err.message;
+    annRenderChat();
+    if(btn) btn.disabled=false;
+  });
+}
+</script>
 </body>
 </html>

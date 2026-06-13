@@ -1472,7 +1472,8 @@ const ANNALES = {
             id: "pc_ohm_02",
             titre: "Appliquer la loi d'Ohm",
             diff: "facile",
-            enonce: "Une resistance de 220 ohms est traversee par un courant d'intensite 0,02 A.",
+            enonce: "Pour son TP, Hugo branche une resistance de 220 ohms en serie avec un amperemetre. Un courant d'intensite 0,02 A la traverse (voir le schema du circuit).",
+            schema: `<svg width="100%" viewBox="0 0 240 150" role="img" xmlns="http://www.w3.org/2000/svg"><title>Circuit en serie</title><desc>Generateur, resistance R et amperemetre A en serie.</desc><g stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"><line x1="50" y1="40" x2="120" y2="40"/><line x1="160" y1="40" x2="190" y2="40"/><line x1="50" y1="40" x2="50" y2="74"/><line x1="50" y1="86" x2="50" y2="120"/><line x1="50" y1="120" x2="190" y2="120"/><line x1="190" y1="40" x2="190" y2="67"/><line x1="190" y1="93" x2="190" y2="120"/></g><rect x="120" y="29" width="40" height="22" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><text x="140" y="44" text-anchor="middle" font-size="12" fill="currentColor" font-family="sans-serif">R</text><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="34" y1="74" x2="66" y2="74"/><line x1="42" y1="86" x2="58" y2="86"/></g><circle cx="190" cy="80" r="13" fill="none" stroke="currentColor" stroke-width="2"/><text x="190" y="84" text-anchor="middle" font-size="12" fill="currentColor" font-family="sans-serif">A</text></svg>`,
             questions: [
               "Enonce la loi d'Ohm.",
               "Calcule la tension aux bornes de la resistance.",
@@ -1491,7 +1492,7 @@ const ANNALES = {
             id: "pc_ohm_03",
             titre: "Serie ou derivation ?",
             diff: "moyen",
-            enonce: "Dans un premier circuit, une pile alimente deux lampes identiques en serie. Dans un second circuit, les deux lampes sont branchees en derivation.",
+            enonce: "En classe, Lea compare deux montages. Dans le premier, une pile alimente deux lampes identiques en serie. Dans le second, les deux lampes sont branchees en derivation.",
             questions: [
               "Dans le circuit en serie, qu'arrive-t-il si une lampe grille ?",
               "Et dans le circuit en derivation ?",
@@ -1510,7 +1511,7 @@ const ANNALES = {
             id: "pc_ohm_04",
             titre: "Calculer une resistance",
             diff: "facile",
-            enonce: "Pour une resistance, on mesure U = 9 V quand l'intensite vaut I = 0,045 A.",
+            enonce: "Lors d'un TP, Tom mesure aux bornes d'une resistance : U = 9 V quand l'intensite vaut I = 0,045 A.",
             questions: [
               "Calcule la resistance R.",
               "Donne le resultat en ohms.",
@@ -1529,7 +1530,7 @@ const ANNALES = {
             id: "pc_ohm_05",
             titre: "Mesurer une intensite",
             diff: "facile",
-            enonce: "Dans un circuit serie, on veut mesurer l'intensite du courant qui traverse une lampe.",
+            enonce: "Nina veut mesurer l'intensite du courant qui traverse une lampe, dans un circuit en serie.",
             questions: [
               "Quel appareil utilise-t-on ?",
               "Comment doit-il etre branche ?",
@@ -1548,7 +1549,8 @@ const ANNALES = {
             id: "pc_ohm_06",
             titre: "Le court-circuit",
             diff: "moyen",
-            enonce: "On relie directement les deux bornes d'une pile par un fil de tres faible resistance.",
+            enonce: "Par megarde, Sami relie directement les deux bornes d'une pile par un fil de tres faible resistance (voir schema).",
+            schema: `<svg width="100%" viewBox="0 0 240 150" role="img" xmlns="http://www.w3.org/2000/svg"><title>Court-circuit</title><desc>Les deux bornes de la pile sont reliees par un simple fil de faible resistance.</desc><g stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"><line x1="60" y1="50" x2="180" y2="50"/><line x1="60" y1="50" x2="60" y2="84"/><line x1="60" y1="96" x2="60" y2="120"/><line x1="60" y1="120" x2="180" y2="120"/><line x1="180" y1="50" x2="180" y2="120"/></g><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="44" y1="84" x2="76" y2="84"/><line x1="52" y1="96" x2="68" y2="96"/></g><path d="M150 72 l9 13 l-7 0 l9 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><text x="120" y="40" text-anchor="middle" font-size="11" fill="currentColor" font-family="sans-serif">fil de faible resistance</text></svg>`,
             questions: [
               "Comment appelle-t-on cette situation ?",
               "Que devient l'intensite du courant ?",
@@ -1567,7 +1569,7 @@ const ANNALES = {
             id: "pc_ohm_07",
             titre: "Reconnaitre les dipoles",
             diff: "facile",
-            enonce: "On classe des dipoles : pile, lampe, resistance, interrupteur, moteur.",
+            enonce: "Le professeur demande a Manon de classer cinq dipoles : une pile, une lampe, une resistance, un interrupteur et un moteur.",
             questions: [
               "Lequel est un generateur ?",
               "Cite deux recepteurs.",
@@ -1586,7 +1588,7 @@ const ANNALES = {
             id: "pc_ohm_08",
             titre: "La tension d'une pile",
             diff: "facile",
-            enonce: "Une pile porte l'indication 4,5 V. On la branche a une lampe.",
+            enonce: "La pile utilisee par Lucas porte l'indication 4,5 V. Il la branche a une lampe.",
             questions: [
               "Que signifie l'indication 4,5 V ?",
               "Avec quel appareil mesure-t-on une tension ?",
@@ -1605,7 +1607,7 @@ const ANNALES = {
             id: "pc_ohm_09",
             titre: "Calculer une intensite",
             diff: "moyen",
-            enonce: "Une resistance de 100 ohms est soumise a une tension de 5 V.",
+            enonce: "Dans son montage, Emma soumet une resistance de 100 ohms a une tension de 5 V.",
             questions: [
               "Quelle formule relie I, U et R ?",
               "Calcule l'intensite du courant.",
@@ -1624,7 +1626,7 @@ const ANNALES = {
             id: "pc_ohm_10",
             titre: "Lampe sous trop de tension",
             diff: "facile",
-            enonce: "Une lampe prevue pour 6 V est branchee sur une pile de 9 V.",
+            enonce: "Theo branche par erreur une lampe prevue pour 6 V sur une pile de 9 V.",
             questions: [
               "La tension recue est-elle superieure ou inferieure a sa valeur nominale ?",
               "Que risque-t-il d'arriver a la lampe ?",
@@ -1643,7 +1645,7 @@ const ANNALES = {
             id: "pc_ohm_11",
             titre: "Conducteur ou isolant ?",
             diff: "facile",
-            enonce: "On teste differents materiaux dans un circuit avec une lampe : fer, cuivre, plastique, bois sec, verre.",
+            enonce: "Pour son TP, Jade intercale differents materiaux dans un circuit avec une lampe : fer, cuivre, plastique, bois sec et verre.",
             questions: [
               "Lesquels laissent briller la lampe (conducteurs) ?",
               "Lesquels sont des isolants ?",
@@ -1662,7 +1664,7 @@ const ANNALES = {
             id: "pc_ohm_12",
             titre: "Exploiter une caracteristique",
             diff: "difficile",
-            enonce: "On releve la caracteristique d'une resistance. Pour U = 4 V, on mesure I = 0,016 A. Pour U = 6 V, on mesure I = 0,024 A.",
+            enonce: "Ines releve la caracteristique d'une resistance. Pour U = 4 V, elle mesure I = 0,016 A ; pour U = 6 V, elle mesure I = 0,024 A.",
             questions: [
               "Calcule le rapport U/I pour chaque mesure. Que constates-tu ?",
               "En deduire la valeur de la resistance R.",
@@ -1681,7 +1683,8 @@ const ANNALES = {
             id: "pc_ohm_13",
             titre: "Guirlande en serie",
             diff: "expert",
-            enonce: "Une guirlande comporte un generateur de 12 V et une resistance R en serie avec un amperemetre. On mesure I = 0,05 A.",
+            enonce: "La guirlande de Noel de Gabriel comporte un generateur de 12 V et une resistance R, en serie avec un amperemetre (voir schema). Il mesure I = 0,05 A.",
+            schema: `<svg width="100%" viewBox="0 0 240 150" role="img" xmlns="http://www.w3.org/2000/svg"><title>Circuit en serie de la guirlande</title><desc>Generateur 12 V, resistance R et amperemetre A en serie.</desc><g stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"><line x1="50" y1="40" x2="120" y2="40"/><line x1="160" y1="40" x2="190" y2="40"/><line x1="50" y1="40" x2="50" y2="74"/><line x1="50" y1="86" x2="50" y2="120"/><line x1="50" y1="120" x2="190" y2="120"/><line x1="190" y1="40" x2="190" y2="67"/><line x1="190" y1="93" x2="190" y2="120"/></g><rect x="120" y="29" width="40" height="22" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><text x="140" y="44" text-anchor="middle" font-size="12" fill="currentColor" font-family="sans-serif">R</text><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="34" y1="74" x2="66" y2="74"/><line x1="42" y1="86" x2="58" y2="86"/></g><text x="22" y="104" font-size="11" fill="currentColor" font-family="sans-serif">12 V</text><circle cx="190" cy="80" r="13" fill="none" stroke="currentColor" stroke-width="2"/><text x="190" y="84" text-anchor="middle" font-size="12" fill="currentColor" font-family="sans-serif">A</text></svg>`,
             questions: [
               "Enonce la loi d'Ohm et calcule la valeur de R.",
               "La puissance recue par R vaut P = U x I. Calcule-la.",
@@ -1702,7 +1705,7 @@ const ANNALES = {
             id: "pc_ohm_14",
             titre: "Choisir la bonne tension",
             diff: "moyen",
-            enonce: "Un conducteur ohmique a une resistance R = 150 ohms.",
+            enonce: "Karim dispose d'un conducteur ohmique de resistance R = 150 ohms.",
             questions: [
               "Quelle formule relie U, R et I ?",
               "Quelle tension faut-il appliquer pour obtenir une intensite de 0,04 A ?",
@@ -2998,6 +3001,80 @@ const ANNALES = {
               "AC = racine de 50 = 7,1 cm environ."
             ],
             piege: "La diagonale d'un carre de cote c vaut c x racine de 2 (elle n'est jamais un nombre entier)."
+          },
+          {
+            id: "m_pyth_10",
+            titre: "Montrer qu'un triangle est rectangle",
+            diff: "difficile",
+            enonce: "Sur la figure, on donne AB = 6 cm, AC = 8 cm et BC = 10 cm.",
+            schema: `<svg width="100%" viewBox="0 0 240 200" role="img" xmlns="http://www.w3.org/2000/svg"><title>Triangle ABC</title><desc>AB = 6 cm, AC = 8 cm, BC = 10 cm.</desc><polygon points="55,160 55,60 205,160" fill="none" stroke="currentColor" stroke-width="2"/><rect x="55" y="146" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"/><text x="44" y="176" font-size="14" fill="currentColor" font-family="sans-serif">A</text><text x="44" y="56" font-size="14" fill="currentColor" font-family="sans-serif">B</text><text x="211" y="176" font-size="14" fill="currentColor" font-family="sans-serif">C</text><text x="20" y="112" font-size="12" fill="currentColor" font-family="sans-serif">6 cm</text><text x="118" y="178" font-size="12" fill="currentColor" font-family="sans-serif">8 cm</text><text x="138" y="104" font-size="12" fill="currentColor" font-family="sans-serif">10 cm</text></svg>`,
+            questions: [
+              "Montrer que le triangle ABC est rectangle en A.",
+              "En deduire l'aire du triangle ABC."
+            ],
+            correction: [
+              "Le plus grand cote est [BC]. BC^2 = 10^2 = 100. AB^2 + AC^2 = 6^2 + 8^2 = 36 + 64 = 100. Comme BC^2 = AB^2 + AC^2, d'apres la reciproque de Pythagore, ABC est rectangle en A.",
+              "Les cotes de l'angle droit servent de base et de hauteur : aire = (AB x AC) / 2 = (6 x 8) / 2 = 24 cm^2."
+            ],
+            piege: "Pour « montrer que c'est rectangle », on compare (grand cote)^2 et la somme des carres des deux autres."
+          },
+          {
+            id: "m_pyth_11",
+            titre: "QCM Pythagore",
+            diff: "moyen",
+            enonce: "QCM : pour chaque question, une seule reponse est correcte. Un triangle est rectangle ; les deux cotes de l'angle droit mesurent 9 cm et 12 cm.",
+            questions: [
+              "L'hypotenuse mesure : a) 15 cm   b) 21 cm   c) 225 cm",
+              "Le perimetre du triangle vaut : a) 36 cm   b) 30 cm   c) 21 cm"
+            ],
+            correction: [
+              "Hypotenuse^2 = 9^2 + 12^2 = 81 + 144 = 225, donc hypotenuse = 15 cm. Reponse a).",
+              "Perimetre = 9 + 12 + 15 = 36 cm. Reponse a)."
+            ],
+            piege: "Dans un QCM, on calcule vraiment : on ne choisit pas au hasard."
+          },
+          {
+            id: "m_pyth_12",
+            titre: "Retrouver la largeur",
+            diff: "difficile",
+            enonce: "Un rectangle a une longueur de 24 cm et une diagonale de 25 cm. On cherche sa largeur.",
+            questions: [
+              "Le triangle forme par la longueur, la largeur et la diagonale est rectangle. Ecris l'egalite de Pythagore.",
+              "Calcule la largeur du rectangle."
+            ],
+            correction: [
+              "diagonale^2 = longueur^2 + largeur^2, soit 25^2 = 24^2 + largeur^2.",
+              "625 = 576 + largeur^2 -> largeur^2 = 49 -> largeur = 7 cm."
+            ],
+            piege: "La diagonale est l'hypotenuse : pour un cote, on SOUSTRAIT les carres."
+          },
+          {
+            id: "m_pyth_13",
+            titre: "Vrai ou faux : triangle rectangle",
+            diff: "moyen",
+            enonce: "Un triangle a pour cotes 7 cm, 24 cm et 25 cm. Affirmation : ce triangle est rectangle.",
+            questions: [
+              "Cette affirmation est-elle vraie ou fausse ? Justifie par un calcul."
+            ],
+            correction: [
+              "Plus grand cote : 25. 25^2 = 625. 7^2 + 24^2 = 49 + 576 = 625. Les deux sont egaux : d'apres la reciproque de Pythagore, l'affirmation est VRAIE, le triangle est rectangle."
+            ],
+            piege: "Pour justifier, on compare toujours (grand cote)^2 a la somme des carres des deux autres."
+          },
+          {
+            id: "m_pyth_14",
+            titre: "La distance a vol d'oiseau",
+            diff: "moyen",
+            enonce: "Un bateau quitte le port, navigue 9 km vers l'est, puis 12 km vers le nord. On cherche la distance directe (a vol d'oiseau) entre le bateau et le port.",
+            questions: [
+              "Pourquoi le trajet forme-t-il un angle droit ?",
+              "Calcule la distance a vol d'oiseau."
+            ],
+            correction: [
+              "L'est et le nord sont des directions perpendiculaires : elles forment un angle droit.",
+              "d^2 = 9^2 + 12^2 = 81 + 144 = 225, donc d = 15 km."
+            ],
+            piege: "Deux directions perpendiculaires (est/nord) forment un angle droit : on peut utiliser Pythagore."
           }
         ]
       },
@@ -3160,6 +3237,80 @@ const ANNALES = {
               "Les rapports sont egaux et les points sont alignes dans le meme ordre : d'apres la reciproque de Thales, (AC) // (BD)."
             ],
             piege: "Rapports egaux + bon ordre d'alignement -> droites paralleles (reciproque de Thales)."
+          },
+          {
+            id: "m_thal_10",
+            titre: "Montrer une longueur",
+            diff: "difficile",
+            enonce: "Sur la figure, B est un point de [AD], C un point de [AE], et (BC) // (DE). On donne AB = 5 cm, AD = 8 cm et DE = 6,4 cm.",
+            schema: `<svg width="100%" viewBox="0 0 240 200" role="img" xmlns="http://www.w3.org/2000/svg"><title>Configuration de Thales</title><desc>(BC) parallele a (DE).</desc><polygon points="120,30 45,165 195,165" fill="none" stroke="currentColor" stroke-width="2"/><line x1="73" y1="114" x2="167" y2="114" stroke="currentColor" stroke-width="2"/><text x="114" y="24" font-size="14" fill="currentColor" font-family="sans-serif">A</text><text x="56" y="117" font-size="13" fill="currentColor" font-family="sans-serif">B</text><text x="170" y="117" font-size="13" fill="currentColor" font-family="sans-serif">C</text><text x="34" y="178" font-size="14" fill="currentColor" font-family="sans-serif">D</text><text x="200" y="178" font-size="14" fill="currentColor" font-family="sans-serif">E</text><text x="86" y="78" font-size="12" fill="currentColor" font-family="sans-serif">5</text><text x="60" y="148" font-size="12" fill="currentColor" font-family="sans-serif">8</text><text x="110" y="182" font-size="12" fill="currentColor" font-family="sans-serif">6,4</text></svg>`,
+            questions: [
+              "Justifie que l'on peut appliquer le theoreme de Thales.",
+              "Montrer que BC = 4 cm."
+            ],
+            correction: [
+              "Les points A, B, D sont alignes, A, C, E sont alignes, et (BC) // (DE) : on peut appliquer le theoreme de Thales.",
+              "AB/AD = BC/DE -> 5/8 = BC/6,4 -> BC = 5 x 6,4 / 8 = 32 / 8 = 4 cm."
+            ],
+            piege: "« Montrer que » : on pose le calcul de Thales et on doit retomber sur la valeur annoncee."
+          },
+          {
+            id: "m_thal_11",
+            titre: "QCM Thales",
+            diff: "moyen",
+            enonce: "QCM. Dans un triangle ABC, M est sur [AB], N est sur [AC] et (MN) // (BC). On donne AM = 3 cm, AB = 9 cm et AN = 4 cm.",
+            questions: [
+              "Le rapport AM/AB vaut : a) 1/3   b) 3   c) 1/2",
+              "La longueur AC vaut : a) 12 cm   b) 6 cm   c) 7 cm"
+            ],
+            correction: [
+              "AM/AB = 3/9 = 1/3. Reponse a).",
+              "AN/AC = AM/AB -> 4/AC = 1/3 -> AC = 4 x 3 = 12 cm. Reponse a)."
+            ],
+            piege: "Le rapport 1/3 est une reduction ; pour AC, on multiplie AN par 3."
+          },
+          {
+            id: "m_thal_12",
+            titre: "Agrandissement et longueur",
+            diff: "difficile",
+            enonce: "Les points A, B, M sont alignes, ainsi que A, C, N, avec (BC) // (MN). On donne AB = 2,5 cm, AM = 7,5 cm et BC = 3 cm.",
+            questions: [
+              "Determine le coefficient d'agrandissement AM/AB.",
+              "Calcule la longueur MN."
+            ],
+            correction: [
+              "AM/AB = 7,5 / 2,5 = 3.",
+              "MN = BC x 3 = 3 x 3 = 9 cm."
+            ],
+            piege: "Le grand triangle est l'agrandissement du petit : on multiplie par le coefficient (ici 3)."
+          },
+          {
+            id: "m_thal_13",
+            titre: "Vrai ou faux : paralleles",
+            diff: "moyen",
+            enonce: "Les points O, A, B sont alignes dans cet ordre, ainsi que O, C, D. On donne OA = 2 cm, OB = 5 cm, OC = 3 cm et OD = 7,5 cm. Affirmation : (AC) et (BD) sont paralleles.",
+            questions: [
+              "Cette affirmation est-elle vraie ou fausse ? Justifie."
+            ],
+            correction: [
+              "OA/OB = 2/5 = 0,4 et OC/OD = 3/7,5 = 0,4. Les rapports sont egaux et les points alignes dans le meme ordre : d'apres la reciproque de Thales, l'affirmation est VRAIE, (AC) // (BD)."
+            ],
+            piege: "Rapports egaux + bon ordre = droites paralleles (reciproque de Thales)."
+          },
+          {
+            id: "m_thal_14",
+            titre: "La hauteur d'un batiment",
+            diff: "moyen",
+            enonce: "Pour mesurer la hauteur DE d'un batiment, on vise son sommet. Les points A, B, D sont alignes, A, C, E sont alignes, et (BC) // (DE). On mesure AB = 2 m, AD = 20 m et BC = 1,6 m.",
+            questions: [
+              "Ecris l'egalite de Thales adaptee.",
+              "Calcule la hauteur DE du batiment."
+            ],
+            correction: [
+              "AB/AD = BC/DE.",
+              "2/20 = 1,6/DE -> DE = 1,6 x 20 / 2 = 16 m."
+            ],
+            piege: "Le theoreme de Thales permet de mesurer des hauteurs inaccessibles."
           }
         ]
       },
@@ -3324,6 +3475,86 @@ const ANNALES = {
               "hypotenuse = 8 / 0,5 = 16 cm."
             ],
             piege: "CAH : pour trouver l'hypotenuse, on DIVISE le cote adjacent par le cosinus."
+          },
+          {
+            id: "m_trigo_10",
+            titre: "Pythagore puis trigonometrie",
+            diff: "difficile",
+            enonce: "Le triangle ABC est rectangle en A. On donne AB = 6 cm et BC = 7,5 cm (hypotenuse).",
+            schema: `<svg width="100%" viewBox="0 0 240 200" role="img" xmlns="http://www.w3.org/2000/svg"><title>Triangle rectangle en A</title><desc>AB = 6 cm, hypotenuse BC = 7,5 cm.</desc><polygon points="55,160 55,65 205,160" fill="none" stroke="currentColor" stroke-width="2"/><rect x="55" y="146" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M 55 89 A 24 24 0 0 0 72 73" fill="none" stroke="currentColor" stroke-width="1.5"/><text x="44" y="176" font-size="14" fill="currentColor" font-family="sans-serif">A</text><text x="44" y="62" font-size="14" fill="currentColor" font-family="sans-serif">B</text><text x="211" y="176" font-size="14" fill="currentColor" font-family="sans-serif">C</text><text x="20" y="116" font-size="12" fill="currentColor" font-family="sans-serif">6 cm</text><text x="128" y="106" font-size="12" fill="currentColor" font-family="sans-serif">7,5 cm</text></svg>`,
+            questions: [
+              "Calcule la longueur AC (theoreme de Pythagore).",
+              "Calcule cos de l'angle B.",
+              "En deduire la mesure de l'angle B (arrondie au degre)."
+            ],
+            correction: [
+              "AC^2 = BC^2 - AB^2 = 7,5^2 - 6^2 = 56,25 - 36 = 20,25, donc AC = 4,5 cm.",
+              "cos(B) = AB / BC = 6 / 7,5 = 0,8.",
+              "B = arccos(0,8) = 37 degres environ."
+            ],
+            piege: "On combine Pythagore (pour un cote) et la trigonometrie (pour un angle)."
+          },
+          {
+            id: "m_trigo_11",
+            titre: "QCM trigonometrie",
+            diff: "moyen",
+            enonce: "QCM. Le triangle ABC est rectangle en A, l'angle B mesure 30 degres et BC = 10 cm (hypotenuse). On donne sin(30) = 0,5 et cos(30) = 0,87.",
+            questions: [
+              "Le cote AC (oppose a B) vaut : a) 5 cm   b) 8,7 cm   c) 10 cm",
+              "Le cote AB (adjacent a B) vaut environ : a) 5 cm   b) 8,7 cm   c) 20 cm"
+            ],
+            correction: [
+              "AC = BC x sin(30) = 10 x 0,5 = 5 cm. Reponse a).",
+              "AB = BC x cos(30) = 10 x 0,87 = 8,7 cm. Reponse b)."
+            ],
+            piege: "Cote oppose -> sinus ; cote adjacent -> cosinus."
+          },
+          {
+            id: "m_trigo_12",
+            titre: "Trouver un angle avec le sinus",
+            diff: "moyen",
+            enonce: "Dans un triangle rectangle, le cote oppose a un angle x mesure 5 cm et l'hypotenuse 13 cm. On donne arcsin(0,385) = 23 degres environ.",
+            questions: [
+              "Quelle relation utiliser pour trouver l'angle x ?",
+              "Calcule sin(x).",
+              "Donne la mesure de l'angle x (arrondie au degre)."
+            ],
+            correction: [
+              "sin(x) = cote oppose / hypotenuse.",
+              "sin(x) = 5 / 13 = 0,385 environ.",
+              "x = arcsin(0,385) = 23 degres environ."
+            ],
+            piege: "Connaitre le cote oppose et l'hypotenuse -> on utilise le sinus."
+          },
+          {
+            id: "m_trigo_13",
+            titre: "La pente d'un toit",
+            diff: "difficile",
+            enonce: "Un toit monte de 3 m de hauteur sur une longueur horizontale de 5 m. On cherche l'angle de la pente avec l'horizontale. On donne arctan(0,6) = 31 degres environ.",
+            questions: [
+              "Quelle relation lie l'angle, la hauteur et la longueur horizontale ?",
+              "Calcule la tangente de l'angle.",
+              "Donne la mesure de l'angle de la pente (arrondie au degre)."
+            ],
+            correction: [
+              "tan(angle) = hauteur / longueur horizontale (oppose / adjacent).",
+              "tan(angle) = 3 / 5 = 0,6.",
+              "angle = arctan(0,6) = 31 degres environ."
+            ],
+            piege: "Une pente se calcule avec la tangente (hauteur sur longueur horizontale)."
+          },
+          {
+            id: "m_trigo_14",
+            titre: "Vrai ou faux : hypotenuse",
+            diff: "moyen",
+            enonce: "Dans un triangle rectangle, un angle mesure 45 degres et le cote adjacent a cet angle mesure 4 cm. Affirmation : l'hypotenuse mesure environ 5,7 cm. On donne cos(45) = 0,707.",
+            questions: [
+              "Cette affirmation est-elle vraie ou fausse ? Justifie par un calcul."
+            ],
+            correction: [
+              "hypotenuse = cote adjacent / cos(45) = 4 / 0,707 = 5,66 cm, soit environ 5,7 cm. L'affirmation est VRAIE."
+            ],
+            piege: "CAH : hypotenuse = cote adjacent / cos(angle)."
           }
         ]
       },
@@ -3483,6 +3714,83 @@ const ANNALES = {
               "Facteur commun de K : 3x. Donc K = 3x(x - 2)."
             ],
             piege: "On met en facteur le plus grand facteur commun (un nombre et/ou une lettre)."
+          },
+          {
+            id: "m_lit_10",
+            titre: "Programme de calcul",
+            diff: "difficile",
+            enonce: "Programme de calcul : choisir un nombre ; lui ajouter 5 ; multiplier la somme par 2 ; enlever le double du nombre de depart.",
+            questions: [
+              "Teste ce programme avec le nombre 4. Quel resultat obtient-on ?",
+              "On note x le nombre choisi. Exprime le resultat en fonction de x, puis reduis-le.",
+              "Que remarque-t-on ? Demontre-le."
+            ],
+            correction: [
+              "4 -> 4 + 5 = 9 -> 9 x 2 = 18 -> 18 - 8 = 10. On obtient 10.",
+              "Resultat = 2(x + 5) - 2x = 2x + 10 - 2x = 10.",
+              "Le resultat est toujours 10, quel que soit le nombre choisi (l'expression se reduit a 10, sans x)."
+            ],
+            piege: "Developper et reduire prouve que le resultat ne depend pas du nombre choisi."
+          },
+          {
+            id: "m_lit_11",
+            titre: "Comparer deux programmes",
+            diff: "moyen",
+            enonce: "Programme A : choisir un nombre, le multiplier par 3, puis ajouter 4. Programme B : choisir un nombre, lui ajouter 1, puis multiplier par 3.",
+            questions: [
+              "Exprime le resultat du programme A en fonction de x.",
+              "Exprime le resultat du programme B en fonction de x.",
+              "Existe-t-il un nombre pour lequel les deux programmes donnent le meme resultat ?"
+            ],
+            correction: [
+              "A = 3x + 4.",
+              "B = 3(x + 1) = 3x + 3.",
+              "3x + 4 = 3x + 3 donne 4 = 3, ce qui est impossible : les deux programmes ne donnent JAMAIS le meme resultat (A vaut toujours 1 de plus que B)."
+            ],
+            piege: "Si les x s'eliminent et qu'on obtient une egalite fausse, il n'y a aucune solution."
+          },
+          {
+            id: "m_lit_12",
+            titre: "Identite (a - b)^2",
+            diff: "difficile",
+            enonce: "Developpe l'expression (3x - 2)^2. On rappelle : (a - b)^2 = a^2 - 2ab + b^2.",
+            questions: [
+              "Identifie a et b dans cette expression.",
+              "Developpe et reduis (3x - 2)^2."
+            ],
+            correction: [
+              "a = 3x et b = 2.",
+              "(3x)^2 - 2 x 3x x 2 + 2^2 = 9x^2 - 12x + 4."
+            ],
+            piege: "(3x)^2 = 9x^2 : on eleve aussi le 3 au carre, pas seulement le x."
+          },
+          {
+            id: "m_lit_13",
+            titre: "Factoriser puis resoudre",
+            diff: "moyen",
+            enonce: "On considere l'expression P = x^2 - 5x.",
+            questions: [
+              "Factorise P (facteur commun).",
+              "Resous l'equation P = 0."
+            ],
+            correction: [
+              "P = x(x - 5).",
+              "x(x - 5) = 0 -> x = 0 ou x - 5 = 0 -> x = 0 ou x = 5."
+            ],
+            piege: "On factorise pour transformer en equation produit nul (deux solutions)."
+          },
+          {
+            id: "m_lit_14",
+            titre: "Vrai ou faux : calcul avec un negatif",
+            diff: "moyen",
+            enonce: "On considere l'expression A = x^2 + 3x. Affirmation : pour x = -2, A vaut -2.",
+            questions: [
+              "Cette affirmation est-elle vraie ou fausse ? Justifie par le calcul."
+            ],
+            correction: [
+              "A = (-2)^2 + 3 x (-2) = 4 - 6 = -2. L'affirmation est VRAIE."
+            ],
+            piege: "(-2)^2 = +4 : le carre d'un nombre negatif est positif."
           }
         ]
       },
@@ -3646,6 +3954,85 @@ const ANNALES = {
               "4 x (5 - 2) = 4 x 3 = 12 : la solution convient."
             ],
             piege: "On developpe d'abord la parenthese (ou on divise les deux cotes par 4)."
+          },
+          {
+            id: "m_eq_10",
+            titre: "Probleme de billes",
+            diff: "difficile",
+            enonce: "Pierre a 3 fois plus de billes que Julie. Ensemble, ils possedent 48 billes. On cherche combien de billes a chacun.",
+            questions: [
+              "On note x le nombre de billes de Julie. Exprime le nombre de billes de Pierre.",
+              "Ecris l'equation traduisant le total.",
+              "Resous et donne le nombre de billes de chacun."
+            ],
+            correction: [
+              "Pierre a 3x billes.",
+              "x + 3x = 48.",
+              "4x = 48 -> x = 12. Julie a 12 billes, Pierre en a 36."
+            ],
+            piege: "On choisit comme inconnue la plus petite quantite, c'est plus simple."
+          },
+          {
+            id: "m_eq_11",
+            titre: "Equation produit",
+            diff: "moyen",
+            enonce: "Resous l'equation (2x - 6)(x + 1) = 0.",
+            questions: [
+              "Ecris les deux equations simples a resoudre.",
+              "Resous chacune et donne les solutions."
+            ],
+            correction: [
+              "2x - 6 = 0 ou x + 1 = 0.",
+              "2x = 6 -> x = 3 ; ou x = -1. Les solutions sont 3 et -1."
+            ],
+            piege: "2x - 6 = 0 donne x = 3 (on ajoute 6 puis on divise par 2)."
+          },
+          {
+            id: "m_eq_12",
+            titre: "Equation avec une fraction",
+            diff: "moyen",
+            enonce: "Resous l'equation x/3 + 2 = 5.",
+            questions: [
+              "Isole le terme x/3.",
+              "Trouve la valeur de x."
+            ],
+            correction: [
+              "x/3 = 5 - 2 = 3.",
+              "x = 3 x 3 = 9."
+            ],
+            piege: "Pour supprimer le « divise par 3 », on multiplie les deux cotes par 3."
+          },
+          {
+            id: "m_eq_13",
+            titre: "Perimetre et aire",
+            diff: "difficile",
+            enonce: "Un rectangle a une longueur de (x + 4) cm et une largeur de x cm. Son perimetre vaut 28 cm.",
+            questions: [
+              "Ecris l'equation traduisant le perimetre.",
+              "Resous l'equation.",
+              "En deduire l'aire du rectangle."
+            ],
+            correction: [
+              "2 x ((x + 4) + x) = 28.",
+              "2(2x + 4) = 28 -> 4x + 8 = 28 -> 4x = 20 -> x = 5. Largeur 5 cm, longueur 9 cm.",
+              "Aire = Longueur x largeur = 9 x 5 = 45 cm^2."
+            ],
+            piege: "Une fois x trouve, on n'oublie pas de calculer ce qui est demande (ici l'aire)."
+          },
+          {
+            id: "m_eq_14",
+            titre: "QCM equations",
+            diff: "moyen",
+            enonce: "QCM : une seule reponse correcte par question.",
+            questions: [
+              "La solution de 3x - 5 = 7 est : a) x = 4   b) x = 2   c) x = -4",
+              "La solution de 5x = -20 est : a) x = 4   b) x = -4   c) x = -100"
+            ],
+            correction: [
+              "3x = 12 -> x = 4. Reponse a).",
+              "x = -20 / 5 = -4. Reponse b)."
+            ],
+            piege: "Attention aux signes : -20 / 5 = -4."
           }
         ]
       },
@@ -3813,6 +4200,83 @@ const ANNALES = {
               "8 km : 2 x 8 + 5 = 21 euros. Avec 25 euros : 2x + 5 = 25 -> 2x = 20 -> x = 10 km."
             ],
             piege: "Un montant fixe + un prix par unite donne une fonction affine (ax + b)."
+          },
+          {
+            id: "m_fonc_10",
+            titre: "Image, antecedent, equation",
+            diff: "difficile",
+            enonce: "On considere la fonction f definie par f(x) = 2x - 3.",
+            questions: [
+              "Calcule l'image de -1.",
+              "Determine l'antecedent de 7.",
+              "Resous l'equation f(x) = 0."
+            ],
+            correction: [
+              "f(-1) = 2 x (-1) - 3 = -5.",
+              "f(x) = 7 -> 2x - 3 = 7 -> 2x = 10 -> x = 5.",
+              "2x - 3 = 0 -> 2x = 3 -> x = 1,5."
+            ],
+            piege: "Chercher un antecedent revient a resoudre une equation."
+          },
+          {
+            id: "m_fonc_11",
+            titre: "QCM fonctions",
+            diff: "moyen",
+            enonce: "QCM. Soit la fonction g definie par g(x) = -2x + 5.",
+            questions: [
+              "g(3) vaut : a) 11   b) -1   c) 1",
+              "La fonction g est : a) croissante   b) decroissante   c) constante"
+            ],
+            correction: [
+              "g(3) = -2 x 3 + 5 = -6 + 5 = -1. Reponse b).",
+              "Le coefficient directeur -2 est negatif : g est decroissante. Reponse b)."
+            ],
+            piege: "Le signe du coefficient directeur donne le sens de variation."
+          },
+          {
+            id: "m_fonc_12",
+            titre: "Determiner une fonction affine",
+            diff: "difficile",
+            enonce: "Une fonction affine f verifie f(0) = 4 et f(3) = 10.",
+            questions: [
+              "Determine l'ordonnee a l'origine b.",
+              "Determine le coefficient directeur a.",
+              "Donne l'expression de f(x)."
+            ],
+            correction: [
+              "f(0) = b, donc b = 4.",
+              "a = (f(3) - f(0)) / (3 - 0) = (10 - 4) / 3 = 6 / 3 = 2.",
+              "f(x) = 2x + 4."
+            ],
+            piege: "f(0) donne directement l'ordonnee a l'origine b."
+          },
+          {
+            id: "m_fonc_13",
+            titre: "Comparer deux forfaits",
+            diff: "moyen",
+            enonce: "Forfait A : 10 euros par mois en appels illimites. Forfait B : 0,50 euro par appel. On note x le nombre d'appels dans le mois.",
+            questions: [
+              "Exprime le prix du forfait A et du forfait B en fonction de x.",
+              "A partir de combien d'appels le forfait A devient-il plus avantageux ?"
+            ],
+            correction: [
+              "A(x) = 10 (constant) ; B(x) = 0,5x.",
+              "A devient avantageux quand 0,5x > 10, soit x > 20 : a partir de 21 appels (a 20 appels, les deux coutent 10 euros)."
+            ],
+            piege: "On compare les deux expressions a l'aide d'une inequation."
+          },
+          {
+            id: "m_fonc_14",
+            titre: "Vrai ou faux : fonction lineaire",
+            diff: "moyen",
+            enonce: "On considere la fonction f definie par f(x) = 5x. Affirmation : f est lineaire et f(0) = 0.",
+            questions: [
+              "Cette affirmation est-elle vraie ou fausse ? Justifie."
+            ],
+            correction: [
+              "f(x) = 5x est de la forme ax : c'est une fonction lineaire. Et f(0) = 5 x 0 = 0. L'affirmation est VRAIE (une fonction lineaire passe toujours par l'origine)."
+            ],
+            piege: "Une fonction lineaire verifie toujours f(0) = 0."
           }
         ]
       },
@@ -3976,6 +4440,83 @@ const ANNALES = {
               "Pour 10 personnes : 50 x 10 = 500 g."
             ],
             piege: "On calcule la quantite pour 1 personne (le coefficient), puis on multiplie."
+          },
+          {
+            id: "m_prop_10",
+            titre: "Vitesse moyenne",
+            diff: "moyen",
+            enonce: "Une voiture parcourt 150 km en 2 heures, a vitesse constante.",
+            questions: [
+              "Calcule sa vitesse moyenne.",
+              "Quelle distance parcourt-elle en 3 h 30 ?",
+              "Combien de temps lui faut-il pour parcourir 300 km ?"
+            ],
+            correction: [
+              "v = distance / temps = 150 / 2 = 75 km/h.",
+              "3 h 30 = 3,5 h ; distance = 75 x 3,5 = 262,5 km.",
+              "temps = 300 / 75 = 4 h."
+            ],
+            piege: "vitesse = distance / temps ; distance = vitesse x temps ; temps = distance / vitesse."
+          },
+          {
+            id: "m_prop_11",
+            titre: "QCM pourcentage",
+            diff: "moyen",
+            enonce: "QCM. Un prix de 80 euros augmente de 5 %.",
+            questions: [
+              "Le nouveau prix est : a) 85 euros   b) 84 euros   c) 80,05 euros",
+              "Le coefficient multiplicateur correspondant est : a) 1,5   b) 1,05   c) 0,05"
+            ],
+            correction: [
+              "80 x 1,05 = 84 euros. Reponse b).",
+              "Augmenter de 5 % revient a multiplier par 1,05. Reponse b)."
+            ],
+            piege: "Augmenter de 5 % donne x 1,05 (et surtout pas x 1,5)."
+          },
+          {
+            id: "m_prop_12",
+            titre: "Le prix des stylos",
+            diff: "moyen",
+            enonce: "Dans une situation de proportionnalite, 7 stylos identiques coutent 8,40 euros.",
+            questions: [
+              "Combien coute 1 stylo ?",
+              "Combien coutent 12 stylos ?",
+              "Combien de stylos peut-on acheter avec 18 euros ?"
+            ],
+            correction: [
+              "8,40 / 7 = 1,20 euro.",
+              "12 x 1,20 = 14,40 euros.",
+              "18 / 1,20 = 15 stylos."
+            ],
+            piege: "On passe par le prix d'un seul stylo (le coefficient de proportionnalite)."
+          },
+          {
+            id: "m_prop_13",
+            titre: "Vrai ou faux : hausse et baisse",
+            diff: "difficile",
+            enonce: "Un article augmente de 10 %, puis son nouveau prix baisse de 10 %. Affirmation : on revient au prix de depart.",
+            questions: [
+              "Cette affirmation est-elle vraie ou fausse ? Justifie avec un prix de depart de 100 euros."
+            ],
+            correction: [
+              "100 x 1,1 = 110 euros, puis 110 x 0,9 = 99 euros. 99 n'est pas 100 : l'affirmation est FAUSSE (au total x 1,1 x 0,9 = 0,99, soit une baisse de 1 %)."
+            ],
+            piege: "+10 % puis -10 % ne se compensent pas : on perd 1 % (x 0,99)."
+          },
+          {
+            id: "m_prop_14",
+            titre: "L'echelle d'une maquette",
+            diff: "moyen",
+            enonce: "Une maquette de voiture est a l'echelle 1/43. La maquette mesure 10 cm de long.",
+            questions: [
+              "Que signifie l'echelle 1/43 ?",
+              "Calcule la longueur reelle de la voiture, en cm puis en m."
+            ],
+            correction: [
+              "1 cm sur la maquette represente 43 cm en realite.",
+              "10 x 43 = 430 cm = 4,30 m."
+            ],
+            piege: "Longueur reelle = longueur de la maquette x 43 (l'objet reel est plus grand)."
           }
         ]
       },
@@ -4141,6 +4682,94 @@ const ANNALES = {
               "La serie A : son etendue est plus petite, donc ses notes sont plus groupees."
             ],
             piege: "Deux series peuvent avoir la meme moyenne mais des etendues (dispersions) tres differentes."
+          },
+          {
+            id: "m_stat_10",
+            titre: "Tableur",
+            diff: "difficile",
+            enonce: "On a saisi des notes et leurs effectifs dans un tableur (voir tableau). La ligne 2 contient les notes, la ligne 3 les effectifs.",
+            table: [
+              ["", "A", "B", "C", "D"],
+              ["2", "Note", "8", "12", "16"],
+              ["3", "Effectif", "5", "8", "3"]
+            ],
+            questions: [
+              "Combien d'eleves ont ete notes au total ?",
+              "Quelle formule, saisie dans une cellule, calcule l'effectif total a partir de B3, C3 et D3 ?",
+              "Calcule la note moyenne de ces eleves."
+            ],
+            correction: [
+              "5 + 8 + 3 = 16 eleves.",
+              "=SOMME(B3:D3).",
+              "Moyenne = (8x5 + 12x8 + 16x3) / 16 = (40 + 96 + 48) / 16 = 184 / 16 = 11,5."
+            ],
+            piege: "Dans un tableur, une formule commence par « = » ; SOMME(B3:D3) additionne les cellules de B3 a D3."
+          },
+          {
+            id: "m_stat_11",
+            titre: "Mediane et etendue",
+            diff: "moyen",
+            enonce: "Les notes de 9 eleves, rangees dans l'ordre croissant, sont : 6, 8, 8, 10, 11, 12, 14, 15, 18.",
+            questions: [
+              "Combien y a-t-il de valeurs ?",
+              "Determine la mediane.",
+              "Calcule l'etendue de la serie."
+            ],
+            correction: [
+              "9 valeurs.",
+              "La mediane est la 5e valeur (le milieu) : 11.",
+              "Etendue = 18 - 6 = 12."
+            ],
+            piege: "9 valeurs (nombre impair) : la mediane est la 5e, soit la valeur du milieu."
+          },
+          {
+            id: "m_stat_12",
+            titre: "QCM statistiques",
+            diff: "moyen",
+            enonce: "QCM. On considere la serie de valeurs : 4, 6, 6, 8, 10.",
+            questions: [
+              "La moyenne de la serie vaut : a) 6,8   b) 6   c) 34",
+              "Le mode de la serie est : a) 6   b) 8   c) 10"
+            ],
+            correction: [
+              "Moyenne = (4 + 6 + 6 + 8 + 10) / 5 = 34 / 5 = 6,8. Reponse a).",
+              "Le mode est 6 (il apparait deux fois). Reponse a)."
+            ],
+            piege: "Moyenne = somme / effectif ; mode = la valeur la plus frequente."
+          },
+          {
+            id: "m_stat_13",
+            titre: "Pourcentages d'un effectif",
+            diff: "difficile",
+            enonce: "Dans un college de 500 eleves, 60 % sont demi-pensionnaires.",
+            questions: [
+              "Combien d'eleves sont demi-pensionnaires ?",
+              "Combien ne le sont pas ?",
+              "Parmi les demi-pensionnaires, 25 % font de l'allemand. Combien d'eleves cela represente-t-il ?"
+            ],
+            correction: [
+              "60 % de 500 = 0,60 x 500 = 300 eleves.",
+              "500 - 300 = 200 eleves.",
+              "25 % de 300 = 0,25 x 300 = 75 eleves."
+            ],
+            piege: "Un pourcentage d'un pourcentage : on applique les deux l'un apres l'autre."
+          },
+          {
+            id: "m_stat_14",
+            titre: "Frequence et probabilite",
+            diff: "moyen",
+            enonce: "On lance un de 50 fois. On a obtenu le 1 huit fois.",
+            questions: [
+              "Quelle est la frequence d'apparition du 1 ?",
+              "Exprime-la en pourcentage.",
+              "Est-elle proche de la probabilite theorique 1/6 ?"
+            ],
+            correction: [
+              "8 / 50 = 0,16.",
+              "0,16 = 16 %.",
+              "1/6 = 0,167 environ (17 %) : 16 % en est tres proche, le de semble equilibre."
+            ],
+            piege: "La frequence observee se rapproche de la probabilite theorique quand il y a beaucoup de lancers."
           }
         ]
       },
@@ -4303,6 +4932,85 @@ const ANNALES = {
               "Non citron = 12 - 3 = 9 -> P = 9/12 = 3/4."
             ],
             piege: "P(evenement contraire) = 1 - P(evenement)."
+          },
+          {
+            id: "m_prob_10",
+            titre: "La somme de deux des",
+            diff: "difficile",
+            enonce: "On lance deux des equilibres et on additionne les deux resultats. La somme peut aller de 2 a 12. Il y a 36 issues equiprobables (6 x 6).",
+            questions: [
+              "De combien de facons peut-on obtenir une somme de 7 ? Liste-les.",
+              "Quelle est la probabilite d'obtenir une somme de 7 ?",
+              "Quelle est la probabilite d'obtenir une somme de 12 ?"
+            ],
+            correction: [
+              "(1;6), (2;5), (3;4), (4;3), (5;2), (6;1) : 6 facons.",
+              "P(7) = 6 / 36 = 1/6.",
+              "Somme 12 : seulement (6;6), donc P(12) = 1/36."
+            ],
+            piege: "Avec deux des, il y a 36 issues possibles (6 x 6), et non 12."
+          },
+          {
+            id: "m_prob_11",
+            titre: "QCM probabilites",
+            diff: "moyen",
+            enonce: "QCM. Un sac contient 10 boules : 4 rouges et 6 noires. On tire une boule au hasard.",
+            questions: [
+              "La probabilite de tirer une boule rouge est : a) 4   b) 2/5   c) 6/10",
+              "La probabilite de tirer une boule noire est : a) 3/5   b) 4/10   c) 6"
+            ],
+            correction: [
+              "P(rouge) = 4/10 = 2/5. Reponse b).",
+              "P(noire) = 6/10 = 3/5. Reponse a)."
+            ],
+            piege: "Une probabilite est toujours un nombre entre 0 et 1 (jamais 4 ni 6)."
+          },
+          {
+            id: "m_prob_12",
+            titre: "La somme des probabilites",
+            diff: "moyen",
+            enonce: "Une urne contient 3 jetons gagnants et 7 jetons perdants. On tire un jeton au hasard.",
+            questions: [
+              "Quelle est la probabilite de gagner ?",
+              "Quelle est la probabilite de perdre ?",
+              "Verifie que la somme des deux probabilites vaut 1."
+            ],
+            correction: [
+              "P(gagner) = 3/10.",
+              "P(perdre) = 7/10.",
+              "3/10 + 7/10 = 10/10 = 1 : c'est normal, c'est un evenement certain."
+            ],
+            piege: "La somme des probabilites de toutes les issues possibles vaut toujours 1."
+          },
+          {
+            id: "m_prob_13",
+            titre: "Vrai ou faux : nombre premier",
+            diff: "difficile",
+            enonce: "On lance un de equilibre a 6 faces. Affirmation : la probabilite d'obtenir un nombre premier est egale a 1/2.",
+            questions: [
+              "Cette affirmation est-elle vraie ou fausse ? Justifie (les nombres premiers entre 1 et 6 sont 2, 3 et 5)."
+            ],
+            correction: [
+              "Les nombres premiers entre 1 et 6 sont 2, 3 et 5 : 3 cas favorables sur 6, soit 3/6 = 1/2. L'affirmation est VRAIE."
+            ],
+            piege: "1 n'est pas un nombre premier : les premiers de 1 a 6 sont 2, 3 et 5."
+          },
+          {
+            id: "m_prob_14",
+            titre: "La roue a cinq secteurs",
+            diff: "moyen",
+            enonce: "Une roue equilibree comporte 5 secteurs identiques numerotes de 1 a 5. On la fait tourner.",
+            questions: [
+              "Quelle est la probabilite d'obtenir un 3 ?",
+              "Quelle est la probabilite d'obtenir un nombre impair ?",
+              "Quelle est la probabilite d'obtenir un nombre inferieur ou egal a 5 ?"
+            ],
+            correction: [
+              "1 cas sur 5 : P = 1/5.",
+              "Impairs : 1, 3, 5 -> 3 cas sur 5 : P = 3/5.",
+              "Tous les nombres conviennent : P = 5/5 = 1 (evenement certain)."
+            ],
+            piege: "Un evenement certain a une probabilite egale a 1."
           }
         ]
       },
@@ -4459,6 +5167,84 @@ const ANNALES = {
               "60 000 / 1000 = 60 litres."
             ],
             piege: "Conversion utile : 1 L = 1000 cm^3 = 1 dm^3."
+          },
+          {
+            id: "m_esp_10",
+            titre: "Convertir un volume",
+            diff: "moyen",
+            enonce: "Un reservoir a un volume de 2 m^3.",
+            questions: [
+              "Convertis ce volume en dm^3 (on rappelle : 1 m^3 = 1000 dm^3).",
+              "Combien de litres cela represente-t-il (1 dm^3 = 1 L) ?"
+            ],
+            correction: [
+              "2 x 1000 = 2000 dm^3.",
+              "2000 dm^3 = 2000 L."
+            ],
+            piege: "1 m^3 = 1000 dm^3 = 1000 L."
+          },
+          {
+            id: "m_esp_11",
+            titre: "La generatrice d'un cone",
+            diff: "difficile",
+            enonce: "Un cone a un rayon de base de 3 cm et une hauteur de 4 cm. On cherche la longueur d'une generatrice (segment du sommet jusqu'au bord de la base, voir figure).",
+            schema: `<svg width="100%" viewBox="0 0 240 200" role="img" xmlns="http://www.w3.org/2000/svg"><title>Cone : rayon, hauteur et generatrice</title><desc>Rayon 3 cm, hauteur 4 cm, generatrice cherchee.</desc><line x1="120" y1="45" x2="70" y2="155" stroke="currentColor" stroke-width="2"/><line x1="120" y1="45" x2="170" y2="155" stroke="currentColor" stroke-width="2"/><path d="M70,155 A 50 14 0 0 0 170,155" fill="none" stroke="currentColor" stroke-width="2"/><path d="M70,155 A 50 14 0 0 1 170,155" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="4 3"/><line x1="120" y1="45" x2="120" y2="155" stroke="currentColor" stroke-width="1" stroke-dasharray="3 2"/><line x1="120" y1="155" x2="170" y2="155" stroke="currentColor" stroke-width="1" stroke-dasharray="3 2"/><rect x="120" y="141" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.2"/><text x="125" y="105" font-size="12" fill="currentColor" font-family="sans-serif">h = 4</text><text x="138" y="172" font-size="12" fill="currentColor" font-family="sans-serif">r = 3</text><text x="150" y="100" font-size="12" fill="currentColor" font-family="sans-serif">g = ?</text></svg>`,
+            questions: [
+              "Le triangle forme par la hauteur, le rayon et la generatrice est rectangle. Ecris l'egalite de Pythagore.",
+              "Calcule la longueur de la generatrice."
+            ],
+            correction: [
+              "generatrice^2 = hauteur^2 + rayon^2 = 4^2 + 3^2 = 16 + 9 = 25.",
+              "generatrice = racine de 25 = 5 cm."
+            ],
+            piege: "La generatrice est l'hypotenuse du triangle rectangle (rayon ; hauteur)."
+          },
+          {
+            id: "m_esp_12",
+            titre: "Agrandir un cube",
+            diff: "moyen",
+            enonce: "Un cube a un volume de 8 cm^3. On multiplie toutes ses aretes par 3.",
+            questions: [
+              "Par combien le volume est-il multiplie ?",
+              "Calcule le volume du nouveau cube."
+            ],
+            correction: [
+              "Le volume est multiplie par 3^3 = 27.",
+              "8 x 27 = 216 cm^3."
+            ],
+            piege: "Agrandissement de rapport k : les volumes sont multiplies par k^3."
+          },
+          {
+            id: "m_esp_13",
+            titre: "QCM volume d'une boule",
+            diff: "difficile",
+            enonce: "QCM. Une boule a un rayon de 6 cm. On prend pi = 3,14 et V = (4/3) x pi x r^3.",
+            questions: [
+              "r^3 vaut : a) 18   b) 216   c) 36",
+              "Le volume vaut environ : a) 904 cm^3   b) 113 cm^3   c) 452 cm^3"
+            ],
+            correction: [
+              "r^3 = 6^3 = 6 x 6 x 6 = 216. Reponse b).",
+              "V = (4/3) x 3,14 x 216 = (4/3) x 678,24 = 904,32, soit environ 904 cm^3. Reponse a)."
+            ],
+            piege: "r^3 = 216 (et non 6 x 3) : c'est 6 x 6 x 6."
+          },
+          {
+            id: "m_esp_14",
+            titre: "La contenance d'une piscine",
+            diff: "difficile",
+            enonce: "Une piscine a la forme d'un pave droit : 10 m de long, 5 m de large et 2 m de profondeur.",
+            questions: [
+              "Calcule le volume de la piscine, en m^3.",
+              "Combien de litres d'eau peut-elle contenir (1 m^3 = 1000 L) ?",
+              "Si on la remplit a 80 %, combien de litres d'eau cela represente-t-il ?"
+            ],
+            correction: [
+              "V = 10 x 5 x 2 = 100 m^3.",
+              "100 x 1000 = 100 000 L.",
+              "80 % de 100 000 = 0,80 x 100 000 = 80 000 L."
+            ],
+            piege: "1 m^3 = 1000 L ; on applique ensuite le pourcentage au volume total."
           }
         ]
       }

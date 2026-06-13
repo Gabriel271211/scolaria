@@ -896,7 +896,8 @@ const ANNALES = {
             id: "pc_comb_01",
             titre: "Combustion du carbone",
             diff: "facile",
-            enonce: "On realise la combustion complete du carbone dans le dioxygene. Le gaz forme trouble l'eau de chaux.",
+            enonce: "Pour son TP, Lucas realise la combustion complete du carbone dans le dioxygene. Le gaz forme trouble l'eau de chaux (voir figure).",
+            schema: `<svg width="100%" viewBox="0 0 210 200" role="img" xmlns="http://www.w3.org/2000/svg"><title>Test a l'eau de chaux</title><desc>Le gaz forme trouble l'eau de chaux.</desc><path d="M75,45 L75,165 A18 12 0 0 0 111,165 L111,45" fill="none" stroke="currentColor" stroke-width="2"/><line x1="75" y1="98" x2="111" y2="98" stroke="currentColor" stroke-width="1.2"/><g fill="currentColor" fill-opacity="0.3"><circle cx="86" cy="122" r="3"/><circle cx="99" cy="138" r="3"/><circle cx="92" cy="152" r="2.5"/><circle cx="103" cy="118" r="2.5"/></g><path d="M38,32 L93,32 L93,82" fill="none" stroke="currentColor" stroke-width="2"/><g fill="none" stroke="currentColor" stroke-width="1"><circle cx="93" cy="90" r="2"/><circle cx="93" cy="104" r="2"/></g><text x="118" y="128" font-size="10" fill="currentColor" font-family="sans-serif">eau de chaux</text><text x="118" y="142" font-size="10" fill="currentColor" font-family="sans-serif">qui se trouble</text></svg>`,
             questions: [
               "Quel gaz se forme ? Comment le test a l'eau de chaux le prouve-t-il ?",
               "Quels sont les deux reactifs ?",
@@ -915,7 +916,7 @@ const ANNALES = {
             id: "pc_comb_02",
             titre: "Combustion du methane",
             diff: "moyen",
-            enonce: "La combustion du methane (gaz de ville) s'ecrit : CH4 + 2 O2 -> CO2 + 2 H2O.",
+            enonce: "Le professeur ecrit au tableau la combustion du methane (gaz de ville) : CH4 + 2 O2 -> CO2 + 2 H2O.",
             questions: [
               "Cite le combustible et le comburant.",
               "Quels sont les produits de cette combustion ?",
@@ -934,7 +935,8 @@ const ANNALES = {
             id: "pc_comb_03",
             titre: "La laine de fer qui brule",
             diff: "difficile",
-            enonce: "On enflamme de la laine de fer (paille de fer) a l'air libre, posee sur une balance. On observe que sa masse augmente.",
+            enonce: "Emma enflamme de la laine de fer (paille de fer) a l'air libre, posee sur une balance. Elle observe que sa masse augmente (voir figure).",
+            schema: `<svg width="100%" viewBox="0 0 230 170" role="img" xmlns="http://www.w3.org/2000/svg"><title>Pesee de la laine de fer</title><desc>La masse mesuree augmente pendant la combustion.</desc><path d="M60,150 L70,120 L160,120 L170,150 Z" fill="none" stroke="currentColor" stroke-width="2"/><line x1="78" y1="120" x2="152" y2="120" stroke="currentColor" stroke-width="2"/><line x1="115" y1="120" x2="115" y2="106" stroke="currentColor" stroke-width="1.5"/><line x1="92" y1="106" x2="138" y2="106" stroke="currentColor" stroke-width="2"/><path d="M104,106 q4,-12 13,-6 q11,-4 7,8 Z" fill="currentColor" fill-opacity="0.25" stroke="currentColor" stroke-width="1.5"/><rect x="120" y="130" width="34" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M192,118 l0,-24 m-6,8 l6,-8 l6,8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><text x="178" y="138" font-size="10" fill="currentColor" font-family="sans-serif">masse</text></svg>`,
             questions: [
               "Avec quel gaz de l'air le fer reagit-il ?",
               "Pourquoi la masse du solide augmente-t-elle alors que le fer brule ?",
@@ -953,7 +955,7 @@ const ANNALES = {
             id: "pc_comb_04",
             titre: "Le triangle du feu",
             diff: "facile",
-            enonce: "Pour qu'un feu existe, il faut reunir trois elements : un combustible, un comburant et une source de chaleur.",
+            enonce: "Le professeur rappelle a Tom que, pour qu'un feu existe, il faut reunir trois elements : un combustible, un comburant et une source de chaleur.",
             questions: [
               "Comment s'appelle le schema de ces trois elements ?",
               "Quel est le comburant le plus courant ?",
@@ -972,7 +974,7 @@ const ANNALES = {
             id: "pc_comb_05",
             titre: "Le rechaud a butane",
             diff: "moyen",
-            enonce: "Un rechaud brule du butane. La combustion complete produit du dioxyde de carbone et de l'eau.",
+            enonce: "En camping, Sarah utilise un rechaud a butane. La combustion complete produit du dioxyde de carbone et de l'eau.",
             questions: [
               "Quel gaz, teste a l'eau de chaux, prouve la formation de CO2 ?",
               "Comment mettre en evidence la formation d'eau ?",
@@ -991,7 +993,7 @@ const ANNALES = {
             id: "pc_comb_06",
             titre: "Bruler de l'ethanol",
             diff: "moyen",
-            enonce: "On brule de l'ethanol. La masse d'ethanol diminue et il se forme des gaz.",
+            enonce: "Nathan brule de l'ethanol. La masse d'ethanol diminue et il se forme des gaz.",
             questions: [
               "Une combustion est-elle une transformation physique ou chimique ?",
               "Cite les reactifs.",
@@ -1010,7 +1012,7 @@ const ANNALES = {
             id: "pc_comb_07",
             titre: "Le danger du monoxyde de carbone",
             diff: "moyen",
-            enonce: "Une chaudiere a gaz mal reglee produit une flamme jaune au lieu d'une flamme bleue.",
+            enonce: "La chaudiere a gaz de la maison de Lea, mal reglee, produit une flamme jaune au lieu d'une flamme bleue.",
             questions: [
               "Que revele une flamme jaune ?",
               "Quel gaz dangereux peut alors se former ?",
@@ -1029,7 +1031,7 @@ const ANNALES = {
             id: "pc_comb_08",
             titre: "Le fer dans le dioxygene pur",
             diff: "moyen",
-            enonce: "On plonge de la laine de fer incandescente dans un flacon de dioxygene pur : elle brule vivement avec des etincelles.",
+            enonce: "Sami plonge de la laine de fer incandescente dans un flacon de dioxygene pur : elle brule vivement avec des etincelles.",
             questions: [
               "Pourquoi la combustion est-elle plus vive dans le dioxygene pur que dans l'air ?",
               "Quel est le comburant ?",
@@ -1048,7 +1050,7 @@ const ANNALES = {
             id: "pc_comb_09",
             titre: "Le barbecue dans un garage",
             diff: "facile",
-            enonce: "On ne doit jamais utiliser un barbecue au charbon dans un local ferme.",
+            enonce: "Karim sait qu'on ne doit jamais utiliser un barbecue au charbon dans un local ferme.",
             questions: [
               "Quel gaz dangereux peut s'accumuler ?",
               "Pourquoi ce gaz se forme-t-il ?",
@@ -1067,7 +1069,7 @@ const ANNALES = {
             id: "pc_comb_10",
             titre: "Identifier les produits d'une combustion",
             diff: "difficile",
-            enonce: "On recueille les gaz d'une combustion d'hydrocarbure. Un test trouble l'eau de chaux ; un autre fait bleuir le sulfate de cuivre anhydre.",
+            enonce: "Pour son TP, Ines recueille les gaz d'une combustion d'hydrocarbure. Un test trouble l'eau de chaux ; un autre fait bleuir le sulfate de cuivre anhydre.",
             questions: [
               "Que prouve le trouble de l'eau de chaux ?",
               "Que prouve le bleuissement du sulfate de cuivre anhydre ?",
@@ -1086,7 +1088,7 @@ const ANNALES = {
             id: "pc_comb_11",
             titre: "Une reaction qui chauffe",
             diff: "facile",
-            enonce: "La combustion du gaz libere de la chaleur et de la lumiere.",
+            enonce: "Maxime observe que la combustion du gaz libere de la chaleur et de la lumiere.",
             questions: [
               "Une combustion est-elle exothermique ou endothermique ?",
               "Que signifie « exothermique » ?",
@@ -1105,7 +1107,7 @@ const ANNALES = {
             id: "pc_comb_12",
             titre: "Combustion du carbone et masse",
             diff: "difficile",
-            enonce: "On etudie la combustion du carbone : C + O2 -> CO2. On fait bruler 3 g de carbone dans un flacon contenant 8 g de dioxygene. Tout reagit.",
+            enonce: "Pour un exercice, Adam etudie la combustion du carbone : C + O2 -> CO2. Il fait bruler 3 g de carbone dans un flacon contenant 8 g de dioxygene. Tout reagit.",
             questions: [
               "Cite le combustible et le comburant.",
               "Quel test permet d'identifier le gaz produit ? Quel resultat attend-on ?",
@@ -1124,7 +1126,7 @@ const ANNALES = {
             id: "pc_comb_13",
             titre: "Securite d'une chaudiere a gaz",
             diff: "expert",
-            enonce: "Une chaudiere brule du gaz naturel (methane). Mal entretenue, elle produit une flamme jaune. La combustion complete s'ecrit : CH4 + 2 O2 -> CO2 + 2 H2O.",
+            enonce: "La chaudiere de l'immeuble de Chloe brule du gaz naturel (methane). Mal entretenue, elle produit une flamme jaune. La combustion complete s'ecrit : CH4 + 2 O2 -> CO2 + 2 H2O.",
             questions: [
               "Identifie le combustible et le comburant.",
               "Verifie que l'equation est equilibree pour le carbone, l'hydrogene et l'oxygene.",
@@ -1145,7 +1147,8 @@ const ANNALES = {
             id: "pc_comb_14",
             titre: "La bougie sous un bocal",
             diff: "facile",
-            enonce: "On compare la combustion d'une bougie a l'air libre et sous un bocal retourne qui l'enferme.",
+            enonce: "Eva compare la combustion d'une bougie a l'air libre et sous un bocal retourne qui l'enferme (voir figure).",
+            schema: `<svg width="100%" viewBox="0 0 200 200" role="img" xmlns="http://www.w3.org/2000/svg"><title>Bougie sous un bocal</title><desc>Un bocal retourne enferme une bougie allumee.</desc><line x1="30" y1="172" x2="170" y2="172" stroke="currentColor" stroke-width="2"/><path d="M55,172 L55,82 Q55,45 100,45 Q145,45 145,82 L145,172" fill="none" stroke="currentColor" stroke-width="2"/><rect x="92" y="120" width="16" height="48" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="100" y1="120" x2="100" y2="110" stroke="currentColor" stroke-width="1.5"/><path d="M100,94 q8,11 0,22 q-8,-11 0,-22 Z" fill="currentColor" fill-opacity="0.3" stroke="currentColor" stroke-width="1.4"/><text x="150" y="60" font-size="11" fill="currentColor" font-family="sans-serif">bocal</text></svg>`,
             questions: [
               "Sous le bocal, que devient la flamme au bout d'un moment ?",
               "Pourquoi s'eteint-elle ?",

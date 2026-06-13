@@ -1697,9 +1697,11 @@ body.mode-leaving { opacity: 0; pointer-events: none; }
 .ann-diff.facile{background:#eafaf0;color:#16a34a}
 .ann-diff.moyen{background:#fff4e5;color:#c07010}
 .ann-diff.difficile{background:#fdecec;color:#ef4444}
+.ann-diff.expert{background:#ede9fe;color:#6d28d9}
 body.dark .ann-diff.facile{background:#10291b}
 body.dark .ann-diff.moyen{background:#2a2110}
 body.dark .ann-diff.difficile{background:#2a1414}
+body.dark .ann-diff.expert{background:#241a40;color:#b9a8f5}
 .ann-exo{background:var(--card);border:1px solid var(--bord);border-radius:18px;padding:18px;margin-bottom:14px}
 .ann-exo-top{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:11px}
 .ann-exo-badge{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;background:var(--accent-l);color:var(--accent)}
@@ -6181,11 +6183,11 @@ function annExoList(matId,themeId){
     '<div class="ann-h1" style="font-size:20px">Choisis un exercice</div>'+
     '<div class="ann-sub">'+th.exos.length+' exercices disponibles.</div>';
   th.exos.forEach(function(e,i){
-    var nq=e.questions?e.questions.length:0;
+    var nq=e.questions?e.questions.length:0; var dm=annDiffMeta(e.diff||'moyen');
     html+='<div class="ann-row" onclick="annGoExo(\''+matId+'\',\''+themeId+'\',\''+e.id+'\')">'+
       '<div class="ann-row-n">'+(i+1)+'</div>'+
       '<div class="ann-row-tx"><div class="ann-row-tt">'+esc(e.titre)+'</div><div class="ann-row-ds">'+nq+' questions</div></div>'+
-      '<span class="ann-diff '+esc(e.diff||'moyen')+'">'+esc(e.diff||'moyen')+'</span></div>';
+      '<span class="ann-diff '+dm.c+'">'+dm.l+'</span></div>';
   });
   document.getElementById('ann-view').innerHTML=html;
 }
@@ -6228,6 +6230,11 @@ function annShowExo(matId,themeId,exoId,fromGen){
   annRenderExo(matId,themeId,e,!!fromGen);
 }
 
+function annDiffMeta(d){
+  var map={ facile:{c:'facile',l:'Facile'}, moyen:{c:'moyen',l:'Moyen'}, difficile:{c:'difficile',l:'Difficile'}, expert:{c:'expert',l:'Tres difficile'} };
+  return map[d] || map.moyen;
+}
+
 function annTableHtml(rows){
   var h='<table>';
   rows.forEach(function(r,ri){
@@ -6245,7 +6252,8 @@ function annRenderExo(matId,themeId,e,fromGen){
   annSetBack(true);
   var th=annGetTheme(matId,themeId);
   var html='<div class="ann-exo">';
-  html+='<div class="ann-exo-top"><span class="ann-exo-badge">'+esc(th?th.titre:'')+'</span><span class="ann-diff '+esc(e.diff||'moyen')+'">'+esc(e.diff||'moyen')+'</span></div>';
+  var dm=annDiffMeta(e.diff||'moyen');
+  html+='<div class="ann-exo-top"><span class="ann-exo-badge">'+esc(th?th.titre:'')+'</span><span class="ann-diff '+dm.c+'">'+dm.l+'</span></div>';
   html+='<div class="ann-exo-tt">'+esc(e.titre||'Exercice')+'</div>';
   html+='<div class="ann-exo-enonce">'+esc(e.enonce||'').replace(/\n/g,'<br>')+'</div>';
   if(e.schema){ html+='<div class="ann-schema">'+e.schema+'</div>'; }

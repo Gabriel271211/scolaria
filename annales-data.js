@@ -272,6 +272,65 @@ const ANNALES = {
               "On verse l'acide dans l'eau, jamais l'eau dans l'acide."
             ],
             piege: "« L'acide dans l'eau » : l'inverse peut provoquer des projections dangereuses."
+          },
+          {
+            id: "pc_ions_12",
+            titre: "Analyse complete d'une solution",
+            diff: "difficile",
+            enonce: "Une solution S contient des ions cuivre et des ions chlorure. On preleve un echantillon : le papier pH indique pH = 5. On ajoute de la soude a cet echantillon : un precipite bleu apparait. Sur un autre prelevement, on ajoute du nitrate d'argent : un precipite blanc se forme.",
+            questions: [
+              "Identifie les deux ions presents et donne leurs formules.",
+              "La solution S est-elle acide, neutre ou basique ?",
+              "On dilue 10 fois la solution S. Le test a la soude donne-t-il encore un precipite bleu ? Justifie.",
+              "Apres cette dilution, le pH se rapproche-t-il ou s'eloigne-t-il de 7 ?"
+            ],
+            correction: [
+              "Precipite bleu a la soude -> ion cuivre Cu2+ ; precipite blanc au nitrate d'argent -> ion chlorure Cl-.",
+              "pH 5 < 7 -> la solution est acide.",
+              "Oui : les ions cuivre sont toujours presents (seulement moins concentres), le test reste positif.",
+              "Diluer un acide rapproche son pH de 7 (le pH augmente)."
+            ],
+            piege: "Diluer reduit la concentration mais ne fait pas disparaitre les ions : les tests restent positifs."
+          },
+          {
+            id: "pc_ions_13",
+            titre: "Le pH d'une piscine",
+            diff: "expert",
+            enonce: "L'eau d'une piscine doit avoir un pH compris entre 7,0 et 7,4. Un technicien mesure pH = 6,2 : l'eau est trop acide. Pour corriger, il ajoute un produit basique, puis remesure : pH = 7,2.",
+            questions: [
+              "A pH 6,2, l'eau contient-elle plus d'ions H+ ou d'ions OH- ?",
+              "Pourquoi l'ajout d'une base permet-il de faire remonter le pH ?",
+              "Apres traitement, le pH vaut 7,2. Est-il conforme a la norme ?",
+              "Si le technicien avait ajoute un acide par erreur, comment aurait evolue le pH ? L'eau aurait-elle ete conforme ?",
+              "Un baigneur affirme que l'eau salee conduit mieux le courant. A-t-il raison ? Explique avec la notion d'ions."
+            ],
+            correction: [
+              "pH 6,2 < 7 -> plus d'ions H+ que d'ions OH-.",
+              "Une base apporte des ions OH- qui neutralisent une partie des ions H+ : le pH augmente.",
+              "Oui : 7,2 est bien compris entre 7,0 et 7,4.",
+              "Le pH aurait diminue (en dessous de 6,2), l'eau aurait ete encore plus acide : non conforme.",
+              "Oui : le sel se dissocie en ions, et ce sont les ions qui rendent l'eau conductrice."
+            ],
+            piege: "Une base fait monter le pH (apporte des OH-) ; un acide le fait baisser (apporte des H+)."
+          },
+          {
+            id: "pc_ions_14",
+            titre: "Trois precipites a la soude",
+            diff: "moyen",
+            enonce: "On verse de la soude dans trois tubes A, B et C. Tube A : precipite bleu. Tube B : precipite vert. Tube C : precipite rouille.",
+            questions: [
+              "Identifie l'ion metallique present dans chaque tube.",
+              "Donne la formule de l'ion du tube A.",
+              "Lequel des trois tubes contient des ions fer III ?",
+              "Quel reactif faut-il utiliser pour tester la presence d'ions chlorure ?"
+            ],
+            correction: [
+              "A : ion cuivre ; B : ion fer II ; C : ion fer III.",
+              "Cu2+.",
+              "Le tube C (precipite rouille).",
+              "Le nitrate d'argent (il donne un precipite blanc avec les ions chlorure)."
+            ],
+            piege: "A la soude : bleu = cuivre, vert = fer II, rouille = fer III."
           }
         ]
       },
@@ -489,6 +548,65 @@ const ANNALES = {
               "Un anion (ion negatif)."
             ],
             piege: "Gagner un electron ajoute une charge negative : on obtient un ion negatif (anion)."
+          },
+          {
+            id: "pc_atom_12",
+            titre: "Atome ou ion ?",
+            diff: "difficile",
+            enonce: "On donne la composition de trois entites. X : 8 protons et 8 electrons. Y : 8 protons et 10 electrons. Z : 11 protons et 10 electrons.",
+            questions: [
+              "Laquelle de ces entites est un atome ? Lesquelles sont des ions ?",
+              "Justifie que X est electriquement neutre.",
+              "Y a-t-il gagne ou perdu des electrons ? Quelle est sa charge ?",
+              "Z a-t-il gagne ou perdu des electrons ? Donne le signe de sa charge."
+            ],
+            correction: [
+              "X est un atome (autant de protons que d'electrons). Y et Z sont des ions (nombres differents).",
+              "8 protons (+) et 8 electrons (-) : les charges se compensent, l'atome est neutre.",
+              "Y a 10 electrons pour 8 protons : il a GAGNE 2 electrons -> charge 2- (ion negatif).",
+              "Z a 10 electrons pour 11 protons : il a PERDU 1 electron -> charge positive (ion positif)."
+            ],
+            piege: "On compare protons et electrons : plus d'electrons -> ion negatif ; moins -> ion positif."
+          },
+          {
+            id: "pc_atom_13",
+            titre: "Atomes et combustion du methane",
+            diff: "expert",
+            enonce: "La combustion du methane s'ecrit : CH4 + 2 O2 -> CO2 + 2 H2O.",
+            questions: [
+              "Combien d'atomes au total dans une molecule de CH4 ? dans une molecule de CO2 ?",
+              "Compte les atomes de chaque element a gauche de l'equation, puis a droite.",
+              "Montre que tous les atomes sont conserves.",
+              "En deduire pourquoi la masse totale se conserve au cours de la reaction.",
+              "La combustion transforme-t-elle les atomes de carbone en un autre element ? Justifie."
+            ],
+            correction: [
+              "CH4 : 1 + 4 = 5 atomes. CO2 : 1 + 2 = 3 atomes.",
+              "A gauche : C = 1, H = 4, O = 2 x 2 = 4. A droite : C = 1, H = 2 x 2 = 4, O = 2 + 2 = 4.",
+              "C : 1 = 1 ; H : 4 = 4 ; O : 4 = 4 -> tous les atomes sont conserves.",
+              "Les atomes ne sont ni crees ni detruits, seulement reorganises : la masse totale reste identique.",
+              "Non : un atome de carbone reste un atome de carbone (en chimie, les elements ne changent pas de nature)."
+            ],
+            piege: "En chimie, les atomes se reorganisent mais ne changent jamais de nature."
+          },
+          {
+            id: "pc_atom_14",
+            titre: "Lire deux formules",
+            diff: "moyen",
+            enonce: "On donne deux molecules : le dioxyde de soufre SO2 et l'ammoniac NH3.",
+            questions: [
+              "Combien d'atomes au total dans une molecule de SO2 ? dans une molecule de NH3 ?",
+              "Ces deux molecules sont-elles des corps simples ou composes ?",
+              "Cite les elements presents dans la molecule de NH3.",
+              "La molecule de dioxygene O2 est-elle un corps simple ? Pourquoi ?"
+            ],
+            correction: [
+              "SO2 : 1 + 2 = 3 atomes ; NH3 : 1 + 3 = 4 atomes.",
+              "Des corps composes (elles contiennent plusieurs elements differents).",
+              "L'azote (N) et l'hydrogene (H).",
+              "Oui : elle ne contient qu'un seul type d'atome (l'oxygene)."
+            ],
+            piege: "Corps compose = plusieurs elements ; corps simple = un seul type d'atome."
           }
         ]
       },
@@ -706,6 +824,65 @@ const ANNALES = {
               "Chimique : une nouvelle substance (l'oxyde de cuivre) se forme."
             ],
             piege: "Masse des produits = somme des masses des reactifs (en systeme ferme)."
+          },
+          {
+            id: "pc_masse_12",
+            titre: "Combustion et masse des gaz",
+            diff: "difficile",
+            enonce: "On brule 24 g de carbone. La combustion complete consomme 64 g de dioxygene et produit du dioxyde de carbone, dans un systeme ferme.",
+            questions: [
+              "Ecris la relation de conservation des masses pour cette reaction.",
+              "Calcule la masse de dioxyde de carbone produite.",
+              "Si la combustion avait lieu a l'air libre sur une balance, celle-ci indiquerait-elle cette masse ? Pourquoi ?",
+              "Le carbone se transforme-t-il en un autre element ? Justifie."
+            ],
+            correction: [
+              "m(carbone) + m(dioxygene) = m(dioxyde de carbone).",
+              "24 + 64 = 88 g de dioxyde de carbone.",
+              "Non : le CO2 est un gaz qui s'echappe, la balance ne le pese pas (masse mesuree plus faible).",
+              "Non : les atomes de carbone se retrouvent dans le CO2, ils ne changent pas de nature."
+            ],
+            piege: "La conservation n'est vraie qu'en comptant TOUS les reactifs et produits, gaz compris."
+          },
+          {
+            id: "pc_masse_13",
+            titre: "Verifier la conservation de la masse",
+            diff: "expert",
+            enonce: "On chauffe dans un tube ferme 5,6 g de fer avec 3,2 g de soufre. La reaction forme du sulfure de fer (un solide). On pese le tube et son contenu avant et apres la reaction.",
+            questions: [
+              "Quelle masse de sulfure de fer obtient-on si tout reagit ?",
+              "La masse totale du tube change-t-elle pendant la reaction ? Justifie.",
+              "Si on ouvre le tube apres reaction, la masse mesuree change-t-elle ? Pourquoi le sulfure de fer ne produit-il pas de gaz ?",
+              "On refait l'experience avec un tube fissure (non etanche). La conservation est-elle verifiable ? Explique.",
+              "Conclure : a quelle condition peut-on verifier experimentalement la conservation de la masse ?"
+            ],
+            correction: [
+              "5,6 + 3,2 = 8,8 g de sulfure de fer.",
+              "Non : aucun echange avec l'exterieur (systeme ferme), la masse totale reste constante.",
+              "Non : le sulfure de fer est un solide, aucun gaz ne se forme ni ne s'echappe -> la masse ne change pas.",
+              "Non : par la fissure, de la matiere (gaz, air) pourrait entrer ou sortir, ce qui fausserait la mesure.",
+              "Il faut un systeme ferme (etanche), pour qu'aucune matiere n'echange avec l'exterieur."
+            ],
+            piege: "La conservation de la masse ne se verifie que dans un systeme parfaitement ferme."
+          },
+          {
+            id: "pc_masse_14",
+            titre: "Le comprime effervescent",
+            diff: "difficile",
+            enonce: "On dissout un comprime effervescent dans l'eau, dans un becher ouvert pose sur une balance. Des bulles de gaz se forment et la masse affichee diminue.",
+            questions: [
+              "Pourquoi la masse affichee diminue-t-elle ?",
+              "La conservation de la masse est-elle reellement violee ?",
+              "Comment faudrait-il realiser l'experience pour verifier la conservation ?",
+              "Quel gaz s'echappe le plus souvent dans ce type de reaction ?"
+            ],
+            correction: [
+              "Un gaz se forme et s'echappe dans l'air : la balance ne le pese plus.",
+              "Non : si on comptait le gaz parti, la masse totale serait conservee.",
+              "En systeme ferme (recipient bouche), pour retenir le gaz forme.",
+              "Du dioxyde de carbone CO2."
+            ],
+            piege: "En systeme ouvert, le gaz qui s'echappe fait baisser la masse mesuree, sans violer la conservation."
           }
         ]
       },
@@ -923,6 +1100,65 @@ const ANNALES = {
               "Oui : une source de chaleur (etincelle, flamme) pour atteindre la temperature d'inflammation."
             ],
             piege: "La combustion LIBERE de l'energie, mais il en faut un peu pour la demarrer."
+          },
+          {
+            id: "pc_comb_12",
+            titre: "Combustion du carbone et masse",
+            diff: "difficile",
+            enonce: "On etudie la combustion du carbone : C + O2 -> CO2. On fait bruler 3 g de carbone dans un flacon contenant 8 g de dioxygene. Tout reagit.",
+            questions: [
+              "Cite le combustible et le comburant.",
+              "Quel test permet d'identifier le gaz produit ? Quel resultat attend-on ?",
+              "Calcule la masse de dioxyde de carbone formee (conservation de la masse).",
+              "Pourquoi, dans un espace clos, la combustion finit-elle par s'arreter ?"
+            ],
+            correction: [
+              "Combustible : le carbone ; comburant : le dioxygene.",
+              "Le test a l'eau de chaux : elle se trouble (devient blanche) en presence de dioxyde de carbone.",
+              "3 + 8 = 11 g de dioxyde de carbone.",
+              "Le dioxygene s'epuise : sans comburant, la combustion s'arrete."
+            ],
+            piege: "Sans dioxygene, pas de combustion : elle cesse quand le comburant est consomme."
+          },
+          {
+            id: "pc_comb_13",
+            titre: "Securite d'une chaudiere a gaz",
+            diff: "expert",
+            enonce: "Une chaudiere brule du gaz naturel (methane). Mal entretenue, elle produit une flamme jaune. La combustion complete s'ecrit : CH4 + 2 O2 -> CO2 + 2 H2O.",
+            questions: [
+              "Identifie le combustible et le comburant.",
+              "Verifie que l'equation est equilibree pour le carbone, l'hydrogene et l'oxygene.",
+              "Que revele une flamme jaune au lieu d'une flamme bleue ?",
+              "Quel gaz dangereux peut alors se former ? Pourquoi est-il indetectable par l'odorat ?",
+              "Cite deux mesures de securite pour eviter une intoxication."
+            ],
+            correction: [
+              "Combustible : methane CH4 ; comburant : dioxygene O2.",
+              "C : 1 = 1 ; H : 4 = 4 ; O : 2 x 2 = 4 a gauche et 2 + 2 = 4 a droite -> equilibree.",
+              "Une combustion incomplete (le dioxygene est en quantite insuffisante).",
+              "Du monoxyde de carbone CO ; il est inodore et incolore, donc l'odorat ne le detecte pas.",
+              "Aerer la piece, faire entretenir la chaudiere, installer un detecteur de monoxyde de carbone."
+            ],
+            piege: "Flamme jaune = combustion incomplete = risque de monoxyde de carbone (mortel)."
+          },
+          {
+            id: "pc_comb_14",
+            titre: "La bougie sous un bocal",
+            diff: "facile",
+            enonce: "On compare la combustion d'une bougie a l'air libre et sous un bocal retourne qui l'enferme.",
+            questions: [
+              "Sous le bocal, que devient la flamme au bout d'un moment ?",
+              "Pourquoi s'eteint-elle ?",
+              "Quel gaz a ete consomme sous le bocal ?",
+              "A l'air libre, pourquoi la bougie continue-t-elle de bruler ?"
+            ],
+            correction: [
+              "Elle s'eteint.",
+              "Le dioxygene enferme sous le bocal s'epuise.",
+              "Le dioxygene.",
+              "L'air apporte en permanence du dioxygene neuf."
+            ],
+            piege: "Sans renouvellement de dioxygene, la combustion finit par s'arreter."
           }
         ]
       },
@@ -1140,6 +1376,65 @@ const ANNALES = {
               "Ce sont des liquides non miscibles : ils se classent par masse volumique."
             ],
             piege: "Le plus dense va au fond, le moins dense remonte a la surface."
+          },
+          {
+            id: "pc_mv_12",
+            titre: "La couronne en or",
+            diff: "difficile",
+            enonce: "Une couronne de masse 579 g semble en or. On la plonge dans une eprouvette : le niveau d'eau passe de 100 mL a 130 mL. Masse volumique de l'or pur : 19,3 g/cm3.",
+            questions: [
+              "Quel est le volume de la couronne ?",
+              "Calcule sa masse volumique.",
+              "La couronne est-elle en or pur ? Justifie.",
+              "Si la masse volumique mesuree avait ete plus faible, qu'aurait-on pu en conclure ?"
+            ],
+            correction: [
+              "130 - 100 = 30 mL, soit 30 cm3.",
+              "rho = 579 / 30 = 19,3 g/cm3.",
+              "Oui : 19,3 g/cm3 correspond exactement a la masse volumique de l'or pur.",
+              "Que la couronne contient un autre metal, moins dense, melange a l'or (un alliage)."
+            ],
+            piege: "La masse volumique permet d'identifier un materiau et de detecter un alliage."
+          },
+          {
+            id: "pc_mv_13",
+            titre: "Identifier un metal inconnu",
+            diff: "expert",
+            enonce: "On cherche a identifier un metal. Echantillon : masse 212,5 g. Plonge dans 50 mL d'eau, le niveau monte a 75 mL. Donnees : aluminium 2,7 g/cm3 ; fer 7,9 g/cm3 ; cuivre 8,5 g/cm3.",
+            questions: [
+              "Calcule le volume de l'echantillon.",
+              "Calcule sa masse volumique.",
+              "De quel metal s'agit-il ?",
+              "Un second echantillon du meme metal a une masse de 425 g. Calcule son volume sans nouvelle mesure.",
+              "Ce metal coule-t-il dans l'eau (1 g/cm3) ? Flotte-t-il sur le mercure (13,6 g/cm3) ? Justifie."
+            ],
+            correction: [
+              "75 - 50 = 25 mL, soit 25 cm3.",
+              "rho = 212,5 / 25 = 8,5 g/cm3.",
+              "Du cuivre (8,5 g/cm3).",
+              "Meme masse volumique : V = m / rho = 425 / 8,5 = 50 cm3.",
+              "Il coule dans l'eau (8,5 > 1) ; il flotte sur le mercure (8,5 < 13,6)."
+            ],
+            piege: "La masse volumique caracterise le metal : elle ne depend pas de la quantite."
+          },
+          {
+            id: "pc_mv_14",
+            titre: "La masse d'un liquide",
+            diff: "difficile",
+            enonce: "Un recipient vide a une masse de 120 g. Rempli de 200 mL d'un liquide, l'ensemble a une masse de 280 g.",
+            questions: [
+              "Quelle est la masse du liquide seul ?",
+              "Calcule la masse volumique du liquide (en g/mL).",
+              "Ce liquide est-il plus ou moins dense que l'eau (1 g/mL) ?",
+              "Quelle serait la masse de 1 L de ce liquide ?"
+            ],
+            correction: [
+              "280 - 120 = 160 g.",
+              "rho = m / V = 160 / 200 = 0,8 g/mL.",
+              "Moins dense que l'eau (0,8 < 1).",
+              "1 L = 1000 mL, donc m = 0,8 x 1000 = 800 g."
+            ],
+            piege: "Masse du liquide = masse de l'ensemble plein - masse du recipient vide."
           }
         ]
       },
@@ -1362,6 +1657,65 @@ const ANNALES = {
               "En general conducteurs."
             ],
             piege: "Les metaux conduisent le courant ; plastique, verre et bois sec sont isolants."
+          },
+          {
+            id: "pc_ohm_12",
+            titre: "Exploiter une caracteristique",
+            diff: "difficile",
+            enonce: "On releve la caracteristique d'une resistance. Pour U = 4 V, on mesure I = 0,016 A. Pour U = 6 V, on mesure I = 0,024 A.",
+            questions: [
+              "Calcule le rapport U/I pour chaque mesure. Que constates-tu ?",
+              "En deduire la valeur de la resistance R.",
+              "Quelle tension faut-il appliquer pour obtenir I = 0,030 A ?",
+              "La caracteristique U = f(I) est-elle une droite ? Passe-t-elle par l'origine ?"
+            ],
+            correction: [
+              "4 / 0,016 = 250 ; 6 / 0,024 = 250. Le rapport U/I est constant.",
+              "R = 250 ohms.",
+              "U = R x I = 250 x 0,030 = 7,5 V.",
+              "Oui : une droite passant par l'origine (U est proportionnelle a I)."
+            ],
+            piege: "Rapport U/I constant -> resistance ohmique -> caracteristique = droite par l'origine."
+          },
+          {
+            id: "pc_ohm_13",
+            titre: "Guirlande en serie",
+            diff: "expert",
+            enonce: "Une guirlande comporte un generateur de 12 V et une resistance R en serie avec un amperemetre. On mesure I = 0,05 A.",
+            questions: [
+              "Enonce la loi d'Ohm et calcule la valeur de R.",
+              "La puissance recue par R vaut P = U x I. Calcule-la.",
+              "Quelle energie la guirlande consomme-t-elle en 2 heures (en Wh) ?",
+              "On remplace R par une resistance deux fois plus grande (meme generateur). L'intensite augmente-t-elle ou diminue-t-elle ? Calcule la nouvelle intensite.",
+              "Dans ce montage en serie, si une lampe grille, que se passe-t-il pour les autres ?"
+            ],
+            correction: [
+              "Loi d'Ohm : U = R x I, donc R = U / I = 12 / 0,05 = 240 ohms.",
+              "P = U x I = 12 x 0,05 = 0,6 W.",
+              "E = P x t = 0,6 x 2 = 1,2 Wh.",
+              "I diminue : avec R = 480 ohms, I = 12 / 480 = 0,025 A (l'intensite est divisee par 2).",
+              "Le circuit est ouvert : toutes les lampes s'eteignent (montage en serie)."
+            ],
+            piege: "En serie, I = U/R : doubler R divise I par 2 ; et une seule lampe grillee coupe tout."
+          },
+          {
+            id: "pc_ohm_14",
+            titre: "Choisir la bonne tension",
+            diff: "moyen",
+            enonce: "Un conducteur ohmique a une resistance R = 150 ohms.",
+            questions: [
+              "Quelle formule relie U, R et I ?",
+              "Quelle tension faut-il appliquer pour obtenir une intensite de 0,04 A ?",
+              "Si on applique 9 V a ce conducteur, quelle intensite le traverse ?",
+              "Quelle est l'unite de la resistance ?"
+            ],
+            correction: [
+              "U = R x I (et donc I = U / R).",
+              "U = 150 x 0,04 = 6 V.",
+              "I = U / R = 9 / 150 = 0,06 A.",
+              "L'ohm."
+            ],
+            piege: "Selon ce qu'on cherche : U = R x I ou I = U / R."
           }
         ]
       },
@@ -1579,6 +1933,65 @@ const ANNALES = {
               "Elles gaspillent beaucoup d'energie en chaleur ; les LED sont bien plus economes."
             ],
             piege: "A eclairage egal, la LED consomme bien moins (moins de pertes en chaleur)."
+          },
+          {
+            id: "pc_ener_12",
+            titre: "Le cout du chauffe-eau",
+            diff: "difficile",
+            enonce: "Un chauffe-eau de puissance 2000 W fonctionne 3 h par jour. Le prix de l'energie est de 0,20 euro par kWh.",
+            questions: [
+              "Calcule l'energie consommee par jour (en kWh).",
+              "Calcule le cout de fonctionnement par jour.",
+              "Calcule le cout sur 30 jours.",
+              "On le remplace par un modele de 1500 W (meme duree). Quelle economie d'energie realise-t-on par jour (en kWh) ?"
+            ],
+            correction: [
+              "E = P x t = 2000 x 3 = 6000 Wh = 6 kWh.",
+              "6 x 0,20 = 1,20 euro par jour.",
+              "1,20 x 30 = 36 euros.",
+              "Nouveau modele : 1500 x 3 = 4500 Wh = 4,5 kWh. Economie = 6 - 4,5 = 1,5 kWh par jour."
+            ],
+            piege: "Energie (kWh) = puissance (kW) x duree (h) ; bien convertir les W en kW."
+          },
+          {
+            id: "pc_ener_13",
+            titre: "Maison alimentee au solaire",
+            diff: "expert",
+            enonce: "Une installation solaire alimente une maison. Un radiateur de 1000 W et 5 lampes LED de 10 W chacune fonctionnent ensemble pendant 4 h.",
+            questions: [
+              "Calcule la puissance totale des 5 lampes.",
+              "Calcule la puissance totale installee (radiateur + lampes).",
+              "Calcule l'energie consommee en 4 h (en Wh puis en kWh).",
+              "Le radiateur transforme l'electricite surtout en quelle forme d'energie ? Comment s'appelle ce phenomene dans une resistance ?",
+              "L'energie solaire est-elle renouvelable ? L'energie est-elle creee dans l'installation ?"
+            ],
+            correction: [
+              "5 x 10 = 50 W.",
+              "1000 + 50 = 1050 W.",
+              "E = 1050 x 4 = 4200 Wh = 4,2 kWh.",
+              "Surtout en chaleur (energie thermique) ; ce phenomene s'appelle l'effet Joule.",
+              "Oui, le soleil est une source renouvelable ; non, l'energie n'est pas creee, elle est convertie (lumiere -> electricite)."
+            ],
+            piege: "Les puissances s'additionnent ; energie (Wh) = puissance totale (W) x duree (h)."
+          },
+          {
+            id: "pc_ener_14",
+            titre: "L'energie de la bouilloire",
+            diff: "difficile",
+            enonce: "Une bouilloire de puissance 2200 W chauffe de l'eau pendant 3 minutes.",
+            questions: [
+              "Convertis la duree en secondes.",
+              "Calcule l'energie consommee en joules (E = P x t).",
+              "Convertis cette energie en watt-heures (1 Wh = 3600 J).",
+              "En quelle forme d'energie l'electricite est-elle transformee dans la bouilloire ?"
+            ],
+            correction: [
+              "3 min = 3 x 60 = 180 s.",
+              "E = 2200 x 180 = 396 000 J.",
+              "396 000 / 3600 = 110 Wh.",
+              "En chaleur (energie thermique) qui chauffe l'eau : c'est l'effet Joule."
+            ],
+            piege: "Pour des joules, la duree doit etre en secondes : E = P x t."
           }
         ]
       },
@@ -1796,6 +2209,65 @@ const ANNALES = {
               "Dans le referentiel terrestre (en realite, c'est la Terre qui tourne)."
             ],
             piege: "Un meme objet peut etre en mouvement ou immobile selon le referentiel choisi."
+          },
+          {
+            id: "pc_mvt_12",
+            titre: "Vitesse moyenne d'un train",
+            diff: "difficile",
+            enonce: "Un train doit parcourir 240 km. Il roule pendant la premiere heure a 80 km/h, puis effectue le reste du trajet a 100 km/h.",
+            questions: [
+              "Quelle distance parcourt-il pendant la premiere heure ?",
+              "Quelle distance lui reste-t-il a parcourir ?",
+              "Combien de temps met-il pour la deuxieme partie du trajet ?",
+              "Calcule sa vitesse moyenne sur l'ensemble du trajet."
+            ],
+            correction: [
+              "d = v x t = 80 x 1 = 80 km.",
+              "240 - 80 = 160 km.",
+              "t = d / v = 160 / 100 = 1,6 h.",
+              "Duree totale = 1 + 1,6 = 2,6 h ; v = 240 / 2,6 = 92,3 km/h (environ)."
+            ],
+            piege: "La vitesse moyenne n'est PAS la moyenne des vitesses : c'est distance totale / duree totale."
+          },
+          {
+            id: "pc_mvt_13",
+            titre: "Distance d'arret d'une voiture",
+            diff: "expert",
+            enonce: "Securite routiere : une voiture roule a 50 km/h. Le temps de reaction du conducteur est de 1 s. La distance d'arret = distance parcourue pendant la reaction + distance de freinage. On donne la distance de freinage : 14 m.",
+            questions: [
+              "Convertis 50 km/h en m/s.",
+              "Calcule la distance parcourue pendant le temps de reaction (1 s).",
+              "En deduire la distance d'arret totale.",
+              "A 90 km/h (soit 25 m/s), quelle serait la distance parcourue pendant la reaction ? Pourquoi la distance d'arret augmente-t-elle fortement avec la vitesse ?",
+              "Dans quel referentiel etudie-t-on le mouvement de la voiture ?"
+            ],
+            correction: [
+              "50 / 3,6 = 13,9 m/s (environ 14 m/s).",
+              "d = v x t = 13,9 x 1 = 13,9 m (environ 14 m).",
+              "Distance d'arret = 14 (reaction) + 14 (freinage) = 28 m environ.",
+              "25 x 1 = 25 m pendant la reaction. Plus on roule vite, plus la distance parcourue (reaction ET freinage) est grande.",
+              "Le referentiel terrestre (la route, le sol)."
+            ],
+            piege: "A 50 km/h on roule a ~14 m/s : en 1 s de reaction, on parcourt deja ~14 m avant meme de freiner."
+          },
+          {
+            id: "pc_mvt_14",
+            titre: "La vitesse de l'avion",
+            diff: "moyen",
+            enonce: "Un avion vole a vitesse constante et parcourt 900 km en 1 h 15 min.",
+            questions: [
+              "Convertis la duree du trajet en heures.",
+              "Calcule sa vitesse moyenne en km/h.",
+              "Convertis cette vitesse en m/s (arrondis a l'unite).",
+              "Le mouvement de l'avion est-il uniforme ?"
+            ],
+            correction: [
+              "1 h 15 min = 1 + 15/60 = 1,25 h.",
+              "v = d / t = 900 / 1,25 = 720 km/h.",
+              "720 / 3,6 = 200 m/s.",
+              "Oui : la vitesse est constante, le mouvement est uniforme."
+            ],
+            piege: "15 min = 0,25 h, donc 1 h 15 = 1,25 h (et non 1,15 h)."
           }
         ]
       },
@@ -2013,6 +2485,65 @@ const ANNALES = {
               "Le poids (l'attraction de la Terre)."
             ],
             piege: "Sans air, tous les objets tombent a la meme vitesse, quelle que soit leur masse."
+          },
+          {
+            id: "pc_grav_12",
+            titre: "Meme objet, Terre et Lune",
+            diff: "difficile",
+            enonce: "Un objet a une masse de 6 kg. On donne l'intensite de la pesanteur : g = 10 N/kg sur Terre et g = 1,6 N/kg sur la Lune.",
+            questions: [
+              "Calcule le poids de l'objet sur Terre.",
+              "Calcule son poids sur la Lune.",
+              "Par combien le poids est-il divise entre la Terre et la Lune (arrondis a l'unite) ?",
+              "La masse de l'objet est-elle la meme sur la Lune ? Justifie."
+            ],
+            correction: [
+              "P = m x g = 6 x 10 = 60 N.",
+              "P = 6 x 1,6 = 9,6 N.",
+              "60 / 9,6 = 6,25, soit environ 6 fois plus faible.",
+              "Oui, 6 kg : la masse ne depend pas de l'astre, seul le poids change (a cause de g)."
+            ],
+            piege: "La masse (kg) est invariable ; le poids (N) depend de l'intensite de pesanteur g."
+          },
+          {
+            id: "pc_grav_13",
+            titre: "Mission sur Mars",
+            diff: "expert",
+            enonce: "Un astronaute et son equipement ont une masse totale de 120 kg. On donne g : 10 N/kg sur Terre et 3,7 N/kg sur Mars.",
+            questions: [
+              "Calcule le poids de l'ensemble sur Terre.",
+              "Calcule son poids sur Mars.",
+              "Sur Mars, un autre materiel a un poids de 444 N. Quelle est sa masse ?",
+              "Pourquoi un astronaute peut-il faire de grands bonds sur Mars alors qu'il ne le pourrait pas sur Terre ?",
+              "Qu'est-ce qui maintient Mars en orbite autour du Soleil ?"
+            ],
+            correction: [
+              "P = 120 x 10 = 1200 N.",
+              "P = 120 x 3,7 = 444 N.",
+              "m = P / g = 444 / 3,7 = 120 kg.",
+              "La pesanteur sur Mars (3,7 N/kg) est bien plus faible : le poids le retient moins.",
+              "La force de gravitation exercee par le Soleil (du fait de sa tres grande masse)."
+            ],
+            piege: "P = m x g dans les deux sens : g = P/m permet de retrouver une masse a partir d'un poids."
+          },
+          {
+            id: "pc_grav_14",
+            titre: "Retrouver une masse, puis un poids",
+            diff: "moyen",
+            enonce: "Sur Terre, l'intensite de la pesanteur vaut g = 10 N/kg. Un sac a un poids de 80 N.",
+            questions: [
+              "Donne la formule reliant le poids P, la masse m et g.",
+              "Calcule la masse du sac.",
+              "Sur la Lune (g = 1,6 N/kg), quel serait son poids ?",
+              "Sa masse change-t-elle entre la Terre et la Lune ?"
+            ],
+            correction: [
+              "P = m x g, donc m = P / g.",
+              "m = 80 / 10 = 8 kg.",
+              "P = 8 x 1,6 = 12,8 N.",
+              "Non : la masse reste 8 kg, seul le poids change."
+            ],
+            piege: "On passe du poids a la masse avec m = P / g, et inversement avec P = m x g."
           }
         ]
       },
@@ -2230,6 +2761,65 @@ const ANNALES = {
               "Non : elle est arretee, ce qui cree une ombre."
             ],
             piege: "La lumiere se propage en ligne droite : elle ne contourne pas les obstacles (d'ou les ombres)."
+          },
+          {
+            id: "pc_sig_12",
+            titre: "A quelle distance est l'orage ?",
+            diff: "difficile",
+            enonce: "Pendant un orage, on voit l'eclair puis on entend le tonnerre 9 s plus tard. Le son se propage a 340 m/s ; la lumiere a environ 300 000 km/s.",
+            questions: [
+              "Pourquoi peut-on considerer que l'on voit l'eclair instantanement ?",
+              "Calcule la distance qui nous separe de l'orage.",
+              "Si le delai passe a 3 s, l'orage se rapproche-t-il ou s'eloigne-t-il ? Calcule la nouvelle distance.",
+              "Conclure : comment le delai entre l'eclair et le tonnerre renseigne-t-il sur la distance de l'orage ?"
+            ],
+            correction: [
+              "La lumiere va environ un million de fois plus vite que le son : son temps de trajet est negligeable.",
+              "d = v x t = 340 x 9 = 3060 m, soit environ 3 km.",
+              "Le delai est plus court -> l'orage se rapproche ; d = 340 x 3 = 1020 m, soit environ 1 km.",
+              "Plus le delai est court, plus l'orage est proche (distance = vitesse du son x delai)."
+            ],
+            piege: "Distance = vitesse du son x delai ; la lumiere, elle, arrive quasi instantanement."
+          },
+          {
+            id: "pc_sig_13",
+            titre: "Le sonar du bateau",
+            diff: "expert",
+            enonce: "Un bateau mesure la profondeur avec un sonar : il emet un signal sonore vers le fond, et l'echo revient 0,2 s apres l'emission. Vitesse du son dans l'eau : 1500 m/s.",
+            questions: [
+              "Quelle distance le son parcourt-il au total entre l'emission et la reception de l'echo ?",
+              "En deduire la profondeur sous le bateau.",
+              "Le son se propage-t-il plus vite dans l'eau ou dans l'air ? Donne les deux valeurs.",
+              "Le sonar pourrait-il fonctionner dans le vide de l'espace ? Justifie.",
+              "Pour un autre fond, l'echo met 0,3 s. La profondeur est-elle plus grande ? Calcule-la."
+            ],
+            correction: [
+              "d = v x t = 1500 x 0,2 = 300 m (c'est l'aller-retour).",
+              "Profondeur = 300 / 2 = 150 m.",
+              "Plus vite dans l'eau : 1500 m/s, contre 340 m/s dans l'air.",
+              "Non : dans le vide, il n'y a pas de matiere pour propager le son.",
+              "Oui, plus grande : d = 1500 x 0,3 = 450 m -> profondeur = 225 m."
+            ],
+            piege: "Pour un echo, profondeur = (vitesse x temps) / 2, car le son fait l'aller-retour."
+          },
+          {
+            id: "pc_sig_14",
+            titre: "Voir avant d'entendre",
+            diff: "moyen",
+            enonce: "Dans un stade, un spectateur eloigne voit le joueur frapper le ballon, puis entend le choc un court instant apres. Le son se propage a 340 m/s.",
+            questions: [
+              "Pourquoi voit-il l'action avant de l'entendre ?",
+              "Le delai entre l'image et le son est de 0,5 s. A quelle distance se trouve-t-il du joueur ?",
+              "La lumiere a-t-elle besoin d'un milieu pour se propager ?",
+              "Le son peut-il se propager dans le vide ?"
+            ],
+            correction: [
+              "La lumiere va beaucoup plus vite que le son : l'image arrive quasi instantanement.",
+              "d = v x t = 340 x 0,5 = 170 m.",
+              "Non : la lumiere se propage meme dans le vide.",
+              "Non : le son a besoin d'un milieu materiel pour se propager."
+            ],
+            piege: "Distance = vitesse du son x delai ; la lumiere, elle, arrive quasi instantanement."
           }
         ]
       }

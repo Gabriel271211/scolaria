@@ -2946,6 +2946,58 @@ const ANNALES = {
               "Valeur exacte : KM = racine de 65. Valeur approchee : KM = 8,1 cm environ."
             ],
             piege: "Si le carre ne tombe pas juste, on garde la racine (valeur exacte) ou on arrondit."
+          },
+          {
+            id: "m_pyth_07",
+            titre: "La longueur d'un cable",
+            diff: "moyen",
+            enonce: "Un mat vertical [AB] mesure 6 m. Un cable relie le sommet B a un point C du sol, situe a 8 m du pied A du mat. Le triangle ABC est rectangle en A. On cherche la longueur du cable BC.",
+            questions: [
+              "Quel cote du triangle represente le cable ?",
+              "Ecris l'egalite de Pythagore.",
+              "Calcule la longueur du cable BC."
+            ],
+            correction: [
+              "Le cable est l'hypotenuse [BC] (oppose a l'angle droit).",
+              "BC^2 = AB^2 + AC^2.",
+              "BC^2 = 6^2 + 8^2 = 36 + 64 = 100, donc BC = 10 m."
+            ],
+            piege: "L'hypotenuse (le cable) au carre = somme des carres des deux autres cotes."
+          },
+          {
+            id: "m_pyth_08",
+            titre: "Triangle rectangle ou non ?",
+            diff: "difficile",
+            enonce: "Un triangle RST a pour cotes RS = 5 cm, ST = 6 cm et RT = 8 cm. On veut savoir s'il est rectangle.",
+            questions: [
+              "Quel est le cote le plus long ?",
+              "Calcule RT^2 d'une part, puis RS^2 + ST^2 d'autre part.",
+              "Compare et conclus."
+            ],
+            correction: [
+              "Le cote le plus long est [RT] = 8 cm.",
+              "RT^2 = 64 ; RS^2 + ST^2 = 25 + 36 = 61.",
+              "64 n'est pas egal a 61 : d'apres la reciproque (contraposee) de Pythagore, le triangle n'est PAS rectangle."
+            ],
+            piege: "Si (grand cote)^2 n'est pas egal a la somme des carres des deux autres, le triangle n'est pas rectangle."
+          },
+          {
+            id: "m_pyth_09",
+            titre: "La diagonale d'un carre",
+            diff: "moyen",
+            enonce: "Un carre ABCD a un cote de 5 cm. On cherche la longueur de sa diagonale AC (voir figure).",
+            schema: `<svg width="100%" viewBox="0 0 220 200" role="img" xmlns="http://www.w3.org/2000/svg"><title>Carre ABCD et sa diagonale</title><desc>Carre de cote 5 cm.</desc><polygon points="55,45 155,45 155,145 55,145" fill="none" stroke="currentColor" stroke-width="2"/><line x1="55" y1="45" x2="155" y2="145" stroke="currentColor" stroke-width="2"/><rect x="141" y="45" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"/><text x="44" y="42" font-size="14" fill="currentColor" font-family="sans-serif">A</text><text x="160" y="42" font-size="14" fill="currentColor" font-family="sans-serif">B</text><text x="160" y="159" font-size="14" fill="currentColor" font-family="sans-serif">C</text><text x="44" y="159" font-size="14" fill="currentColor" font-family="sans-serif">D</text><text x="92" y="38" font-size="12" fill="currentColor" font-family="sans-serif">5 cm</text><text x="58" y="104" font-size="12" fill="currentColor" font-family="sans-serif">? cm</text></svg>`,
+            questions: [
+              "La diagonale partage le carre en deux triangles rectangles. Ecris l'egalite de Pythagore dans le triangle ABC.",
+              "Calcule le carre de la diagonale AC.",
+              "Donne la longueur de la diagonale (arrondie au dixieme)."
+            ],
+            correction: [
+              "AC^2 = AB^2 + BC^2 = 5^2 + 5^2.",
+              "AC^2 = 25 + 25 = 50.",
+              "AC = racine de 50 = 7,1 cm environ."
+            ],
+            piege: "La diagonale d'un carre de cote c vaut c x racine de 2 (elle n'est jamais un nombre entier)."
           }
         ]
       },
@@ -3060,6 +3112,54 @@ const ANNALES = {
               "Coefficient = OT/OR = 10/4 = 2,5."
             ],
             piege: "Le coefficient d'agrandissement = grand cote / petit cote correspondant."
+          },
+          {
+            id: "m_thal_07",
+            titre: "Droite parallele dans un triangle",
+            diff: "moyen",
+            enonce: "Dans le triangle ABC, M est un point de [AB] et N un point de [AC] tels que (MN) // (BC). On donne AM = 2 cm, AB = 6 cm et MN = 3 cm (voir figure).",
+            schema: `<svg width="100%" viewBox="0 0 240 200" role="img" xmlns="http://www.w3.org/2000/svg"><title>Triangle ABC avec (MN) parallele a (BC)</title><desc>M sur AB, N sur AC, (MN) parallele a (BC).</desc><polygon points="120,30 45,165 195,165" fill="none" stroke="currentColor" stroke-width="2"/><line x1="95" y1="75" x2="145" y2="75" stroke="currentColor" stroke-width="2"/><text x="114" y="24" font-size="14" fill="currentColor" font-family="sans-serif">A</text><text x="34" y="178" font-size="14" fill="currentColor" font-family="sans-serif">B</text><text x="200" y="178" font-size="14" fill="currentColor" font-family="sans-serif">C</text><text x="78" y="78" font-size="13" fill="currentColor" font-family="sans-serif">M</text><text x="150" y="78" font-size="13" fill="currentColor" font-family="sans-serif">N</text><text x="98" y="56" font-size="12" fill="currentColor" font-family="sans-serif">2</text><text x="62" y="128" font-size="12" fill="currentColor" font-family="sans-serif">6</text><text x="112" y="71" font-size="12" fill="currentColor" font-family="sans-serif">3</text><text x="112" y="182" font-size="12" fill="currentColor" font-family="sans-serif">?</text></svg>`,
+            questions: [
+              "Ecris les rapports egaux du theoreme de Thales.",
+              "Calcule la longueur BC."
+            ],
+            correction: [
+              "AM/AB = AN/AC = MN/BC.",
+              "AM/AB = MN/BC -> 2/6 = 3/BC -> BC = 3 x 6 / 2 = 9 cm."
+            ],
+            piege: "On ecrit les longueurs du petit triangle sur celles du grand, dans le meme ordre."
+          },
+          {
+            id: "m_thal_08",
+            titre: "Calculer plusieurs longueurs",
+            diff: "difficile",
+            enonce: "Les points A, M, B sont alignes dans cet ordre, ainsi que A, N, C. Les droites (MN) et (BC) sont paralleles. On donne AM = 4 cm, MB = 6 cm et AN = 3 cm.",
+            questions: [
+              "Calcule la longueur AB.",
+              "Ecris le rapport de Thales et calcule AC.",
+              "En deduire la longueur NC."
+            ],
+            correction: [
+              "AB = AM + MB = 4 + 6 = 10 cm.",
+              "AM/AB = AN/AC -> 4/10 = 3/AC -> AC = 3 x 10 / 4 = 7,5 cm.",
+              "NC = AC - AN = 7,5 - 3 = 4,5 cm."
+            ],
+            piege: "Attention : AB = AM + MB (on additionne les segments avant d'appliquer Thales)."
+          },
+          {
+            id: "m_thal_09",
+            titre: "Prouver que deux droites sont paralleles",
+            diff: "moyen",
+            enonce: "Les points O, A, B sont alignes dans cet ordre, ainsi que O, C, D. On donne OA = 3 cm, OB = 9 cm, OC = 4 cm et OD = 12 cm. On veut savoir si (AC) et (BD) sont paralleles.",
+            questions: [
+              "Calcule les rapports OA/OB et OC/OD.",
+              "Compare-les et conclus."
+            ],
+            correction: [
+              "OA/OB = 3/9 = 1/3 ; OC/OD = 4/12 = 1/3.",
+              "Les rapports sont egaux et les points sont alignes dans le meme ordre : d'apres la reciproque de Thales, (AC) // (BD)."
+            ],
+            piege: "Rapports egaux + bon ordre d'alignement -> droites paralleles (reciproque de Thales)."
           }
         ]
       },
@@ -3172,6 +3272,58 @@ const ANNALES = {
               "hypotenuse = 5 / 0,5 = 10 cm."
             ],
             piege: "SOH : pour trouver l'hypotenuse, on DIVISE le cote oppose par le sinus."
+          },
+          {
+            id: "m_trigo_07",
+            titre: "Trouver un angle avec la tangente",
+            diff: "moyen",
+            enonce: "Le triangle ABC est rectangle en A. On donne AB = 3 cm et AC = 4 cm. On cherche la mesure de l'angle en B (voir figure). On donne arctan(1,33) = 53 degres environ.",
+            schema: `<svg width="100%" viewBox="0 0 240 200" role="img" xmlns="http://www.w3.org/2000/svg"><title>Triangle rectangle en A</title><desc>AB = 3 cm, AC = 4 cm, angle cherche en B.</desc><polygon points="55,160 55,55 205,160" fill="none" stroke="currentColor" stroke-width="2"/><rect x="55" y="146" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M 55 79 A 24 24 0 0 0 73 64" fill="none" stroke="currentColor" stroke-width="1.5"/><text x="44" y="176" font-size="14" fill="currentColor" font-family="sans-serif">A</text><text x="44" y="52" font-size="14" fill="currentColor" font-family="sans-serif">B</text><text x="211" y="176" font-size="14" fill="currentColor" font-family="sans-serif">C</text><text x="22" y="112" font-size="12" fill="currentColor" font-family="sans-serif">3 cm</text><text x="120" y="178" font-size="12" fill="currentColor" font-family="sans-serif">4 cm</text></svg>`,
+            questions: [
+              "Pour l'angle B, quel cote est le cote oppose ? Quel cote est le cote adjacent ?",
+              "Calcule tan(B).",
+              "En deduire la mesure de l'angle B (arrondie au degre)."
+            ],
+            correction: [
+              "Oppose a B : AC = 4 cm. Adjacent a B : AB = 3 cm.",
+              "tan(B) = AC / AB = 4 / 3 = 1,33 environ.",
+              "B = arctan(1,33) = 53 degres environ."
+            ],
+            piege: "TOA : pour un angle, bien reperer son cote oppose et son cote adjacent."
+          },
+          {
+            id: "m_trigo_08",
+            titre: "La hauteur d'un cerf-volant",
+            diff: "difficile",
+            enonce: "Un cerf-volant est tenu par un fil tendu de 20 m. Le fil fait un angle de 50 degres avec le sol horizontal. On cherche la hauteur du cerf-volant. On donne sin(50) = 0,766.",
+            questions: [
+              "Le fil represente quel cote du triangle rectangle ? La hauteur est-elle le cote oppose ou adjacent a l'angle de 50 degres ?",
+              "Ecris la relation de trigonometrie adaptee.",
+              "Calcule la hauteur du cerf-volant (arrondie au dixieme)."
+            ],
+            correction: [
+              "Le fil est l'hypotenuse. La hauteur est le cote oppose a l'angle de 50 degres.",
+              "sin(50) = hauteur / 20.",
+              "hauteur = 20 x sin(50) = 20 x 0,766 = 15,3 m."
+            ],
+            piege: "SOH : cote oppose = hypotenuse x sin(angle)."
+          },
+          {
+            id: "m_trigo_09",
+            titre: "Trouver l'hypotenuse avec le cosinus",
+            diff: "moyen",
+            enonce: "Dans un triangle rectangle, un angle mesure 60 degres et le cote adjacent a cet angle mesure 8 cm. On cherche l'hypotenuse. On donne cos(60) = 0,5.",
+            questions: [
+              "Quelle relation lie l'angle, le cote adjacent et l'hypotenuse ?",
+              "Isole l'hypotenuse.",
+              "Calcule la longueur de l'hypotenuse."
+            ],
+            correction: [
+              "cos(60) = cote adjacent / hypotenuse.",
+              "hypotenuse = cote adjacent / cos(60).",
+              "hypotenuse = 8 / 0,5 = 16 cm."
+            ],
+            piege: "CAH : pour trouver l'hypotenuse, on DIVISE le cote adjacent par le cosinus."
           }
         ]
       },
@@ -3282,6 +3434,55 @@ const ANNALES = {
               "4x + 6 = 30 -> 4x = 24 -> x = 6."
             ],
             piege: "Un programme de calcul se traduit par une expression litterale en fonction de x."
+          },
+          {
+            id: "m_lit_07",
+            titre: "Identite remarquable",
+            diff: "difficile",
+            enonce: "Soit l'expression F = (x + 4)^2. On rappelle l'identite : (a + b)^2 = a^2 + 2ab + b^2.",
+            questions: [
+              "Developpe F a l'aide de l'identite remarquable.",
+              "Calcule F pour x = 1.",
+              "Est-il vrai que (x + 4)^2 = x^2 + 16 ?"
+            ],
+            correction: [
+              "F = x^2 + 2 x x x 4 + 4^2 = x^2 + 8x + 16.",
+              "F = 1 + 8 + 16 = 25.",
+              "Non : il manque le double produit 8x. (x + 4)^2 = x^2 + 8x + 16."
+            ],
+            piege: "(x + 4)^2 n'est PAS x^2 + 16 : il y a le double produit 2 x x x 4 = 8x."
+          },
+          {
+            id: "m_lit_08",
+            titre: "Reduire une expression",
+            diff: "moyen",
+            enonce: "Soit l'expression G = 4x + 3 - x + 7.",
+            questions: [
+              "Regroupe les termes en x.",
+              "Regroupe les nombres.",
+              "Donne l'expression reduite, puis calcule G pour x = 2."
+            ],
+            correction: [
+              "4x - x = 3x.",
+              "3 + 7 = 10.",
+              "G = 3x + 10 ; pour x = 2 : G = 3 x 2 + 10 = 16."
+            ],
+            piege: "4x - x = 3x (et non 4) : on enleve un seul x."
+          },
+          {
+            id: "m_lit_09",
+            titre: "Factoriser",
+            diff: "moyen",
+            enonce: "On considere deux expressions : H = 7x + 7 et K = 3x^2 - 6x.",
+            questions: [
+              "Quel est le facteur commun dans H ? Factorise H.",
+              "Quel est le facteur commun dans K ? Factorise K."
+            ],
+            correction: [
+              "Facteur commun de H : 7. Donc H = 7(x + 1).",
+              "Facteur commun de K : 3x. Donc K = 3x(x - 2)."
+            ],
+            piege: "On met en facteur le plus grand facteur commun (un nombre et/ou une lettre)."
           }
         ]
       },
@@ -3393,6 +3594,58 @@ const ANNALES = {
               "x = 3 ou x = -5."
             ],
             piege: "Une equation produit nul donne en general DEUX solutions."
+          },
+          {
+            id: "m_eq_07",
+            titre: "Longueur double de la largeur",
+            diff: "moyen",
+            enonce: "Un rectangle a une longueur egale au double de sa largeur. Son perimetre vaut 30 cm (voir figure).",
+            schema: `<svg width="100%" viewBox="0 0 250 150" role="img" xmlns="http://www.w3.org/2000/svg"><title>Rectangle de largeur x et longueur 2x</title><desc>Rectangle dont le perimetre vaut 30 cm.</desc><polygon points="45,40 205,40 205,110 45,110" fill="none" stroke="currentColor" stroke-width="2"/><text x="118" y="128" font-size="13" fill="currentColor" font-family="sans-serif">2x</text><text x="24" y="80" font-size="13" fill="currentColor" font-family="sans-serif">x</text></svg>`,
+            questions: [
+              "On note x la largeur. Exprime la longueur en fonction de x.",
+              "Ecris l'equation traduisant le perimetre.",
+              "Resous et donne les dimensions du rectangle."
+            ],
+            correction: [
+              "Longueur = 2x.",
+              "Perimetre = 2 x (longueur + largeur) = 2 x (2x + x) = 30.",
+              "2 x 3x = 30 -> 6x = 30 -> x = 5. Largeur 5 cm, longueur 10 cm."
+            ],
+            piege: "Perimetre = 2 x (Longueur + largeur), avec ici Longueur = 2x."
+          },
+          {
+            id: "m_eq_08",
+            titre: "Le prix des places de cinema",
+            diff: "difficile",
+            enonce: "Au cinema, 3 places adultes et 2 places enfants coutent 38 euros. Une place enfant coute 4 euros. On cherche le prix d'une place adulte.",
+            questions: [
+              "On note x le prix d'une place adulte. Ecris l'equation traduisant la situation.",
+              "Resous l'equation.",
+              "Donne le prix d'une place adulte."
+            ],
+            correction: [
+              "3x + 2 x 4 = 38, soit 3x + 8 = 38.",
+              "3x = 38 - 8 = 30 -> x = 10.",
+              "Une place adulte coute 10 euros."
+            ],
+            piege: "On traduit l'enonce mot a mot : 3 adultes (3x) + 2 enfants (2 x 4) = total."
+          },
+          {
+            id: "m_eq_09",
+            titre: "Equation avec parentheses",
+            diff: "moyen",
+            enonce: "Resous l'equation 4(x - 2) = 12.",
+            questions: [
+              "Developpe le membre de gauche.",
+              "Resous l'equation.",
+              "Verifie ta solution."
+            ],
+            correction: [
+              "4(x - 2) = 4x - 8, donc 4x - 8 = 12.",
+              "4x = 20 -> x = 5.",
+              "4 x (5 - 2) = 4 x 3 = 12 : la solution convient."
+            ],
+            piege: "On developpe d'abord la parenthese (ou on divise les deux cotes par 4)."
           }
         ]
       },
@@ -3508,6 +3761,58 @@ const ANNALES = {
               "8 Go : 2 x 8 = 16 euros. Avec 30 euros : 30 / 2 = 15 Go."
             ],
             piege: "Une situation de proportionnalite se modelise par une fonction lineaire (p(x) = ax)."
+          },
+          {
+            id: "m_fonc_07",
+            titre: "Lire une fonction lineaire",
+            diff: "moyen",
+            enonce: "La droite ci-dessous represente une fonction lineaire g (voir graphique).",
+            schema: `<svg width="100%" viewBox="0 0 260 205" role="img" xmlns="http://www.w3.org/2000/svg"><title>Droite d'une fonction lineaire</title><desc>Droite passant par l'origine et par le point (2 ; 4).</desc><g stroke="currentColor" stroke-width="0.5" opacity="0.3"><line x1="76" y1="44" x2="76" y2="170"/><line x1="112" y1="44" x2="112" y2="170"/><line x1="148" y1="44" x2="148" y2="170"/><line x1="184" y1="44" x2="184" y2="170"/><line x1="220" y1="44" x2="220" y2="170"/><line x1="40" y1="152" x2="232" y2="152"/><line x1="40" y1="134" x2="232" y2="134"/><line x1="40" y1="116" x2="232" y2="116"/><line x1="40" y1="98" x2="232" y2="98"/><line x1="40" y1="80" x2="232" y2="80"/><line x1="40" y1="62" x2="232" y2="62"/></g><line x1="40" y1="170" x2="240" y2="170" stroke="currentColor" stroke-width="1.5"/><line x1="40" y1="170" x2="40" y2="38" stroke="currentColor" stroke-width="1.5"/><line x1="40" y1="170" x2="148" y2="62" stroke="currentColor" stroke-width="2"/><circle cx="40" cy="170" r="3" fill="currentColor"/><circle cx="112" cy="98" r="3" fill="currentColor"/><text x="30" y="182" font-size="11" fill="currentColor" font-family="sans-serif">0</text><text x="109" y="184" font-size="11" fill="currentColor" font-family="sans-serif">2</text><text x="28" y="102" font-size="11" fill="currentColor" font-family="sans-serif">4</text><text x="244" y="174" font-size="12" fill="currentColor" font-family="sans-serif">x</text><text x="32" y="36" font-size="12" fill="currentColor" font-family="sans-serif">y</text></svg>`,
+            questions: [
+              "La droite passe-t-elle par l'origine ? Que peut-on en deduire sur la fonction g ?",
+              "Lis l'image de 2, c'est-a-dire g(2).",
+              "Determine le coefficient a, puis l'expression de g(x)."
+            ],
+            correction: [
+              "Oui, elle passe par l'origine : g est une fonction lineaire (g(x) = a x).",
+              "g(2) = 4.",
+              "a = g(2) / 2 = 4 / 2 = 2, donc g(x) = 2x."
+            ],
+            piege: "Une droite qui passe par l'origine represente une fonction lineaire (proportionnalite)."
+          },
+          {
+            id: "m_fonc_08",
+            titre: "Etude d'une fonction affine",
+            diff: "difficile",
+            enonce: "Soit la fonction f definie par f(x) = -3x + 12.",
+            questions: [
+              "Calcule f(0) et f(4).",
+              "Resous l'equation f(x) = 0.",
+              "La fonction est-elle croissante ou decroissante ? Justifie."
+            ],
+            correction: [
+              "f(0) = 12 ; f(4) = -3 x 4 + 12 = -12 + 12 = 0.",
+              "-3x + 12 = 0 -> -3x = -12 -> x = 4.",
+              "Decroissante : le coefficient directeur (-3) est negatif."
+            ],
+            piege: "Le signe du coefficient directeur donne le sens de variation (negatif -> decroissante)."
+          },
+          {
+            id: "m_fonc_09",
+            titre: "Le prix d'une course en taxi",
+            diff: "moyen",
+            enonce: "Un taxi facture 5 euros de prise en charge, puis 2 euros par kilometre. On note x le nombre de kilometres parcourus.",
+            questions: [
+              "Exprime le prix p(x) en fonction de x.",
+              "Cette fonction est-elle lineaire ou affine ?",
+              "Combien coute une course de 8 km ? Avec 25 euros, combien de km peut-on parcourir ?"
+            ],
+            correction: [
+              "p(x) = 2x + 5.",
+              "Affine : de la forme ax + b avec b = 5 (different de 0).",
+              "8 km : 2 x 8 + 5 = 21 euros. Avec 25 euros : 2x + 5 = 25 -> 2x = 20 -> x = 10 km."
+            ],
+            piege: "Un montant fixe + un prix par unite donne une fonction affine (ax + b)."
           }
         ]
       },
@@ -3622,6 +3927,55 @@ const ANNALES = {
               "60 / 3 = 20 minutes."
             ],
             piege: "A debit constant, le volume est proportionnel au temps."
+          },
+          {
+            id: "m_prop_07",
+            titre: "L'echelle d'une carte",
+            diff: "difficile",
+            enonce: "Sur une carte a l'echelle 1/200000, deux villes sont separees de 6 cm.",
+            questions: [
+              "Que signifie l'echelle 1/200000 ?",
+              "Calcule la distance reelle entre les deux villes, en cm.",
+              "Convertis cette distance en km (on rappelle : 1 km = 100000 cm)."
+            ],
+            correction: [
+              "1 cm sur la carte represente 200000 cm dans la realite.",
+              "6 x 200000 = 1 200 000 cm.",
+              "1 200 000 / 100000 = 12 km."
+            ],
+            piege: "Echelle = distance sur la carte / distance reelle ; et 1 km = 100 000 cm."
+          },
+          {
+            id: "m_prop_08",
+            titre: "Retrouver le prix initial",
+            diff: "difficile",
+            enonce: "Apres une reduction de 25 %, un article coute 45 euros. On cherche son prix initial.",
+            questions: [
+              "Quel coefficient multiplicateur correspond a une baisse de 25 % ?",
+              "Sachant que prix solde = prix initial x 0,75, retrouve le prix initial."
+            ],
+            correction: [
+              "Une baisse de 25 % correspond a x 0,75 (1 - 0,25).",
+              "prix initial = 45 / 0,75 = 60 euros."
+            ],
+            piege: "Pour retrouver le prix de depart, on DIVISE par le coefficient multiplicateur."
+          },
+          {
+            id: "m_prop_09",
+            titre: "Adapter une recette",
+            diff: "moyen",
+            enonce: "Une recette prevue pour 4 personnes demande 200 g de farine.",
+            questions: [
+              "La quantite de farine est-elle proportionnelle au nombre de personnes ?",
+              "Quelle quantite de farine faut-il pour 6 personnes ?",
+              "Et pour 10 personnes ?"
+            ],
+            correction: [
+              "Oui, on la suppose proportionnelle au nombre de personnes.",
+              "Pour 1 personne : 200 / 4 = 50 g. Pour 6 personnes : 50 x 6 = 300 g.",
+              "Pour 10 personnes : 50 x 10 = 500 g."
+            ],
+            piege: "On calcule la quantite pour 1 personne (le coefficient), puis on multiplie."
           }
         ]
       },
@@ -3737,6 +4091,56 @@ const ANNALES = {
               "25 % de 1000 = 250 personnes."
             ],
             piege: "Frequence = effectif / effectif total (un nombre entre 0 et 1, ou un pourcentage)."
+          },
+          {
+            id: "m_stat_07",
+            titre: "Lire un diagramme circulaire",
+            diff: "moyen",
+            enonce: "Le diagramme circulaire ci-dessous donne le sport prefere de 180 eleves. Le secteur du foot a un angle de 120 degres (voir figure).",
+            schema: `<svg width="100%" viewBox="0 0 240 200" role="img" xmlns="http://www.w3.org/2000/svg"><title>Diagramme circulaire des sports preferes</title><desc>Secteur Foot de 120 degres sur un total de 360 degres.</desc><circle cx="115" cy="100" r="70" fill="none" stroke="currentColor" stroke-width="2"/><path d="M115,100 L185,100 A70,70 0 0,0 80,160.6 Z" fill="currentColor" fill-opacity="0.18" stroke="currentColor" stroke-width="2"/><text x="150" y="118" font-size="12" fill="currentColor" font-family="sans-serif">Foot</text><text x="143" y="134" font-size="11" fill="currentColor" font-family="sans-serif">120</text><text x="70" y="70" font-size="11" fill="currentColor" font-family="sans-serif">Autres</text></svg>`,
+            questions: [
+              "Quelle fraction du disque le secteur du foot represente-t-il ?",
+              "Combien d'eleves preferent le foot ?",
+              "Quel angle correspondrait a 45 eleves ?"
+            ],
+            correction: [
+              "120 / 360 = 1/3 du disque.",
+              "1/3 de 180 = 60 eleves preferent le foot.",
+              "45 eleves sur 180 = 1/4 du total -> 1/4 de 360 = 90 degres."
+            ],
+            piege: "Dans un diagramme circulaire : angle / 360 = effectif / effectif total."
+          },
+          {
+            id: "m_stat_08",
+            titre: "Moyenne avec coefficients",
+            diff: "difficile",
+            enonce: "Un eleve a trois notes affectees de coefficients : 12 (coefficient 1), 8 (coefficient 2) et 15 (coefficient 3).",
+            questions: [
+              "Calcule la somme des coefficients.",
+              "Calcule la moyenne ponderee (arrondie au dixieme)."
+            ],
+            correction: [
+              "1 + 2 + 3 = 6.",
+              "Moyenne = (12x1 + 8x2 + 15x3) / 6 = (12 + 16 + 45) / 6 = 73 / 6 = 12,2 environ."
+            ],
+            piege: "Moyenne avec coefficients = somme(note x coef) / somme des coefficients."
+          },
+          {
+            id: "m_stat_09",
+            titre: "Comparer deux series",
+            diff: "moyen",
+            enonce: "Voici deux series de notes. Serie A : 8, 10, 12. Serie B : 4, 10, 16.",
+            questions: [
+              "Verifie que les deux series ont la meme moyenne.",
+              "Calcule l'etendue de chaque serie.",
+              "Quelle serie est la plus reguliere (notes les plus groupees) ?"
+            ],
+            correction: [
+              "Serie A : (8 + 10 + 12) / 3 = 30 / 3 = 10. Serie B : (4 + 10 + 16) / 3 = 30 / 3 = 10.",
+              "Etendue A = 12 - 8 = 4 ; etendue B = 16 - 4 = 12.",
+              "La serie A : son etendue est plus petite, donc ses notes sont plus groupees."
+            ],
+            piege: "Deux series peuvent avoir la meme moyenne mais des etendues (dispersions) tres differentes."
           }
         ]
       },
@@ -3849,6 +4253,56 @@ const ANNALES = {
               "Pour un de equilibre : 1/6 = 0,167 environ (17 %). Or 25 % est nettement plus eleve : le de semble truque (le 6 sort trop souvent)."
             ],
             piege: "La frequence observee est proche de la probabilite theorique seulement si le de est equilibre."
+          },
+          {
+            id: "m_prob_07",
+            titre: "Tirer un jeton numerote",
+            diff: "moyen",
+            enonce: "Un sac contient 12 jetons numerotes de 1 a 12. On tire un jeton au hasard.",
+            questions: [
+              "Quelle est la probabilite de tirer un nombre pair ?",
+              "Quelle est la probabilite de tirer un multiple de 4 ?",
+              "Quelle est la probabilite de tirer un nombre strictement superieur a 10 ?"
+            ],
+            correction: [
+              "Nombres pairs : 2, 4, 6, 8, 10, 12 -> 6 cas sur 12 = 1/2.",
+              "Multiples de 4 : 4, 8, 12 -> 3 cas sur 12 = 1/4.",
+              "Superieurs a 10 : 11 et 12 -> 2 cas sur 12 = 1/6."
+            ],
+            piege: "On compte les cas favorables parmi les 12 jetons possibles."
+          },
+          {
+            id: "m_prob_08",
+            titre: "Deux tirages (arbre)",
+            diff: "difficile",
+            enonce: "Un sac contient 1 boule rouge (R) et 1 boule bleue (B). On tire une boule, on la remet, puis on en tire une seconde. L'arbre ci-dessous represente les tirages.",
+            schema: `<svg width="100%" viewBox="0 0 280 200" role="img" xmlns="http://www.w3.org/2000/svg"><title>Arbre des deux tirages</title><desc>Deux tirages avec remise, issues RR, RB, BR, BB.</desc><g stroke="currentColor" stroke-width="1.5" fill="none"><line x1="45" y1="100" x2="120" y2="55"/><line x1="45" y1="100" x2="120" y2="145"/><line x1="135" y1="55" x2="210" y2="35"/><line x1="135" y1="55" x2="210" y2="80"/><line x1="135" y1="145" x2="210" y2="120"/><line x1="135" y1="145" x2="210" y2="165"/></g><circle cx="40" cy="100" r="2.5" fill="currentColor"/><text x="124" y="59" font-size="13" fill="currentColor" font-family="sans-serif">R</text><text x="124" y="150" font-size="13" fill="currentColor" font-family="sans-serif">B</text><text x="216" y="39" font-size="12" fill="currentColor" font-family="sans-serif">R  (RR)</text><text x="216" y="84" font-size="12" fill="currentColor" font-family="sans-serif">B  (RB)</text><text x="216" y="124" font-size="12" fill="currentColor" font-family="sans-serif">R  (BR)</text><text x="216" y="169" font-size="12" fill="currentColor" font-family="sans-serif">B  (BB)</text></svg>`,
+            questions: [
+              "Liste toutes les issues possibles et donne leur nombre.",
+              "Quelle est la probabilite d'obtenir deux boules de la meme couleur ?"
+            ],
+            correction: [
+              "Les issues sont RR, RB, BR, BB : il y a 4 issues.",
+              "Memes couleurs : RR et BB -> 2 cas sur 4 = 1/2."
+            ],
+            piege: "L'arbre liste toutes les issues : RB et BR sont deux issues differentes."
+          },
+          {
+            id: "m_prob_09",
+            titre: "Choisir un bonbon",
+            diff: "moyen",
+            enonce: "Une boite contient 4 bonbons a la fraise, 3 au citron et 5 a la menthe. On prend un bonbon au hasard.",
+            questions: [
+              "Combien de bonbons y a-t-il en tout ?",
+              "Quelle est la probabilite de prendre un bonbon a la menthe ?",
+              "Quelle est la probabilite de prendre un bonbon qui n'est PAS au citron ?"
+            ],
+            correction: [
+              "4 + 3 + 5 = 12 bonbons.",
+              "5 bonbons a la menthe sur 12 : P = 5/12.",
+              "Non citron = 12 - 3 = 9 -> P = 9/12 = 3/4."
+            ],
+            piege: "P(evenement contraire) = 1 - P(evenement)."
           }
         ]
       },
@@ -3959,6 +4413,52 @@ const ANNALES = {
               "240 / 8 = 30 cm^3."
             ],
             piege: "Dans une reduction de rapport k, les longueurs sont x k, les aires x k^2 et les volumes x k^3."
+          },
+          {
+            id: "m_esp_07",
+            titre: "Volume d'un prisme droit",
+            diff: "moyen",
+            enonce: "Un prisme droit a pour base un triangle rectangle de cotes 3 cm et 4 cm (formant l'angle droit). La longueur du prisme est de 10 cm (voir figure).",
+            schema: `<svg width="100%" viewBox="0 0 230 200" role="img" xmlns="http://www.w3.org/2000/svg"><title>Prisme droit a base triangulaire</title><desc>Base : triangle rectangle de cotes 3 et 4 cm ; longueur 10 cm.</desc><polygon points="55,150 55,80 105,150" fill="none" stroke="currentColor" stroke-width="2"/><polygon points="120,128 120,58 170,128" fill="none" stroke="currentColor" stroke-width="2"/><line x1="55" y1="80" x2="120" y2="58" stroke="currentColor" stroke-width="2"/><line x1="105" y1="150" x2="170" y2="128" stroke="currentColor" stroke-width="2"/><line x1="55" y1="150" x2="120" y2="128" stroke="currentColor" stroke-width="1" stroke-dasharray="4 3"/><text x="38" y="120" font-size="11" fill="currentColor" font-family="sans-serif">3</text><text x="74" y="166" font-size="11" fill="currentColor" font-family="sans-serif">4</text><text x="128" y="98" font-size="11" fill="currentColor" font-family="sans-serif">10</text></svg>`,
+            questions: [
+              "Calcule l'aire de la base (le triangle rectangle).",
+              "Calcule le volume du prisme."
+            ],
+            correction: [
+              "Aire de la base = (3 x 4) / 2 = 6 cm^2.",
+              "V = aire de base x longueur = 6 x 10 = 60 cm^3."
+            ],
+            piege: "Volume d'un prisme = aire de la base x longueur ; aire d'un triangle = (base x hauteur) / 2."
+          },
+          {
+            id: "m_esp_08",
+            titre: "Volume d'une pyramide",
+            diff: "difficile",
+            enonce: "Une pyramide a une base carree de cote 6 cm et une hauteur de 10 cm. Formule : V = (1/3) x aire de base x hauteur.",
+            questions: [
+              "Calcule l'aire de la base.",
+              "Calcule le volume de la pyramide."
+            ],
+            correction: [
+              "Aire de base = 6 x 6 = 36 cm^2.",
+              "V = (1/3) x 36 x 10 = (1/3) x 360 = 120 cm^3."
+            ],
+            piege: "Volume d'une pyramide (ou d'un cone) = 1/3 x aire de base x hauteur."
+          },
+          {
+            id: "m_esp_09",
+            titre: "La contenance d'un aquarium",
+            diff: "moyen",
+            enonce: "Un aquarium en forme de pave droit mesure 50 cm de long, 30 cm de large et 40 cm de haut.",
+            questions: [
+              "Calcule son volume en cm^3.",
+              "Sachant que 1 L = 1000 cm^3, combien de litres d'eau peut-il contenir ?"
+            ],
+            correction: [
+              "V = 50 x 30 x 40 = 60 000 cm^3.",
+              "60 000 / 1000 = 60 litres."
+            ],
+            piege: "Conversion utile : 1 L = 1000 cm^3 = 1 dm^3."
           }
         ]
       }

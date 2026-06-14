@@ -2026,7 +2026,7 @@ const ANNALES = {
             id: "pc_mvt_01",
             titre: "Le trajet du TGV",
             diff: "facile",
-            enonce: "Un TGV parcourt 420 km entre deux gares en 1 h 30 min, sans s'arreter.",
+            enonce: "Un TGV emprunte par Lea parcourt 420 km entre deux gares en 1 h 30 min, sans s'arreter.",
             questions: [
               "Convertis la duree du trajet en heures.",
               "Calcule la vitesse moyenne du TGV en km/h.",
@@ -2045,7 +2045,7 @@ const ANNALES = {
             id: "pc_mvt_02",
             titre: "Le sprint du coureur",
             diff: "facile",
-            enonce: "Un coureur parcourt 100 m en 12,5 s.",
+            enonce: "Hugo, lors d'une course, parcourt 100 m en 12,5 s.",
             questions: [
               "Rappelle la formule de la vitesse moyenne.",
               "Calcule sa vitesse moyenne en m/s.",
@@ -2083,7 +2083,7 @@ const ANNALES = {
             id: "pc_mvt_04",
             titre: "La distance parcourue",
             diff: "moyen",
-            enonce: "Une voiture roule a la vitesse constante de 90 km/h pendant 20 minutes.",
+            enonce: "La voiture de la mere de Tom roule a la vitesse constante de 90 km/h pendant 20 minutes.",
             questions: [
               "Convertis la duree en heures.",
               "Calcule la distance parcourue (d = v x t).",
@@ -2102,7 +2102,8 @@ const ANNALES = {
             id: "pc_mvt_05",
             titre: "Les trajectoires",
             diff: "facile",
-            enonce: "On observe trois mouvements : une bille qui tombe tout droit, une voiture sur un rond-point, une nacelle de grande roue.",
+            enonce: "Nina observe trois mouvements : une bille qui tombe tout droit, une voiture sur un rond-point, une nacelle de grande roue (voir figure).",
+            schema: `<svg width="100%" viewBox="0 0 240 150" role="img" xmlns="http://www.w3.org/2000/svg"><title>Types de trajectoires</title><desc>Une trajectoire rectiligne et une trajectoire circulaire.</desc><line x1="20" y1="50" x2="105" y2="50" stroke="currentColor" stroke-width="1" stroke-dasharray="2 4"/><g fill="currentColor"><circle cx="30" cy="50" r="3"/><circle cx="50" cy="50" r="3"/><circle cx="70" cy="50" r="3"/><circle cx="90" cy="50" r="3"/></g><text x="38" y="78" font-size="10" fill="currentColor" font-family="sans-serif">rectiligne</text><circle cx="178" cy="72" r="38" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="2 4"/><g fill="currentColor"><circle cx="178" cy="34" r="3"/><circle cx="211" cy="63" r="3"/><circle cx="199" cy="102" r="3"/><circle cx="157" cy="102" r="3"/><circle cx="145" cy="63" r="3"/></g><text x="152" y="130" font-size="10" fill="currentColor" font-family="sans-serif">circulaire</text></svg>`,
             questions: [
               "Quelle est la trajectoire de la bille qui tombe ?",
               "Quelle est la trajectoire de la voiture sur le rond-point ?",
@@ -2121,7 +2122,7 @@ const ANNALES = {
             id: "pc_mvt_06",
             titre: "Vitesse moyenne d'un cycliste",
             diff: "moyen",
-            enonce: "Un cycliste parcourt 30 km en 1 h, puis 10 km en 30 min.",
+            enonce: "Sami, a velo, parcourt 30 km en 1 h, puis 10 km en 30 min.",
             questions: [
               "Quelle distance totale a-t-il parcourue ?",
               "Quelle duree totale a-t-il mis ?",
@@ -2140,7 +2141,7 @@ const ANNALES = {
             id: "pc_mvt_07",
             titre: "Accelere, uniforme, ralenti",
             diff: "facile",
-            enonce: "On etudie un objet : phase 1 sa vitesse augmente, phase 2 sa vitesse reste constante, phase 3 sa vitesse diminue.",
+            enonce: "Emma etudie un objet : phase 1 sa vitesse augmente, phase 2 sa vitesse reste constante, phase 3 sa vitesse diminue.",
             questions: [
               "Comment qualifie-t-on le mouvement en phase 1 ?",
               "En phase 2 ?",
@@ -2159,7 +2160,7 @@ const ANNALES = {
             id: "pc_mvt_08",
             titre: "La distance de reaction",
             diff: "moyen",
-            enonce: "Une voiture roule a 72 km/h. Le conducteur met 1 s a reagir avant de freiner.",
+            enonce: "La voiture de Maxime roule a 72 km/h. Le conducteur met 1 s a reagir avant de freiner.",
             questions: [
               "Convertis 72 km/h en m/s.",
               "Quelle distance la voiture parcourt-elle pendant la seconde de reaction ?",
@@ -2178,7 +2179,7 @@ const ANNALES = {
             id: "pc_mvt_09",
             titre: "Mouvement rectiligne uniforme",
             diff: "facile",
-            enonce: "Un objet se deplace en ligne droite et parcourt 10 m chaque seconde, regulierement.",
+            enonce: "Un objet observe par Clara se deplace en ligne droite et parcourt 10 m chaque seconde, regulierement.",
             questions: [
               "Sa vitesse est-elle constante ?",
               "Quelle est sa vitesse en m/s ?",
@@ -2197,7 +2198,7 @@ const ANNALES = {
             id: "pc_mvt_10",
             titre: "Le feu d'artifice",
             diff: "moyen",
-            enonce: "Le son se propage a 340 m/s et la lumiere a 300 000 km/s.",
+            enonce: "Lors d'un feu d'artifice, Sarah sait que le son se propage a 340 m/s et la lumiere a 300 000 km/s.",
             questions: [
               "Convertis 300 000 km/s en m/s.",
               "Combien de fois la lumiere est-elle plus rapide que le son (ordre de grandeur) ?",
@@ -2216,7 +2217,7 @@ const ANNALES = {
             id: "pc_mvt_11",
             titre: "Le referentiel terrestre",
             diff: "facile",
-            enonce: "Pour etudier le mouvement d'une voiture sur une route, on choisit le sol comme reference.",
+            enonce: "Pour etudier le mouvement d'une voiture sur une route, Adam choisit le sol comme reference.",
             questions: [
               "Comment appelle-t-on ce choix de reference ?",
               "Par rapport au sol, le conducteur est-il en mouvement ?",
@@ -2235,7 +2236,7 @@ const ANNALES = {
             id: "pc_mvt_12",
             titre: "Vitesse moyenne d'un train",
             diff: "difficile",
-            enonce: "Un train doit parcourir 240 km. Il roule pendant la premiere heure a 80 km/h, puis effectue le reste du trajet a 100 km/h.",
+            enonce: "Le train pris par Ines doit parcourir 240 km. Il roule pendant la premiere heure a 80 km/h, puis effectue le reste du trajet a 100 km/h.",
             questions: [
               "Quelle distance parcourt-il pendant la premiere heure ?",
               "Quelle distance lui reste-t-il a parcourir ?",
@@ -2254,7 +2255,8 @@ const ANNALES = {
             id: "pc_mvt_13",
             titre: "Distance d'arret d'une voiture",
             diff: "expert",
-            enonce: "Securite routiere : une voiture roule a 50 km/h. Le temps de reaction du conducteur est de 1 s. La distance d'arret = distance parcourue pendant la reaction + distance de freinage. On donne la distance de freinage : 14 m.",
+            enonce: "Securite routiere : la voiture de Nathan roule a 50 km/h. Le temps de reaction du conducteur est de 1 s. La distance d'arret = distance de reaction + distance de freinage (voir figure). On donne la distance de freinage : 14 m.",
+            schema: `<svg width="100%" viewBox="0 0 250 130" role="img" xmlns="http://www.w3.org/2000/svg"><title>Distance d'arret</title><desc>Distance de reaction puis distance de freinage.</desc><rect x="20" y="55" width="40" height="18" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="30" y="46" width="20" height="11" rx="3" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="30" cy="76" r="5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="52" cy="76" r="5" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="70" y1="95" x2="150" y2="95" stroke="currentColor" stroke-width="1.5"/><line x1="150" y1="95" x2="235" y2="95" stroke="currentColor" stroke-width="1.5"/><g stroke="currentColor" stroke-width="1"><line x1="70" y1="90" x2="70" y2="100"/><line x1="150" y1="90" x2="150" y2="100"/><line x1="235" y1="90" x2="235" y2="100"/></g><text x="82" y="113" font-size="9" fill="currentColor" font-family="sans-serif">reaction</text><text x="170" y="113" font-size="9" fill="currentColor" font-family="sans-serif">freinage</text><text x="96" y="42" font-size="9" fill="currentColor" font-family="sans-serif">50 km/h</text></svg>`,
             questions: [
               "Convertis 50 km/h en m/s.",
               "Calcule la distance parcourue pendant le temps de reaction (1 s).",
@@ -2275,7 +2277,7 @@ const ANNALES = {
             id: "pc_mvt_14",
             titre: "La vitesse de l'avion",
             diff: "moyen",
-            enonce: "Un avion vole a vitesse constante et parcourt 900 km en 1 h 15 min.",
+            enonce: "L'avion pris par Jade vole a vitesse constante et parcourt 900 km en 1 h 15 min.",
             questions: [
               "Convertis la duree du trajet en heures.",
               "Calcule sa vitesse moyenne en km/h.",
@@ -2302,7 +2304,7 @@ const ANNALES = {
             id: "pc_grav_01",
             titre: "Masse et poids",
             diff: "moyen",
-            enonce: "Sur Terre, l'intensite de la pesanteur vaut g = 10 N/kg. Un objet a une masse de 3 kg.",
+            enonce: "Sur Terre, l'intensite de la pesanteur vaut g = 10 N/kg. Lucas etudie un objet de masse 3 kg.",
             questions: [
               "Quelle est la difference entre la masse et le poids ?",
               "Donne la formule reliant le poids P et la masse m.",
@@ -2321,7 +2323,7 @@ const ANNALES = {
             id: "pc_grav_02",
             titre: "Un astronaute sur la Lune",
             diff: "moyen",
-            enonce: "Un astronaute a une masse de 70 kg. Sur la Lune, l'intensite de la pesanteur vaut g = 1,6 N/kg.",
+            enonce: "Un astronaute dont Tom suit la mission a une masse de 70 kg. Sur la Lune, l'intensite de la pesanteur vaut g = 1,6 N/kg.",
             questions: [
               "Calcule son poids sur Terre (g = 10 N/kg).",
               "Calcule son poids sur la Lune.",
@@ -2340,7 +2342,7 @@ const ANNALES = {
             id: "pc_grav_03",
             titre: "La gravitation dans l'Univers",
             diff: "facile",
-            enonce: "La gravitation est l'attraction mutuelle qui s'exerce entre deux corps qui possedent une masse.",
+            enonce: "Le professeur explique a Clara que la gravitation est l'attraction mutuelle qui s'exerce entre deux corps possedant une masse.",
             questions: [
               "De quoi depend la force de gravitation entre deux corps ?",
               "Qu'est-ce qui maintient la Terre en orbite autour du Soleil ?",
@@ -2359,7 +2361,7 @@ const ANNALES = {
             id: "pc_grav_04",
             titre: "Le poids sur differentes planetes",
             diff: "moyen",
-            enonce: "Un objet a une masse de 50 kg. On donne g : Terre 10 N/kg, Mars 3,7 N/kg, Jupiter 25 N/kg.",
+            enonce: "Nina etudie un objet de masse 50 kg. On donne g : Terre 10 N/kg, Mars 3,7 N/kg, Jupiter 25 N/kg.",
             questions: [
               "Calcule son poids sur Terre.",
               "Calcule son poids sur Mars.",
@@ -2378,7 +2380,8 @@ const ANNALES = {
             id: "pc_grav_05",
             titre: "La pomme qui tombe",
             diff: "facile",
-            enonce: "On lache une pomme : elle tombe vers le sol.",
+            enonce: "Sami lache une pomme : elle tombe vers le sol (voir figure).",
+            schema: `<svg width="100%" viewBox="0 0 180 190" role="img" xmlns="http://www.w3.org/2000/svg"><title>Une pomme qui tombe</title><desc>Le poids attire la pomme verticalement vers le sol.</desc><circle cx="90" cy="50" r="16" fill="currentColor" fill-opacity="0.12" stroke="currentColor" stroke-width="1.5"/><line x1="90" y1="34" x2="94" y2="26" stroke="currentColor" stroke-width="1.5"/><line x1="90" y1="70" x2="90" y2="125" stroke="currentColor" stroke-width="2"/><polygon points="90,133 83,120 97,120" fill="currentColor"/><text x="100" y="104" font-size="11" fill="currentColor" font-family="sans-serif">poids</text><line x1="30" y1="160" x2="150" y2="160" stroke="currentColor" stroke-width="2"/></svg>`,
             questions: [
               "Quelle force fait tomber la pomme ?",
               "Cette force est-elle dirigee vers le haut ou vers le bas ?",
@@ -2397,7 +2400,7 @@ const ANNALES = {
             id: "pc_grav_06",
             titre: "Retrouver l'intensite de pesanteur",
             diff: "moyen",
-            enonce: "Sur une planete inconnue, un objet de masse 8 kg a un poids de 24 N.",
+            enonce: "Sur une planete inconnue exploree par Emma, un objet de masse 8 kg a un poids de 24 N.",
             questions: [
               "Donne la formule reliant P, m et g.",
               "Calcule l'intensite de la pesanteur g sur cette planete.",
@@ -2416,7 +2419,8 @@ const ANNALES = {
             id: "pc_grav_07",
             titre: "Le systeme solaire",
             diff: "facile",
-            enonce: "Les planetes du systeme solaire tournent autour du Soleil.",
+            enonce: "Maxime apprend que les planetes du systeme solaire tournent autour du Soleil (voir schema).",
+            schema: `<svg width="100%" viewBox="0 0 230 170" role="img" xmlns="http://www.w3.org/2000/svg"><title>Le systeme solaire</title><desc>Une planete tourne autour du Soleil sous l'effet de la gravitation.</desc><ellipse cx="115" cy="85" rx="85" ry="50" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="3 4"/><circle cx="115" cy="85" r="18" fill="currentColor" fill-opacity="0.18" stroke="currentColor" stroke-width="1.5"/><text x="115" y="89" text-anchor="middle" font-size="10" fill="currentColor" font-family="sans-serif">Soleil</text><circle cx="200" cy="85" r="7" fill="currentColor" fill-opacity="0.2" stroke="currentColor" stroke-width="1.5"/><text x="172" y="74" font-size="10" fill="currentColor" font-family="sans-serif">planete</text></svg>`,
             questions: [
               "Quelle force les maintient en orbite ?",
               "Pourquoi le Soleil attire-t-il fortement les planetes ?",
@@ -2435,7 +2439,7 @@ const ANNALES = {
             id: "pc_grav_08",
             titre: "Le poids change-t-il en altitude ?",
             diff: "moyen",
-            enonce: "L'intensite de la pesanteur g diminue tres legerement quand on s'eloigne du centre de la Terre.",
+            enonce: "Sarah lit que l'intensite de la pesanteur g diminue tres legerement quand on s'eloigne du centre de la Terre.",
             questions: [
               "Le poids d'un objet est-il exactement le meme au sommet d'une montagne et au niveau de la mer ?",
               "La masse de l'objet change-t-elle avec l'altitude ?",
@@ -2454,7 +2458,7 @@ const ANNALES = {
             id: "pc_grav_09",
             titre: "Retrouver une masse",
             diff: "moyen",
-            enonce: "Sur Terre (g = 10 N/kg), un objet a un poids de 250 N.",
+            enonce: "Sur Terre (g = 10 N/kg), un objet pese par Ines a un poids de 250 N.",
             questions: [
               "Donne la formule reliant m, P et g.",
               "Calcule la masse de l'objet.",
@@ -2473,7 +2477,7 @@ const ANNALES = {
             id: "pc_grav_10",
             titre: "La Terre et la Lune",
             diff: "facile",
-            enonce: "La Terre attire la Lune, et la Lune attire la Terre.",
+            enonce: "Adam apprend que la Terre attire la Lune, et que la Lune attire la Terre.",
             questions: [
               "L'attraction est-elle a sens unique ou mutuelle ?",
               "Pourquoi est-ce la Lune qui tourne autour de la Terre, et pas l'inverse ?",
@@ -2492,7 +2496,8 @@ const ANNALES = {
             id: "pc_grav_11",
             titre: "La chute libre dans le vide",
             diff: "difficile",
-            enonce: "Dans le vide, une plume et une bille lachees ensemble tombent exactement a la meme vitesse.",
+            enonce: "Dans le vide, Nathan lache ensemble une plume et une bille : elles tombent exactement a la meme vitesse (voir figure).",
+            schema: `<svg width="100%" viewBox="0 0 200 190" role="img" xmlns="http://www.w3.org/2000/svg"><title>Chute libre dans le vide</title><desc>La plume et la bille tombent a la meme vitesse dans le vide.</desc><rect x="40" y="25" width="120" height="140" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/><text x="100" y="42" text-anchor="middle" font-size="10" fill="currentColor" font-family="sans-serif">vide</text><line x1="55" y1="95" x2="145" y2="95" stroke="currentColor" stroke-width="0.8" stroke-dasharray="3 3"/><circle cx="75" cy="90" r="9" fill="currentColor" fill-opacity="0.25" stroke="currentColor" stroke-width="1.5"/><text x="75" y="118" text-anchor="middle" font-size="9" fill="currentColor" font-family="sans-serif">bille</text><path d="M125,82 q8,6 0,18 q-8,-6 0,-18 Z" fill="none" stroke="currentColor" stroke-width="1.5"/><text x="125" y="118" text-anchor="middle" font-size="9" fill="currentColor" font-family="sans-serif">plume</text><g stroke="currentColor" stroke-width="1.5"><line x1="75" y1="128" x2="75" y2="142"/><line x1="125" y1="128" x2="125" y2="142"/></g><polygon points="75,148 70,138 80,138" fill="currentColor"/><polygon points="125,148 120,138 130,138" fill="currentColor"/></svg>`,
             questions: [
               "Qu'est-ce qui ralentit la plume dans l'air ?",
               "Dans le vide, pourquoi tombent-elles ensemble ?",
@@ -2511,7 +2516,7 @@ const ANNALES = {
             id: "pc_grav_12",
             titre: "Meme objet, Terre et Lune",
             diff: "difficile",
-            enonce: "Un objet a une masse de 6 kg. On donne l'intensite de la pesanteur : g = 10 N/kg sur Terre et g = 1,6 N/kg sur la Lune.",
+            enonce: "Jade etudie un objet de masse 6 kg. On donne l'intensite de la pesanteur : g = 10 N/kg sur Terre et g = 1,6 N/kg sur la Lune.",
             questions: [
               "Calcule le poids de l'objet sur Terre.",
               "Calcule son poids sur la Lune.",
@@ -2530,7 +2535,7 @@ const ANNALES = {
             id: "pc_grav_13",
             titre: "Mission sur Mars",
             diff: "expert",
-            enonce: "Un astronaute et son equipement ont une masse totale de 120 kg. On donne g : 10 N/kg sur Terre et 3,7 N/kg sur Mars.",
+            enonce: "Un astronaute et son equipement, dont Chloe suit la mission, ont une masse totale de 120 kg. On donne g : 10 N/kg sur Terre et 3,7 N/kg sur Mars.",
             questions: [
               "Calcule le poids de l'ensemble sur Terre.",
               "Calcule son poids sur Mars.",
@@ -2551,7 +2556,7 @@ const ANNALES = {
             id: "pc_grav_14",
             titre: "Retrouver une masse, puis un poids",
             diff: "moyen",
-            enonce: "Sur Terre, l'intensite de la pesanteur vaut g = 10 N/kg. Un sac a un poids de 80 N.",
+            enonce: "Sur Terre, l'intensite de la pesanteur vaut g = 10 N/kg. Le sac de Hugo a un poids de 80 N.",
             questions: [
               "Donne la formule reliant le poids P, la masse m et g.",
               "Calcule la masse du sac.",

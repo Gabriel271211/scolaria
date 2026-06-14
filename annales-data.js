@@ -62,7 +62,7 @@ const ANNALES = {
             id: "pc_ions_01",
             titre: "Analyse de trois solutions",
             diff: "moyen",
-            enonce: "Un technicien analyse trois solutions incolores A, B et C. Il realise les tests rassembles dans le tableau suivant.",
+            enonce: "Au laboratoire, Lina analyse trois solutions incolores A, B et C. Elle realise les tests rassembles dans le tableau suivant.",
             table: [
               ["Sol.", "Test a la soude", "Nitrate d'argent", "pH"],
               ["A", "precipite bleu", "—", "5"],
@@ -87,7 +87,7 @@ const ANNALES = {
             id: "pc_ions_02",
             titre: "Sulfate de cuivre et soude",
             diff: "facile",
-            enonce: "On dispose d'une solution de sulfate de cuivre. Le papier pH y indique pH = 4. On ajoute ensuite de la soude (hydroxyde de sodium) goutte a goutte.",
+            enonce: "Hugo dispose d'une solution de sulfate de cuivre. Le papier pH y indique pH = 4. Il ajoute ensuite de la soude (hydroxyde de sodium) goutte a goutte.",
             questions: [
               "La solution de depart est-elle acide ou basique ?",
               "Quel precipite observe-t-on ? La presence de quel ion prouve-t-il ?",
@@ -106,7 +106,7 @@ const ANNALES = {
             id: "pc_ions_03",
             titre: "Du citron a l'eau savonneuse",
             diff: "facile",
-            enonce: "Trois bechers contiennent : du jus de citron (pH 2), de l'eau pure (pH 7) et de l'eau savonneuse (pH 9).",
+            enonce: "Devant Clara, trois bechers contiennent : du jus de citron (pH 2), de l'eau pure (pH 7) et de l'eau savonneuse (pH 9).",
             questions: [
               "Classe les trois liquides du plus acide au plus basique.",
               "Lequel contient le plus d'ions H+ ?",
@@ -125,7 +125,8 @@ const ANNALES = {
             id: "pc_ions_04",
             titre: "Le precipite vert",
             diff: "facile",
-            enonce: "On verse de la soude (hydroxyde de sodium) dans une solution : il se forme un precipite vert.",
+            enonce: "Sami verse de la soude (hydroxyde de sodium) dans une solution : il se forme un precipite vert (voir figure).",
+            schema: `<svg width="100%" viewBox="0 0 170 190" role="img" xmlns="http://www.w3.org/2000/svg"><title>Precipite vert</title><desc>La soude fait apparaitre un precipite vert.</desc><path d="M65,30 L65,140 A15 9 0 0 0 95,140 L95,30" fill="none" stroke="currentColor" stroke-width="2"/><polygon points="67,128 93,128 89,144 71,144" fill="currentColor" fill-opacity="0.3" stroke="currentColor" stroke-width="1.2"/><text x="100" y="138" font-size="11" fill="currentColor" font-family="sans-serif">precipite vert</text></svg>`,
             questions: [
               "Quel ion metallique est present dans la solution ?",
               "Donne la formule de cet ion.",
@@ -144,7 +145,7 @@ const ANNALES = {
             id: "pc_ions_05",
             titre: "Le pH des produits du quotidien",
             diff: "facile",
-            enonce: "On mesure le pH de produits courants : Coca (pH 2,5), lait (pH 6,5), eau de Javel (pH 11).",
+            enonce: "Pour un TP, Emma mesure le pH de produits courants : Coca (pH 2,5), lait (pH 6,5), eau de Javel (pH 11).",
             questions: [
               "Lesquels sont acides ?",
               "Lequel est basique ?",
@@ -163,7 +164,7 @@ const ANNALES = {
             id: "pc_ions_06",
             titre: "Pourquoi l'eau salee conduit le courant",
             diff: "moyen",
-            enonce: "L'eau distillee conduit tres mal le courant electrique, mais l'eau salee le conduit bien.",
+            enonce: "Yanis remarque que l'eau distillee conduit tres mal le courant electrique, alors que l'eau salee le conduit bien.",
             questions: [
               "Qu'est-ce qui permet a l'eau salee de conduire le courant ?",
               "L'eau distillee contient-elle beaucoup d'ions ?",
@@ -182,7 +183,7 @@ const ANNALES = {
             id: "pc_ions_07",
             titre: "Neutraliser un acide",
             diff: "moyen",
-            enonce: "On melange un acide (pH 3) avec une base (pH 11) en quantites adaptees. Le pH final mesure est 7.",
+            enonce: "Nathan melange un acide (pH 3) avec une base (pH 11) en quantites adaptees. Le pH final mesure est 7.",
             questions: [
               "Comment qualifie-t-on la solution finale ?",
               "Que s'est-il passe entre l'acide et la base ?",
@@ -201,7 +202,7 @@ const ANNALES = {
             id: "pc_ions_08",
             titre: "Deux tests sur une eau",
             diff: "moyen",
-            enonce: "Sur une eau de source, on ajoute du nitrate d'argent a un echantillon : precipite blanc. Sur un autre echantillon, on ajoute de la soude : precipite bleu.",
+            enonce: "Sur une eau de source, Sarah ajoute du nitrate d'argent a un echantillon : precipite blanc. Sur un autre echantillon, elle ajoute de la soude : precipite bleu.",
             questions: [
               "Quel ion le nitrate d'argent revele-t-il ?",
               "Quel ion la soude revele-t-elle ici ?",
@@ -220,7 +221,8 @@ const ANNALES = {
             id: "pc_ions_09",
             titre: "L'echelle de pH",
             diff: "facile",
-            enonce: "L'echelle de pH va de 0 a 14.",
+            enonce: "Le professeur rappelle a Tom que l'echelle de pH va de 0 a 14 (voir figure).",
+            schema: `<svg width="100%" viewBox="0 0 260 110" role="img" xmlns="http://www.w3.org/2000/svg"><title>Echelle de pH</title><desc>De 0 a 14 : acide avant 7, neutre a 7, basique apres 7.</desc><rect x="30" y="42" width="200" height="22" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="130" y1="42" x2="130" y2="64" stroke="currentColor" stroke-width="1.5"/><g stroke="currentColor" stroke-width="1"><line x1="30" y1="64" x2="30" y2="70"/><line x1="130" y1="64" x2="130" y2="70"/><line x1="230" y1="64" x2="230" y2="70"/></g><text x="26" y="84" font-size="11" fill="currentColor" font-family="sans-serif">0</text><text x="126" y="84" font-size="11" fill="currentColor" font-family="sans-serif">7</text><text x="222" y="84" font-size="11" fill="currentColor" font-family="sans-serif">14</text><text x="54" y="34" font-size="11" fill="currentColor" font-family="sans-serif">acide</text><text x="111" y="34" font-size="11" fill="currentColor" font-family="sans-serif">neutre</text><text x="165" y="34" font-size="11" fill="currentColor" font-family="sans-serif">basique</text></svg>`,
             questions: [
               "Quelle valeur correspond a une solution neutre ?",
               "Un pH de 0 a 7 correspond a quoi ? de 7 a 14 ?",
@@ -239,7 +241,7 @@ const ANNALES = {
             id: "pc_ions_10",
             titre: "Les pluies acides",
             diff: "facile",
-            enonce: "Les pluies acides ont un pH inferieur a celui d'une pluie normale (environ 5,5).",
+            enonce: "Maxime s'interesse aux pluies acides, dont le pH est inferieur a celui d'une pluie normale (environ 5,5).",
             questions: [
               "Une pluie de pH 4 est-elle acide ?",
               "Est-elle plus ou moins acide qu'une pluie de pH 5,5 ?",
@@ -258,7 +260,7 @@ const ANNALES = {
             id: "pc_ions_11",
             titre: "Manipuler un acide en securite",
             diff: "moyen",
-            enonce: "Au laboratoire, on manipule un acide concentre et une base concentree.",
+            enonce: "Au laboratoire, Jade manipule un acide concentre et une base concentree.",
             questions: [
               "Ces produits sont-ils dangereux ? Pourquoi ?",
               "Cite deux equipements de protection.",
@@ -277,7 +279,7 @@ const ANNALES = {
             id: "pc_ions_12",
             titre: "Analyse complete d'une solution",
             diff: "difficile",
-            enonce: "Une solution S contient des ions cuivre et des ions chlorure. On preleve un echantillon : le papier pH indique pH = 5. On ajoute de la soude a cet echantillon : un precipite bleu apparait. Sur un autre prelevement, on ajoute du nitrate d'argent : un precipite blanc se forme.",
+            enonce: "Ines analyse une solution S qui contient des ions cuivre et des ions chlorure. Elle preleve un echantillon : le papier pH indique pH = 5. En ajoutant de la soude, un precipite bleu apparait. Sur un autre prelevement, le nitrate d'argent donne un precipite blanc.",
             questions: [
               "Identifie les deux ions presents et donne leurs formules.",
               "La solution S est-elle acide, neutre ou basique ?",
@@ -296,7 +298,7 @@ const ANNALES = {
             id: "pc_ions_13",
             titre: "Le pH d'une piscine",
             diff: "expert",
-            enonce: "L'eau d'une piscine doit avoir un pH compris entre 7,0 et 7,4. Un technicien mesure pH = 6,2 : l'eau est trop acide. Pour corriger, il ajoute un produit basique, puis remesure : pH = 7,2.",
+            enonce: "L'eau de la piscine de Rayan doit avoir un pH compris entre 7,0 et 7,4. Un technicien mesure pH = 6,2 : l'eau est trop acide. Pour corriger, il ajoute un produit basique, puis remesure : pH = 7,2.",
             questions: [
               "A pH 6,2, l'eau contient-elle plus d'ions H+ ou d'ions OH- ?",
               "Pourquoi l'ajout d'une base permet-il de faire remonter le pH ?",
@@ -317,7 +319,8 @@ const ANNALES = {
             id: "pc_ions_14",
             titre: "Trois precipites a la soude",
             diff: "moyen",
-            enonce: "On verse de la soude dans trois tubes A, B et C. Tube A : precipite bleu. Tube B : precipite vert. Tube C : precipite rouille.",
+            enonce: "Adam verse de la soude dans trois tubes A, B et C (voir figure). Tube A : precipite bleu. Tube B : precipite vert. Tube C : precipite rouille.",
+            schema: `<svg width="100%" viewBox="0 0 260 185" role="img" xmlns="http://www.w3.org/2000/svg"><title>Trois precipites a la soude</title><desc>Tube A precipite bleu, tube B vert, tube C rouille.</desc><path d="M45,35 L45,125 A13 8 0 0 0 71,125 L71,35" fill="none" stroke="currentColor" stroke-width="2"/><polygon points="47,114 69,114 66,128 50,128" fill="currentColor" fill-opacity="0.3" stroke="currentColor" stroke-width="1.2"/><text x="54" y="28" font-size="13" fill="currentColor" font-family="sans-serif">A</text><text x="40" y="150" font-size="10" fill="currentColor" font-family="sans-serif">bleu</text><path d="M110,35 L110,125 A13 8 0 0 0 136,125 L136,35" fill="none" stroke="currentColor" stroke-width="2"/><polygon points="112,114 134,114 131,128 115,128" fill="currentColor" fill-opacity="0.3" stroke="currentColor" stroke-width="1.2"/><text x="119" y="28" font-size="13" fill="currentColor" font-family="sans-serif">B</text><text x="111" y="150" font-size="10" fill="currentColor" font-family="sans-serif">vert</text><path d="M175,35 L175,125 A13 8 0 0 0 201,125 L201,35" fill="none" stroke="currentColor" stroke-width="2"/><polygon points="177,114 199,114 196,128 180,128" fill="currentColor" fill-opacity="0.3" stroke="currentColor" stroke-width="1.2"/><text x="184" y="28" font-size="13" fill="currentColor" font-family="sans-serif">C</text><text x="172" y="150" font-size="10" fill="currentColor" font-family="sans-serif">rouille</text></svg>`,
             questions: [
               "Identifie l'ion metallique present dans chaque tube.",
               "Donne la formule de l'ion du tube A.",

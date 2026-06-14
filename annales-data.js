@@ -347,7 +347,8 @@ const ANNALES = {
             id: "pc_atom_01",
             titre: "Lire une formule chimique",
             diff: "facile",
-            enonce: "La molecule d'eau a pour formule H2O. La molecule de dioxyde de carbone a pour formule CO2.",
+            enonce: "Pour reviser, Lea ecrit deux formules : la molecule d'eau H2O et la molecule de dioxyde de carbone CO2 (voir les modeles).",
+            schema: `<svg width="100%" viewBox="0 0 240 150" role="img" xmlns="http://www.w3.org/2000/svg"><title>Modeles de molecules</title><desc>Modele de l'eau H2O et du dioxyde de carbone CO2.</desc><g stroke="currentColor" stroke-width="2"><line x1="60" y1="72" x2="38" y2="52"/><line x1="60" y1="72" x2="82" y2="52"/></g><circle cx="60" cy="72" r="16" fill="currentColor" fill-opacity="0.12" stroke="currentColor" stroke-width="1.5"/><text x="60" y="77" text-anchor="middle" font-size="13" fill="currentColor" font-family="sans-serif">O</text><circle cx="36" cy="50" r="10" fill="none" stroke="currentColor" stroke-width="1.5"/><text x="36" y="54" text-anchor="middle" font-size="10" fill="currentColor" font-family="sans-serif">H</text><circle cx="84" cy="50" r="10" fill="none" stroke="currentColor" stroke-width="1.5"/><text x="84" y="54" text-anchor="middle" font-size="10" fill="currentColor" font-family="sans-serif">H</text><text x="60" y="112" text-anchor="middle" font-size="11" fill="currentColor" font-family="sans-serif">H2O</text><g stroke="currentColor" stroke-width="1.6"><line x1="142" y1="68" x2="160" y2="68"/><line x1="142" y1="76" x2="160" y2="76"/><line x1="180" y1="68" x2="198" y2="68"/><line x1="180" y1="76" x2="198" y2="76"/></g><circle cx="170" cy="72" r="15" fill="currentColor" fill-opacity="0.12" stroke="currentColor" stroke-width="1.5"/><text x="170" y="77" text-anchor="middle" font-size="13" fill="currentColor" font-family="sans-serif">C</text><circle cx="130" cy="72" r="13" fill="none" stroke="currentColor" stroke-width="1.5"/><text x="130" y="76" text-anchor="middle" font-size="11" fill="currentColor" font-family="sans-serif">O</text><circle cx="210" cy="72" r="13" fill="none" stroke="currentColor" stroke-width="1.5"/><text x="210" y="76" text-anchor="middle" font-size="11" fill="currentColor" font-family="sans-serif">O</text><text x="170" y="112" text-anchor="middle" font-size="11" fill="currentColor" font-family="sans-serif">CO2</text></svg>`,
             questions: [
               "Combien d'atomes, et de quels elements, compte une molecule d'eau ?",
               "Combien d'atomes au total compte une molecule de CO2 ?",
@@ -366,7 +367,8 @@ const ANNALES = {
             id: "pc_atom_02",
             titre: "La structure de l'atome",
             diff: "moyen",
-            enonce: "Un atome est forme d'un noyau (protons et neutrons) entoure d'electrons. L'atome est electriquement neutre.",
+            enonce: "Le professeur explique a Tom qu'un atome est forme d'un noyau (protons et neutrons) entoure d'electrons, et qu'il est electriquement neutre (voir schema).",
+            schema: `<svg width="100%" viewBox="0 0 230 185" role="img" xmlns="http://www.w3.org/2000/svg"><title>Structure d'un atome</title><desc>Un noyau central entoure d'electrons en mouvement.</desc><ellipse cx="115" cy="90" rx="85" ry="34" fill="none" stroke="currentColor" stroke-width="1"/><ellipse cx="115" cy="90" rx="34" ry="85" fill="none" stroke="currentColor" stroke-width="1"/><circle cx="115" cy="90" r="16" fill="currentColor" fill-opacity="0.18" stroke="currentColor" stroke-width="1.5"/><text x="115" y="95" text-anchor="middle" font-size="14" fill="currentColor" font-family="sans-serif">+</text><circle cx="200" cy="90" r="4.5" fill="currentColor"/><circle cx="115" cy="5" r="4.5" fill="currentColor"/><circle cx="30" cy="90" r="4.5" fill="currentColor"/><text x="150" y="150" font-size="11" fill="currentColor" font-family="sans-serif">noyau (+)</text><text x="150" y="166" font-size="11" fill="currentColor" font-family="sans-serif">electrons (-)</text></svg>`,
             questions: [
               "Quelles particules portent une charge positive ? une charge negative ?",
               "Pourquoi l'atome est-il electriquement neutre ?",
@@ -385,7 +387,7 @@ const ANNALES = {
             id: "pc_atom_03",
             titre: "L'atome de lithium",
             diff: "moyen",
-            enonce: "On donne la composition d'un atome de lithium : 3 protons, 4 neutrons et 3 electrons.",
+            enonce: "Hugo etudie la composition d'un atome de lithium : 3 protons, 4 neutrons et 3 electrons.",
             questions: [
               "Combien de particules le noyau contient-il ?",
               "L'atome est-il electriquement neutre ? Justifie.",
@@ -404,7 +406,7 @@ const ANNALES = {
             id: "pc_atom_04",
             titre: "Corps pur ou melange ?",
             diff: "facile",
-            enonce: "On observe : (a) de l'eau distillee, (b) de l'eau minerale, (c) du dioxygene O2.",
+            enonce: "Pour un TP, Clara observe trois echantillons : (a) de l'eau distillee, (b) de l'eau minerale, (c) du dioxygene O2.",
             questions: [
               "Lesquels sont des corps purs ?",
               "L'eau minerale est-elle un corps pur ? Pourquoi ?",
@@ -423,7 +425,7 @@ const ANNALES = {
             id: "pc_atom_05",
             titre: "L'atome est surtout du vide",
             diff: "moyen",
-            enonce: "Un atome a un diametre de l'ordre de 0,1 nanometre. Son noyau est environ 100 000 fois plus petit que l'atome.",
+            enonce: "Nina apprend qu'un atome a un diametre de l'ordre de 0,1 nanometre, et que son noyau est environ 100 000 fois plus petit que l'atome.",
             questions: [
               "L'atome est-il plein de matiere ou surtout du vide ?",
               "Ou se concentre la masse de l'atome ?",
@@ -442,7 +444,7 @@ const ANNALES = {
             id: "pc_atom_06",
             titre: "Les gaz de l'air",
             diff: "facile",
-            enonce: "On donne trois formules : H2 (dihydrogene), N2 (diazote) et H2O (eau).",
+            enonce: "Sami doit identifier trois molecules a partir de leurs formules : H2 (dihydrogene), N2 (diazote) et H2O (eau).",
             questions: [
               "Combien d'atomes une molecule de dihydrogene contient-elle ?",
               "Le diazote est-il un corps simple ou compose ?",
@@ -461,7 +463,7 @@ const ANNALES = {
             id: "pc_atom_07",
             titre: "Former l'ion sodium",
             diff: "moyen",
-            enonce: "L'atome de sodium possede 11 protons et 11 electrons. Il peut perdre 1 electron.",
+            enonce: "Emma etudie l'atome de sodium : il possede 11 protons et 11 electrons, et peut perdre 1 electron.",
             questions: [
               "L'atome de sodium est-il electriquement neutre ?",
               "Apres avoir perdu 1 electron, combien d'electrons reste-t-il ?",
@@ -480,7 +482,7 @@ const ANNALES = {
             id: "pc_atom_08",
             titre: "Compter les atomes du glucose",
             diff: "moyen",
-            enonce: "Le glucose a pour formule C6H12O6.",
+            enonce: "Maxime cherche la composition du glucose, de formule C6H12O6.",
             questions: [
               "Combien d'atomes de carbone contient-il ?",
               "Combien d'atomes d'hydrogene ?",
@@ -499,7 +501,8 @@ const ANNALES = {
             id: "pc_atom_09",
             titre: "Le modele de la molecule d'eau",
             diff: "facile",
-            enonce: "On represente la molecule d'eau par un modele : une boule rouge (oxygene) reliee a deux boules blanches (hydrogene).",
+            enonce: "Pour mieux comprendre, Sarah represente la molecule d'eau par un modele : une boule (oxygene) reliee a deux boules (hydrogene), voir figure.",
+            schema: `<svg width="100%" viewBox="0 0 220 160" role="img" xmlns="http://www.w3.org/2000/svg"><title>Modele de la molecule d'eau</title><desc>Un atome d'oxygene relie a deux atomes d'hydrogene.</desc><g stroke="currentColor" stroke-width="2.5"><line x1="110" y1="95" x2="72" y2="62"/><line x1="110" y1="95" x2="148" y2="62"/></g><circle cx="110" cy="95" r="24" fill="currentColor" fill-opacity="0.14" stroke="currentColor" stroke-width="1.5"/><text x="110" y="101" text-anchor="middle" font-size="16" fill="currentColor" font-family="sans-serif">O</text><circle cx="68" cy="58" r="15" fill="none" stroke="currentColor" stroke-width="1.5"/><text x="68" y="63" text-anchor="middle" font-size="12" fill="currentColor" font-family="sans-serif">H</text><circle cx="152" cy="58" r="15" fill="none" stroke="currentColor" stroke-width="1.5"/><text x="152" y="63" text-anchor="middle" font-size="12" fill="currentColor" font-family="sans-serif">H</text></svg>`,
             questions: [
               "Combien de liaisons relient les atomes ?",
               "Que represente la boule rouge ?",
@@ -518,7 +521,7 @@ const ANNALES = {
             id: "pc_atom_10",
             titre: "Les atomes pendant une reaction",
             diff: "moyen",
-            enonce: "Au cours d'une reaction chimique, les molecules sont cassees et les atomes se reorganisent.",
+            enonce: "Le professeur explique a Adam qu'au cours d'une reaction chimique, les molecules sont cassees et les atomes se reorganisent.",
             questions: [
               "Les atomes sont-ils conserves pendant la reaction ?",
               "Les molecules sont-elles les memes avant et apres ?",
@@ -537,7 +540,7 @@ const ANNALES = {
             id: "pc_atom_11",
             titre: "Former l'ion chlorure",
             diff: "moyen",
-            enonce: "L'atome de chlore possede 17 protons et 17 electrons. Il peut gagner 1 electron.",
+            enonce: "Ines etudie l'atome de chlore : il possede 17 protons et 17 electrons, et peut gagner 1 electron.",
             questions: [
               "L'atome de chlore est-il electriquement neutre ?",
               "Apres avoir gagne 1 electron, combien d'electrons possede-t-il ?",
@@ -556,7 +559,7 @@ const ANNALES = {
             id: "pc_atom_12",
             titre: "Atome ou ion ?",
             diff: "difficile",
-            enonce: "On donne la composition de trois entites. X : 8 protons et 8 electrons. Y : 8 protons et 10 electrons. Z : 11 protons et 10 electrons.",
+            enonce: "Pour un exercice, Nathan compare trois entites. X : 8 protons et 8 electrons. Y : 8 protons et 10 electrons. Z : 11 protons et 10 electrons.",
             questions: [
               "Laquelle de ces entites est un atome ? Lesquelles sont des ions ?",
               "Justifie que X est electriquement neutre.",
@@ -575,7 +578,7 @@ const ANNALES = {
             id: "pc_atom_13",
             titre: "Atomes et combustion du methane",
             diff: "expert",
-            enonce: "La combustion du methane s'ecrit : CH4 + 2 O2 -> CO2 + 2 H2O.",
+            enonce: "Chloe etudie la combustion du methane, qui s'ecrit : CH4 + 2 O2 -> CO2 + 2 H2O.",
             questions: [
               "Combien d'atomes au total dans une molecule de CH4 ? dans une molecule de CO2 ?",
               "Compte les atomes de chaque element a gauche de l'equation, puis a droite.",
@@ -596,7 +599,7 @@ const ANNALES = {
             id: "pc_atom_14",
             titre: "Lire deux formules",
             diff: "moyen",
-            enonce: "On donne deux molecules : le dioxyde de soufre SO2 et l'ammoniac NH3.",
+            enonce: "Jade doit analyser deux molecules : le dioxyde de soufre SO2 et l'ammoniac NH3.",
             questions: [
               "Combien d'atomes au total dans une molecule de SO2 ? dans une molecule de NH3 ?",
               "Ces deux molecules sont-elles des corps simples ou composes ?",

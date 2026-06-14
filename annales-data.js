@@ -626,7 +626,7 @@ const ANNALES = {
             id: "pc_masse_01",
             titre: "La bougie qui brule",
             diff: "moyen",
-            enonce: "On fait reagir 4 g de methane avec 16 g de dioxygene. Il se forme du dioxyde de carbone et de l'eau.",
+            enonce: "Pour un exercice, Lucas fait reagir 4 g de methane avec 16 g de dioxygene. Il se forme du dioxyde de carbone et de l'eau.",
             questions: [
               "Enonce le principe de conservation de la masse.",
               "Quelle est la masse totale des produits formes ?",
@@ -645,7 +645,7 @@ const ANNALES = {
             id: "pc_masse_02",
             titre: "Fer et soufre en tube ferme",
             diff: "moyen",
-            enonce: "On fait reagir du fer avec du soufre dans un tube ferme. Avant la reaction : 5,6 g de fer et 3,2 g de soufre.",
+            enonce: "Emma fait reagir du fer avec du soufre dans un tube ferme. Avant la reaction : 5,6 g de fer et 3,2 g de soufre.",
             questions: [
               "Quelle masse de sulfure de fer obtient-on si tout reagit ?",
               "Pourquoi le tube doit-il etre ferme pour verifier la conservation ?",
@@ -664,7 +664,7 @@ const ANNALES = {
             id: "pc_masse_03",
             titre: "Equilibrer une equation",
             diff: "facile",
-            enonce: "La combustion du carbone s'ecrit : C + O2 -> CO2.",
+            enonce: "Le professeur ecrit au tableau la combustion du carbone : C + O2 -> CO2.",
             questions: [
               "Compte les atomes de chaque element a gauche, puis a droite.",
               "L'equation est-elle equilibree ?",
@@ -683,7 +683,7 @@ const ANNALES = {
             id: "pc_masse_04",
             titre: "Dissoudre du sucre",
             diff: "facile",
-            enonce: "On dissout 5 g de sucre dans 95 g d'eau, dans un becher pose sur une balance.",
+            enonce: "Clara dissout 5 g de sucre dans 95 g d'eau, dans un becher pose sur une balance.",
             questions: [
               "Quelle masse la balance indique-t-elle apres dissolution ?",
               "Le sucre a-t-il disparu ?",
@@ -702,7 +702,7 @@ const ANNALES = {
             id: "pc_masse_05",
             titre: "La synthese de l'eau",
             diff: "moyen",
-            enonce: "La synthese de l'eau s'ecrit : 2 H2 + O2 -> 2 H2O.",
+            enonce: "Tom etudie la synthese de l'eau, qui s'ecrit : 2 H2 + O2 -> 2 H2O.",
             questions: [
               "Combien d'atomes d'hydrogene a gauche ? a droite ?",
               "Combien d'atomes d'oxygene a gauche ? a droite ?",
@@ -721,7 +721,7 @@ const ANNALES = {
             id: "pc_masse_06",
             titre: "Physique ou chimique ?",
             diff: "moyen",
-            enonce: "On observe deux transformations : (a) de la glace qui fond, (b) du bois qui brule.",
+            enonce: "Nina observe deux transformations : (a) de la glace qui fond, (b) du bois qui brule.",
             questions: [
               "Laquelle est une transformation physique ? Pourquoi ?",
               "Laquelle est une transformation chimique ? Pourquoi ?",
@@ -740,7 +740,7 @@ const ANNALES = {
             id: "pc_masse_07",
             titre: "Retrouver une masse manquante",
             diff: "moyen",
-            enonce: "Lors d'une reaction, 12 g de carbone reagissent avec du dioxygene pour former 44 g de dioxyde de carbone.",
+            enonce: "Lors d'une reaction etudiee par Adam, 12 g de carbone reagissent avec du dioxygene pour former 44 g de dioxyde de carbone.",
             questions: [
               "Ecris l'egalite des masses (conservation).",
               "Quelle masse de dioxygene a reagi ?",
@@ -759,7 +759,7 @@ const ANNALES = {
             id: "pc_masse_08",
             titre: "Le clou qui rouille",
             diff: "moyen",
-            enonce: "Un clou en fer rouille a l'air libre. Sa masse augmente au fil des semaines.",
+            enonce: "Sami remarque qu'un clou en fer rouille a l'air libre : sa masse augmente au fil des semaines.",
             questions: [
               "Avec quel gaz le fer reagit-il pour rouiller ?",
               "Pourquoi la masse du clou augmente-t-elle ?",
@@ -778,7 +778,7 @@ const ANNALES = {
             id: "pc_masse_09",
             titre: "Lire l'equation du methane",
             diff: "moyen",
-            enonce: "On donne l'equation : CH4 + 2 O2 -> CO2 + 2 H2O.",
+            enonce: "Maxime analyse l'equation : CH4 + 2 O2 -> CO2 + 2 H2O.",
             questions: [
               "Combien d'atomes de carbone de chaque cote ?",
               "Combien d'atomes d'hydrogene de chaque cote ?",
@@ -797,7 +797,8 @@ const ANNALES = {
             id: "pc_masse_10",
             titre: "Le ballon qui gonfle",
             diff: "moyen",
-            enonce: "On fait reagir du vinaigre avec du bicarbonate dans une bouteille fermee par un ballon. Un gaz se forme et gonfle le ballon.",
+            enonce: "Sarah fait reagir du vinaigre avec du bicarbonate dans une bouteille fermee par un ballon. Un gaz se forme et gonfle le ballon (voir figure).",
+            schema: `<svg width="100%" viewBox="0 0 200 200" role="img" xmlns="http://www.w3.org/2000/svg"><title>Bouteille fermee par un ballon</title><desc>Le gaz forme gonfle le ballon, en systeme ferme.</desc><rect x="78" y="95" width="60" height="88" rx="7" fill="none" stroke="currentColor" stroke-width="2"/><rect x="99" y="72" width="18" height="26" fill="none" stroke="currentColor" stroke-width="2"/><ellipse cx="108" cy="46" rx="24" ry="28" fill="currentColor" fill-opacity="0.12" stroke="currentColor" stroke-width="2"/><line x1="78" y1="150" x2="138" y2="150" stroke="currentColor" stroke-width="1.2"/><g fill="none" stroke="currentColor" stroke-width="1"><circle cx="100" cy="135" r="2.5"/><circle cx="116" cy="125" r="2.5"/><circle cx="108" cy="114" r="2"/></g><text x="143" y="46" font-size="11" fill="currentColor" font-family="sans-serif">ballon</text></svg>`,
             questions: [
               "La masse totale du systeme (bouteille + ballon) change-t-elle ?",
               "Pourquoi le ballon gonfle-t-il ?",
@@ -816,7 +817,7 @@ const ANNALES = {
             id: "pc_masse_11",
             titre: "Former de l'oxyde de cuivre",
             diff: "moyen",
-            enonce: "On chauffe 8 g de cuivre avec 2 g de dioxygene. Tout reagit et forme de l'oxyde de cuivre.",
+            enonce: "Ines chauffe 8 g de cuivre avec 2 g de dioxygene. Tout reagit et forme de l'oxyde de cuivre.",
             questions: [
               "Quelle masse d'oxyde de cuivre obtient-on ?",
               "Quelle loi utilises-tu ?",
@@ -835,7 +836,7 @@ const ANNALES = {
             id: "pc_masse_12",
             titre: "Combustion et masse des gaz",
             diff: "difficile",
-            enonce: "On brule 24 g de carbone. La combustion complete consomme 64 g de dioxygene et produit du dioxyde de carbone, dans un systeme ferme.",
+            enonce: "Pour un exercice, Nathan brule 24 g de carbone. La combustion complete consomme 64 g de dioxygene et produit du dioxyde de carbone, dans un systeme ferme.",
             questions: [
               "Ecris la relation de conservation des masses pour cette reaction.",
               "Calcule la masse de dioxyde de carbone produite.",
@@ -854,7 +855,8 @@ const ANNALES = {
             id: "pc_masse_13",
             titre: "Verifier la conservation de la masse",
             diff: "expert",
-            enonce: "On chauffe dans un tube ferme 5,6 g de fer avec 3,2 g de soufre. La reaction forme du sulfure de fer (un solide). On pese le tube et son contenu avant et apres la reaction.",
+            enonce: "Chloe chauffe dans un tube ferme 5,6 g de fer avec 3,2 g de soufre (voir figure). La reaction forme du sulfure de fer (un solide). Elle pese le tube et son contenu avant et apres la reaction.",
+            schema: `<svg width="100%" viewBox="0 0 230 175" role="img" xmlns="http://www.w3.org/2000/svg"><title>Tube ferme sur une balance</title><desc>En systeme ferme, la masse totale ne change pas.</desc><path d="M60,150 L70,120 L160,120 L170,150 Z" fill="none" stroke="currentColor" stroke-width="2"/><line x1="78" y1="120" x2="152" y2="120" stroke="currentColor" stroke-width="2"/><rect x="80" y="100" width="70" height="18" rx="9" fill="none" stroke="currentColor" stroke-width="1.8"/><rect x="118" y="130" width="34" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1.2"/><text x="82" y="95" font-size="10" fill="currentColor" font-family="sans-serif">tube ferme</text></svg>`,
             questions: [
               "Quelle masse de sulfure de fer obtient-on si tout reagit ?",
               "La masse totale du tube change-t-elle pendant la reaction ? Justifie.",
@@ -875,7 +877,8 @@ const ANNALES = {
             id: "pc_masse_14",
             titre: "Le comprime effervescent",
             diff: "difficile",
-            enonce: "On dissout un comprime effervescent dans l'eau, dans un becher ouvert pose sur une balance. Des bulles de gaz se forment et la masse affichee diminue.",
+            enonce: "Jade dissout un comprime effervescent dans l'eau, dans un becher ouvert pose sur une balance (voir figure). Des bulles de gaz se forment et la masse affichee diminue.",
+            schema: `<svg width="100%" viewBox="0 0 230 180" role="img" xmlns="http://www.w3.org/2000/svg"><title>Becher ouvert sur une balance</title><desc>Le gaz s'echappe : la masse mesuree diminue.</desc><path d="M60,155 L70,125 L160,125 L170,155 Z" fill="none" stroke="currentColor" stroke-width="2"/><line x1="78" y1="125" x2="152" y2="125" stroke="currentColor" stroke-width="2"/><path d="M95,95 L99,123 L131,123 L135,95" fill="none" stroke="currentColor" stroke-width="1.8"/><line x1="97" y1="108" x2="133" y2="108" stroke="currentColor" stroke-width="1"/><g fill="none" stroke="currentColor" stroke-width="1"><circle cx="108" cy="100" r="2"/><circle cx="120" cy="92" r="2"/><circle cx="114" cy="84" r="1.6"/></g><path d="M192,116 l0,26 m-6,-8 l6,8 l6,-8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><text x="176" y="110" font-size="10" fill="currentColor" font-family="sans-serif">masse</text></svg>`,
             questions: [
               "Pourquoi la masse affichee diminue-t-elle ?",
               "La conservation de la masse est-elle reellement violee ?",

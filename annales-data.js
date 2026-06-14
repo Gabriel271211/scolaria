@@ -1747,7 +1747,7 @@ const ANNALES = {
             id: "pc_ener_01",
             titre: "Le radiateur electrique",
             diff: "moyen",
-            enonce: "Un radiateur electrique porte l'indication 1500 W. Il fonctionne pendant 2 heures.",
+            enonce: "Le radiateur electrique de la chambre de Lucas porte l'indication 1500 W. Il fonctionne pendant 2 heures.",
             questions: [
               "Que represente la puissance, en watts ?",
               "Calcule l'energie consommee en watt-heures (Wh), puis en kWh.",
@@ -1766,7 +1766,7 @@ const ANNALES = {
             id: "pc_ener_02",
             titre: "Puissance d'une lampe",
             diff: "moyen",
-            enonce: "Une lampe est branchee sous une tension de 230 V et est traversee par une intensite de 0,26 A.",
+            enonce: "Emma branche une lampe sous une tension de 230 V ; elle est traversee par une intensite de 0,26 A.",
             questions: [
               "Donne la formule de la puissance electrique en fonction de U et I.",
               "Calcule la puissance de la lampe (arrondis a l'unite).",
@@ -1785,7 +1785,8 @@ const ANNALES = {
             id: "pc_ener_03",
             titre: "La centrale hydroelectrique",
             diff: "facile",
-            enonce: "Dans une centrale hydroelectrique, l'eau retenue par un barrage tombe et fait tourner une turbine reliee a un alternateur.",
+            enonce: "Lors d'une sortie, Tom visite une centrale hydroelectrique : l'eau retenue par un barrage tombe et fait tourner une turbine reliee a un alternateur (voir schema).",
+            schema: `<svg width="100%" viewBox="0 0 240 165" role="img" xmlns="http://www.w3.org/2000/svg"><title>Centrale hydroelectrique</title><desc>L'eau du barrage tombe et fait tourner une turbine reliee a un alternateur.</desc><line x1="20" y1="140" x2="220" y2="140" stroke="currentColor" stroke-width="2"/><path d="M30,72 L120,72 L120,140 L30,140 Z" fill="currentColor" fill-opacity="0.1" stroke="none"/><line x1="30" y1="72" x2="120" y2="72" stroke="currentColor" stroke-width="1.2"/><path d="M120,55 L133,55 L127,140 L120,140 Z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M129,95 C134,110 131,126 133,138" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="3 3"/><circle cx="162" cy="128" r="14" fill="none" stroke="currentColor" stroke-width="2"/><line x1="162" y1="114" x2="162" y2="142" stroke="currentColor" stroke-width="1"/><line x1="148" y1="128" x2="176" y2="128" stroke="currentColor" stroke-width="1"/><text x="58" y="104" font-size="11" fill="currentColor" font-family="sans-serif">eau</text><text x="146" y="106" font-size="10" fill="currentColor" font-family="sans-serif">turbine</text></svg>`,
             questions: [
               "Quelle est la source d'energie au depart ?",
               "Cite la chaine de conversions d'energie.",
@@ -1804,7 +1805,7 @@ const ANNALES = {
             id: "pc_ener_04",
             titre: "L'energie en joules",
             diff: "moyen",
-            enonce: "Un appareil de puissance 60 W fonctionne pendant 5 minutes.",
+            enonce: "Un appareil utilise par Clara a une puissance de 60 W et fonctionne pendant 5 minutes.",
             questions: [
               "Convertis la duree en secondes.",
               "Calcule l'energie consommee en joules (E = P x t, avec t en secondes).",
@@ -1823,7 +1824,7 @@ const ANNALES = {
             id: "pc_ener_05",
             titre: "La facture d'electricite",
             diff: "moyen",
-            enonce: "Une famille consomme 900 kWh en deux mois. Le prix est de 0,20 euro par kWh.",
+            enonce: "La famille de Sami consomme 900 kWh en deux mois. Le prix est de 0,20 euro par kWh.",
             questions: [
               "Que represente le kWh ?",
               "Calcule le montant de la facture.",
@@ -1842,7 +1843,7 @@ const ANNALES = {
             id: "pc_ener_06",
             titre: "Renouvelable ou fossile ?",
             diff: "facile",
-            enonce: "On classe des sources d'energie : soleil, charbon, vent, petrole, eau des barrages.",
+            enonce: "Pour un expose, Nina classe des sources d'energie : soleil, charbon, vent, petrole, eau des barrages.",
             questions: [
               "Lesquelles sont renouvelables ?",
               "Lesquelles sont non renouvelables (fossiles) ?",
@@ -1861,7 +1862,8 @@ const ANNALES = {
             id: "pc_ener_07",
             titre: "L'energie d'une lampe",
             diff: "moyen",
-            enonce: "Une lampe a incandescence transforme l'energie electrique qu'elle recoit.",
+            enonce: "Nathan etudie une lampe a incandescence qui transforme l'energie electrique qu'elle recoit (voir schema).",
+            schema: `<svg width="100%" viewBox="0 0 240 140" role="img" xmlns="http://www.w3.org/2000/svg"><title>Conversion d'energie d'une lampe</title><desc>L'energie electrique devient de la lumiere et de la chaleur.</desc><rect x="14" y="55" width="68" height="34" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/><text x="48" y="69" text-anchor="middle" font-size="10" fill="currentColor" font-family="sans-serif">energie</text><text x="48" y="82" text-anchor="middle" font-size="10" fill="currentColor" font-family="sans-serif">electrique</text><line x1="84" y1="72" x2="116" y2="72" stroke="currentColor" stroke-width="1.5"/><polygon points="116,72 108,68 108,76" fill="currentColor"/><circle cx="140" cy="72" r="15" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="134" y="85" width="12" height="6" fill="none" stroke="currentColor" stroke-width="1.2"/><line x1="156" y1="62" x2="184" y2="48" stroke="currentColor" stroke-width="1.5"/><polygon points="184,48 175,49 180,56" fill="currentColor"/><line x1="156" y1="83" x2="184" y2="97" stroke="currentColor" stroke-width="1.5"/><polygon points="184,97 175,90 180,97" fill="currentColor"/><text x="188" y="48" font-size="10" fill="currentColor" font-family="sans-serif">lumiere</text><text x="188" y="100" font-size="10" fill="currentColor" font-family="sans-serif">chaleur</text></svg>`,
             questions: [
               "En quelles formes d'energie la convertit-elle ?",
               "Quelle forme est utile ? Laquelle est perdue ?",
@@ -1880,7 +1882,7 @@ const ANNALES = {
             id: "pc_ener_08",
             titre: "Comparer deux appareils",
             diff: "moyen",
-            enonce: "On compare deux appareils : un seche-cheveux (1800 W) et une lampe (15 W).",
+            enonce: "Sarah compare deux appareils : un seche-cheveux (1800 W) et une lampe (15 W).",
             questions: [
               "Lequel consomme le plus d'energie pour une meme duree ?",
               "Calcule l'energie consommee par le seche-cheveux en 10 min (en Wh).",
@@ -1899,7 +1901,7 @@ const ANNALES = {
             id: "pc_ener_09",
             titre: "Calculer une tension",
             diff: "moyen",
-            enonce: "Un moteur de puissance 24 W est traverse par une intensite de 2 A.",
+            enonce: "Le moteur etudie par Maxime a une puissance de 24 W et est traverse par une intensite de 2 A.",
             questions: [
               "Quelle formule relie P, U et I ?",
               "Calcule la tension aux bornes du moteur.",
@@ -1918,7 +1920,8 @@ const ANNALES = {
             id: "pc_ener_10",
             titre: "L'effet Joule",
             diff: "facile",
-            enonce: "Quand un courant traverse une resistance, elle chauffe : c'est l'effet Joule.",
+            enonce: "Ines observe que, quand un courant traverse une resistance, elle chauffe : c'est l'effet Joule (voir schema).",
+            schema: `<svg width="100%" viewBox="0 0 220 120" role="img" xmlns="http://www.w3.org/2000/svg"><title>Effet Joule</title><desc>La resistance chauffe quand le courant la traverse.</desc><line x1="20" y1="85" x2="70" y2="85" stroke="currentColor" stroke-width="2"/><rect x="70" y="73" width="60" height="24" fill="none" stroke="currentColor" stroke-width="2"/><line x1="130" y1="85" x2="200" y2="85" stroke="currentColor" stroke-width="2"/><text x="100" y="89" text-anchor="middle" font-size="12" fill="currentColor" font-family="sans-serif">R</text><g stroke="currentColor" stroke-width="1.5" fill="none"><path d="M82,66 q4,-7 8,0 q4,7 8,0"/><path d="M106,66 q4,-7 8,0 q4,7 8,0"/></g><text x="100" y="40" text-anchor="middle" font-size="10" fill="currentColor" font-family="sans-serif">chaleur</text></svg>`,
             questions: [
               "En quelle forme d'energie l'energie electrique est-elle convertie ?",
               "Cite un appareil qui utilise volontairement l'effet Joule.",
@@ -1937,7 +1940,7 @@ const ANNALES = {
             id: "pc_ener_11",
             titre: "Incandescence ou LED ?",
             diff: "moyen",
-            enonce: "Une ampoule a incandescence de 60 W et une LED de 8 W eclairent autant.",
+            enonce: "Jade compare une ampoule a incandescence de 60 W et une LED de 8 W qui eclairent autant.",
             questions: [
               "Laquelle consomme le moins d'energie ?",
               "Calcule l'energie consommee par chacune en 5 h (en Wh).",
@@ -1956,7 +1959,7 @@ const ANNALES = {
             id: "pc_ener_12",
             titre: "Le cout du chauffe-eau",
             diff: "difficile",
-            enonce: "Un chauffe-eau de puissance 2000 W fonctionne 3 h par jour. Le prix de l'energie est de 0,20 euro par kWh.",
+            enonce: "Le chauffe-eau de la maison d'Adam a une puissance de 2000 W et fonctionne 3 h par jour. Le prix de l'energie est de 0,20 euro par kWh.",
             questions: [
               "Calcule l'energie consommee par jour (en kWh).",
               "Calcule le cout de fonctionnement par jour.",
@@ -1975,7 +1978,7 @@ const ANNALES = {
             id: "pc_ener_13",
             titre: "Maison alimentee au solaire",
             diff: "expert",
-            enonce: "Une installation solaire alimente une maison. Un radiateur de 1000 W et 5 lampes LED de 10 W chacune fonctionnent ensemble pendant 4 h.",
+            enonce: "Une installation solaire alimente la maison de Chloe. Un radiateur de 1000 W et 5 lampes LED de 10 W chacune fonctionnent ensemble pendant 4 h.",
             questions: [
               "Calcule la puissance totale des 5 lampes.",
               "Calcule la puissance totale installee (radiateur + lampes).",
@@ -1996,7 +1999,7 @@ const ANNALES = {
             id: "pc_ener_14",
             titre: "L'energie de la bouilloire",
             diff: "difficile",
-            enonce: "Une bouilloire de puissance 2200 W chauffe de l'eau pendant 3 minutes.",
+            enonce: "La bouilloire de Hugo, de puissance 2200 W, chauffe de l'eau pendant 3 minutes.",
             questions: [
               "Convertis la duree en secondes.",
               "Calcule l'energie consommee en joules (E = P x t).",

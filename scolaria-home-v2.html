@@ -1463,11 +1463,23 @@ body.mode-leaving { opacity: 0; pointer-events: none; }
 /* CONJUGUEUR */
 .conj-box{background:var(--bg);border:1.5px solid var(--bord);border-radius:14px;padding:14px;margin-bottom:8px}
 .conj-title{font-size:13px;font-weight:800;margin-bottom:10px;color:var(--tx)}
+.conj-title-main{font-size:14px;font-weight:800;margin-bottom:12px;color:var(--tx)}
 .conj-table{width:100%;border-collapse:collapse}
 .conj-table td{padding:6px 8px;font-size:13px;border-bottom:1px solid var(--bord)}
 .conj-table td:first-child{color:var(--mu);font-weight:600;width:38%}
 .conj-table td:last-child{color:var(--tx);font-weight:600}
 .conj-table tr:last-child td{border-bottom:none}
+/* Tableaux de conjugaison generes par l IA (markdown) */
+.conj-box h3{font-size:12px;font-weight:800;color:var(--accent);margin:14px 0 6px;text-transform:uppercase;letter-spacing:.4px}
+.conj-box h2,.conj-box h3:first-of-type{margin-top:2px}
+.conj-box table{width:100%;border-collapse:collapse;margin-bottom:2px}
+.conj-box tr:has(th){display:none}
+.conj-box td{padding:6px 8px;font-size:13px;border-bottom:1px solid var(--bord)}
+.conj-box td:first-child{color:var(--mu);font-weight:600;width:42%}
+.conj-box td:last-child{color:var(--tx);font-weight:700}
+.conj-box table tr:last-child td{border-bottom:none}
+.conj-box p{font-size:12.5px;color:var(--tx);margin:10px 0 2px}
+.conj-box br{display:none}
 /* MOYENNE */
 .mres{background:var(--accent-l);border:1.5px solid var(--accent);border-radius:16px;padding:20px 16px;text-align:center;margin-bottom:14px}
 .mbig{font-size:52px;font-weight:900;letter-spacing:-2px;line-height:1;color:var(--accent)}
@@ -4730,91 +4742,68 @@ function doConvert() {
   res.textContent = parseFloat(result.toFixed(6)) + ' ' + to;
 }
 
-/* ══ CONJUGUEUR ══ */
-var CONJ_FR = {
-  aller:   { pres:['je vais','tu vas','il va','nous allons','vous allez','ils vont'],         impa:['j\'allais','tu allais','il allait','nous allions','vous alliez','ils allaient'],         fut:['j\'irai','tu iras','il ira','nous irons','vous irez','ils iront'] },
-  avoir:   { pres:['j\'ai','tu as','il a','nous avons','vous avez','ils ont'],                 impa:['j\'avais','tu avais','il avait','nous avions','vous aviez','ils avaient'],                 fut:['j\'aurai','tu auras','il aura','nous aurons','vous aurez','ils auront'] },
-  etre:    { pres:['je suis','tu es','il est','nous sommes','vous etes','ils sont'],            impa:['j\'etais','tu etais','il etait','nous etions','vous etiez','ils etaient'],            fut:['je serai','tu seras','il sera','nous serons','vous serez','ils seront'] },
-  faire:   { pres:['je fais','tu fais','il fait','nous faisons','vous faites','ils font'],      impa:['je faisais','tu faisais','il faisait','nous faisions','vous faisiez','ils faisaient'],      fut:['je ferai','tu feras','il fera','nous ferons','vous ferez','ils feront'] },
-  pouvoir: { pres:['je peux','tu peux','il peut','nous pouvons','vous pouvez','ils peuvent'],   impa:['je pouvais','tu pouvais','il pouvait','nous pouvions','vous pouviez','ils pouvaient'],   fut:['je pourrai','tu pourras','il pourra','nous pourrons','vous pourrez','ils pourront'] },
-  vouloir: { pres:['je veux','tu veux','il veut','nous voulons','vous voulez','ils veulent'],   impa:['je voulais','tu voulais','il voulait','nous voulions','vous vouliez','ils voulaient'],   fut:['je voudrai','tu voudras','il voudra','nous voudrons','vous voudrez','ils voudront'] },
-  venir:   { pres:['je viens','tu viens','il vient','nous venons','vous venez','ils viennent'], impa:['je venais','tu venais','il venait','nous venions','vous veniez','ils venaient'],          fut:['je viendrai','tu viendras','il viendra','nous viendrons','vous viendrez','ils viendront'] },
-  prendre: { pres:['je prends','tu prends','il prend','nous prenons','vous prenez','ils prennent'], impa:['je prenais','tu prenais','il prenait','nous prenions','vous preniez','ils prenaient'], fut:['je prendrai','tu prendras','il prendra','nous prendrons','vous prendrez','ils prendront'] },
-  savoir:  { pres:['je sais','tu sais','il sait','nous savons','vous savez','ils savent'],      impa:['je savais','tu savais','il savait','nous savions','vous saviez','ils savaient'],          fut:['je saurai','tu sauras','il saura','nous saurons','vous saurez','ils sauront'] },
-  voir:    { pres:['je vois','tu vois','il voit','nous voyons','vous voyez','ils voient'],       impa:['je voyais','tu voyais','il voyait','nous voyions','vous voyiez','ils voyaient'],          fut:['je verrai','tu verras','il verra','nous verrons','vous verrez','ils verront'] }
+/* ══ CONJUGUEUR — 100% IA : vraies conjugaisons, tout verbe, tous les temps (FR/EN/ES) ══ */
+var CONJ_CACHE = {};   /* cache par "lang:verbe" pour eviter de rappeler l IA */
+var conjTimer  = null; /* debounce de la saisie */
+var conjReqId  = 0;    /* garde anti-course entre requetes concurrentes */
+
+var CONJ_PROMPTS = {
+  fr: function(v){ return 'Conjugue le verbe francais "' + v + '". Corrige l orthographe si l entree est approximative et conjugue le vrai verbe. '
+    + 'Reponds UNIQUEMENT avec des tableaux markdown, un par temps, dans cet ordre exact :\n'
+    + 'Present, Imparfait, Passe compose, Futur simple, Conditionnel present, Subjonctif present, Imperatif.\n'
+    + 'Avant chaque tableau, mets un titre de la forme "### Nom du temps".\n'
+    + 'Chaque tableau a 2 colonnes : | Pronom | Forme | avec la ligne de separation | --- | --- |.\n'
+    + 'Pronoms : je, tu, il/elle, nous, vous, ils/elles. Pour l Imperatif, seulement tu, nous, vous.\n'
+    + 'Termine par une ligne : "**Participe passe :** ...".\n'
+    + 'Aucune phrase d introduction ni de conclusion. Uniquement les titres et les tableaux.'; },
+  en: function(v){ return 'Conjugate the English verb "' + v + '". Fix the spelling if the input is approximate and conjugate the real verb. '
+    + 'Reply ONLY with markdown tables, one per tense, in this exact order:\n'
+    + 'Present simple, Present continuous, Past simple, Past continuous, Present perfect, Future (will), Conditional (would).\n'
+    + 'Before each table, add a title of the form "### Tense name".\n'
+    + 'Each table has 2 columns: | Pronoun | Form | with the separator row | --- | --- |.\n'
+    + 'Pronouns: I, you, he/she/it, we, you, they.\n'
+    + 'End with a line: "**Past participle:** ...".\n'
+    + 'No introduction and no conclusion. Only the titles and the tables.'; },
+  es: function(v){ return 'Conjuga el verbo espanol "' + v + '". Corrige la ortografia si la entrada es aproximada y conjuga el verbo real. '
+    + 'Responde SOLO con tablas markdown, una por tiempo, en este orden exacto:\n'
+    + 'Presente, Preterito imperfecto, Preterito indefinido, Futuro simple, Condicional, Presente de subjuntivo, Imperativo.\n'
+    + 'Antes de cada tabla, pon un titulo de la forma "### Nombre del tiempo".\n'
+    + 'Cada tabla tiene 2 columnas: | Pronombre | Forma | con la fila separadora | --- | --- |.\n'
+    + 'Pronombres: yo, tu, el/ella, nosotros, vosotros, ellos/ellas. Para el Imperativo: tu, usted, nosotros, vosotros, ustedes.\n'
+    + 'Termina con una linea: "**Participio:** ...".\n'
+    + 'Sin introduccion ni conclusion. Solo los titulos y las tablas.'; }
 };
-var PRONS_FR = ['je / j\'','tu','il / elle','nous','vous','ils / elles'];
+var CONJ_LOADING = { fr:'ScolarIA conjugue', en:'ScolarIA is conjugating', es:'ScolarIA esta conjugando' };
+var CONJ_SYS = 'Tu es un conjugueur expert et rigoureux (francais, anglais, espagnol). Tes conjugaisons sont toujours correctes, y compris pour les verbes irreguliers. Tu ne renvoies que des tableaux markdown, sans commentaire.';
 
-async function doConj(verb) {
-  var res  = document.getElementById('conj-result');
-  var lang = document.getElementById('conj-lang') ? document.getElementById('conj-lang').value : 'fr';
-  if (!res || !verb || verb.length < 2) { if(res) res.innerHTML = ''; return; }
-  verb = verb.toLowerCase().trim();
+function doConj(verb) {
+  var res    = document.getElementById('conj-result');
+  var langEl = document.getElementById('conj-lang');
+  var lang   = langEl ? langEl.value : 'fr';
+  if (!res) return;
+  verb = (verb || '').toLowerCase().trim().replace(/[^a-zàâäéèêëîïôöùûüçñ' -]/gi, '');
+  if (conjTimer) clearTimeout(conjTimer);
+  conjReqId++;
+  if (!verb || verb.length < 2) { res.innerHTML = ''; return; }
 
-  if (lang === 'fr') {
-    var key = verb.replace(/[éèêë]/g,'e').replace(/[àâ]/g,'a').replace(/[îï]/g,'i');
-    var data = CONJ_FR[verb] || CONJ_FR[key];
-    if (data) {
-      res.innerHTML = buildConjTable(verb, 'Présent', PRONS_FR, data.pres) +
-                      buildConjTable(verb, 'Imparfait', PRONS_FR, data.impa) +
-                      buildConjTable(verb, 'Futur', PRONS_FR, data.fut);
-      return;
-    }
-    if (verb.endsWith('er') && verb.length > 3) {
-      var stem = verb.slice(0,-2);
-      var pres = [stem+'e',stem+'es',stem+'e',stem+'ons',stem+'ez',stem+'ent'];
-      var impa = [stem+'ais',stem+'ais',stem+'ait',stem+'ions',stem+'iez',stem+'aient'];
-      var fut  = [stem+'erai',stem+'eras',stem+'era',stem+'erons',stem+'erez',stem+'eront'];
-      res.innerHTML = buildConjTable(verb,'Présent',PRONS_FR,pres) + buildConjTable(verb,'Imparfait',PRONS_FR,impa) + buildConjTable(verb,'Futur',PRONS_FR,fut);
-      return;
-    }
-    if (verb.endsWith('ir') && verb.length > 3) {
-      var stem2 = verb.slice(0,-2);
-      var pres2 = [stem2+'is',stem2+'is',stem2+'it',stem2+'issons',stem2+'issez',stem2+'issent'];
-      res.innerHTML = buildConjTable(verb,'Présent',PRONS_FR,pres2);
-      return;
-    }
-    /* Verbe irrégulier non trouvé → conjugaison via IA */
-    res.innerHTML = '<div class="conj-ai-loading"><span class="conj-ai-spin"></span>ScolarIA conjugue...</div>';
-    try {
-      var p = 'Conjugue le verbe francais "' + verb + '" en donnant des tableaux markdown pour : Present, Imparfait, Futur simple, Conditionnel present. Format : | Pronom | Forme | avec ---|--- en 2eme ligne.';
-      var reply = await callGroq([{role:'system',content:SCOLARIA_SYSTEM},{role:'user',content:p}]);
-      res.innerHTML = '<div class="conj-box"><div class="conj-title">Conjugaison de "' + esc(verb) + '" (IA)</div>' + mdToHtml(reply) + '</div>';
-    } catch(e) {
-      res.innerHTML = '<div style="color:var(--danger);font-size:13px;padding:12px;text-align:center">Erreur : ' + esc(e.message) + '</div>';
-    }
-  } else if (lang === 'en') {
-    var prons = ['I','you','he/she','we','you','they'];
-    var s3    = verb.endsWith('s') || verb.endsWith('x') ? verb+'es' : verb+'s';
-    var pres  = [verb,verb,s3,verb,verb,verb];
-    var pp    = verb.endsWith('e') ? verb+'d' : verb+'ed';
-    var past  = [pp,pp,pp,pp,pp,pp];
-    /* Présent + passé en local, puis enrichissement IA (present perfect + futur) */
-    res.innerHTML = buildConjTable(verb,'Present simple',prons,pres) + buildConjTable(verb,'Past simple',prons,past);
-    res.innerHTML += '<div class="conj-ai-loading"><span class="conj-ai-spin"></span>More tenses via IA...</div>';
-    try {
-      var pe = 'Conjugate the English verb "' + verb + '" in markdown tables | Pronoun | Form | for: Present Perfect, Future (will), Conditional (would). Keep it concise.';
-      var re = await callGroq([{role:'system',content:SCOLARIA_SYSTEM},{role:'user',content:pe}]);
-      var old = document.getElementById('conj-result');
-      if (old) {
-        var loading = old.querySelector('.conj-ai-loading');
-        if (loading) loading.outerHTML = mdToHtml(re);
-      }
-    } catch(e2) { /* silencieux */ }
-  } else {
-    var suf = verb.endsWith('ar') ? ['o','as','a','amos','áis','an'] : verb.endsWith('er') ? ['o','es','e','emos','éis','en'] : ['o','es','e','imos','ís','en'];
-    var stem3 = verb.slice(0,-2);
-    var prons3 = ['yo','tú','él/ella','nosotros','vosotros','ellos'];
-    res.innerHTML = buildConjTable(verb,'Presente',prons3,suf.map(function(s){ return stem3+s; }));
-  }
-}
+  var key = lang + ':' + verb;
+  if (CONJ_CACHE[key]) { res.innerHTML = CONJ_CACHE[key]; return; }
 
-function buildConjTable(verb, tense, prons, forms) {
-  if (!forms || !forms.length) return '';
-  return '<div class="conj-box"><div class="conj-title">' + esc(verb) + ' — ' + tense + '</div>' +
-    '<table class="conj-table">' +
-    prons.map(function(p,i){ return '<tr><td>' + p + '</td><td>' + (forms[i]||'') + '</td></tr>'; }).join('') +
-    '</table></div>';
+  res.innerHTML = '<div class="conj-ai-loading"><span class="conj-ai-spin"></span>' + CONJ_LOADING[lang] + '…</div>';
+  var myId = conjReqId;
+  conjTimer = setTimeout(function(){
+    callGroq([{ role:'system', content:CONJ_SYS }, { role:'user', content:CONJ_PROMPTS[lang](verb) }], 2200)
+      .then(function(reply){
+        if (myId !== conjReqId) return; /* une saisie plus recente a pris le relais */
+        var html = '<div class="conj-box"><div class="conj-title">' + esc(verb) + '</div>' + mdToHtml(reply) + '</div>';
+        CONJ_CACHE[key] = html;
+        res.innerHTML = html;
+      })
+      .catch(function(e){
+        if (myId !== conjReqId) return;
+        res.innerHTML = '<div style="color:var(--danger);font-size:13px;padding:12px;text-align:center">Erreur : ' + esc(e.message) + '</div>';
+      });
+  }, 650);
 }
 
 /* ══ MOYENNE ══ */
@@ -5959,7 +5948,7 @@ _supa.auth.onAuthStateChange(function(event, session) {
     <div id="conj-panel" style="display:none">
       <div class="conv-box">
         <div class="conv-row" style="margin-bottom:10px">
-          <input class="conv-inp" id="conj-verb-inp" type="text" placeholder="Ex: aller, avoir, faire..." oninput="doConj(this.value)" style="font-size:16px;font-family:var(--fb)">
+          <input class="conv-inp" id="conj-verb-inp" type="text" placeholder="N'importe quel verbe (aller, to go, comer...)" oninput="doConj(this.value)" style="font-size:16px;font-family:var(--fb)">
           <select class="conv-unit" id="conj-lang" onchange="doConj(document.getElementById('conj-verb-inp').value)" style="min-width:88px">
             <option value="fr">🇫🇷 FR</option>
             <option value="en">🇬🇧 EN</option>

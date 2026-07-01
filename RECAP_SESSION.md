@@ -6,7 +6,7 @@
 
 - [ ] Ouvrir le terminal dans le dossier ScolarIA
 - [ ] Taper `claude` pour lancer Claude Code
-- [ ] Copier le bon bloc depuis SCOLARIA_COMPLET.md
+- [ ] Copier le bon bloc depuis CONTEXTE-PROMPT.md
 - [ ] Coller dans Claude Code
 
 ---
@@ -22,12 +22,12 @@
 
 ## APRÈS la session
 
-- [ ] Ouvrir scolaria.html dans Chrome
+- [ ] Ouvrir scolaria-home-v2.html (ou le fichier modifié) dans Chrome
 - [ ] Appuyer F12 → icône mobile → 390px
 - [ ] Tester la nav (tous les boutons)
 - [ ] Tester une activité complète du nouveau mode
 - [ ] Vérifier qu'il n'y a pas d'erreur rouge dans la Console
-- [ ] Si tout est bon → noter ✅ dans SCOLARIA_COMPLET.md
+- [ ] Si tout est bon → noter ✅ ci-dessous
 
 ---
 

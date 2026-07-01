@@ -15,7 +15,8 @@ FICHIERS PRINCIPAUX
   flashcards, pomodoro, moyennes, révisions, bibliothèque, profil.
 - scolaria-langues.html : mode Langues style Duolingo (EN/ES), parcours zigzag,
   cours écrits, exercices, chat IA.
-- scolaria-base.html : ancienne base, NE PAS TOUCHER sauf demande explicite.
+- scolaria-sciences.html : mode Sciences, accessible depuis le tiroir de navigation.
+- annales-data.js : banque d'exercices type Brevet (Maths + Physique-Chimie), chargée par scolaria-home-v2.html.
 - manifest.json + sw.js : config PWA (cache hors-ligne network-first).
 - supabase/functions/groq-proxy/index.ts : Edge Function Deno (proxy IA).
 
@@ -67,7 +68,7 @@ CE QUE GABRIEL VEUT
 - Pas de framework, pas de build — fichiers HTML standalone.
 - Mode Langues proche de Duolingo, contenu adapté niveau 3ème (rappels,
   tableaux, pièges du brevet).
-- Éventuellement fusionner scolaria-base.html et scolaria-langues.html en un
+- Éventuellement fusionner scolaria-home-v2.html et scolaria-langues.html en un
   seul fichier quand les deux seront stables.
 ```
 

@@ -18,11 +18,15 @@ Cible principale : **smartphone Android sous Chrome** (installable comme app PWA
 
 | Fichier | Rôle |
 |---------|------|
-| `scolaria-home-v2.html` | **App principale** (~5900 lignes) : chat IA, devoirs, flashcards, pomodoro, moyennes, révisions, bibliothèque, profil. |
+| `index.html` | Redirige immédiatement vers `scolaria-home-v2.html` (point d'entrée). |
+| `scolaria-home-v2.html` | **App principale** (~5900 lignes) : chat IA, devoirs, flashcards, pomodoro, moyennes, révisions, bibliothèque, annales brevet, profil. |
+| `annales-data.js` | Banque d'exercices type Brevet (Maths + Physique-Chimie, 280 exos), chargée par `scolaria-home-v2.html`. |
 | `scolaria-langues.html` | **Mode Langues** style Duolingo (EN/ES) : parcours zigzag, cours écrits, exercices interactifs, chat IA. |
-| `scolaria-base.html` | Ancienne base de l'app. À ne pas toucher sauf demande. |
+| `scolaria-sciences.html` | **Mode Sciences**, accessible depuis le tiroir de navigation de `scolaria-home-v2.html`. |
+| `reset-password.html` | Page de réinitialisation de mot de passe (liée depuis l'écran de connexion). |
 | `manifest.json` | Manifeste PWA (nom, icônes, couleurs, écran de démarrage). |
 | `sw.js` | Service Worker (cache hors-ligne, stratégie network-first). |
+| `vercel.json` | Config Vercel : rewrite `/` → `scolaria-home-v2.html`, headers CORS pour `/api/*`, no-cache sur les `.html`. |
 | `supabase/functions/groq-proxy/index.ts` | **Edge Function** Deno qui relaie les appels IA vers Groq en gardant la clé secrète côté serveur. |
 | `CLAUDE.md` | Instructions de travail pour l'assistant IA. |
 | `DOCUMENTATION.md` | Ce document. |
@@ -137,7 +141,7 @@ Préfixe commun : `sk_`.
 ## 7. PWA (installation et hors-ligne)
 
 - **`manifest.json`** : nom « ScolarIA », `start_url` = `scolaria-home-v2.html`, affichage `standalone`, portrait, icône S indigo, thème `#4F46E5`.
-- **`sw.js`** : cache `scolaria-v4`. Stratégie **network-first** (réseau d'abord, cache en secours). Les hôtes d'API (`groq.com`, `supabase.co`, etc.) sont exclus du cache pour ne jamais servir une réponse IA périmée.
+- **`sw.js`** : cache `scolaria-v5`. Stratégie **network-first** (réseau d'abord, cache en secours). Les hôtes d'API (`groq.com`, `supabase.co`, `anthropic.com`, `generativelanguage`) sont exclus du cache pour ne jamais servir une réponse IA périmée.
 
 ---
 

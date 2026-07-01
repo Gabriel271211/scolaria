@@ -4,9 +4,10 @@
 
 Tu travailles sur **ScolarIA**, une application scolaire pour collégiens français (niveau 3ème) développée par Gabriel (14 ans). C'est une **Single Page Application HTML** sans framework, sans build system — juste du HTML/CSS/JS pur dans des fichiers `.html`.
 
-Le projet est séparé en **deux fichiers indépendants** :
-- `scolaria-base.html` — L'app ScolarIA principale (chat IA, devoirs, flashcards, pomodoro, moyennes, bibliothèque). **Ne pas toucher sauf si demandé explicitement.**
+Le projet est séparé en **fichiers indépendants** :
+- `scolaria-home-v2.html` — L'app ScolarIA principale (chat IA, devoirs, flashcards, pomodoro, moyennes, bibliothèque, annales brevet). C'est le fichier servi par défaut (voir `index.html` / `vercel.json`). **Ne pas toucher sauf si demandé explicitement.**
 - `scolaria-langues.html` — Le mode Langues style Duolingo (EN/ES, parcours zigzag, cours écrits, exercices interactifs, chat IA).
+- `scolaria-sciences.html` — Le mode Sciences, accessible depuis le tiroir de navigation de `scolaria-home-v2.html`.
 
 ---
 
@@ -16,7 +17,7 @@ Le projet est séparé en **deux fichiers indépendants** :
 - **Lire le fichier entier** avant de commencer
 - **Compter les `<div>` ouverts et fermés** — ils doivent être égaux
 - **Vérifier la syntaxe JS** avec Node.js après chaque modif (voir workflow)
-- **Ne jamais modifier `scolaria-base.html`** sauf demande explicite
+- **Ne jamais modifier `scolaria-home-v2.html`** sauf demande explicite
 
 ### 2. Le JS doit toujours être valide
 - Vérifier avec Node.js après chaque modification :
@@ -201,4 +202,4 @@ node -e "const fs=require('fs');const c=fs.readFileSync('scolaria-langues.html',
 - Pas de framework, pas de build — fichiers HTML standalone
 - Style proche de Duolingo pour le mode Langues
 - Cours adaptés niveau **3ème français** avec rappels, tableaux, pièges brevet
-- Éventuellement fusionner `scolaria-base.html` et `scolaria-langues.html` en un seul fichier quand les deux sont stables
+- Éventuellement fusionner `scolaria-home-v2.html` et `scolaria-langues.html` en un seul fichier quand les deux sont stables

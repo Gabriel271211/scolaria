@@ -3318,16 +3318,24 @@ async function revStart() {
   /* Construire le prompt selon le type */
   var prompt = '';
   if (revCurType === 'flashcards') {
+    var flashLogic =
+      'RAISONNE COMME UN ELEVE DE 3EME QUI REVISE CE CHAPITRE POUR UN CONTROLE :\n' +
+      '- Les questions portent sur le COEUR du sujet : definitions cles, formules, enonces, proprietes, methode pour appliquer, dans quels cas on utilise, et 1 a 2 exemples de calcul ou exercice type.\n' +
+      '- INTERDIT les questions de culture generale ou de biographie hors-sujet. Exemple : pour "theoreme de Pythagore", ne demande JAMAIS "qui est Pythagore ?" ni sa date de naissance. Demande l\'enonce, la formule, comment trouver l\'hypotenuse, comment verifier si un triangle est rectangle, etc.\n' +
+      '- Vise ce qui tombe VRAIMENT en controle sur ce sujet precis.\n' +
+      '- Chaque reponse est courte, precise et exacte (formule juste, valeurs correctes).\n';
     if (cours) {
-      prompt = 'Génère exactement ' + limit + ' flashcards basées UNIQUEMENT sur ce cours.\n' +
+      prompt = 'Genere exactement ' + limit + ' flashcards de revision basees UNIQUEMENT sur ce cours.\n' +
+        flashLogic +
         'FORMAT OBLIGATOIRE — uniquement ce tableau, rien d\'autre :\n' +
         '| Question | Réponse |\n| --- | --- |\n| ... | ... |\n\n' +
         'COURS :\n' + cours;
     } else {
-      prompt = 'Génère exactement ' + limit + ' flashcards sur le sujet : "' + topic + '".\n' +
+      prompt = 'Genere exactement ' + limit + ' flashcards de revision sur le sujet : "' + topic + '".\n' +
+        flashLogic +
         'FORMAT OBLIGATOIRE — uniquement ce tableau, rien d\'autre :\n' +
         '| Question | Réponse |\n| --- | --- |\n| ... | ... |\n' +
-        'Les questions doivent porter UNIQUEMENT sur "' + topic + '". Aucun texte avant ni après le tableau.';
+        'Les questions doivent porter UNIQUEMENT sur "' + topic + '". Aucun texte avant ni apres le tableau.';
     }
   } else if (revCurType === 'fiche') {
     var ficheDepth = {

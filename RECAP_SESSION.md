@@ -16,7 +16,7 @@
 | Révisions : fiches, flashcards, interro, quiz vocal, scanner de cours, veille de contrôle | ✅ |
 | Conjugueur FR / EN / ES (IA) | ✅ |
 | Pomodoro, moyennes, historique, favoris, mode nuit | ✅ |
-| PWA installable + hors-ligne | ✅ |
+| PWA installable (icônes PNG + bouton « Installer l'app ») + hors-ligne | ✅ |
 | Annales Brevet — Physique-Chimie (140 exos) | ✅ |
 | Annales Brevet — Maths (140 exos) | ✅ |
 | Nettoyage : Langues & Sciences archivés | ✅ |

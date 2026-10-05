@@ -25,6 +25,7 @@ Cible principale : **smartphone Android sous Chrome** (installable comme app PWA
 | `.vercelignore` | Exclut `archive/` du déploiement Vercel. |
 | `reset-password.html` | Page de réinitialisation de mot de passe (liée depuis l'écran de connexion). |
 | `manifest.json` | Manifeste PWA (nom, icônes, couleurs, écran de démarrage). |
+| `icons/` | Icônes PNG de l'app installée (192, 512, maskable, apple-touch). |
 | `sw.js` | Service Worker (cache hors-ligne, stratégie network-first). |
 | `vercel.json` | Config Vercel : rewrite `/` → `scolaria-home-v2.html`, headers CORS pour `/api/*`, no-cache sur les `.html`. |
 | `supabase/functions/groq-proxy/index.ts` | **Edge Function** Deno qui relaie les appels IA vers Groq en gardant la clé secrète côté serveur. |
@@ -143,8 +144,9 @@ Préfixe commun : `sk_`.
 
 ## 7. PWA (installation et hors-ligne)
 
-- **`manifest.json`** : nom « ScolarIA », `start_url` = `scolaria-home-v2.html`, affichage `standalone`, portrait, icône S indigo, thème `#4F46E5`.
-- **`sw.js`** : cache `scolaria-v5`. Stratégie **network-first** (réseau d'abord, cache en secours). Les hôtes d'API (`groq.com`, `supabase.co`, `anthropic.com`, `generativelanguage`) sont exclus du cache pour ne jamais servir une réponse IA périmée.
+- **`manifest.json`** : nom « ScolarIA », `id` + `start_url` = `/scolaria-home-v2.html`, affichage `standalone`, portrait, thème `#4F46E5`. Icônes **PNG** dans `icons/` (192, 512, 512 maskable — Android refuse les icônes SVG/data:), `icons/apple-touch-icon.png` pour iPhone.
+- **Bouton « Installer l'app »** dans le tiroir (`#dm-install`, fonction `installApp()`) : caché par défaut, apparaît quand Chrome déclenche `beforeinstallprompt` (ouvre la vraie fenêtre d'installation) ou sur iPhone (affiche les instructions Partager → Sur l'écran d'accueil). Disparaît une fois l'app installée.
+- **`sw.js`** : cache `scolaria-v6`. Stratégie **network-first** (réseau d'abord, cache en secours). Les hôtes d'API (`groq.com`, `supabase.co`, `anthropic.com`, `generativelanguage`) sont exclus du cache pour ne jamais servir une réponse IA périmée.
 
 ---
 

@@ -21,8 +21,8 @@ Cible principale : **smartphone Android sous Chrome** (installable comme app PWA
 | `index.html` | Redirige immédiatement vers `scolaria-home-v2.html` (point d'entrée). |
 | `scolaria-home-v2.html` | **App principale** (~5900 lignes) : chat IA, devoirs, flashcards, pomodoro, moyennes, révisions, bibliothèque, annales brevet, profil. |
 | `annales-data.js` | Banque d'exercices type Brevet (Maths + Physique-Chimie, 280 exos), chargée par `scolaria-home-v2.html`. |
-| `scolaria-langues.html` | **Mode Langues** style Duolingo (EN/ES) : parcours zigzag, cours écrits, exercices interactifs, chat IA. |
-| `scolaria-sciences.html` | **Mode Sciences**, accessible depuis le tiroir de navigation de `scolaria-home-v2.html`. |
+| `archive/` | **Ancien projet conservé mais retiré de l'app** (non déployé, voir `archive/README.md`) : modes Langues et Sciences + anciens docs de plan. |
+| `.vercelignore` | Exclut `archive/` du déploiement Vercel. |
 | `reset-password.html` | Page de réinitialisation de mot de passe (liée depuis l'écran de connexion). |
 | `manifest.json` | Manifeste PWA (nom, icônes, couleurs, écran de démarrage). |
 | `sw.js` | Service Worker (cache hors-ligne, stratégie network-first). |
@@ -31,6 +31,7 @@ Cible principale : **smartphone Android sous Chrome** (installable comme app PWA
 | `CLAUDE.md` | Instructions de travail pour l'assistant IA. |
 | `DOCUMENTATION.md` | Ce document. |
 | `CONTEXTE-PROMPT.md` | Prompt de contexte réutilisable pour de futures sessions IA. |
+| `RECAP_SESSION.md` | Objectifs / feuille de route + checklist de session. |
 
 ---
 
@@ -72,6 +73,8 @@ Cible principale : **smartphone Android sous Chrome** (installable comme app PWA
 
 > ⚠️ **Sécurité critique** : la clé Groq vit UNIQUEMENT dans le secret Supabase `GROQ_API_KEY`. Elle ne doit JAMAIS être écrite en dur dans le code client ni commitée — sinon elle est volée et révoquée automatiquement. C'est exactement le bug qui cassait l'IA des autres comptes auparavant.
 
+> ⚠️ **Projet gratuit = mise en pause automatique** après ~7 jours sans activité. Symptôme : connexion ET IA cassées, l'adresse `vefnkztjmodchvmspukh.supabase.co` ne répond plus. Solution : dashboard Supabase → **Restore project** (possible seulement pendant 90 jours de pause). Arrivé en octobre 2026 après 3 mois d'inactivité.
+
 ### 3.3 Vercel (hébergement)
 
 - Déploiement automatique : un `git push` sur la branche `main` du repo GitHub (`Gabriel271211/scolaria`) redéploie le site.
@@ -112,7 +115,7 @@ async function callGroqStream(messages, onChunk) { ... } // streaming token par 
 | **Moyennes** | Calcul de moyenne pondérée par coefficients. |
 | **Bibliothèque / Historique** | Historique des contenus générés (`sk_hist`), favoris. |
 | **Profil** | Avatar (emoji), nom, niveau, stats, thème clair/sombre. |
-| **Mode Langues** | Fichier séparé `scolaria-langues.html`, style Duolingo (voir son propre doc dans `CLAUDE.md`). |
+| **Annales Brevet** | Banque de 280 exercices type DNB (Maths + Physique-Chimie, `annales-data.js`), correction étape par étape, « piège brevet », coach IA, génération IA quand un thème est épuisé. |
 
 ---
 

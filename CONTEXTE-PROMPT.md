@@ -11,11 +11,11 @@ en HTML/CSS/JS pur — PAS de framework, PAS de build system. Juste des fichiers
 .html autonomes. Cible : smartphone Android sous Chrome, installable en PWA.
 
 FICHIERS PRINCIPAUX
-- scolaria-home-v2.html : l'app principale (~5900 lignes) — chat IA, devoirs,
-  flashcards, pomodoro, moyennes, révisions, bibliothèque, profil.
-- scolaria-langues.html : mode Langues style Duolingo (EN/ES), parcours zigzag,
-  cours écrits, exercices, chat IA.
-- scolaria-sciences.html : mode Sciences, accessible depuis le tiroir de navigation.
+- scolaria-home-v2.html : L'APP (une seule app, ~5900 lignes) — chat IA, devoirs,
+  flashcards, interro, scanner, conjugueur, pomodoro, moyennes, révisions,
+  historique, annales brevet, profil.
+- archive/ : ancien projet abandonné (modes Langues et Sciences), non déployé,
+  ne pas y toucher.
 - annales-data.js : banque d'exercices type Brevet (Maths + Physique-Chimie), chargée par scolaria-home-v2.html.
 - manifest.json + sw.js : config PWA (cache hors-ligne network-first).
 - supabase/functions/groq-proxy/index.ts : Edge Function Deno (proxy IA).
@@ -66,10 +66,12 @@ RÈGLES DE DÉVELOPPEMENT
 CE QUE GABRIEL VEUT
 - App fluide sur smartphone Android (Chrome).
 - Pas de framework, pas de build — fichiers HTML standalone.
-- Mode Langues proche de Duolingo, contenu adapté niveau 3ème (rappels,
-  tableaux, pièges du brevet).
-- Éventuellement fusionner scolaria-home-v2.html et scolaria-langues.html en un
-  seul fichier quand les deux seront stables.
+- Contenu adapté niveau 3ème (rappels, tableaux, pièges du brevet).
+- Les objectifs à jour sont dans RECAP_SESSION.md.
+
+ATTENTION SUPABASE GRATUIT
+- Le projet se met en pause après ~7 jours sans activité : connexion ET IA
+  cassées. Solution : dashboard Supabase -> Restore project.
 ```
 
 ---

@@ -158,8 +158,6 @@ body::after {
   padding: 12px 12px 0;
   flex: 1;
 }
-body { transition: opacity .24s ease; }
-body.mode-leaving { opacity: 0; pointer-events: none; }
 #drawer-modes p {
   font-size: 10px;
   font-weight: 700;
@@ -1875,29 +1873,7 @@ body.dark .ann-piege{background:#2a2110;border-color:#5a4516;color:#e0b860}
     </div>
   </div>
   <div id="drawer-modes">
-    <p>Modes</p>
-    <div class="drawer-mode active" onclick="closeDrawer()">
-      <div class="dm-icon">SC</div>
-      <div class="dm-info">
-        <div class="dm-name">ScolarIA</div>
-        <div class="dm-desc">Chat, devoirs, révisions</div>
-      </div>
-    </div>
-    <a class="drawer-mode" href="scolaria-langues.html" onclick="return navMode(event,'scolaria-langues.html')">
-      <div class="dm-icon">LA</div>
-      <div class="dm-info">
-        <div class="dm-name">Langues</div>
-        <div class="dm-desc">Anglais & Espagnol</div>
-      </div>
-    </a>
-    <a class="drawer-mode" href="scolaria-sciences.html" onclick="return navMode(event,'scolaria-sciences.html')">
-      <div class="dm-icon">SI</div>
-      <div class="dm-info">
-        <div class="dm-name">Sciences</div>
-        <div class="dm-desc">Physique, SVT, Maths</div>
-      </div>
-    </a>
-    <p style="margin-top:16px">Outils</p>
+    <p>Outils</p>
     <div class="drawer-mode" onclick="newChat()">
       <div class="dm-icon" style="background:#eef2ff">
         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#4f46e5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
@@ -2749,16 +2725,6 @@ function toggleDrawer() {
 function closeDrawer() {
   document.getElementById('drawer').classList.remove('open');
   document.getElementById('drawer-overlay').classList.remove('open');
-}
-
-/* Transition douce entre les modes (langues / sciences) */
-function navMode(ev, url) {
-  if (ev) ev.preventDefault();
-  haptic(12);
-  closeDrawer();
-  document.body.classList.add('mode-leaving');
-  setTimeout(function(){ window.location.href = url; }, 240);
-  return false;
 }
 
 /* ── CLAVIER MOBILE ── */

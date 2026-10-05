@@ -1,49 +1,58 @@
-# RÉCAPITULATIF — À FAIRE À CHAQUE SESSION
+# 🎯 OBJECTIFS SCOLARIA + checklist de session
+
+> ScolarIA = **une seule app** (`scolaria-home-v2.html`). L'ancien plan « un mode par matière » (Langues, Sciences, Histoire, Arts, Arène…) est abandonné → voir `archive/`.
+> Mis à jour : octobre 2026.
 
 ---
 
-## AVANT de commencer
+## ✅ Déjà fait
 
-- [ ] Ouvrir le terminal dans le dossier ScolarIA
-- [ ] Taper `claude` pour lancer Claude Code
-- [ ] Copier le bon bloc depuis CONTEXTE-PROMPT.md
-- [ ] Coller dans Claude Code
-
----
-
-## PENDANT la session
-
-- [ ] Laisser Claude Code travailler
-- [ ] Ne pas lui demander plusieurs choses en même temps
-- [ ] Si bug après 2 tentatives → lui dire :
-      **"Reviens à la version d'avant et essaie autrement"**
-
----
-
-## APRÈS la session
-
-- [ ] Ouvrir scolaria-home-v2.html (ou le fichier modifié) dans Chrome
-- [ ] Appuyer F12 → icône mobile → 390px
-- [ ] Tester la nav (tous les boutons)
-- [ ] Tester une activité complète du nouveau mode
-- [ ] Vérifier qu'il n'y a pas d'erreur rouge dans la Console
-- [ ] Si tout est bon → noter ✅ ci-dessous
+| Fonctionnalité | Statut |
+|----------------|:------:|
+| Comptes (Supabase) + sync cloud + mot de passe oublié | ✅ |
+| Onboarding style Duolingo (prénom, classe, objectif, avatar) | ✅ |
+| Chat IA en streaming + photos (vision IA) | ✅ |
+| Devoirs (manuel + scan de l'agenda) | ✅ |
+| Révisions : fiches, flashcards, interro, quiz vocal, scanner de cours, veille de contrôle | ✅ |
+| Conjugueur FR / EN / ES (IA) | ✅ |
+| Pomodoro, moyennes, historique, favoris, mode nuit | ✅ |
+| PWA installable + hors-ligne | ✅ |
+| Annales Brevet — Physique-Chimie (140 exos) | ✅ |
+| Annales Brevet — Maths (140 exos) | ✅ |
+| Nettoyage : Langues & Sciences archivés | ✅ |
 
 ---
 
-## ORDRE DES SESSIONS
+## 🔜 À faire (par ordre de priorité)
 
-| # | Ce que tu fais | Statut |
-|---|---------------|--------|
-| 1 | Bug virgule + Fusion en scolaria.html | ⬜ |
-| 2 | Mode Sciences | ⬜ |
-| 3 | Mode Histoire | ⬜ |
-| 4 | Mode Arts | ⬜ |
-| 5 | Mode Arène | ⬜ |
-| 6 | Mode Enquête | ⬜ |
-| 7 | Mode Oral Brevet | ⬜ |
-| 8 | Mode Mind Map | ⬜ |
-| 9 | Langues améliorations | ⬜ |
-| 10 | Polish final | ⬜ |
+| # | Objectif | Détail | Statut |
+|---|----------|--------|:------:|
+| 1 | Empêcher Supabase de se mettre en pause | Petite tâche automatique qui « réveille » le projet chaque semaine (sinon connexion + IA cassées après ~7 jours sans utilisation) | ⬜ |
+| 2 | Vérifier l'app sur téléphone après la pause | Connexion, sync, chat IA, photos, annales | ⬜ |
+| 3 | Annales — SVT | ~75 exos, même format (énoncé + schéma + correction + piège brevet) | ⬜ |
+| 4 | Annales — Histoire-Géo-EMC | ~60 exos (documents, repères, développement construit) | ⬜ |
+| 5 | Annales — Français | ~40 exos (compréhension, grammaire, réécriture, dictée) | ⬜ |
+| 6 | Annales — Technologie | ~30 exos | ⬜ |
+| 7 | _À compléter par Gabriel_ | | ⬜ |
 
 Change ⬜ en ✅ quand c'est fait.
+
+---
+
+## AVANT de commencer une session
+
+- [ ] Ouvrir le dossier ScolarIA dans Claude Code
+- [ ] Claude lit `CLAUDE.md` automatiquement (sinon : copier `CONTEXTE-PROMPT.md`)
+- [ ] Dire **une seule chose à la fois**
+
+## PENDANT
+
+- [ ] Si bug après 2 tentatives → **« Reviens à la version d'avant et essaie autrement »**
+
+## APRÈS
+
+- [ ] Ouvrir l'app dans Chrome → F12 → icône mobile → 390px
+- [ ] Tester la nav + la fonctionnalité modifiée
+- [ ] Aucune erreur rouge dans la Console
+- [ ] Commit + push (Vercel redéploie tout seul)
+- [ ] Mettre à jour le tableau des objectifs ci-dessus

@@ -21,7 +21,7 @@ Tu travailles sur **ScolarIA**, une application scolaire pour collégiens franç
 
 ### Connexions externes
 - **Supabase** (`vefnkztjmodchvmspukh`) : auth email/mdp, sync cloud (table `user_data`), Edge Function `groq-proxy`. ⚠️ Projet gratuit : **mis en pause après ~7 jours d'inactivité** → connexion ET IA cassées. Si l'adresse `*.supabase.co` ne répond plus : dashboard Supabase → Restore project.
-- **Groq** : jamais appelé en direct, toujours via `GROQ_PROXY` (`callGroq` / `callGroqStream`).
+- **Groq** : jamais appelé en direct, toujours via `GROQ_PROXY` (`callGroq` / `callGroqStream`). Modèles dans `AI_TEXT_MODEL` / `AI_VISION_MODELS`. Si l'IA renvoie `model_not_found`, Groq a retiré le modèle : changer le nom là (ce n'est pas un problème de clé).
 - **Vercel** : redéploiement automatique à chaque `git push` sur `main`.
 
 ⚠️ **Ne JAMAIS écrire une clé Groq dans le code client.** Elle vit uniquement dans le secret Supabase `GROQ_API_KEY`.

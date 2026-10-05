@@ -67,9 +67,10 @@ Cible principale : **smartphone Android sous Chrome** (installable comme app PWA
 
 - **JAMAIS appelée directement par le client.** Tout passe par le proxy Supabase.
 - API compatible OpenAI (`/openai/v1/chat/completions`).
-- **Modèles utilisés :**
-  - Texte : `llama-3.3-70b-versatile`
-  - Vision (photos de cours/devoirs) : `meta-llama/llama-4-maverick-17b-128e-instruct`, `meta-llama/llama-4-scout-17b-16e-instruct`
+- **Modèles utilisés** (définis à UN seul endroit : `AI_TEXT_MODEL` et `AI_VISION_MODELS` dans `scolaria-home-v2.html`) :
+  - Texte : `openai/gpt-oss-120b` (avec `reasoning_effort: 'low'` pour rester rapide). Ses formules LaTeX sont converties en texte lisible par `_cleanMath()`.
+  - Vision (photos de cours/devoirs) : `qwen/qwen3.8-27b`
+  - ⚠️ Groq supprime régulièrement des modèles → erreur `model_not_found` = l'IA ne répond plus. Il suffit de changer les noms dans `AI_TEXT_MODEL` / `AI_VISION_MODELS` (liste : https://console.groq.com/docs/models). Les anciens Llama 3.3 / Llama 4 ont disparu en 2026.
 - Supporte le **streaming SSE** (réponse token par token dans le chat) et le JSON classique.
 
 > ⚠️ **Sécurité critique** : la clé Groq vit UNIQUEMENT dans le secret Supabase `GROQ_API_KEY`. Elle ne doit JAMAIS être écrite en dur dans le code client ni commitée — sinon elle est volée et révoquée automatiquement. C'est exactement le bug qui cassait l'IA des autres comptes auparavant.

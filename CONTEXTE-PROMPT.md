@@ -29,8 +29,9 @@ CONNEXIONS EXTERNES
   3. Edge Function "groq-proxy" qui relaie les appels IA vers Groq en gardant
      la clé secrète GROQ_API_KEY côté serveur (Verify JWT = OFF).
 - Groq (API compatible OpenAI) : JAMAIS appelée en direct par le client, TOUJOURS
-  via le proxy Supabase. Modèles : llama-3.3-70b-versatile (texte),
-  meta-llama/llama-4-maverick et llama-4-scout (vision/photos). Streaming SSE.
+  via le proxy Supabase. Modèles (variables AI_TEXT_MODEL / AI_VISION_MODELS) :
+  openai/gpt-oss-120b (texte), qwen/qwen3.8-27b (vision/photos).
+  Si erreur "model_not_found" : Groq a retiré le modèle, changer le nom. Streaming SSE.
 - Vercel : déploiement automatique à chaque git push sur main
   (repo GitHub Gabriel271211/scolaria).
 

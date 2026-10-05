@@ -3023,12 +3023,7 @@ async function scanDevoir(e) {
   e.target.value = '';
   var key = SUPA_ANON;
   toast('⏳ Analyse de la photo...', 8000);
-  var VISION_MODELS = [
-    'meta-llama/llama-4-maverick-17b-128e-instruct',
-    'meta-llama/llama-4-scout-17b-16e-instruct',
-    'llama-4-maverick-17b-128e-instruct',
-    'llama-4-scout-17b-16e-instruct'
-  ];
+  var VISION_MODELS = AI_VISION_MODELS;
   var reader = new FileReader();
   reader.onload = async function(ev) {
     var dataUrl = ev.target.result;
@@ -3743,10 +3738,7 @@ async function chatPhoto(e) {
     if (msgs) msgs.scrollTop = msgs.scrollHeight;
 
     var prompt = question || 'Analyse cette photo de mon cours. Explique le contenu clairement, niveau 3ème. Si c\'est un exercice, aide-moi à le résoudre étape par étape.';
-    var VISION_MODELS = [
-      'meta-llama/llama-4-maverick-17b-128e-instruct',
-      'meta-llama/llama-4-scout-17b-16e-instruct'
-    ];
+    var VISION_MODELS = AI_VISION_MODELS;
     var lastErr = 'Modèle vision indisponible';
     for (var mi = 0; mi < VISION_MODELS.length; mi++) {
       try {
@@ -4506,22 +4498,43 @@ function buildFicheSys(mat) {
 var GROQ_PROXY = 'https://vefnkztjmodchvmspukh.supabase.co/functions/v1/groq-proxy';
 var SUPA_ANON = 'sb_publishable_OVVDWsvA2-0dJuTdQREYVw_kSiTu7Ge';
 
+/* Modeles Groq — Groq supprime regulierement d'anciens modeles (erreur
+   "model_not_found") : il suffit alors de changer les noms ICI.
+   Liste a jour : https://console.groq.com/docs/models */
+var AI_TEXT_MODEL = 'openai/gpt-oss-120b';
+var AI_VISION_MODELS = ['qwen/qwen3.8-27b'];
+
+/* gpt-oss ecrit parfois les formules en LaTeX : on les rend lisibles */
+function _cleanMath(t) {
+  if (!t) return t;
+  return t
+    .replace(/\\[()\[\]]/g, '')
+    .replace(/\\frac\{([^{}]*)\}\{([^{}]*)\}/g, '($1)/($2)')
+    .replace(/\\sqrt\{([^{}]*)\}/g, '√($1)')
+    .replace(/\^\{?2\}?/g, '²').replace(/\^\{?3\}?/g, '³')
+    .replace(/\\times/g, '×').replace(/\\cdot/g, '·').replace(/\\div/g, '÷')
+    .replace(/\\leq?(?![a-z])/g, '≤').replace(/\\geq?(?![a-z])/g, '≥').replace(/\\neq(?![a-z])/g, '≠')
+    .replace(/\\approx/g, '≈').replace(/\\pi(?![a-z])/g, 'π')
+    .replace(/\\left|\\right/g, '')
+    .replace(/\\text\{([^{}]*)\}/g, '$1');
+}
+
 async function callGroq(messages, maxTok) {
   var res = await fetch(GROQ_PROXY, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + SUPA_ANON },
-    body: JSON.stringify({ model: 'llama-3.3-70b-versatile', max_tokens: maxTok || 1800, messages: messages })
+    body: JSON.stringify({ model: AI_TEXT_MODEL, reasoning_effort: 'low', max_tokens: (maxTok || 1800) + 600, messages: messages })
   });
   var data = await res.json();
   if (data.error) throw new Error(data.error.message);
-  return data.choices[0].message.content;
+  return _cleanMath(data.choices[0].message.content || '');
 }
 
 async function callGroqStream(messages, onToken, maxTok) {
   var res = await fetch(GROQ_PROXY, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + SUPA_ANON },
-    body: JSON.stringify({ model: 'llama-3.3-70b-versatile', max_tokens: maxTok || 1800, messages: messages, stream: true })
+    body: JSON.stringify({ model: AI_TEXT_MODEL, reasoning_effort: 'low', max_tokens: (maxTok || 1800) + 600, messages: messages, stream: true })
   });
   if (!res.ok || !res.body) {
     var ed = null; try { ed = await res.json(); } catch(e) {}
@@ -4544,11 +4557,11 @@ async function callGroqStream(messages, onToken, maxTok) {
       try {
         var j = JSON.parse(payload);
         var delta = j.choices && j.choices[0] && j.choices[0].delta && j.choices[0].delta.content;
-        if (delta) { full += delta; onToken(full); }
+        if (delta) { full += delta; onToken(_cleanMath(full)); }
       } catch(e) {}
     }
   }
-  return full;
+  return _cleanMath(full);
 }
 
 /* ══ MODALES OUTILS ══ */
@@ -5158,12 +5171,12 @@ async function scanGenerate(type) {
     ?'Voici la photo d\'un cours. Transcris et génère une fiche de révision structurée (titre, notions clés, définitions, exemples). Niveau 3ème.'
     :'Voici la photo d\'un cours. Génère 8 flashcards | Question | Réponse | sous forme de tableau markdown ---|--- à partir de ce cours.';
   try{
-    /* Vision via le proxy Groq (llama-4-scout) */
+    /* Vision via le proxy Groq */
     var visRes=await fetch(GROQ_PROXY,{
       method:'POST',
       headers:{'Content-Type':'application/json','Authorization':'Bearer '+SUPA_ANON},
       body:JSON.stringify({
-        model:'meta-llama/llama-4-scout-17b-16e-instruct',
+        model:AI_VISION_MODELS[0],
         max_tokens:2000,
         messages:[{role:'user',content:[
           {type:'image_url',image_url:{url:scanImageData.full}},

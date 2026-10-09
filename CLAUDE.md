@@ -2,7 +2,7 @@
 
 ## Contexte du projet
 
-Tu travailles sur **ScolarIA**, une application scolaire pour collégiens français (niveau 3ème) développée par Gabriel. C'est une **Single Page Application HTML** sans framework, sans build system — juste du HTML/CSS/JS pur. Cible : **smartphone Android (Chrome)**, installable en PWA. Toujours parler en français avec Gabriel.
+Tu travailles sur **ScolarIA**, une application scolaire pour élèves français **du collège au lycée (6ème → Terminale)** développée par Gabriel. L'élève choisit sa classe et l'IA s'adapte (programme, façon de parler). Une version primaire est envisagée plus tard. C'est une **Single Page Application HTML** sans framework, sans build system — juste du HTML/CSS/JS pur. Cible : **smartphone Android (Chrome)**, installable en PWA. Toujours parler en français avec Gabriel.
 
 **ScolarIA = une seule app** : `scolaria-home-v2.html`. L'ancienne idée de « modes » séparés (Langues, Sciences, Histoire…) est abandonnée ; ces fichiers sont dans `archive/` (non déployé, ne pas modifier, ne pas les remettre dans l'app sauf demande explicite).
 
@@ -25,6 +25,16 @@ Tu travailles sur **ScolarIA**, une application scolaire pour collégiens franç
 - **Vercel** : redéploiement automatique à chaque `git push` sur `main`.
 
 ⚠️ **Ne JAMAIS écrire une clé Groq dans le code client.** Elle vit uniquement dans le secret Supabase `GROQ_API_KEY`.
+
+---
+
+## Niveau scolaire (6ème → Terminale)
+- L'élève choisit sa classe (onboarding + profil, `userProfile.classe`). `getClasse()` la renvoie (défaut : 3ème).
+- `NIVEAUX` (dans `scolaria-home-v2.html`) : pour chaque classe → cycle, examen, **façon de parler**, **programme officiel**.
+- `niveauPrompt()` construit le bloc envoyé à l'IA ; `_withNiveau(messages)` l'ajoute au prompt système.
+- **`callGroq` / `callGroqStream` l'ajoutent automatiquement à CHAQUE appel.** Passer `{ noNiveau: true }` en 3e argument (`callGroq`) ou 4e (`callGroqStream`) pour les formats stricts (conjugueur JSON, génération d'exo d'annales). Les appels vision directs utilisent `_withNiveau` à la main.
+- Règle IA : un sujet d'une autre année est **toujours expliqué** (signalé en 1re phrase, puis adapté au niveau de l'élève).
+- Ne JAMAIS réécrire « 3ème » ou « brevet » en dur dans un prompt : utiliser `getClasse()` et `examLabel()` (brevet/bac).
 
 ---
 
@@ -70,5 +80,5 @@ Pour `annales-data.js` : `node --check annales-data.js`
 ## Ce que Gabriel veut
 - Que l'app fonctionne bien sur **smartphone Android (Chrome)**
 - Pas de framework, pas de build — fichiers HTML standalone
-- Contenu adapté niveau **3ème français** avec rappels, tableaux, pièges brevet
+- Contenu adapté **à la classe de l'élève** (programme officiel, façon de parler, pièges brevet/bac), et l'IA doit toujours pouvoir expliquer un sujet d'une autre année
 - Les objectifs à jour sont dans `RECAP_SESSION.md`

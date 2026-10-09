@@ -6,7 +6,7 @@ Vue d'ensemble complète de l'application : architecture, connexions externes, f
 
 ## 1. C'est quoi ScolarIA ?
 
-Application scolaire pour collégiens français (niveau 3ème), développée par Gabriel.
+Application scolaire pour élèves français du **collège au lycée (6ème → Terminale)**, développée par Gabriel. L'élève choisit sa classe et toute l'IA s'adapte à son programme et à sa façon de parler.
 **Single Page Application en HTML/CSS/JS pur** — pas de framework, pas de build system.
 Chaque écran est un fichier `.html` autonome (standalone).
 
@@ -118,6 +118,18 @@ async function callGroqStream(messages, onChunk) { ... } // streaming token par 
 | **Bibliothèque / Historique** | Historique des contenus générés (`sk_hist`), favoris. |
 | **Profil** | Avatar (emoji), nom, niveau, stats, thème clair/sombre. |
 | **Annales Brevet** | Banque de 280 exercices type DNB (Maths + Physique-Chimie, `annales-data.js`), correction étape par étape, « piège brevet », coach IA, génération IA quand un thème est épuisé. |
+
+---
+
+## 5 bis. Niveau scolaire (6ème → Terminale)
+- L'élève choisit sa classe (onboarding + profil, `userProfile.classe`). `getClasse()` la renvoie (défaut : 3ème).
+- `NIVEAUX` (dans `scolaria-home-v2.html`) : pour chaque classe → cycle, examen, **façon de parler**, **programme officiel**.
+- `niveauPrompt()` construit le bloc envoyé à l'IA ; `_withNiveau(messages)` l'ajoute au prompt système.
+- **`callGroq` / `callGroqStream` l'ajoutent automatiquement à CHAQUE appel.** Passer `{ noNiveau: true }` en 3e argument (`callGroq`) ou 4e (`callGroqStream`) pour les formats stricts (conjugueur JSON, génération d'exo d'annales). Les appels vision directs utilisent `_withNiveau` à la main.
+- Règle IA : un sujet d'une autre année est **toujours expliqué** (signalé en 1re phrase, puis adapté au niveau de l'élève).
+- Ne JAMAIS réécrire « 3ème » ou « brevet » en dur dans un prompt : utiliser `getClasse()` et `examLabel()` (brevet/bac).
+
+- Interface : accueil « Classe · Brevet/Bac de français/Bac + année » (`updateNiveauUI()`), badge « Niveau 3ème » sur les Annales pour les autres classes (`annLevelNote()`), objectif « Réussir le bac » pour les lycéens à l'onboarding.
 
 ---
 

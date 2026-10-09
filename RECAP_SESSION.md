@@ -20,6 +20,7 @@
 | Annales Brevet — Physique-Chimie (140 exos) | ✅ |
 | Annales Brevet — Maths (140 exos) | ✅ |
 | Nettoyage : Langues & Sciences archivés | ✅ |
+| Multi-niveaux 6ème → Terminale : l'IA s'adapte à la classe (programme + façon de parler) | ✅ |
 
 ---
 
@@ -33,7 +34,9 @@
 | 4 | Annales — Histoire-Géo-EMC | ~60 exos (documents, repères, développement construit) | ⬜ |
 | 5 | Annales — Français | ~40 exos (compréhension, grammaire, réécriture, dictée) | ⬜ |
 | 6 | Annales — Technologie | ~30 exos | ⬜ |
-| 7 | _À compléter par Gabriel_ | | ⬜ |
+| 7 | Version primaire (CM1, CM2) | Ajouter les classes dans `NIVEAUX` + onboarding, façon de parler encore plus simple | ⬜ |
+| 8 | Annales pour le lycée | Exercices type bac (bac de français, épreuve anticipée de maths, spécialités) | ⬜ |
+| 9 | _À compléter par Gabriel_ | | ⬜ |
 
 Change ⬜ en ✅ quand c'est fait.
 

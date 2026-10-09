@@ -1690,6 +1690,8 @@ body::after {
 .ann-back svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .ann-h1{font-size:23px;font-weight:800;letter-spacing:-.5px;margin-bottom:3px}
 .ann-sub{font-size:13px;color:var(--mu);margin-bottom:16px;line-height:1.4}
+.ann-lvl{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--mu);line-height:1.35;margin:-6px 0 16px}
+.ann-lvl-pill{flex-shrink:0;font-size:11px;font-weight:700;color:var(--accent);background:var(--accent-l);border-radius:99px;padding:3px 9px}
 .ann-choice{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--bord);border-radius:16px;padding:16px;margin-bottom:12px;cursor:pointer;transition:transform .1s}
 .ann-choice:active{transform:scale(.985)}
 .ann-choice-ic{width:46px;height:46px;border-radius:13px;background:var(--accent-l);display:flex;align-items:center;justify-content:center;flex-shrink:0}
@@ -1775,6 +1777,12 @@ body.dark .ann-piege{background:#2a2110;border-color:#5a4516;color:#e0b860}
 .ob-card.selected{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,var(--card))}
 .ob-card-icon{font-size:26px;flex-shrink:0}
 .ob-card-label{flex:1}
+/* Choix de classe : 7 classes sur 2 colonnes pour tenir sur un telephone */
+.ob-cards-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ob-cards-2 .ob-card{padding:13px 12px;gap:8px;font-size:14px}
+.ob-cards-2 .ob-card-icon{font-size:20px}
+.ob-cards-2 .ob-card-check{width:18px;height:18px}
+.ob-cards-2 .ob-card:last-child:nth-child(odd){grid-column:1/-1}
 .ob-card-check{width:22px;height:22px;border-radius:50%;border:2px solid var(--bord);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s}
 .ob-card.selected .ob-card-check{background:var(--accent);border-color:var(--accent);color:#fff}
 .ob-avatar-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;width:100%;max-width:340px}
@@ -2166,7 +2174,7 @@ body.dark .ann-piege{background:#2a2110;border-color:#5a4516;color:#e0b860}
     <div class="home-prog-card">
       <div class="home-prog-hdr">
         <div class="home-prog-hdr-title">Cette semaine</div>
-        <div class="home-prog-hdr-sub">Brevet 2026</div>
+        <div class="home-prog-hdr-sub" id="home-exam-lbl">Brevet</div>
       </div>
       <div class="home-prog-circles">
         <div class="home-prog-wrap">
@@ -2387,7 +2395,7 @@ body.dark .ann-piege{background:#2a2110;border-color:#5a4516;color:#e0b860}
             <svg stroke="#f43f5e" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
           </div>
           <div class="rev-type-name">Interrogation</div>
-          <div class="rev-type-sub">Questions brevet</div>
+          <div class="rev-type-sub">Questions type contrôle</div>
         </button>
         <button class="rev-type-btn" onclick="revPickType('resume')">
           <div class="rev-type-icon" style="background:#fff7ed">
@@ -2465,7 +2473,7 @@ body.dark .ann-piege{background:#2a2110;border-color:#5a4516;color:#e0b860}
     <div class="prof-hero">
       <div class="prof-av" id="profil-avatar-display" onclick="toggleAvatarPicker()">🎓</div>
       <div class="prof-name" id="profil-name-display">Mon Profil</div>
-      <div class="prof-sub" id="profil-sub-display">ScolarIA · Collégien</div>
+      <div class="prof-sub" id="profil-sub-display">ScolarIA · Élève</div>
     </div>
 
     <!-- Stats -->
@@ -3157,7 +3165,7 @@ let userPrenom = '';
 const QUOTES = [
   "Chaque matin est une nouvelle chance. Profite-en.",
   "Tu es plus fort que tu ne le crois. Prouve-le aujourd'hui.",
-  "Le brevet se prépare un jour à la fois. Et c'est aujourd'hui.",
+  "Un examen se prépare un jour à la fois. Et c'est aujourd'hui.",
   "Ceux qui réussissent font ce que les autres remettent à demain.",
   "Même 20 minutes de révision font la différence.",
   "Tu es capable de tout gérer.",
@@ -3331,7 +3339,7 @@ async function revStart() {
   var prompt = '';
   if (revCurType === 'flashcards') {
     var flashLogic =
-      'RAISONNE COMME UN ELEVE DE 3EME QUI REVISE CE CHAPITRE POUR UN CONTROLE :\n' +
+      'RAISONNE COMME UN ELEVE DE ' + getClasse().toUpperCase() + ' QUI REVISE CE CHAPITRE POUR UN CONTROLE :\n' +
       '- Les questions portent sur le COEUR du sujet : definitions cles, formules, enonces, proprietes, methode pour appliquer, dans quels cas on utilise, et 1 a 2 exemples de calcul ou exercice type.\n' +
       '- INTERDIT les questions de culture generale ou de biographie hors-sujet. Exemple : pour "theoreme de Pythagore", ne demande JAMAIS "qui est Pythagore ?" ni sa date de naissance. Demande l\'enonce, la formule, comment trouver l\'hypotenuse, comment verifier si un triangle est rectangle, etc.\n' +
       '- Vise ce qui tombe VRAIMENT en controle sur ce sujet precis.\n' +
@@ -3365,15 +3373,15 @@ async function revStart() {
       prompt = 'Fais une fiche de révision sur : ' + topic + '\n' +
         depthInstr + '\n' +
         'FORMAT OBLIGATOIRE : ##FICHE##, TITRE:, MATIERE:, SECTION: (noms adaptés à la matière selon les règles reçues), RETENIR:, ##FINFICHE##.\n' +
-        'ZÉRO paragraphe — tout en puces bullet. Respecte exactement les SECTIONS OBLIGATOIRES de la matière. Niveau 3ème.';
+        'ZÉRO paragraphe — tout en puces bullet. Respecte exactement les SECTIONS OBLIGATOIRES de la matière. Niveau ' + getClasse() + '.';
     }
   } else if (revCurType === 'quiz') {
     if (cours) {
-      prompt = 'Génère une interrogation de ' + limit + ' questions basées UNIQUEMENT sur ce cours (niveau 3ème).\n' +
+      prompt = 'Génère une interrogation de ' + limit + ' questions basées UNIQUEMENT sur ce cours (niveau ' + getClasse() + ').\n' +
         'Mix : QCM (4 choix), vrai/faux, réponse courte. Donne la correction complète à la fin.\n\n' +
         'COURS :\n' + cours;
     } else {
-      prompt = 'Génère une interrogation de ' + limit + ' questions sur : "' + topic + '" (niveau 3ème).\n' +
+      prompt = 'Génère une interrogation de ' + limit + ' questions sur : "' + topic + '" (niveau ' + getClasse() + ').\n' +
         'Questions portant UNIQUEMENT sur "' + topic + '". Mix : QCM (4 choix), vrai/faux, réponse courte.\n' +
         'Donne la correction complète à la fin.';
     }
@@ -3381,7 +3389,7 @@ async function revStart() {
     if (cours) {
       prompt = 'Résume ce cours en ' + limit + ' points clés essentiels (liste numérotée, court et percutant).\n\nCOURS :\n' + cours;
     } else {
-      prompt = 'Résume "' + topic + '" en ' + limit + ' points clés essentiels pour le brevet (liste numérotée, court et percutant). Sujet UNIQUEMENT : "' + topic + '".';
+      prompt = 'Résume "' + topic + '" en ' + limit + ' points clés essentiels pour le ' + examLabel() + ' (liste numérotée, court et percutant). Sujet UNIQUEMENT : "' + topic + '".';
     }
   }
 
@@ -3737,7 +3745,7 @@ async function chatPhoto(e) {
     var thinking = addMsg('ScolarIA analyse la photo…', 'ai thinking');
     if (msgs) msgs.scrollTop = msgs.scrollHeight;
 
-    var prompt = question || 'Analyse cette photo de mon cours. Explique le contenu clairement, niveau 3ème. Si c\'est un exercice, aide-moi à le résoudre étape par étape.';
+    var prompt = question || 'Analyse cette photo de mon cours. Explique le contenu clairement, niveau ' + getClasse() + '. Si c\'est un exercice, aide-moi à le résoudre étape par étape.';
     var VISION_MODELS = AI_VISION_MODELS;
     var lastErr = 'Modèle vision indisponible';
     for (var mi = 0; mi < VISION_MODELS.length; mi++) {
@@ -3747,13 +3755,13 @@ async function chatPhoto(e) {
           headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + key },
           body: JSON.stringify({
             model: VISION_MODELS[mi], max_tokens: 1800,
-            messages: [
+            messages: _withNiveau([
               { role: 'system', content: SCOLARIA_SYSTEM },
               { role: 'user', content: [
                 { type: 'image_url', image_url: { url: 'data:' + mime + ';base64,' + b64 } },
                 { type: 'text', text: prompt }
               ]}
-            ]
+            ])
           })
         });
         var data = await res.json();
@@ -3987,7 +3995,7 @@ function parseFicheV2(text, topic) {
   return '<div class="fwrap-paper"><div class="fiche-paper-hdr">' +
     '<div class="fiche-paper-badge">&#128196; Fiche de révision · ScolarIA</div>' +
     '<div class="fiche-paper-title">' + esc(titre) + '</div>' +
-    (mat ? '<div style="font-family:\'Caveat\',cursive;font-size:13px;color:#6b5824;margin-top:3px;opacity:.85">' + esc(mat.charAt(0).toUpperCase() + mat.slice(1)) + ' · 3ème</div>' : '') +
+    (mat ? '<div style="font-family:\'Caveat\',cursive;font-size:13px;color:#6b5824;margin-top:3px;opacity:.85">' + esc(mat.charAt(0).toUpperCase() + mat.slice(1)) + ' · ' + esc(getClasse()) + '</div>' : '') +
     '</div><div class="fiche-paper-body">' + secHtml + retenirHtml + '</div></div>';
 }
 
@@ -4334,8 +4342,99 @@ function loadChatLS() {
   } catch(e) {}
 }
 
+/* ══ NIVEAU SCOLAIRE ══
+   La classe choisie par l'eleve (onboarding / profil) personnalise TOUTES
+   les reponses IA : programme officiel, facon de parler, examen vise.
+   _withNiveau() l'ajoute automatiquement au prompt systeme de chaque appel. */
+var NIVEAUX = {
+  '6ème': {
+    cycle: 'collège', examen: 'contrôle',
+    ton: 'Parle très simplement, phrases courtes, exemples de la vie de tous les jours. Explique chaque mot nouveau. Ton chaleureux et encourageant.',
+    prog: 'Maths : nombres entiers et décimaux, fractions simples, les 4 opérations, proportionnalité (débuts), périmètres et aires, angles, symétrie axiale. Français : contes, mythes, récits d\'aventure, nature et fonction des mots (bases), présent/passé simple/imparfait. Histoire-Géo : Préhistoire, premiers États et écritures, Grèce et Rome antiques, débuts du judaïsme et du christianisme ; habiter une ville, un espace de faible densité, le littoral. Sciences et technologie (matière unique : vivant, matière, énergie, objets techniques). Anglais niveau A1.'
+  },
+  '5ème': {
+    cycle: 'collège', examen: 'contrôle',
+    ton: 'Parle simplement et clairement, avec des exemples concrets. Introduis le vocabulaire précis de chaque matière en l\'expliquant.',
+    prog: 'Maths : nombres relatifs, priorités de calcul, fractions (comparer, additionner), calcul littéral (débuts), proportionnalité, triangles et parallélogrammes, symétrie centrale, statistiques simples. Français : récits du Moyen Âge, héros et chevaliers, théâtre (comédie), accords et conjugaison. Histoire-Géo : chrétientés et islam (VIe-XIIIe s.), société féodale, Renaissance, Grandes découvertes, Réformes ; croissance démographique, ressources, changement climatique. SVT, Physique-Chimie et Technologie séparées. Début de la LV2.'
+  },
+  '4ème': {
+    cycle: 'collège', examen: 'contrôle',
+    ton: 'Parle clairement avec le vocabulaire exact de la matière (défini au besoin). Donne des méthodes pas à pas.',
+    prog: 'Maths : puissances, calcul littéral (développer, factoriser), équations du 1er degré, théorème de Pythagore, proportionnalité dans le triangle, translations, probabilités (débuts). Français : nouvelles réalistes, lettres, théâtre, poésie. Histoire-Géo : Lumières, Révolution française et Empire, révolution industrielle, colonisation, IIIe République ; urbanisation, mobilités, mondialisation. Physique-Chimie : atomes et molécules, circuits électriques, vitesse. SVT : reproduction, système nerveux, géologie.'
+  },
+  '3ème': {
+    cycle: 'collège', examen: 'brevet',
+    ton: 'Parle clairement avec le vocabulaire précis attendu au brevet. Donne des méthodes et signale les pièges classiques du brevet.',
+    prog: 'Maths : théorème de Thalès, trigonométrie, fonctions linéaires et affines, équations et inéquations, arithmétique, probabilités, statistiques, géométrie dans l\'espace. Français : se raconter, dénoncer les travers de la société, argumentation, réécriture, dictée. Histoire-Géo-EMC : guerres mondiales, régimes totalitaires, guerre froide, décolonisation, Ve République ; aires urbaines, territoires français, Union européenne. Physique-Chimie : ions et pH, transformations chimiques, énergie et puissance, gravitation, signaux. SVT : génétique, évolution, immunité. Examen : le Diplôme National du Brevet (DNB).'
+  },
+  '2nde': {
+    cycle: 'lycée', examen: 'contrôle',
+    ton: 'Ton plus mature, vocabulaire disciplinaire précis, raisonnement rigoureux et justifié. Fais le lien avec ce qui a été vu au collège.',
+    prog: 'Tronc commun du lycée général et technologique. Maths : fonctions de référence, variations, vecteurs, équations de droites, statistiques, probabilités, algorithmique en Python. Français : genres littéraires, initiation au commentaire et à la dissertation. Histoire-Géo : Méditerranée antique et médiévale, Renaissance, Lumières, Révolution ; sociétés face aux risques, développement durable. Physique-Chimie : la mole, solutions, mouvements et forces, ondes. SVT, SES, SNT. Choix des spécialités pour la 1ère.'
+  },
+  '1ère': {
+    cycle: 'lycée', examen: 'bac',
+    ton: 'Ton de lycéen, vocabulaire disciplinaire exact, rigueur de rédaction attendue au bac (démonstrations rédigées, argumentation structurée).',
+    prog: 'Trois spécialités (ex. maths, physique-chimie, SVT, SES, HGGSP, HLP, NSI, LLCER…). Maths spécialité : second degré, suites, dérivation, exponentielle, trigonométrie, produit scalaire, probabilités conditionnelles. Français : épreuves anticipées du bac (écrit : commentaire ou dissertation sur les œuvres au programme ; oral : explication de texte et entretien). Épreuve anticipée de mathématiques en fin de 1ère. Histoire-Géo, enseignement scientifique, langues en tronc commun.'
+  },
+  'Terminale': {
+    cycle: 'lycée', examen: 'bac',
+    ton: 'Ton de lycéen de Terminale, exigence du bac : rigueur, vocabulaire précis, méthode d\'épreuve (dissertation, commentaire, démonstration, étude de documents).',
+    prog: 'Deux spécialités (épreuves écrites du bac) + philosophie + Grand oral. Maths spécialité : limites, continuité, logarithme, intégration, suites, loi binomiale, géométrie dans l\'espace. Philosophie : notions (conscience, liberté, vérité, justice, bonheur, travail, État…), dissertation et explication de texte. Histoire-Géo, enseignement scientifique, langues, EMC en tronc commun. Préparation Parcoursup.'
+  }
+};
+
+function getClasse() {
+  var c = (typeof userProfile !== 'undefined' && userProfile.classe) || '';
+  if (!c) { try { c = (JSON.parse(localStorage.getItem('sk_prof') || '{}') || {}).classe || ''; } catch(e) {} }
+  return NIVEAUX[c] ? c : '3ème';
+}
+function niveauInfo() { return NIVEAUX[getClasse()]; }
+function isLycee() { return niveauInfo().cycle === 'lycée'; }
+/* Examen de fin de cycle : brevet au college, bac au lycee */
+function examLabel() { return isLycee() ? 'bac' : 'brevet'; }
+
+function niveauPrompt() {
+  var c = getClasse(), n = NIVEAUX[c];
+  return '--- NIVEAU DE L\'ÉLÈVE ---\n' +
+    'L\'élève est en ' + c + ' (' + n.cycle + ', programme officiel français). Tutoie-le.\n' +
+    'FAÇON DE PARLER : ' + n.ton + '\n' +
+    'PROGRAMME DE ' + c.toUpperCase() + ' : ' + n.prog + '\n' +
+    'Par défaut, cale le contenu, les exemples, les notations et le vocabulaire sur ce programme de ' + c + ' (pièges et méthodes : ceux du ' + (n.examen === 'contrôle' ? 'contrôle en classe' : n.examen) + ').\n' +
+    'AUTRES ANNÉES — RÈGLE IMPORTANTE : si l\'élève demande une notion d\'une autre classe (plus avancée ou d\'une année précédente), tu l\'expliques TOUJOURS complètement, tu ne refuses jamais. ' +
+    'Ta PREMIÈRE phrase le signale (ex : « C\'est au programme de 1ère, mais voici l\'idée. »). Ensuite explique en partant de ce qu\'un élève de ' + c + ' sait déjà, avec sa façon de parler. ' +
+    'Si la notion est plus avancée que sa classe : commence par l\'intuition avec une image ou un exemple concret, et évite les formules, notations et outils qu\'il n\'a pas encore vus (sauf s\'il les demande explicitement ; dans ce cas, explique chaque symbole). ' +
+    'Pour une notion d\'une année précédente, fais un rappel clair sans le rabaisser.\n' +
+    'REPÈRES (classe où une notion est vue) : fractions 6ème-5ème ; nombres relatifs 5ème ; puissances et Pythagore 4ème ; Thalès, trigonométrie, fonctions affines 3ème ; vecteurs, mole 2nde ; second degré, suites, dérivée, produit scalaire 1ère ; limites, logarithme, intégrales, philosophie Terminale.';
+}
+
+/* Textes de l'interface qui dependent de la classe */
+function updateNiveauUI() {
+  var d = new Date();
+  /* Annee de l'examen = fin de l'annee scolaire en cours (bascule en aout) */
+  var yr = d.getMonth() >= 7 ? d.getFullYear() + 1 : d.getFullYear();
+  /* Prochain examen selon la classe : [nom, annees restantes] */
+  var EXAMS = { '6ème':['Brevet',3], '5ème':['Brevet',2], '4ème':['Brevet',1], '3ème':['Brevet',0],
+                '2nde':['Bac',2], '1ère':['Bac de français',0], 'Terminale':['Bac',0] };
+  var ex = EXAMS[getClasse()];
+  var lbl = document.getElementById('home-exam-lbl');
+  if (lbl) lbl.textContent = getClasse() + ' · ' + ex[0] + ' ' + (yr + ex[1]);
+}
+
+/* Ajoute le bloc niveau au message systeme (ou en cree un) */
+function _withNiveau(messages) {
+  var blk = niveauPrompt();
+  var out = messages.slice();
+  if (out.length && out[0].role === 'system' && typeof out[0].content === 'string') {
+    out[0] = { role: 'system', content: out[0].content + '\n\n' + blk };
+  } else {
+    out.unshift({ role: 'system', content: blk });
+  }
+  return out;
+}
+
 /* ══ GROQ API ══ */
-var SCOLARIA_SYSTEM = 'Tu es ScolarIA — assistant scolaire IA pour collégiens français (3ème).\n\n' +
+var SCOLARIA_SYSTEM = 'Tu es ScolarIA — assistant scolaire IA pour élèves français, du collège au lycée (6ème → Terminale).\n\n' +
 'RÈGLE N°1 — NE POSE JAMAIS DE QUESTION non demandée : tu expliques et tu t\'arrêtes.\n' +
 'RÈGLE N°2 — Reste STRICTEMENT sur le sujet demandé. Histoire = histoire uniquement. Maths = maths uniquement. Ne mélange jamais les matières.\n' +
 'RÈGLE N°3 — Fautes d\'orthographe : ne les signale JAMAIS. Comprends le sens et réponds directement.\n' +
@@ -4481,7 +4580,7 @@ function detectMat(text) {
 function buildFicheSys(mat) {
   var base = SCOLARIA_SYSTEM;
   if (mat && _matRules[mat]) {
-    return base + '\n\n' + _matRules[mat];
+    return base + '\n\n' + _matRules[mat].replace(/brevet/g, examLabel());
   }
   /* Fallback : instructions génériques multi-matière */
   return base + '\n\n--- SECTIONS PAR MATIERE (detection auto) ---\n' +
@@ -4516,10 +4615,16 @@ function _cleanMath(t) {
     .replace(/\\leq?(?![a-z])/g, '≤').replace(/\\geq?(?![a-z])/g, '≥').replace(/\\neq(?![a-z])/g, '≠')
     .replace(/\\approx/g, '≈').replace(/\\pi(?![a-z])/g, 'π')
     .replace(/\\left|\\right/g, '')
+    .replace(/\\lim_\{([^{}]*)\}/g, 'lim($1) ').replace(/\\lim(?![a-z])/g, 'lim')
+    .replace(/\\(Longrightarrow|Rightarrow|implies)/g, '⇒').replace(/\\(Leftrightarrow|iff)/g, '⇔')
+    .replace(/\\Delta(?![a-z])/g, 'Δ').replace(/\\to(?![a-z])/g, '→').replace(/\\infty/g, '∞')
+    .replace(/\\(alpha|beta|theta|lambda|mu)(?![a-z])/g, function(m, g) { return { alpha:'α', beta:'β', theta:'θ', lambda:'λ', mu:'µ' }[g]; })
+    .replace(/\\[,;!]/g, ' ')
     .replace(/\\text\{([^{}]*)\}/g, '$1');
 }
 
-async function callGroq(messages, maxTok) {
+async function callGroq(messages, maxTok, opts) {
+  if (!(opts && opts.noNiveau)) messages = _withNiveau(messages);
   var res = await fetch(GROQ_PROXY, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + SUPA_ANON },
@@ -4530,7 +4635,8 @@ async function callGroq(messages, maxTok) {
   return _cleanMath(data.choices[0].message.content || '');
 }
 
-async function callGroqStream(messages, onToken, maxTok) {
+async function callGroqStream(messages, onToken, maxTok, opts) {
+  if (!(opts && opts.noNiveau)) messages = _withNiveau(messages);
   var res = await fetch(GROQ_PROXY, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + SUPA_ANON },
@@ -4830,7 +4936,7 @@ function doConj(verb) {
   res.innerHTML = '<div class="conj-ai-loading"><span class="conj-ai-spin"></span>' + CONJ_LOADING[lang] + '…</div>';
   var myId = conjReqId;
   conjTimer = setTimeout(function(){
-    callGroq([{ role:'system', content:CONJ_SYS }, { role:'user', content:CONJ_PROMPTS[lang](verb) }], 2200)
+    callGroq([{ role:'system', content:CONJ_SYS }, { role:'user', content:CONJ_PROMPTS[lang](verb) }], 2200, { noNiveau: true })
       .then(function(reply){
         if (myId !== conjReqId) return; /* une saisie plus recente a pris le relais */
         var html = '<div class="conj-box"><div class="conj-title">' + esc(verb) + '</div>' + mdToHtml(reply) + '</div>';
@@ -4898,7 +5004,7 @@ async function startVQ() {
     '<div class="rev-loading-txt">Génération des questions...</div>' +
     '<div class="rev-loading-sub">Quelques secondes</div></div>';
   try {
-    var prompt = 'Génère exactement 8 flashcards sur le sujet EXACT : "' + topic + '" (niveau 3ème).\nFORMAT OBLIGATOIRE — uniquement ce tableau, rien d\'autre :\n| Question | Réponse |\n| --- | --- |\nToutes les questions doivent porter UNIQUEMENT sur "' + topic + '".';
+    var prompt = 'Génère exactement 8 flashcards sur le sujet EXACT : "' + topic + '" (niveau ' + getClasse() + ').\nFORMAT OBLIGATOIRE — uniquement ce tableau, rien d\'autre :\n| Question | Réponse |\n| --- | --- |\nToutes les questions doivent porter UNIQUEMENT sur "' + topic + '".';
     var reply;
     reply = await callGroq([{role:'system',content:SCOLARIA_SYSTEM},{role:'user',content:prompt}]);
     vqCards = parseFlashCards(reply, 8);
@@ -5065,7 +5171,7 @@ async function startInterroAI() {
   document.getElementById('interro-ai-content').innerHTML =
     '<div class="rev-loading"><div class="rev-spin"></div><div class="rev-loading-txt">L\'IA prépare tes questions...</div></div>';
   try {
-    var prompt='Génère '+nb+' questions variées (QCM, vrai/faux, réponse courte) sur "'+topic+'" niveau 3ème. Pour chaque question, utilise ce format exact (une par ligne) :\nQ: [question]\nR: [réponse attendue]\n';
+    var prompt='Génère '+nb+' questions variées (QCM, vrai/faux, réponse courte) sur "'+topic+'" niveau '+getClasse()+'. Pour chaque question, utilise ce format exact (une par ligne) :\nQ: [question]\nR: [réponse attendue]\n';
     var reply=await callGroq([{role:'system',content:SCOLARIA_SYSTEM},{role:'user',content:prompt}]);
     interroQs=parseInterroQs(reply);
     if(!interroQs.length) throw new Error('Impossible de générer les questions — réessaie');
@@ -5168,7 +5274,7 @@ async function scanGenerate(type) {
   var acts=document.getElementById('scan-actions'); if(acts) acts.style.display='none';
   res.innerHTML='<div class="rev-loading" style="padding:30px 0"><div class="rev-spin"></div><div class="rev-loading-txt">ScolarIA analyse ton cours...</div></div>';
   var prompt=type==='fiche'
-    ?'Voici la photo d\'un cours. Transcris et génère une fiche de révision structurée (titre, notions clés, définitions, exemples). Niveau 3ème.'
+    ?'Voici la photo d\'un cours. Transcris et génère une fiche de révision structurée (titre, notions clés, définitions, exemples). Niveau '+getClasse()+'.'
     :'Voici la photo d\'un cours. Génère 8 flashcards | Question | Réponse | sous forme de tableau markdown ---|--- à partir de ce cours.';
   try{
     /* Vision via le proxy Groq */
@@ -5178,10 +5284,10 @@ async function scanGenerate(type) {
       body:JSON.stringify({
         model:AI_VISION_MODELS[0],
         max_tokens:2000,
-        messages:[{role:'user',content:[
+        messages:_withNiveau([{role:'user',content:[
           {type:'image_url',image_url:{url:scanImageData.full}},
           {type:'text',text:prompt}
-        ]}]
+        ]}])
       })
     });
     var visData=await visRes.json();
@@ -5227,7 +5333,7 @@ async function generateVeilleControle() {
     'JOUR 1 — [titre court]\n• [tache precise 1]\n• [tache precise 2]\n• [tache precise 3]\n\n' +
     (vcDays >= 2 ? 'JOUR 2 — [titre]\n• ...\n• ...\n• ...\n\n' : '') +
     (vcDays >= 3 ? 'JOUR 3 — [titre]\n• ...\n• ...\n\n' : '') +
-    'Sois concis, pratique, adapte au niveau 3eme. Pas de blabla, juste les taches.';
+    'Sois concis, pratique, adapte au niveau ' + getClasse() + '. Pas de blabla, juste les taches.';
   try {
     var reply = await callGroq([
       { role: 'system', content: SCOLARIA_SYSTEM },
@@ -5428,7 +5534,8 @@ function renderProfileUI() {
   var nm = document.getElementById('profil-name-display');
   if (nm) nm.textContent = userProfile.prenom || 'Mon Profil';
   var sub = document.getElementById('profil-sub-display');
-  if (sub) sub.textContent = (userProfile.classe || 'Collégien') + ' · ScolarIA';
+  if (sub) sub.textContent = (userProfile.classe || 'Élève') + ' · ScolarIA';
+  updateNiveauUI();
   /* Fields */
   var pi = document.getElementById('profil-prenom');   if (pi) pi.value = userProfile.prenom;
   var pc = document.getElementById('profil-classe');   if (pc) pc.value = userProfile.classe;
@@ -5703,7 +5810,10 @@ var _obSteps = [
     { icon:'🟢', label:'6ème', val:'6ème' },
     { icon:'🔵', label:'5ème', val:'5ème' },
     { icon:'🟠', label:'4ème', val:'4ème' },
-    { icon:'🔴', label:'3ème', val:'3ème' }
+    { icon:'🔴', label:'3ème', val:'3ème' },
+    { icon:'🟣', label:'2nde', val:'2nde' },
+    { icon:'🟤', label:'1ère', val:'1ère' },
+    { icon:'⚫', label:'Terminale', val:'Terminale' }
   ]},
   { type:'cards',  mascot:'🎯', q:'Quel est ton objectif ?',        sub:'On adapte ScolarIA pour toi', options:[
     { icon:'⭐', label:'Avoir de bonnes notes',   val:'bonnes-notes' },
@@ -5763,12 +5873,15 @@ function _obRender() {
     if (inp) { inp.value = _obAnswers.prenom; inp.focus(); }
     _obCheckBtn();
   } else if (step.type === 'cards') {
-    html += '<div class="ob-cards">';
+    html += '<div class="ob-cards' + (_obStep === 1 ? ' ob-cards-2' : '') + '">';
+    var obLycee = NIVEAUX[_obAnswers.classe] && NIVEAUX[_obAnswers.classe].cycle === 'lycée';
     step.options.forEach(function(opt) {
       var sel = (_obStep === 1 ? _obAnswers.classe : _obAnswers.objectif) === opt.val;
+      /* L'objectif "examen" devient le bac pour un lyceen */
+      var lab = (opt.val === 'brevet' && obLycee) ? 'Réussir le bac' : opt.label;
       html += '<div class="ob-card' + (sel ? ' selected' : '') + '" onclick="_obSelectCard(this,\'' + opt.val + '\')">' +
         '<span class="ob-card-icon">' + opt.icon + '</span>' +
-        '<span class="ob-card-label">' + opt.label + '</span>' +
+        '<span class="ob-card-label">' + lab + '</span>' +
         '<span class="ob-card-check">' + (sel ? '✓' : '') + '</span>' +
         '</div>';
     });
@@ -6148,6 +6261,16 @@ function annBack(){
   if(typeof f==='function'){ f.apply(null, d.slice(1)); } else { annHome(); }
 }
 
+/* Les annales sont de niveau 3eme : on le signale aux autres classes */
+function annLevelNote(){
+  var c=getClasse();
+  if(c==='3ème') return '';
+  var tx=isLycee()
+    ? 'Exercices du brevet : parfait pour revoir les bases du coll&egrave;ge.'
+    : 'Le coach IA t&#39;explique les notions que tu n&#39;as pas encore vues en '+esc(c)+'.';
+  return '<div class="ann-lvl"><span class="ann-lvl-pill">Niveau 3&egrave;me</span><span>'+tx+'</span></div>';
+}
+
 /* ── ECRANS ── */
 function annHome(){
   annStack=[];
@@ -6155,6 +6278,7 @@ function annHome(){
   document.getElementById('ann-view').innerHTML =
     '<div class="ann-h1">Annales Brevet</div>'+
     '<div class="ann-sub">Entraine-toi sur des exercices type brevet, avec correction detaillee et un coach IA.</div>'+
+    annLevelNote()+
     '<div class="ann-choice" onclick="annGoMatieres(\'gen\')">'+
       '<div class="ann-choice-ic"><svg viewBox="0 0 24 24"><path d="M9 2h6M10 2v6.5L5.2 18A2 2 0 0 0 7 21h10a2 2 0 0 0 1.8-3L14 8.5V2"/><path d="M8 15h8"/></svg></div>'+
       '<div class="ann-choice-tx"><div class="ann-choice-tt">Demander un exercice</div><div class="ann-choice-ds">Choisis une matiere et un chapitre. On te sort un exo, different a chaque fois.</div></div>'+
@@ -6328,7 +6452,7 @@ function annGenerateExo(matId,themeId,th){
   var usr="Cree UN exercice type brevet original sur le theme : "+th.titre+". Niveau 3eme, calculs simples et exacts. "+
     "Respecte EXACTEMENT ce format, sans rien ecrire d autre :\n"+
     "TITRE: <titre court>\n<enonce puis 3 ou 4 questions numerotees 1. 2. 3.>\n===CORRECTION===\n<correction detaillee, question par question>\nPIEGE: <un piege classique du brevet a retenir>";
-  callGroq([{role:'system',content:sys},{role:'user',content:usr}],1200).then(function(txt){
+  callGroq([{role:'system',content:sys},{role:'user',content:usr}],1200,{noNiveau:true}).then(function(txt){
     annRenderGenExo(matId,themeId,th,txt);
   }).catch(function(err){
     v.innerHTML='<div class="ann-exo"><div class="ann-empty">Erreur : '+esc(err.message)+'<br><br><button class="btn btn-ghost" onclick="annPickAndRender(\''+matId+'\',\''+themeId+'\')">Reessayer</button></div></div>';
@@ -6402,7 +6526,7 @@ function annSend(){
   var q=ta.value.trim(); if(!q) return;
   ta.value=''; ta.style.height='auto';
   annChatMsgs.push({ role:'user', content:q });
-  var sys={ role:'system', content:"Tu es un professeur de maths et de physique-chimie de college, patient et tres clair. Tu aides un eleve de 3eme a comprendre UN exercice precis du brevet.\n\nREGLES IMPORTANTES :\n- Reste concentre UNIQUEMENT sur cet exercice et sur la question que pose l'eleve. Ne parle de rien d'autre.\n- Explique la METHODE etape par etape, avec des phrases courtes et simples (l'eleve a 14 ans).\n- Rappelle d'abord la formule ou la propriete utile, puis montre comment l'appliquer ICI, avec les valeurs de l'enonce.\n- Si l'eleve demande un indice, donne seulement la prochaine etape, sans donner le resultat final.\n- Si l'eleve demande la solution, detaille le calcul jusqu'au resultat, puis donne la reponse.\n- N'invente aucune donnee : utilise seulement l'enonce ci-dessous.\n- Quand l'eleve dit qu'il n'a pas compris, reformule ton explication plus simplement (d'autres mots, un petit exemple concret) jusqu'a ce qu'il comprenne, mais SANS ajouter d'etapes inutiles ni partir sur autre chose.\n- Reste bref et va droit au but : reponds a ce qui est demande, sans bla-bla et sans poser de question en retour a l'eleve.\n\nVoici l'exercice (enonce, questions et correction de reference) :\n\n"+annChatCtx };
+  var sys={ role:'system', content:"Tu es un professeur de maths et de physique-chimie de college, patient et tres clair. Tu aides un eleve a comprendre UN exercice precis du brevet (niveau 3eme). Si l eleve n est pas en 3eme, explique avec les mots de sa classe et rappelle les notions qu il n a pas encore vues.\n\nREGLES IMPORTANTES :\n- Reste concentre UNIQUEMENT sur cet exercice et sur la question que pose l'eleve. Ne parle de rien d'autre.\n- Explique la METHODE etape par etape, avec des phrases courtes et simples (l'eleve a 14 ans).\n- Rappelle d'abord la formule ou la propriete utile, puis montre comment l'appliquer ICI, avec les valeurs de l'enonce.\n- Si l'eleve demande un indice, donne seulement la prochaine etape, sans donner le resultat final.\n- Si l'eleve demande la solution, detaille le calcul jusqu'au resultat, puis donne la reponse.\n- N'invente aucune donnee : utilise seulement l'enonce ci-dessous.\n- Quand l'eleve dit qu'il n'a pas compris, reformule ton explication plus simplement (d'autres mots, un petit exemple concret) jusqu'a ce qu'il comprenne, mais SANS ajouter d'etapes inutiles ni partir sur autre chose.\n- Reste bref et va droit au but : reponds a ce qui est demande, sans bla-bla et sans poser de question en retour a l'eleve.\n\nVoici l'exercice (enonce, questions et correction de reference) :\n\n"+annChatCtx };
   var msgs=[sys].concat(annChatMsgs.map(function(m){ return { role:m.role, content:m.content }; }));
   annChatMsgs.push({ role:'assistant', content:'' });
   var idx=annChatMsgs.length-1;

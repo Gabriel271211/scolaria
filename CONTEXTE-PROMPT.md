@@ -5,8 +5,8 @@ Copie-colle ce bloc au début d'une nouvelle session IA (Claude, ChatGPT…) pou
 ---
 
 ```
-Tu travailles sur ScolarIA, une application scolaire pour collégiens français
-(niveau 3ème) développée par Gabriel (14 ans). C'est une Single Page Application
+Tu travailles sur ScolarIA, une application scolaire pour élèves français
+du collège au lycée (6ème -> Terminale), développée par Gabriel (14 ans). C'est une Single Page Application
 en HTML/CSS/JS pur — PAS de framework, PAS de build system. Juste des fichiers
 .html autonomes. Cible : smartphone Android sous Chrome, installable en PWA.
 
@@ -67,7 +67,10 @@ RÈGLES DE DÉVELOPPEMENT
 CE QUE GABRIEL VEUT
 - App fluide sur smartphone Android (Chrome).
 - Pas de framework, pas de build — fichiers HTML standalone.
-- Contenu adapté niveau 3ème (rappels, tableaux, pièges du brevet).
+- L'élève choisit sa classe : l'IA adapte programme + façon de parler
+  (NIVEAUX, niveauPrompt, _withNiveau ajouté auto dans callGroq). Jamais de
+  « 3ème » en dur : getClasse() / examLabel(). Un sujet d'une autre année
+  doit TOUJOURS être expliqué.
 - Les objectifs à jour sont dans RECAP_SESSION.md.
 
 ATTENTION SUPABASE GRATUIT

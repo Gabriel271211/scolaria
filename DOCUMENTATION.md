@@ -139,7 +139,7 @@ Préfixe commun : `sk_`.
 
 | Clé | Contenu | Synchronisée ? |
 |-----|---------|:--------------:|
-| `sk_prof` | Profil (nom, avatar, niveau…) | ✅ |
+| `sk_prof` | Profil (nom, classe, avatar emoji, `photo` = photo de profil en JPEG 256px base64…) | ✅ |
 | `sk_dv` | Devoirs | ✅ |
 | `sk_decks` | Decks de flashcards | ✅ |
 | `sk_hist` | Historique des générations IA | ✅ |

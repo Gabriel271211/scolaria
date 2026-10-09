@@ -1599,6 +1599,11 @@ body::after {
 .prof-hero{background:linear-gradient(135deg,var(--accent) 0%,#7c3aed 100%);border-radius:20px;padding:26px 20px;text-align:center;margin-bottom:16px}
 .prof-av{font-size:44px;width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,.22);margin:0 auto 12px;cursor:pointer;border:3px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;transition:transform .18s;-webkit-tap-highlight-color:transparent}
 .prof-av:active{transform:scale(.94)}
+.prof-av{overflow:hidden}
+.prof-av-img{width:100%;height:100%;object-fit:cover;display:block}
+.prof-photo-row{display:flex;gap:8px;margin-top:12px}
+.prof-photo-btn{flex:1;text-align:center;font-size:14px;font-weight:600;color:var(--accent);background:var(--accent-l);border-radius:12px;padding:11px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.prof-photo-rm{font-size:13px;font-weight:600;color:var(--mu);background:var(--bg);border:1.5px solid var(--bord);border-radius:12px;padding:0 14px;cursor:pointer;font-family:inherit}
 .prof-name{font-size:22px;font-weight:900;color:#fff;letter-spacing:-.4px}
 .prof-sub{font-size:12px;color:rgba(255,255,255,.72);margin-top:4px}
 .prof-stats-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px}
@@ -2545,6 +2550,13 @@ body.dark .ann-piege{background:#2a2110;border-color:#5a4516;color:#e0b860}
         </div>
       </div>
       <div id="avatar-picker" style="display:none">
+        <div class="prof-photo-row">
+          <label class="prof-photo-btn">
+            📷 Mettre une vraie photo
+            <input type="file" accept="image/*" style="display:none" onchange="pickProfilePhoto(event)">
+          </label>
+          <button class="prof-photo-rm" id="prof-photo-rm" style="display:none" onclick="removeProfilePhoto()">Retirer</button>
+        </div>
         <div class="prof-av-grid" id="avatar-grid"></div>
       </div>
     </div>
@@ -5369,7 +5381,7 @@ var AVATARS = [
   '🚀','⚡','🌟','🔥','💫','🎮','🎸','🌈','🍀','✨',
   '🧑‍💻','👩‍🔬','🧑‍🚀','👨‍🏫','👩‍🎓','🧝','🧙','🦸','🌺','🎭'
 ];
-var userProfile = { prenom: '', classe: '', matiere: '', objectif: '', avatar: '🎓' };
+var userProfile = { prenom: '', classe: '', matiere: '', objectif: '', avatar: '🎓', photo: '' };
 
 /* ══════════════════════════════════════════════
    STREAK — SYSTÈME FLAME FONCTIONNEL
@@ -5466,6 +5478,7 @@ function loadProfile() {
       userProfile.matiere  = p.matiere  || '';
       userProfile.objectif = p.objectif || '';
       userProfile.avatar   = p.avatar   || '🎓';
+      userProfile.photo    = p.photo    || '';
     }
   } catch(e) {}
   /* Mettre à jour le prénom global et le greeting */
@@ -5529,8 +5542,7 @@ function saveProfile() {
 
 function renderProfileUI() {
   /* Hero */
-  var av = document.getElementById('profil-avatar-display');
-  if (av) av.textContent = userProfile.avatar;
+  renderAvatarDisplay();
   var nm = document.getElementById('profil-name-display');
   if (nm) nm.textContent = userProfile.prenom || 'Mon Profil';
   var sub = document.getElementById('profil-sub-display');
@@ -5574,24 +5586,71 @@ function renderAvatarGrid() {
   g.innerHTML = html;
 }
 
+/* Photo de profil : prioritaire sur l'emoji quand elle existe */
+function _hasPhoto() { return /^data:image\/(jpeg|png|webp);base64,/.test(userProfile.photo || ''); }
+
+function renderAvatarDisplay() {
+  var av = document.getElementById('profil-avatar-display');
+  if (av) {
+    if (_hasPhoto()) av.innerHTML = '<img class="prof-av-img" src="' + userProfile.photo + '" alt="Photo de profil">';
+    else av.textContent = userProfile.avatar;
+  }
+  var rm = document.getElementById('prof-photo-rm');
+  if (rm) rm.style.display = _hasPhoto() ? '' : 'none';
+}
+
+function _saveAvatarFields() {
+  try {
+    var existing = JSON.parse(localStorage.getItem('sk_prof') || '{}');
+    existing.avatar = userProfile.avatar;
+    existing.photo  = userProfile.photo || '';
+    localStorage.setItem('sk_prof', JSON.stringify(existing));
+  } catch(e) { toast('Photo trop lourde pour être enregistrée'); }
+  scheduleSync();
+}
+
+/* Recadre en carre (centre) + reduit a 256px JPEG pour rester leger (~20-40 Ko) */
+function pickProfilePhoto(ev) {
+  var f = ev.target.files && ev.target.files[0];
+  ev.target.value = '';
+  if (!f || !/^image\//.test(f.type)) return;
+  var url = URL.createObjectURL(f);
+  var img = new Image();
+  img.onload = function() {
+    var side = Math.min(img.naturalWidth, img.naturalHeight);
+    var sx = (img.naturalWidth - side) / 2, sy = (img.naturalHeight - side) / 2;
+    var cv = document.createElement('canvas');
+    cv.width = cv.height = 256;
+    cv.getContext('2d').drawImage(img, sx, sy, side, side, 0, 0, 256, 256);
+    URL.revokeObjectURL(url);
+    userProfile.photo = cv.toDataURL('image/jpeg', 0.82);
+    renderAvatarDisplay();
+    _saveAvatarFields();
+    toast('Photo de profil mise à jour !');
+  };
+  img.onerror = function() { URL.revokeObjectURL(url); toast('Impossible de lire cette image'); };
+  img.src = url;
+}
+
+function removeProfilePhoto() {
+  userProfile.photo = '';
+  renderAvatarDisplay();
+  _saveAvatarFields();
+  toast('Photo retirée');
+}
+
 function pickAvatar(btn) {
   var a = btn.getAttribute('data-av');
   if (!a) return;
   userProfile.avatar = a;
-  var av = document.getElementById('profil-avatar-display');
-  if (av) av.textContent = a;
+  userProfile.photo = '';   /* choisir un emoji remplace la photo */
+  renderAvatarDisplay();
   /* Mettre à jour la sélection visuelle */
   var g = document.getElementById('avatar-grid');
   if (g) g.querySelectorAll('.prof-av-btn').forEach(function(b) {
     b.classList.toggle('on', b.getAttribute('data-av') === a);
   });
-  /* Auto-sauvegarder l'avatar */
-  try {
-    var existing = JSON.parse(localStorage.getItem('sk_prof') || '{}');
-    existing.avatar = a;
-    localStorage.setItem('sk_prof', JSON.stringify(existing));
-  } catch(e) {}
-  scheduleSync();
+  _saveAvatarFields();
   toast('Avatar mis à jour ! ' + a);
 }
 

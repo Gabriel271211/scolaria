@@ -424,6 +424,16 @@ body::after {
 .dv-ai:active { color: var(--accent); }
 .dv-tm:active { color: var(--success); }
 .dv-del:active { color: var(--danger); }
+/* Controle (Veille de controle) dans la liste des devoirs */
+.dv-ctrl { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.dv-ctrl:active { transform: scale(.99); }
+.dv-ctrl-ic { width: 22px; height: 22px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+.dv-ctrl-ic svg { width: 18px; height: 18px; stroke: #e84040; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.dv-ctrl-tag { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: #e84040; margin-right: 6px; }
+.dv-ctrl-h { font-weight: 600; color: var(--mu); font-size: 12px; }
+.dv-ctrl-prog { display: flex; align-items: center; gap: 8px; margin-top: 7px; font-size: 11px; color: var(--mu); }
+.dv-ctrl-prog .vc-prog { flex: 1; margin-top: 0; height: 4px; max-width: 120px; }
+.dv-ctrl-chev { width: 7px; height: 12px; stroke: var(--mu); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; margin-left: 4px; }
 
 .dv-empty {
   text-align: center;
@@ -2901,12 +2911,64 @@ function loadDevoirs() {
 
 function saveDv() { try { localStorage.setItem('sk_dv', JSON.stringify(devoirs)); } catch(e) {} scheduleSync(); }
 
+/* Rang d'un libelle de jour ("Demain", "Vendredi"...) : nombre de jours d'ici la */
+function dvLabelRank(label) {
+  var s = String(label || '').toLowerCase();
+  if (s.indexOf('aujourd') !== -1) return 0;
+  if (s.indexOf('après-demain') !== -1 || s.indexOf('apres-demain') !== -1) return 2;
+  if (s.indexOf('demain') !== -1) return 1;
+  var noms = ['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'];
+  for (var i = 0; i < 7; i++) {
+    if (s.indexOf(noms[i]) === 0) {
+      if (/\d/.test(s)) return 50; /* "lundi 17 mars" : date precise, apres la semaine */
+      return ((i - new Date().getDay() + 7) % 7) || 7;
+    }
+  }
+  return 99;
+}
+
+/* Controles a venir (Veille de controle) affiches parmi les devoirs */
+function dvControles() {
+  if (typeof vcLoad !== 'function') return [];
+  return vcLoad().filter(function(c) { return vcDiff(c.date) >= 0; });
+}
+function dvCtrlLabel(ymd) {
+  var n = vcDiff(ymd);
+  if (n === 0) return 'Aujourd\'hui';
+  if (n === 1) return 'Demain';
+  var d = vcDate(ymd);
+  var s = d.toLocaleDateString('fr-FR', n < 7 ? { weekday: 'long' } : { weekday: 'long', day: 'numeric', month: 'long' });
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+function dvActiveCount() { return devoirs.filter(function(d) { return !d.done; }).length + dvControles().length; }
+
+function buildCtrlCard(c) {
+  var total = 0, fait = 0;
+  if (Array.isArray(c.plan)) c.plan.forEach(function(d, di) { d.taches.forEach(function(t, ti) { total++; if (c.done && c.done[di + '-' + ti]) fait++; }); });
+  var n = vcDiff(c.date);
+  var suj = (c.sujets && c.sujets.length) ? c.sujets.join(' · ') : 'Tout le chapitre';
+  var prog = total
+    ? '<div class="dv-ctrl-prog"><div class="vc-prog"><i style="width:' + Math.round(fait / total * 100) + '%"></i></div><span>Révisions ' + fait + '/' + total + '</span></div>'
+    : '<div class="dv-ctrl-prog"><span>Planning en préparation</span></div>';
+  return '<div class="dvc dv-ctrl" style="border-left-color:#e84040" onclick="openVeilleControle(\'' + c.id + '\')">' +
+    '<div class="dvm">' +
+      '<div class="dv-ctrl-ic"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>' +
+      '<div class="dvi">' +
+        '<div class="dvm-m"><span class="dv-ctrl-tag">Contrôle</span>' + esc(c.mat) + (c.heure ? ' <span class="dv-ctrl-h">' + esc(c.heure.replace(':', 'h')) + '</span>' : '') + '</div>' +
+        '<div class="dvm-d">' + esc(suj) + '</div>' + prog +
+      '</div>' +
+      '<div class="dvr"><span class="vc-pill' + (n <= 2 ? ' soon' : '') + '">' + vcCountdown(c.date) + '</span>' +
+        '<svg class="dv-ctrl-chev" viewBox="0 0 8 14"><path d="M1.5 1.5L6.5 7L1.5 12.5"/></svg></div>' +
+    '</div></div>';
+}
+
 function renderDevoirs() {
   const el = document.getElementById('dv-by-day');
   if (!el) return;
   const active = devoirs.filter(d => !d.done);
   const done   = devoirs.filter(d => d.done);
-  if (!active.length && !done.length) {
+  const ctrls  = dvControles();
+  if (!active.length && !done.length && !ctrls.length) {
     el.innerHTML = `<div class="dv-empty">
       <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
       <p>Aucun devoir !</p><span>Tout est à jour.</span>
@@ -2914,17 +2976,22 @@ function renderDevoirs() {
     return;
   }
   const urgColor = {urgent:'#ef4444', semaine:'#f59e0b', plus:'#16a34a'};
-  const dayOrder = ['Aujourd\'hui','Demain','Lundi','Mardi','Mercredi','Jeudi','Vendredi'];
-  const groups = {};
+  const groups = {}, ctrlGroups = {}, ctrlRank = {};
   active.forEach(d => { const k = d.date||'Sans date'; if(!groups[k]) groups[k]=[]; groups[k].push(d); });
-  const days = Object.keys(groups).sort((a,b) => {
-    const ai = dayOrder.indexOf(a), bi = dayOrder.indexOf(b);
-    if(ai>=0 && bi>=0) return ai-bi;
-    if(ai>=0) return -1; if(bi>=0) return 1; return 0;
+  /* les controles rejoignent le groupe de leur jour, places en premier */
+  ctrls.sort((a,b) => a.date < b.date ? -1 : 1).forEach(c => {
+    const k = dvCtrlLabel(c.date);
+    if(!groups[k]) groups[k]=[];
+    if(!ctrlGroups[k]) { ctrlGroups[k]=[]; ctrlRank[k] = vcDiff(c.date); }
+    ctrlGroups[k].push(c);
   });
+  /* controle = date exacte connue ; devoir = rang estime depuis son libelle */
+  const rank = k => ctrlRank[k] !== undefined ? ctrlRank[k] : dvLabelRank(k);
+  const days = Object.keys(groups).sort((a,b) => rank(a) - rank(b));
   let html = days.map(day =>
     `<div class="dv-day-group">
       <div class="dv-day-hdr"><div class="dv-day-line"></div><span class="dv-day-lbl">${esc(day)}</span><div class="dv-day-line"></div></div>
+      ${(ctrlGroups[day]||[]).map(buildCtrlCard).join('')}
       ${groups[day].map(d => buildDvCard(d, urgColor)).join('')}
     </div>`
   ).join('');
@@ -2973,7 +3040,7 @@ function toggleDv(id) {
     updateStreak();
     updateHomeProgression();
     var dc = document.getElementById('home-devoirs-count');
-    if (dc) dc.textContent = devoirs.filter(function(x){ return !x.done; }).length;
+    if (dc) dc.textContent = dvActiveCount();
   }
 }
 function delDv(id) { devoirs = devoirs.filter(d => d.id !== id); saveDv(); renderDevoirs(); updateHomeStats(); }
@@ -2987,6 +3054,7 @@ function filterDone() { dvShowDone = !dvShowDone; renderDevoirs(); }
     var c = e.target.closest('.dvc');
     if (!c) return;
     if (e.target.closest('.dv-btn') || e.target.closest('.dvck')) return; /* boutons + coche : ancien système */
+    if (c.classList.contains('dv-ctrl')) return; /* un controle ne se coche pas : on l'ouvre */
     var t = e.touches[0];
     sx = t.clientX; sy = t.clientY;
     card = c; row = c.querySelector('.dvm'); bg = c.querySelector('.dvsw');
@@ -3253,8 +3321,8 @@ function updateHomeStats() {
   var hg = document.getElementById('home-greeting');
   if (hg && userPrenom) hg.textContent = 'Bonjour ' + userPrenom;
 
-  /* Devoirs restants */
-  var dvActive = devoirs.filter(function(d){ return !d.done; }).length;
+  /* Devoirs restants (controles a venir compris) */
+  var dvActive = dvActiveCount();
   var dvDone   = devoirs.filter(function(d){ return d.done; }).length;
   var dc = document.getElementById('home-devoirs-count');
   if (dc) dc.textContent = dvActive;
@@ -3284,7 +3352,8 @@ function updateHomeStats() {
   }
   var genDvSub = document.getElementById('gen-dv-sub');
   if (genDvSub) {
-    var urgents = devoirs.filter(function(d){ return !d.done && d.urg === 'urgent'; }).length;
+    var urgents = devoirs.filter(function(d){ return !d.done && d.urg === 'urgent'; }).length +
+      dvControles().filter(function(c){ return vcDiff(c.date) <= 1; }).length;
     if (dvActive === 0) genDvSub.textContent = 'Tout est à jour';
     else if (urgents > 0) genDvSub.textContent = urgents + ' urgent' + (urgents > 1 ? 's' : '') + ' · ' + dvActive + ' au total';
     else genDvSub.textContent = dvActive + ' devoir' + (dvActive > 1 ? 's' : '') + ' restant' + (dvActive > 1 ? 's' : '');
@@ -5387,6 +5456,9 @@ function vcSave(list) {
   scheduleSync();
   vcMirror();
   vcUpdateHome();
+  /* les controles apparaissent aussi dans les devoirs */
+  renderDevoirs();
+  updateHomeStats();
 }
 function vcGet(id) { return vcLoad().filter(function(c) { return c.id === id; })[0] || null; }
 function vcPut(c) {

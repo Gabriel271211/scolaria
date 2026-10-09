@@ -21,6 +21,7 @@
 | Annales Brevet — Maths (140 exos) | ✅ |
 | Nettoyage : Langues & Sciences archivés | ✅ |
 | Multi-niveaux 6ème → Terminale : l'IA s'adapte à la classe (programme + façon de parler) | ✅ |
+| Veille de contrôle v2 : date précise, plusieurs sujets, planning jour par jour, notifications | ✅ |
 
 ---
 

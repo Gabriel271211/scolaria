@@ -111,7 +111,7 @@ async function callGroqStream(messages, onChunk) { ... } // streaming token par 
 | **Interrogation IA** | Questions générées par l'IA + correction automatique des réponses de l'élève. |
 | **Quiz vocal (VQ)** | Quiz avec réponse libre, correction IA. |
 | **Scanner de cours** | Photo d'un cours → fiche de révision ou flashcards générées par vision IA. |
-| **Veille de contrôle** | Planning de révision sur N jours généré par l'IA, avec création de flashcards. |
+| **Veille de contrôle** | Liste « Mes contrôles » (`sk_ctrl`, synchronisé). Chaque contrôle : matière, **date précise** (+ heure facultative), **plusieurs sujets**. L'IA génère un planning jour par jour calé sur les vraies dates (cases à cocher + progression). **Rappels** : la veille à 17h, le matin du contrôle (7h) et les jours de révision (17h), envoyés par `sw.js` (`checkCtrl`) via le cache `scolaria-data`. |
 | **Conjugaison** | FR (tables locales + IA pour irréguliers), EN et ES (local + enrichissement IA). |
 | **Pomodoro** | Minuteur de travail/pause avec alerte sonore (WebAudio) et vibration (haptique) en fin de cycle. |
 | **Moyennes** | Calcul de moyenne pondérée par coefficients. |
@@ -148,6 +148,7 @@ Préfixe commun : `sk_`.
 | `sk_flash_stats` | Stats flashcards `{ok,total}` | ✅ |
 | `sk_quiz_stats` | Stats quiz `{ok,total}` | ✅ |
 | `sk_streak` | Série de jours `{count,date}` | ✅ |
+| `sk_ctrl` | Contrôles de la Veille de contrôle (date, sujets, planning, cases cochées, rappels) | ✅ |
 | `sk_day_*` | Activité journalière | ✅ (préfixe) |
 | `sk_theme` | Thème clair/sombre | ❌ (local au device) |
 
@@ -159,7 +160,7 @@ Préfixe commun : `sk_`.
 
 - **`manifest.json`** : nom « ScolarIA », `id` + `start_url` = `/scolaria-home-v2.html`, affichage `standalone`, portrait, thème `#4F46E5`. Icônes **PNG** dans `icons/` (192, 512, 512 maskable — Android refuse les icônes SVG/data:), `icons/apple-touch-icon.png` pour iPhone.
 - **Bouton « Installer l'app »** dans le tiroir (`#dm-install`, fonction `installApp()`) : caché par défaut, apparaît quand Chrome déclenche `beforeinstallprompt` (ouvre la vraie fenêtre d'installation) ou sur iPhone (affiche les instructions Partager → Sur l'écran d'accueil). Disparaît une fois l'app installée.
-- **`sw.js`** : cache `scolaria-v6`. Stratégie **network-first** (réseau d'abord, cache en secours). Les hôtes d'API (`groq.com`, `supabase.co`, `anthropic.com`, `generativelanguage`) sont exclus du cache pour ne jamais servir une réponse IA périmée.
+- **`sw.js`** : cache `scolaria-v7` + cache `scolaria-data` (jamais effacé : contrôles à rappeler + rappels déjà envoyés). Gère aussi les **notifications des contrôles** : message `ctrl-check` envoyé par la page (ouverture + toutes les 10 min), `periodicsync` en arrière-plan (Chrome Android, app installée, au mieux), clic sur la notif → ouvre le contrôle (`?ctrl=<id>`). Stratégie **network-first** (réseau d'abord, cache en secours). Les hôtes d'API (`groq.com`, `supabase.co`, `anthropic.com`, `generativelanguage`) sont exclus du cache pour ne jamais servir une réponse IA périmée.
 
 ---
 

@@ -3553,7 +3553,7 @@ async function revStart() {
     var reply = await callGroq([
       { role: 'system', content: activeSys },
       { role: 'user', content: prompt }
-    ], revMaxTok);
+    ], revMaxTok, { niveau: 'revision' });
 
     if (revCurType === 'flashcards') {
       var cards = parseFlashCards(reply, limit);
@@ -3665,7 +3665,9 @@ function parseFlashCards(md, limit) {
     /* Ignorer la ligne d'en-tête (Question / Réponse / Q / R) */
     if (/^(question|q)$/i.test(parts[0])) continue;
     if (pastSep || cards.length > 0) {
-      cards.push({ q: parts[0], a: parts[1] });
+      /* les cartes s'affichent en texte brut : on retire le gras/code markdown (**x**, __x__, `x`) */
+      var clean = function(s) { return s.replace(/\*\*|__|`/g, ''); };
+      cards.push({ q: clean(parts[0]), a: clean(parts[1]) });
     }
     if (cards.length >= limit) break;
   }
@@ -4195,7 +4197,7 @@ async function sendChat() {
     var groqMsgs = [{ role: 'system', content: SCOLARIA_SYSTEM }];
     chatHistory.slice(-12).forEach(function(h){ groqMsgs.push({ role: h.role, content: h.content }); });
     groqMsgs.push({ role: 'user', content: text });
-    reply = await callGroq(groqMsgs);
+    reply = await callGroq(groqMsgs, undefined, { niveau: 'revision' });
 
     chatHistory.push({ role: 'user', content: text });
     chatHistory.push({ role: 'assistant', content: reply });
@@ -4521,18 +4523,42 @@ function isLycee() { return niveauInfo().cycle === 'lycée'; }
 /* Examen de fin de cycle : brevet au college, bac au lycee */
 function examLabel() { return isLycee() ? 'bac' : 'brevet'; }
 
-function niveauPrompt() {
+/* Repères : dans quelle classe une notion (et sa notation) apparait. Evite que l'IA
+   presente comme "au programme de 3eme" une notion de lycee (ex : N, Z, Q, R, C). */
+var NIVEAU_REPERES = 'REPÈRES (classe où une notion et sa NOTATION apparaissent) : ' +
+  'nombres entiers, décimaux, fractions simples, π (périmètre du cercle) 6ème ; nombres relatifs, priorités de calcul 5ème ; ' +
+  'puissances, notation scientifique, Pythagore, racine carrée, opérations sur fractions et relatifs 4ème ; ' +
+  'nombres premiers, irrationnels (√2, π), Thalès, trigonométrie, fonctions linéaires et affines 3ème ' +
+  '(au collège on parle de « nombres entiers, décimaux, relatifs, fractions, irrationnels comme √2 ou π » SANS les symboles ℕ ℤ 𝔻 ℚ ℝ ni ∈ ⊂) ; ' +
+  'ensembles de nombres ℕ ℤ 𝔻 ℚ ℝ, notations ∈ ⊂, intervalles, valeur absolue, vecteurs, mole 2nde ' +
+  '(ordre EXACT : entiers naturels ⊂ entiers relatifs ⊂ décimaux ⊂ rationnels ⊂ réels, soit ℕ ⊂ ℤ ⊂ 𝔻 ⊂ ℚ ⊂ ℝ) ; ' +
+  'second degré, suites, dérivée, produit scalaire 1ère ; limites, logarithme, intégrales, philosophie Terminale ; nombres complexes ℂ Terminale (option maths expertes) uniquement.';
+
+/* mode 'chat' (defaut) : l'eleve pose une question -> on explique toujours, meme une autre annee.
+   mode 'revision' : contenu genere (fiches, flashcards, quiz...) -> strictement au niveau de la classe. */
+function niveauPrompt(mode) {
   var c = getClasse(), n = NIVEAUX[c];
-  return '--- NIVEAU DE L\'ÉLÈVE ---\n' +
+  var base = '--- NIVEAU DE L\'ÉLÈVE ---\n' +
     'L\'élève est en ' + c + ' (' + n.cycle + ', programme officiel français). Tutoie-le.\n' +
     'FAÇON DE PARLER : ' + n.ton + '\n' +
     'PROGRAMME DE ' + c.toUpperCase() + ' : ' + n.prog + '\n' +
+    NIVEAU_REPERES + '\n' +
+    'N\'affirme JAMAIS qu\'une notion est « au programme de ' + c + ' » si les repères ci-dessus la placent dans une autre classe.\n';
+  if (mode === 'revision') {
+    return base +
+      'CONTENU DE RÉVISION (fiches, flashcards, quiz, interros, résumés, plannings) — RÈGLE STRICTE :\n' +
+      '- Questions ET réponses = exactement ce qu\'un élève de ' + c + ' apprend en classe : SES définitions, SES notations, SES exemples, avec sa façon de parler (pièges et méthodes : ceux du ' + (n.examen === 'contrôle' ? 'contrôle en classe' : n.examen) + ').\n' +
+      '- N\'utilise AUCUNE notion, notation ou symbole qui arrive dans une classe plus avancée.\n' +
+      '- Si le sujet dépasse sa classe, traite seulement la partie que l\'élève de ' + c + ' connaît déjà (par ex. « ensembles de nombres » en 3ème = entiers, décimaux, relatifs, fractions, irrationnels comme √2 et π, sans ℕ ℤ ℚ ℝ ni ℂ, ni les lettres N, Z, D, Q, R pour nommer un ensemble).\n' +
+      '- Ne mentionne JAMAIS une autre classe dans le contenu (pas de « vu en seconde », « au programme de 1ère », « en 3ème »).\n' +
+      '- Si un COURS est fourni, il fait foi : garde ses notations et son contenu.';
+  }
+  return base +
     'Par défaut, cale le contenu, les exemples, les notations et le vocabulaire sur ce programme de ' + c + ' (pièges et méthodes : ceux du ' + (n.examen === 'contrôle' ? 'contrôle en classe' : n.examen) + ').\n' +
     'AUTRES ANNÉES — RÈGLE IMPORTANTE : si l\'élève demande une notion d\'une autre classe (plus avancée ou d\'une année précédente), tu l\'expliques TOUJOURS complètement, tu ne refuses jamais. ' +
     'Ta PREMIÈRE phrase le signale (ex : « C\'est au programme de 1ère, mais voici l\'idée. »). Ensuite explique en partant de ce qu\'un élève de ' + c + ' sait déjà, avec sa façon de parler. ' +
     'Si la notion est plus avancée que sa classe : commence par l\'intuition avec une image ou un exemple concret, et évite les formules, notations et outils qu\'il n\'a pas encore vus (sauf s\'il les demande explicitement ; dans ce cas, explique chaque symbole). ' +
-    'Pour une notion d\'une année précédente, fais un rappel clair sans le rabaisser.\n' +
-    'REPÈRES (classe où une notion est vue) : fractions 6ème-5ème ; nombres relatifs 5ème ; puissances et Pythagore 4ème ; Thalès, trigonométrie, fonctions affines 3ème ; vecteurs, mole 2nde ; second degré, suites, dérivée, produit scalaire 1ère ; limites, logarithme, intégrales, philosophie Terminale.';
+    'Pour une notion d\'une année précédente, fais un rappel clair sans le rabaisser.';
 }
 
 /* Textes de l'interface qui dependent de la classe */
@@ -4554,9 +4580,10 @@ function niveauPromptCourt() {
   return 'L\'élève est en ' + c + ' (' + NIVEAUX[c].cycle + '). Tutoie-le et adapte ton vocabulaire à sa classe.';
 }
 
-/* Ajoute le bloc niveau au message systeme (ou en cree un). court = version courte */
-function _withNiveau(messages, court) {
-  var blk = court ? niveauPromptCourt() : niveauPrompt();
+/* Ajoute le bloc niveau au message systeme (ou en cree un).
+   mode : 'court' (une ligne), 'revision' (contenu genere), sinon chat */
+function _withNiveau(messages, mode) {
+  var blk = mode === 'court' ? niveauPromptCourt() : niveauPrompt(mode);
   var out = messages.slice();
   if (out.length && out[0].role === 'system' && typeof out[0].content === 'string') {
     out[0] = { role: 'system', content: out[0].content + '\n\n' + blk };
@@ -4764,19 +4791,23 @@ function _cleanMath(t) {
     .replace(/\\text\{([^{}]*)\}/g, '$1');
 }
 
-/* opts.noNiveau : pas de bloc niveau (formats stricts) ; opts.niveau === 'court' : bloc court */
+/* opts.noNiveau : pas de bloc niveau (formats stricts)
+   opts.niveau : 'court' (correcteurs) | 'revision' (fiches, flashcards, quiz...) | absent = chat */
 function _applyNiveau(messages, opts) {
   if (opts && opts.noNiveau) return messages;
-  return _withNiveau(messages, opts && opts.niveau === 'court');
+  return _withNiveau(messages, opts && opts.niveau);
 }
 var AI_EMPTY_MSG = 'L\'IA n\'a pas répondu, réessaie.';
 
 async function callGroq(messages, maxTok, opts) {
   messages = _applyNiveau(messages, opts);
+  /* Contenu de revision : plus de reflexion = definitions plus justes (~2 s de plus).
+     max_tokens inclut la reflexion de gpt-oss, d'ou la marge ajoutee. */
+  var effort = (opts && opts.niveau === 'revision') ? 'medium' : 'low';
   var res = await fetch(GROQ_PROXY, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + SUPA_ANON },
-    body: JSON.stringify({ model: AI_TEXT_MODEL, reasoning_effort: 'low', max_tokens: (maxTok || 1800) + 600, messages: messages })
+    body: JSON.stringify({ model: AI_TEXT_MODEL, reasoning_effort: effort, max_tokens: (maxTok || 1800) + (effort === 'medium' ? 1500 : 600), messages: messages })
   });
   var data = await res.json();
   if (data.error) throw new Error(data.error.message);
@@ -5188,7 +5219,7 @@ async function startVQ() {
   try {
     var prompt = 'Génère exactement 8 flashcards sur le sujet EXACT : "' + topic + '" (niveau ' + getClasse() + ').\nFORMAT OBLIGATOIRE — uniquement ce tableau, rien d\'autre :\n| Question | Réponse |\n| --- | --- |\nToutes les questions doivent porter UNIQUEMENT sur "' + topic + '".';
     var reply;
-    reply = await callGroq([{role:'system',content:SCOLARIA_SYSTEM},{role:'user',content:prompt}]);
+    reply = await callGroq([{role:'system',content:SCOLARIA_SYSTEM},{role:'user',content:prompt}], undefined, { niveau: 'revision' });
     vqCards = parseFlashCards(reply, 8);
     if (!vqCards.length) throw new Error('Aucune question générée — réessaie avec un autre sujet');
     vqIdx=0; vqOk=0;
@@ -5354,7 +5385,7 @@ async function startInterroAI() {
     '<div class="rev-loading"><div class="rev-spin"></div><div class="rev-loading-txt">L\'IA prépare tes questions...</div></div>';
   try {
     var prompt='Génère '+nb+' questions variées (QCM, vrai/faux, réponse courte) sur "'+topic+'" niveau '+getClasse()+'. Pour chaque question, utilise ce format exact (une par ligne) :\nQ: [question]\nR: [réponse attendue]\n';
-    var reply=await callGroq([{role:'system',content:SCOLARIA_SYSTEM},{role:'user',content:prompt}]);
+    var reply=await callGroq([{role:'system',content:SCOLARIA_SYSTEM},{role:'user',content:prompt}],undefined,{niveau:'revision'});
     interroQs=parseInterroQs(reply);
     if(!interroQs.length) throw new Error('Impossible de générer les questions — réessaie');
     interroIdx=0; interroScore=0;
@@ -5462,7 +5493,7 @@ async function scanGenerate(type) {
     var reply=await callGroqVision([{role:'user',content:[
       {type:'image_url',image_url:{url:scanImageData.full}},
       {type:'text',text:prompt}
-    ]}],2000);
+    ]}],2000,{niveau:'revision'});
     res.innerHTML='<div class="rev-ia-result">'+mdToHtml(reply)+'</div>';
     if(acts)acts.style.display='block';
   }catch(e){
@@ -5673,7 +5704,7 @@ async function vcGenPlan(id) {
     '2 a 4 taches concretes par jour (15 mots max chacune : apprendre les definitions de..., refaire l exercice type sur..., 10 flashcards sur...).';
   try {
     /* callGroq leve une erreur si la reponse est vide : jamais de planning "" */
-    var reply = await callGroq([{ role: 'system', content: SCOLARIA_SYSTEM }, { role: 'user', content: prompt }], 1400);
+    var reply = await callGroq([{ role: 'system', content: SCOLARIA_SYSTEM }, { role: 'user', content: prompt }], 1400, { niveau: 'revision' });
     delete _vcGen[id];
     c = vcGet(id); if (!c) return;
     c.plan = vcParsePlan(reply, dates) || reply;

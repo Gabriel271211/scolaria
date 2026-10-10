@@ -93,10 +93,13 @@ var SUPA_ANON  = 'sb_publishable_OVVDWsvA2-0dJuTdQREYVw_kSiTu7Ge';
 
 async function callGroq(messages, maxTok) { ... }        // réponse complète (JSON)
 async function callGroqStream(messages, onChunk) { ... } // streaming token par token (SSE)
+async function callGroqVision(messages, maxTok, opts) { ... } // photos : essaie chaque modèle vision
 ```
 
 - Toutes les fonctions IA appellent `GROQ_PROXY` avec l'en-tête `Authorization: Bearer <SUPA_ANON>`.
-- Les appels vision (photos) postent directement sur `GROQ_PROXY` avec le modèle vision et un message `image_url`.
+- Les appels vision (photos) passent tous par `callGroqVision` (scan d'agenda, photo dans le chat, scanner de cours).
+- Les trois fonctions ajoutent le bloc niveau (sauf `{noNiveau:true}` ; `{niveau:'court'}` = une ligne), nettoient les formules (`_cleanMath` : LaTeX → texte, exposants en ², ³, ⁻³…) et **lèvent une erreur si la réponse est vide**.
+- À la déconnexion, `logout()` efface aussi le cache `scolaria-data` et la vérification en arrière-plan : plus de rappels de contrôles pour l'ancien compte.
 
 ---
 

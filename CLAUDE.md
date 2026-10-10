@@ -32,7 +32,10 @@ Tu travailles sur **ScolarIA**, une application scolaire pour élèves français
 - L'élève choisit sa classe (onboarding + profil, `userProfile.classe`). `getClasse()` la renvoie (défaut : 3ème).
 - `NIVEAUX` (dans `scolaria-home-v2.html`) : pour chaque classe → cycle, examen, **façon de parler**, **programme officiel**.
 - `niveauPrompt()` construit le bloc envoyé à l'IA ; `_withNiveau(messages)` l'ajoute au prompt système.
-- **`callGroq` / `callGroqStream` l'ajoutent automatiquement à CHAQUE appel.** Passer `{ noNiveau: true }` en 3e argument (`callGroq`) ou 4e (`callGroqStream`) pour les formats stricts (conjugueur JSON, génération d'exo d'annales). Les appels vision directs utilisent `_withNiveau` à la main.
+- **`callGroq` / `callGroqStream` / `callGroqVision` l'ajoutent automatiquement à CHAQUE appel.** Options (3e argument, 4e pour `callGroqStream`) : `{ noNiveau: true }` pour les formats stricts (conjugueur JSON, scan d'agenda, génération d'exo d'annales) ; `{ niveau: 'court' }` pour les petits appels (correcteurs CORRECT/INCORRECT) : une ligne au lieu de ~400 jetons.
+- **Photos : toujours `callGroqVision(messages, maxTok, opts)`** (essaie chaque modèle de `AI_VISION_MODELS`), jamais un `fetch` direct.
+- Les trois fonctions **lèvent une erreur si l'IA renvoie un texte vide** (`AI_EMPTY_MSG`) : chaque appel doit être dans un `try/catch` ou avoir un `.catch`.
+- Correcteurs : lire le verdict avec `_verdictOk(r)` (tolère le gras et une phrase avant), afficher avec `_verdictText(r)`, ajouter `GRADER_RULE` au prompt.
 - Règle IA : un sujet d'une autre année est **toujours expliqué** (signalé en 1re phrase, puis adapté au niveau de l'élève).
 - Ne JAMAIS réécrire « 3ème » ou « brevet » en dur dans un prompt : utiliser `getClasse()` et `examLabel()` (brevet/bac).
 

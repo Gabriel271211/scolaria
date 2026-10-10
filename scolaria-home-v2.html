@@ -2917,14 +2917,35 @@ function dvLabelRank(label) {
   if (s.indexOf('aujourd') !== -1) return 0;
   if (s.indexOf('après-demain') !== -1 || s.indexOf('apres-demain') !== -1) return 2;
   if (s.indexOf('demain') !== -1) return 1;
+  /* Date precise ("lundi 17 mars", "17 mars", "17/03") : vrai nombre de jours */
+  var exact = dvParseDate(s);
+  if (exact !== null) return exact;
   var noms = ['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'];
   for (var i = 0; i < 7; i++) {
-    if (s.indexOf(noms[i]) === 0) {
-      if (/\d/.test(s)) return 50; /* "lundi 17 mars" : date precise, apres la semaine */
-      return ((i - new Date().getDay() + 7) % 7) || 7;
-    }
+    if (s.indexOf(noms[i]) === 0) return ((i - new Date().getDay() + 7) % 7) || 7;
   }
   return 99;
+}
+
+/* "17 mars" / "17/03" -> jours d'ici la (null si pas de date). Sans annee : la prochaine occurrence */
+function dvParseDate(s) {
+  var mois = ['janv','févr','mars','avr','mai','juin','juil','août','sept','oct','nov','déc'];
+  var alt  = { 'fevr':1, 'aout':7, 'dec':11 };
+  var j = null, m = -1, r;
+  if ((r = s.match(/\b(\d{1,2})\s*(?:er)?\s+([a-zéèûô]+)/))) {
+    j = +r[1];
+    var w = r[2].replace('.', '');
+    for (var k = 0; k < 12; k++) if (w.indexOf(mois[k]) === 0) { m = k; break; }
+    if (m < 0) for (var a in alt) if (w.indexOf(a) === 0) { m = alt[a]; break; }
+  } else if ((r = s.match(/\b(\d{1,2})\/(\d{1,2})\b/))) {
+    j = +r[1]; m = +r[2] - 1;
+  }
+  if (j === null || m < 0 || m > 11 || j < 1 || j > 31) return null;
+  var now = new Date(), today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  var d = new Date(now.getFullYear(), m, j);
+  /* plus de 2 mois dans le passe = annee prochaine (ex : "5 janvier" vu en octobre) */
+  if ((d - today) / 864e5 < -60) d = new Date(now.getFullYear() + 1, m, j);
+  return Math.round((d - today) / 864e5);
 }
 
 /* Controles a venir (Veille de controle) affiches parmi les devoirs */
@@ -2949,7 +2970,7 @@ function buildCtrlCard(c) {
   var suj = (c.sujets && c.sujets.length) ? c.sujets.join(' · ') : 'Tout le chapitre';
   var prog = total
     ? '<div class="dv-ctrl-prog"><div class="vc-prog"><i style="width:' + Math.round(fait / total * 100) + '%"></i></div><span>Révisions ' + fait + '/' + total + '</span></div>'
-    : '<div class="dv-ctrl-prog"><span>Planning en préparation</span></div>';
+    : '<div class="dv-ctrl-prog"><span>' + (typeof _vcGen !== 'undefined' && _vcGen[c.id] ? 'Planning en préparation' : 'Planning à créer') + '</span></div>';
   return '<div class="dvc dv-ctrl" style="border-left-color:#e84040" onclick="openVeilleControle(\'' + c.id + '\')">' +
     '<div class="dvm">' +
       '<div class="dv-ctrl-ic"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>' +
@@ -3164,9 +3185,7 @@ function smartUrgence(dateStr) {
 async function scanDevoir(e) {
   var f = e.target.files[0]; if (!f) return;
   e.target.value = '';
-  var key = SUPA_ANON;
   toast('⏳ Analyse de la photo...', 8000);
-  var VISION_MODELS = AI_VISION_MODELS;
   var reader = new FileReader();
   reader.onload = async function(ev) {
     var dataUrl = ev.target.result;
@@ -3175,47 +3194,34 @@ async function scanDevoir(e) {
     if (!['image/jpeg','image/png','image/gif','image/webp'].includes(mime)) mime = 'image/jpeg';
     var today = todayStr();
     var sysPrompt = 'Tu lis des screenshots d\'agendas scolaires et photos de cahiers. Aujourd\'hui on est ' + today + '. Réponds UNIQUEMENT avec un JSON valide : {"devoirs":[{"mat":"Maths","desc":"description courte","date":"date exacte comme lundi 17 mars"}]}. Mets la date exacte du jour de rendu. Si aucun devoir visible : {"devoirs":[]}.';
-    var lastErr = 'Modèle vision indisponible';
-    for (var mi = 0; mi < VISION_MODELS.length; mi++) {
-      try {
-        var res = await fetch(GROQ_PROXY, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + key },
-          body: JSON.stringify({
-            model: VISION_MODELS[mi],
-            max_tokens: 1200,
-            messages: [
-              { role: 'system', content: sysPrompt },
-              { role: 'user', content: [
-                { type: 'image_url', image_url: { url: 'data:' + mime + ';base64,' + b64 } },
-                { type: 'text', text: 'Extrais tous les devoirs et leurs dates de rendu visibles sur cette image.' }
-              ]}
-            ]
-          })
+    try {
+      /* JSON strict attendu : pas de bloc niveau */
+      var text = await callGroqVision([
+        { role: 'system', content: sysPrompt },
+        { role: 'user', content: [
+          { type: 'image_url', image_url: { url: 'data:' + mime + ';base64,' + b64 } },
+          { type: 'text', text: 'Extrais tous les devoirs et leurs dates de rendu visibles sur cette image.' }
+        ]}
+      ], 1200, { noNiveau: true });
+      var parsed = null;
+      var jsonMatch = text.match(/\{[\s\S]*\}/);
+      if (jsonMatch) { try { parsed = JSON.parse(jsonMatch[0]); } catch(e2) {} }
+      if (!parsed) { try { parsed = JSON.parse(text); } catch(e2) {} }
+      if (!parsed || !parsed.devoirs) throw new Error('Réponse inattendue');
+      if (parsed.devoirs.length) {
+        parsed.devoirs.forEach(function(d) {
+          devoirs.push({ id: dvId++, mat: d.mat || 'Divers', desc: d.desc || '', date: d.date || '?', urg: smartUrgence(d.date || ''), done: false });
         });
-        var data = await res.json();
-        if (data.error) { lastErr = data.error.message; continue; }
-        var text = data.choices[0].message.content || '';
-        var parsed = null;
-        var jsonMatch = text.match(/\{[\s\S]*\}/);
-        if (jsonMatch) { try { parsed = JSON.parse(jsonMatch[0]); } catch(e2) {} }
-        if (!parsed) { try { parsed = JSON.parse(text); } catch(e2) {} }
-        if (!parsed || !parsed.devoirs) { lastErr = 'Réponse inattendue'; continue; }
-        if (parsed.devoirs.length) {
-          parsed.devoirs.forEach(function(d) {
-            devoirs.push({ id: dvId++, mat: d.mat || 'Divers', desc: d.desc || '', date: d.date || '?', urg: smartUrgence(d.date || ''), done: false });
-          });
-          saveDv(); renderDevoirs(); updateHomeStats();
-          goSec('s-devoirs', document.querySelector('.nav-btn[onclick*="s-devoirs"]'));
-          toast('✅ ' + parsed.devoirs.length + ' devoir(s) importé(s) !');
-        } else {
-          toast('ℹ️ Aucun devoir détecté sur la photo');
-        }
-        return;
-      } catch(err) { lastErr = err.message; }
+        saveDv(); renderDevoirs(); updateHomeStats();
+        goSec('s-devoirs', document.querySelector('.nav-btn[onclick*="s-devoirs"]'));
+        toast('✅ ' + parsed.devoirs.length + ' devoir(s) importé(s) !');
+      } else {
+        toast('ℹ️ Aucun devoir détecté sur la photo');
+      }
+    } catch(err) {
+      toast('❌ ' + String(err.message).slice(0, 60));
+      console.error('scanDevoir :', err.message);
     }
-    toast('❌ ' + lastErr.slice(0, 60));
-    console.error('scanDevoir: tous les modèles ont échoué —', lastErr);
   };
   reader.readAsDataURL(f);
 }
@@ -3855,7 +3861,6 @@ function chatShortcut(type) {
 async function chatPhoto(e) {
   var f = e.target.files[0]; if (!f) return;
   e.target.value = '';
-  var key = SUPA_ANON;
   var reader = new FileReader();
   reader.onload = async function(ev) {
     var dataUrl = ev.target.result;
@@ -3882,41 +3887,27 @@ async function chatPhoto(e) {
     if (msgs) msgs.scrollTop = msgs.scrollHeight;
 
     var prompt = question || 'Analyse cette photo de mon cours. Explique le contenu clairement, niveau ' + getClasse() + '. Si c\'est un exercice, aide-moi à le résoudre étape par étape.';
-    var VISION_MODELS = AI_VISION_MODELS;
-    var lastErr = 'Modèle vision indisponible';
-    for (var mi = 0; mi < VISION_MODELS.length; mi++) {
-      try {
-        var res = await fetch(GROQ_PROXY, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + key },
-          body: JSON.stringify({
-            model: VISION_MODELS[mi], max_tokens: 1800,
-            messages: _withNiveau([
-              { role: 'system', content: SCOLARIA_SYSTEM },
-              { role: 'user', content: [
-                { type: 'image_url', image_url: { url: 'data:' + mime + ';base64,' + b64 } },
-                { type: 'text', text: prompt }
-              ]}
-            ])
-          })
-        });
-        var data = await res.json();
-        if (data.error) { lastErr = data.error.message; continue; }
-        var reply = (data.choices && data.choices[0] && data.choices[0].message.content) || '';
-        thinking.classList.remove('thinking');
-        thinking.style.maxWidth = '100%';
-        thinking.innerHTML = mdToHtml(reply);
-        chatHistory.push({ role: 'user', content: '[Photo envoyée] ' + prompt });
-        chatHistory.push({ role: 'assistant', content: reply });
-        if (chatHistory.length > 24) chatHistory = chatHistory.slice(-24);
-        saveChatLS();
-        updateHomeStats();
-        if (msgs) msgs.scrollTop = msgs.scrollHeight;
-        return;
-      } catch(err) { lastErr = err.message; }
+    try {
+      var reply = await callGroqVision([
+        { role: 'system', content: SCOLARIA_SYSTEM },
+        { role: 'user', content: [
+          { type: 'image_url', image_url: { url: 'data:' + mime + ';base64,' + b64 } },
+          { type: 'text', text: prompt }
+        ]}
+      ], 1800);
+      thinking.classList.remove('thinking');
+      thinking.style.maxWidth = '100%';
+      thinking.innerHTML = mdToHtml(reply);
+      chatHistory.push({ role: 'user', content: '[Photo envoyée] ' + prompt });
+      chatHistory.push({ role: 'assistant', content: reply });
+      if (chatHistory.length > 24) chatHistory = chatHistory.slice(-24);
+      saveChatLS();
+      updateHomeStats();
+      if (msgs) msgs.scrollTop = msgs.scrollHeight;
+    } catch(err) {
+      thinking.classList.remove('thinking');
+      thinking.textContent = 'Erreur : ' + String(err.message).slice(0, 80);
     }
-    thinking.classList.remove('thinking');
-    thinking.textContent = 'Erreur : ' + lastErr.slice(0, 80);
   };
   reader.readAsDataURL(f);
 }
@@ -4557,9 +4548,15 @@ function updateNiveauUI() {
   if (lbl) lbl.textContent = getClasse() + ' · ' + ex[0] + ' ' + (yr + ex[1]);
 }
 
-/* Ajoute le bloc niveau au message systeme (ou en cree un) */
-function _withNiveau(messages) {
-  var blk = niveauPrompt();
+/* Version courte pour les petits appels (corrections d'une ligne) : ~30 jetons au lieu de ~400 */
+function niveauPromptCourt() {
+  var c = getClasse();
+  return 'L\'élève est en ' + c + ' (' + NIVEAUX[c].cycle + '). Tutoie-le et adapte ton vocabulaire à sa classe.';
+}
+
+/* Ajoute le bloc niveau au message systeme (ou en cree un). court = version courte */
+function _withNiveau(messages, court) {
+  var blk = court ? niveauPromptCourt() : niveauPrompt();
   var out = messages.slice();
   if (out.length && out[0].role === 'system' && typeof out[0].content === 'string') {
     out[0] = { role: 'system', content: out[0].content + '\n\n' + blk };
@@ -4739,6 +4736,14 @@ var SUPA_ANON = 'sb_publishable_OVVDWsvA2-0dJuTdQREYVw_kSiTu7Ge';
 var AI_TEXT_MODEL = 'openai/gpt-oss-120b';
 var AI_VISION_MODELS = ['qwen/qwen3.8-27b'];
 
+/* Exposant en exposants Unicode : 10^{23} -> 10²³, x^{-3} -> x⁻³, x^{n+1} -> x^(n+1) */
+var _SUP = { '0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹','-':'⁻','−':'⁻','+':'⁺','n':'ⁿ' };
+function _supExp(m, inBraces, bare) {
+  var e = (inBraces !== undefined ? inBraces : bare).trim();
+  if (e && e.split('').every(function(ch) { return _SUP[ch]; })) return e.split('').map(function(ch) { return _SUP[ch]; }).join('');
+  return '^(' + e + ')';
+}
+
 /* gpt-oss ecrit parfois les formules en LaTeX : on les rend lisibles */
 function _cleanMath(t) {
   if (!t) return t;
@@ -4746,7 +4751,7 @@ function _cleanMath(t) {
     .replace(/\\[()\[\]]/g, '')
     .replace(/\\frac\{([^{}]*)\}\{([^{}]*)\}/g, '($1)/($2)')
     .replace(/\\sqrt\{([^{}]*)\}/g, '√($1)')
-    .replace(/\^\{?2\}?/g, '²').replace(/\^\{?3\}?/g, '³')
+    .replace(/\^\{([^{}]*)\}|\^(-?\d+)/g, _supExp)
     .replace(/\\times/g, '×').replace(/\\cdot/g, '·').replace(/\\div/g, '÷')
     .replace(/\\leq?(?![a-z])/g, '≤').replace(/\\geq?(?![a-z])/g, '≥').replace(/\\neq(?![a-z])/g, '≠')
     .replace(/\\approx/g, '≈').replace(/\\pi(?![a-z])/g, 'π')
@@ -4759,8 +4764,15 @@ function _cleanMath(t) {
     .replace(/\\text\{([^{}]*)\}/g, '$1');
 }
 
+/* opts.noNiveau : pas de bloc niveau (formats stricts) ; opts.niveau === 'court' : bloc court */
+function _applyNiveau(messages, opts) {
+  if (opts && opts.noNiveau) return messages;
+  return _withNiveau(messages, opts && opts.niveau === 'court');
+}
+var AI_EMPTY_MSG = 'L\'IA n\'a pas répondu, réessaie.';
+
 async function callGroq(messages, maxTok, opts) {
-  if (!(opts && opts.noNiveau)) messages = _withNiveau(messages);
+  messages = _applyNiveau(messages, opts);
   var res = await fetch(GROQ_PROXY, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + SUPA_ANON },
@@ -4768,11 +4780,35 @@ async function callGroq(messages, maxTok, opts) {
   });
   var data = await res.json();
   if (data.error) throw new Error(data.error.message);
-  return _cleanMath(data.choices[0].message.content || '');
+  /* gpt-oss peut tout depenser en reflexion et renvoyer un texte vide : on le signale */
+  var txt = (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) || '';
+  if (!txt.trim()) throw new Error(AI_EMPTY_MSG);
+  return _cleanMath(txt);
+}
+
+/* Photos : essaie chaque modele vision a la suite, meme sortie que callGroq */
+async function callGroqVision(messages, maxTok, opts) {
+  messages = _applyNiveau(messages, opts);
+  var lastErr = 'Modèle vision indisponible';
+  for (var mi = 0; mi < AI_VISION_MODELS.length; mi++) {
+    try {
+      var res = await fetch(GROQ_PROXY, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + SUPA_ANON },
+        body: JSON.stringify({ model: AI_VISION_MODELS[mi], max_tokens: maxTok || 1800, messages: messages })
+      });
+      var data = await res.json();
+      if (data.error) { lastErr = data.error.message; continue; }
+      var txt = (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) || '';
+      if (!txt.trim()) { lastErr = AI_EMPTY_MSG; continue; }
+      return _cleanMath(txt);
+    } catch(e) { lastErr = e.message; }
+  }
+  throw new Error(lastErr);
 }
 
 async function callGroqStream(messages, onToken, maxTok, opts) {
-  if (!(opts && opts.noNiveau)) messages = _withNiveau(messages);
+  messages = _applyNiveau(messages, opts);
   var res = await fetch(GROQ_PROXY, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + SUPA_ANON },
@@ -4803,8 +4839,18 @@ async function callGroqStream(messages, onToken, maxTok, opts) {
       } catch(e) {}
     }
   }
+  if (!full.trim()) throw new Error(AI_EMPTY_MSG);
   return _cleanMath(full);
 }
+
+/* Verdict d'une correction IA : tolere le gras (**CORRECT**) et une phrase avant */
+function _verdictOk(r) {
+  var t = String(r || '').replace(/[*_`#>]/g, '').toUpperCase();
+  var m = t.match(/\b(INCORRECT|PAS CORRECT|NON CORRECT|CORRECT)\b/);
+  return !!m && m[1] === 'CORRECT';
+}
+function _verdictText(r) { return String(r || '').replace(/\*\*/g, '').trim(); }
+var GRADER_RULE = ' Ta réponse commence OBLIGATOIREMENT par le mot CORRECT ou INCORRECT (sans gras, sans phrase avant).';
 
 /* ══ MODALES OUTILS ══ */
 var TOOL_TITLES = { calc: 'Calculatrice', conv: 'Convertisseur', conj: 'Conjugueur' };
@@ -5255,13 +5301,13 @@ async function checkVQAnswer(answer) {
   fbEl.style.display='block'; fbEl.textContent='⚡ Vérification...'; fbEl.className='vq-feedback';
   try{
     var r=await callGroq([
-      {role:'system',content:'Tu corriges des réponses d\'élève. Réponds UNIQUEMENT par : CORRECT ou INCORRECT suivi d\'une phrase max.'},
+      {role:'system',content:'Tu corriges des réponses d\'élève. Réponds UNIQUEMENT par : CORRECT ou INCORRECT suivi d\'une phrase max.'+GRADER_RULE},
       {role:'user',content:'Question : '+card.q+'\nRéponse attendue : '+card.a+'\nRéponse élève : '+answer+'\nCorrect ?'}
-    ]);
-    var isOk=r.toLowerCase().startsWith('correct');
+    ], 300, { niveau: 'court' });
+    var isOk=_verdictOk(r);
     if(isOk){vqOk++; fbEl.className='vq-feedback vq-ok';}
     else{fbEl.className='vq-feedback vq-ko';}
-    fbEl.textContent=r;
+    fbEl.textContent=_verdictText(r);
   }catch(e){fbEl.className='vq-feedback vq-ko';fbEl.textContent='Réponse attendue : '+card.a;}
   var nb=document.getElementById('vq-next-btn'); if(nb) nb.style.display='block';
 }
@@ -5362,13 +5408,13 @@ async function checkInterroAnswer() {
   fb.style.display='block'; fb.textContent='Vérification...'; fb.className='interro-feedback';
   try{
     var r=await callGroq([
-      {role:'system',content:'Tu corriges des réponses d\'élève. Réponds par CORRECT ou INCORRECT, puis 1-2 phrases d\'explication claires.'},
+      {role:'system',content:'Tu corriges des réponses d\'élève. Réponds par CORRECT ou INCORRECT, puis 1-2 phrases d\'explication claires.'+GRADER_RULE},
       {role:'user',content:'Question : '+q.q+'\nRéponse attendue : '+q.a+'\nRéponse élève : '+ans}
-    ]);
-    var ok=r.toLowerCase().startsWith('correct');
+    ], 400, { niveau: 'court' });
+    var ok=_verdictOk(r);
     if(ok){interroScore++;fb.className='interro-feedback interro-ok';}
     else{fb.className='interro-feedback interro-ko';}
-    fb.textContent=r;
+    fb.textContent=_verdictText(r);
   }catch(e){fb.className='interro-feedback interro-ko';fb.textContent='Réponse attendue : '+q.a;}
   if(vb)vb.style.display='none';
   var nb=document.getElementById('interro-next-btn');if(nb)nb.style.display='block';
@@ -5413,22 +5459,10 @@ async function scanGenerate(type) {
     ?'Voici la photo d\'un cours. Transcris et génère une fiche de révision structurée (titre, notions clés, définitions, exemples). Niveau '+getClasse()+'.'
     :'Voici la photo d\'un cours. Génère 8 flashcards | Question | Réponse | sous forme de tableau markdown ---|--- à partir de ce cours.';
   try{
-    /* Vision via le proxy Groq */
-    var visRes=await fetch(GROQ_PROXY,{
-      method:'POST',
-      headers:{'Content-Type':'application/json','Authorization':'Bearer '+SUPA_ANON},
-      body:JSON.stringify({
-        model:AI_VISION_MODELS[0],
-        max_tokens:2000,
-        messages:_withNiveau([{role:'user',content:[
-          {type:'image_url',image_url:{url:scanImageData.full}},
-          {type:'text',text:prompt}
-        ]}])
-      })
-    });
-    var visData=await visRes.json();
-    if(visData.error) throw new Error(visData.error.message);
-    var reply=visData.choices[0].message.content;
+    var reply=await callGroqVision([{role:'user',content:[
+      {type:'image_url',image_url:{url:scanImageData.full}},
+      {type:'text',text:prompt}
+    ]}],2000);
     res.innerHTML='<div class="rev-ia-result">'+mdToHtml(reply)+'</div>';
     if(acts)acts.style.display='block';
   }catch(e){
@@ -5555,7 +5589,8 @@ function vcShowList() {
 
 /* ── Formulaire ── */
 function vcShowForm() {
-  vcDraft = { mat: '', date: vcYmd(vcAddDays(new Date(), 1)), heure: '', sujets: [], rappel: vcNotifSupported() };
+  vcDraft = { mat: '', date: vcYmd(vcAddDays(new Date(), 1)), heure: '', sujets: [], pending: '',
+              rappel: vcNotifSupported() && Notification.permission !== 'denied' };
   vcSetHeader('Nouveau contrôle', true);
   vcRenderForm();
   setTimeout(function() { var m = document.getElementById('vc-mat'); if (m) m.focus(); }, 50);
@@ -5579,7 +5614,7 @@ function vcRenderForm() {
       '<input class="vc-inp" id="vc-heure" type="time" style="max-width:120px" value="' + dr.heure + '" onchange="vcDraft.heure=this.value" aria-label="Heure (facultatif)"></div>' +
       '<div class="vc-hint">' + vcLongDate(dr.date) + ' · ' + vcCountdown(dr.date).toLowerCase() + ' · heure facultative</div></div>' +
     '<div class="vc-field"><label class="vc-inp-lbl">Sujets du contrôle</label>' +
-      '<div class="vc-row"><input class="vc-inp" id="vc-suj" type="text" maxlength="60" placeholder="ex : Théorème de Pythagore" onkeydown="if(event.key===\'Enter\'){event.preventDefault();vcAddSujet();}">' +
+      '<div class="vc-row"><input class="vc-inp" id="vc-suj" type="text" maxlength="60" placeholder="ex : Théorème de Pythagore" value="' + esc(dr.pending || '') + '" oninput="vcDraft.pending=this.value" onkeydown="if(event.key===\'Enter\'){event.preventDefault();vcAddSujet();}">' +
       '<button class="vc-add" onclick="vcAddSujet()">Ajouter</button></div>' +
       (tags ? '<div class="vc-tags">' + tags + '</div>' : '<div class="vc-hint">Ajoute un ou plusieurs chapitres. Vide = tout le chapitre en cours.</div>') + '</div>' +
     '<div class="vc-switch-row" onclick="vcDraft.rappel=!vcDraft.rappel;vcRenderForm()">' +
@@ -5597,6 +5632,7 @@ function vcAddSujet() {
   var v = (inp && inp.value || '').trim();
   if (!v) return;
   if (vcDraft.sujets.indexOf(v) === -1 && vcDraft.sujets.length < 8) vcDraft.sujets.push(v);
+  vcDraft.pending = '';
   vcRenderForm();
   var n = document.getElementById('vc-suj'); if (n) n.focus();
 }
@@ -5604,22 +5640,26 @@ function vcRemoveSujet(i) { vcDraft.sujets.splice(i, 1); vcRenderForm(); }
 
 function vcCreate() {
   var dr = vcDraft;
-  /* un sujet tape mais pas encore ajoute compte quand meme */
-  var pending = (document.getElementById('vc-suj') || {}).value;
-  if (pending && pending.trim() && dr.sujets.indexOf(pending.trim()) === -1) dr.sujets.push(pending.trim());
   dr.mat = (dr.mat || '').trim();
   if (!dr.mat) { toast('Indique la matière'); var m = document.getElementById('vc-mat'); if (m) m.focus(); return; }
   if (!dr.date || vcDiff(dr.date) < 0) { toast('Choisis une date à venir'); return; }
+  /* un sujet tape mais pas encore ajoute compte quand meme */
+  var pending = (dr.pending || '').trim();
+  if (pending && dr.sujets.indexOf(pending) === -1) dr.sujets.push(pending);
+  dr.pending = '';
   var c = { id: 'c' + Date.now(), mat: dr.mat, date: dr.date, heure: dr.heure || '', sujets: dr.sujets.slice(), rappel: !!dr.rappel, plan: null, done: {} };
   vcPut(c);
-  if (c.rappel) vcEnableNotifs(c);
-  vcShowDetail(c.id);
-  vcGenPlan(c.id);
+  if (c.rappel) vcEnableNotifs(c.id);
+  vcGenPlan(c.id);      /* marque "en preparation" tout de suite (avant le 1er await)... */
+  vcShowDetail(c.id);   /* ...donc le detail affiche le chargement */
 }
 
 /* ── Planning IA ── */
+var _vcGen = {};   /* plannings en cours de generation (id -> true) */
 async function vcGenPlan(id) {
-  var c = vcGet(id); if (!c) return;
+  var c = vcGet(id); if (!c || _vcGen[id]) return;
+  _vcGen[id] = true;
+  renderDevoirs();   /* la carte du devoir passe a "Planning en preparation" */
   var dates = vcRevDates(c.date);
   var box = document.getElementById('vc-plan-box');
   if (box) box.innerHTML = '<div class="rev-loading" style="padding:34px 20px"><div class="rev-spin"></div><div class="rev-loading-txt">ScolarIA prépare ton planning…</div></div>';
@@ -5632,17 +5672,21 @@ async function vcGenPlan(id) {
     'FORMAT EXACT, rien avant ni apres :\nJOUR 1 | titre court\n- tache precise\n- tache precise\n\nJOUR 2 | titre court\n- ...\n' +
     '2 a 4 taches concretes par jour (15 mots max chacune : apprendre les definitions de..., refaire l exercice type sur..., 10 flashcards sur...).';
   try {
+    /* callGroq leve une erreur si la reponse est vide : jamais de planning "" */
     var reply = await callGroq([{ role: 'system', content: SCOLARIA_SYSTEM }, { role: 'user', content: prompt }], 1400);
+    delete _vcGen[id];
     c = vcGet(id); if (!c) return;
-    var days = vcParsePlan(reply, dates);
-    c.plan = days || reply;
+    c.plan = vcParsePlan(reply, dates) || reply;
     c.done = {};
+    delete c.planErr;
     vcPut(c);
-    if (vcCurId === id) vcShowDetail(id);
   } catch(e) {
-    box = document.getElementById('vc-plan-box');
-    if (box && vcCurId === id) box.innerHTML = '<div class="rev-err-box">' + esc(e.message) + '<br><button onclick="vcGenPlan(\'' + id + '\')">Réessayer</button></div>';
+    delete _vcGen[id];
+    c = vcGet(id); if (!c) return;
+    if (c.plan) toast('Planning non refait : ' + e.message);   /* on garde l'ancien */
+    else { c.planErr = e.message; vcPut(c); }                  /* visible meme si l'eleve etait ailleurs */
   }
+  if (vcCurId === id) vcShowDetail(id);
 }
 function vcParsePlan(txt, dates) {
   var days = [], cur = null;
@@ -5688,8 +5732,11 @@ function vcShowDetail(id) {
     });
   } else if (typeof c.plan === 'string' && c.plan) {
     html += '<div class="vc-plan rev-ia-result">' + mdToHtml(c.plan) + '</div>';
-  } else {
+  } else if (_vcGen[c.id]) {
     html += '<div class="rev-loading" style="padding:34px 20px"><div class="rev-spin"></div><div class="rev-loading-txt">ScolarIA prépare ton planning…</div></div>';
+  } else {
+    html += '<div class="rev-err-box">' + esc(c.planErr || 'Le planning n\'a pas encore été créé.') +
+      '<br><button onclick="vcGenPlan(\'' + c.id + '\')">Créer le planning</button></div>';
   }
   html += '</div>';
   html += '<div class="vc-switch-row" style="margin-top:6px" onclick="vcToggleRappel(\'' + c.id + '\')">' +
@@ -5712,8 +5759,8 @@ function vcToggleRappel(id) {
   var c = vcGet(id); if (!c) return;
   c.rappel = !c.rappel;
   vcPut(c);
-  if (c.rappel) vcEnableNotifs(c);
   vcShowDetail(id);
+  if (c.rappel) vcEnableNotifs(id);
 }
 function vcDelete(id) {
   if (!confirm('Supprimer ce contrôle ?')) return;
@@ -5756,12 +5803,20 @@ function vcCheckNow() {
     if (reg.active) reg.active.postMessage('ctrl-check');
   }).catch(function() {});
 }
-function vcEnableNotifs(c) {
-  if (!vcNotifSupported()) { toast('Ton navigateur ne gère pas les notifications'); return; }
-  if (Notification.permission === 'denied') { toast('Notifications bloquées : autorise-les dans les réglages de Chrome', 4500); return; }
+/* Rappels impossibles : on remet l'interrupteur sur OFF pour ne pas promettre un rappel qui n'arrivera pas */
+function vcRappelOff(id, msg) {
+  var c = vcGet(id);
+  if (c && c.rappel) { c.rappel = false; vcPut(c); }
+  if (vcCurId === id) vcShowDetail(id);
+  toast(msg, 4500);
+}
+function vcEnableNotifs(id) {
+  var c = vcGet(id); if (!c) return;
+  if (!vcNotifSupported()) { vcRappelOff(id, 'Ton navigateur ne gère pas les notifications'); return; }
+  if (Notification.permission === 'denied') { vcRappelOff(id, 'Notifications bloquées : autorise-les dans les réglages de Chrome'); return; }
   var ask = Notification.permission === 'granted' ? Promise.resolve('granted') : Notification.requestPermission();
   ask.then(function(p) {
-    if (p !== 'granted') { toast('Rappels désactivés : notifications refusées'); return; }
+    if (p !== 'granted') { vcRappelOff(id, 'Rappels désactivés : notifications refusées'); return; }
     navigator.serviceWorker.ready.then(function(reg) {
       reg.showNotification('Rappels activés 🔔', {
         body: 'Contrôle de ' + c.mat + ' · ' + vcLongDate(c.date).toLowerCase() + '. ScolarIA te préviendra.',
@@ -6007,13 +6062,21 @@ function renderAvatarGrid() {
 }
 
 /* Photo de profil : prioritaire sur l'emoji quand elle existe */
-function _hasPhoto() { return /^data:image\/(jpeg|png|webp);base64,/.test(userProfile.photo || ''); }
+/* Valeur entiere verifiee (elle peut venir du cloud) : uniquement des caracteres base64 */
+function _hasPhoto() { return /^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+\/=]+$/.test(userProfile.photo || ''); }
 
 function renderAvatarDisplay() {
   var av = document.getElementById('profil-avatar-display');
   if (av) {
-    if (_hasPhoto()) av.innerHTML = '<img class="prof-av-img" src="' + userProfile.photo + '" alt="Photo de profil">';
-    else av.textContent = userProfile.avatar;
+    av.textContent = '';
+    if (_hasPhoto()) {
+      /* createElement + .src : jamais de HTML construit a partir de la donnee */
+      var img = document.createElement('img');
+      img.className = 'prof-av-img';
+      img.alt = 'Photo de profil';
+      img.src = userProfile.photo;
+      av.appendChild(img);
+    } else av.textContent = userProfile.avatar;
   }
   var rm = document.getElementById('prof-photo-rm');
   if (rm) rm.style.display = _hasPhoto() ? '' : 'none';
@@ -6259,6 +6322,14 @@ async function submitFbAuth() {
 /* ── Déconnexion ── */
 async function logout() {
   await _supa.auth.signOut();
+  /* Plus de rappels de controles pour ce compte : copie du service worker + verif en arriere-plan */
+  try { if ('caches' in window) await caches.delete('scolaria-data'); } catch(e) {}
+  try {
+    if ('serviceWorker' in navigator) {
+      var reg = await navigator.serviceWorker.getRegistration();
+      if (reg && reg.periodicSync) await reg.periodicSync.unregister('ctrl-reminders');
+    }
+  } catch(e) {}
   var theme = localStorage.getItem('sk_theme');
   localStorage.clear();
   if (theme) localStorage.setItem('sk_theme', theme);
@@ -6994,7 +7065,7 @@ function annSend(){
   var q=ta.value.trim(); if(!q) return;
   ta.value=''; ta.style.height='auto';
   annChatMsgs.push({ role:'user', content:q });
-  var sys={ role:'system', content:"Tu es un professeur de maths et de physique-chimie de college, patient et tres clair. Tu aides un eleve a comprendre UN exercice precis du brevet (niveau 3eme). Si l eleve n est pas en 3eme, explique avec les mots de sa classe et rappelle les notions qu il n a pas encore vues.\n\nREGLES IMPORTANTES :\n- Reste concentre UNIQUEMENT sur cet exercice et sur la question que pose l'eleve. Ne parle de rien d'autre.\n- Explique la METHODE etape par etape, avec des phrases courtes et simples (l'eleve a 14 ans).\n- Rappelle d'abord la formule ou la propriete utile, puis montre comment l'appliquer ICI, avec les valeurs de l'enonce.\n- Si l'eleve demande un indice, donne seulement la prochaine etape, sans donner le resultat final.\n- Si l'eleve demande la solution, detaille le calcul jusqu'au resultat, puis donne la reponse.\n- N'invente aucune donnee : utilise seulement l'enonce ci-dessous.\n- Quand l'eleve dit qu'il n'a pas compris, reformule ton explication plus simplement (d'autres mots, un petit exemple concret) jusqu'a ce qu'il comprenne, mais SANS ajouter d'etapes inutiles ni partir sur autre chose.\n- Reste bref et va droit au but : reponds a ce qui est demande, sans bla-bla et sans poser de question en retour a l'eleve.\n\nVoici l'exercice (enonce, questions et correction de reference) :\n\n"+annChatCtx };
+  var sys={ role:'system', content:"Tu es un professeur de maths et de physique-chimie de college, patient et tres clair. Tu aides un eleve a comprendre UN exercice precis du brevet (niveau 3eme). Si l eleve n est pas en 3eme, explique avec les mots de sa classe et rappelle les notions qu il n a pas encore vues.\n\nREGLES IMPORTANTES :\n- Reste concentre UNIQUEMENT sur cet exercice et sur la question que pose l'eleve. Ne parle de rien d'autre.\n- Explique la METHODE etape par etape, avec des phrases courtes et simples, adaptees a sa classe.\n- Rappelle d'abord la formule ou la propriete utile, puis montre comment l'appliquer ICI, avec les valeurs de l'enonce.\n- Si l'eleve demande un indice, donne seulement la prochaine etape, sans donner le resultat final.\n- Si l'eleve demande la solution, detaille le calcul jusqu'au resultat, puis donne la reponse.\n- N'invente aucune donnee : utilise seulement l'enonce ci-dessous.\n- Quand l'eleve dit qu'il n'a pas compris, reformule ton explication plus simplement (d'autres mots, un petit exemple concret) jusqu'a ce qu'il comprenne, mais SANS ajouter d'etapes inutiles ni partir sur autre chose.\n- Reste bref et va droit au but : reponds a ce qui est demande, sans bla-bla et sans poser de question en retour a l'eleve.\n\nVoici l'exercice (enonce, questions et correction de reference) :\n\n"+annChatCtx };
   var msgs=[sys].concat(annChatMsgs.map(function(m){ return { role:m.role, content:m.content }; }));
   annChatMsgs.push({ role:'assistant', content:'' });
   var idx=annChatMsgs.length-1;

@@ -1390,6 +1390,15 @@ body::after {
   stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
 }
 
+/* Bouton recherche internet : allume = la prochaine question cherche sur le web */
+.chat-web.on { background: var(--accent-l); }
+.chat-web.on svg { stroke: var(--accent); }
+.chat-src { margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--bord); font-size: 12px; }
+.chat-src-t { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--mu); margin-bottom: 4px; }
+.chat-src a { display: block; color: var(--accent); text-decoration: none; padding: 3px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.chat-src a span { color: var(--mu); font-size: 11px; margin-left: 4px; }
+.chat-web-tag { display: inline-block; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--accent); margin-bottom: 6px; }
+
 .chat-img {
   display: block;
   max-width: 200px;
@@ -2383,6 +2392,9 @@ body.dark .ann-piege{background:#2a2110;border-color:#5a4516;color:#e0b860}
           <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
         </button>
         <input type="file" id="chat-photo-inp" accept="image/*" style="display:none" onchange="chatPhoto(event)">
+        <button class="chat-photo chat-web" id="chat-web-btn" onclick="toggleWebSearch()" aria-label="Chercher sur internet" aria-pressed="false" title="Chercher sur internet">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </button>
         <textarea id="chat-input" placeholder="Pose ta question..." rows="1"
           oninput="autoResize(this)" onkeydown="chatKey(event)"></textarea>
         <button class="chat-send" onclick="sendChat()">
@@ -4152,6 +4164,31 @@ function addMsg(text, role) {
   return div;
 }
 
+/* ── Recherche internet : bouton 🌐 (valable pour la prochaine question) ── */
+var _webMode = false;
+function setWebMode(on) {
+  _webMode = on;
+  var b = document.getElementById('chat-web-btn');
+  if (b) { b.classList.toggle('on', on); b.setAttribute('aria-pressed', on ? 'true' : 'false'); }
+  var inp = document.getElementById('chat-input');
+  if (inp) inp.placeholder = on ? 'Recherche sur internet…' : 'Pose ta question...';
+}
+function toggleWebSearch() {
+  if (_webMode) { setWebMode(false); return; }
+  var reste = WEB_MAX_PAR_JOUR - webUsedToday();
+  if (reste <= 0) { toast('Tu as utilisé tes ' + WEB_MAX_PAR_JOUR + ' recherches internet du jour. Reviens demain !', 4000); return; }
+  setWebMode(true);
+  toast('Recherche internet activée (' + reste + ' restante' + (reste > 1 ? 's' : '') + ' aujourd\'hui)', 3000);
+  var inp = document.getElementById('chat-input'); if (inp) inp.focus();
+}
+function webSourcesHtml(sources) {
+  if (!sources || !sources.length) return '';
+  return '<div class="chat-src"><div class="chat-src-t">Sources</div>' + sources.map(function(s) {
+    var host = ''; try { host = new URL(s.url).hostname.replace(/^www\./, ''); } catch(e) {}
+    return '<a href="' + esc(s.url) + '" target="_blank" rel="noopener noreferrer">' + esc(s.title) + '<span>' + esc(host) + '</span></a>';
+  }).join('') + '</div>';
+}
+
 async function sendChat() {
   const input = document.getElementById('chat-input');
   const text = input.value.trim();
@@ -4162,8 +4199,33 @@ async function sendChat() {
   collapseShortcuts();
 
   addMsg(text, 'user');
-  const thinking = addMsg('ScolarIA réfléchit…', 'ai thinking');
+  const thinking = addMsg(_webMode ? 'ScolarIA cherche sur internet… (environ 10 secondes)' : 'ScolarIA réfléchit…', 'ai thinking');
   const msgs = document.getElementById('chat-msgs');
+
+  /* ── Question avec recherche internet ── */
+  if (_webMode) {
+    setWebMode(false);
+    webCount();
+    try {
+      var wMsgs = [{ role: 'system', content: SCOLARIA_SYSTEM }];
+      chatHistory.slice(-6).forEach(function(h){ wMsgs.push({ role: h.role, content: h.content }); });
+      wMsgs.push({ role: 'user', content: text });
+      var w = await callGroqWeb(wMsgs);
+      thinking.classList.remove('thinking');
+      thinking.style.maxWidth = '100%';
+      thinking.innerHTML = '<div class="chat-web-tag">🌐 Recherche internet</div>' + mdToHtml(w.text) + webSourcesHtml(w.sources);
+      chatHistory.push({ role: 'user', content: text });
+      chatHistory.push({ role: 'assistant', content: w.text });
+      if (chatHistory.length > 24) chatHistory = chatHistory.slice(-24);
+      saveChatLS();
+      updateHomeStats();
+    } catch(e) {
+      thinking.textContent = 'Erreur : ' + e.message;
+      thinking.classList.remove('thinking');
+    }
+    msgs.scrollTop = msgs.scrollHeight;
+    return;
+  }
 
   /* Fiche / flashcards → résultat en carte (pas de streaming).
      Tout le reste (questions, interrogations, résumés…) → streaming. */
@@ -4513,6 +4575,46 @@ var NIVEAUX = {
   }
 };
 
+/* ══ PROGRAMMES OFFICIELS DE MATHS — ANNÉE 2026-2027 ══
+   Envoyes a l'IA seulement quand le sujet est mathematique (detectMat).
+   Sources (verifiees en octobre 2026) :
+   - 6e : programme de cycle 3 (2025), applique en 6e depuis la rentree 2025
+   - 5e : nouveau programme de cycle 4, arrete du 18/02/2026 (BO n°10 du 5 mars 2026), en 5e depuis la rentree 2026
+   - 4e et 3e : ANCIEN programme de cycle 4 + reperes de progression 2019 (le nouveau arrive en 4e en 2027, en 3e en 2028)
+   - 2nde et 1ere : nouveaux programmes (BO du 2 avril 2026), depuis la rentree 2026
+   - Terminale : programme 2020 (le nouveau arrive a la rentree 2027)
+   A METTRE A JOUR a la rentree 2027 (4e, Terminale) et 2028 (3e). */
+var PROG_MATHS = {
+  '6ème': {
+    prog: 'nombres entiers et décimaux (écriture, comparaison, encadrement, droite graduée) ; fractions (fraction d\'une quantité, comparaison, encadrement, addition et soustraction, multiplication par un entier) ; les 4 opérations (mental, posé, en ligne) ; pré-algèbre avec schémas en barres, balances et suites de motifs ; proportionnalité (retour à l\'unité, linéarité, tableaux) et pourcentages simples ; angles (vocabulaire, mesure, somme des angles d\'un triangle, bissectrice), médiatrice, cercle circonscrit, symétrie axiale, triangles particuliers ; longueurs, périmètres (dont le cercle avec π), aires du carré et du rectangle, durées, masses, contenances ; lecture et production de tableaux et graphiques ; probabilité = nombre entre 0 et 1 (cas simples) ; séquences d\'instructions et boucles',
+    pas: 'nombres négatifs, puissances, racine carrée, calcul littéral avec des lettres, équations, coefficient de proportionnalité, formules d\'aire du triangle et du disque, volumes par formule, parallélogrammes, symboles ℕ ℤ ℚ ℝ'
+  },
+  '5ème': {
+    prog: 'nombres relatifs (sens, comparaison, droite graduée, addition, soustraction), distance à zéro / valeur absolue ; fractions et nombres rationnels (une fraction est le quotient de deux entiers ; égalité, comparaison, addition) ; carré et cube d\'un nombre ; priorités opératoires ; premiers pas en calcul littéral (expressions, substitution) ; angles alternes-internes et correspondants (parallélisme) ; triangles (inégalité triangulaire, somme des angles, droites remarquables, aire du triangle) ; demi-tour (symétrie centrale) ; parallélogrammes (définition, propriétés, propriétés caractéristiques, aire) ; solides (pavé, cube, prisme droit, cylindre) et leurs volumes, aire du disque ; proportionnalité (linéarité, retour à l\'unité, coefficient, vitesse moyenne, échelle, prix unitaire ; points alignés avec l\'origine), pourcentages ; « en fonction de », tableaux de valeurs, lecture de graphiques ; effectifs, fréquences, moyenne simple ; probabilités (expérience aléatoire, issue, évènement, équiprobabilité) ; programmation par blocs (boucles)',
+    pas: 'produit et quotient de relatifs (surtout en 4ème), racine carrée et Pythagore (4ème), puissances de 10 et notation scientifique, équations formelles, Thalès et trigonométrie (3ème), fonctions linéaires et affines (3ème), symboles ℕ ℤ ℚ ℝ (2nde)'
+  },
+  '4ème': {
+    prog: 'nombres relatifs (les 4 opérations) ; fractions (les 4 opérations, inverse) ; puissances (exposants entiers positifs et négatifs, puissances de 10, notation scientifique) ; nombres premiers et décomposition en facteurs premiers ; racine carrée (avec Pythagore) ; calcul littéral (développer, factoriser, double distributivité) ; équations du premier degré ; théorème de Pythagore et sa réciproque ; cosinus d\'un angle aigu dans le triangle rectangle ; Thalès dans la configuration des triangles emboîtés ; translations et rotations ; pyramide et cône (volumes) ; proportionnalité ; moyenne pondérée, médiane, étendue ; probabilités ; programmation par blocs (variables, conditions)',
+    pas: 'sinus et tangente (3ème), configuration papillon de Thalès (3ème), homothéties (3ème), notion de fonction et fonctions linéaires/affines (3ème), inéquations, identités remarquables, vecteurs, symboles ℕ ℤ ℚ ℝ (2nde)'
+  },
+  '3ème': {
+    prog: 'arithmétique (multiples, diviseurs, nombres premiers, décomposition en facteurs premiers, fraction irréductible) ; puissances et notation scientifique ; racine carrée ; calcul littéral (développer, factoriser, (a−b)(a+b) = a² − b²) ; équations, équation produit nul, inéquations du premier degré ; notion de fonction (image, antécédent, notation f(x)) ; fonctions linéaires et affines (représentation graphique, coefficients) ; proportionnalité et pourcentages ; théorème de Thalès et sa réciproque (triangles emboîtés et papillon) ; trigonométrie (cosinus, sinus, tangente) ; homothéties et transformations ; sphère et boule, sections de solides, repérage sur la sphère (latitude, longitude) ; médiane, étendue, moyenne ; probabilités ; algorithmique par blocs. Examen : le brevet (DNB)',
+    pas: 'symboles ℕ ℤ 𝔻 ℚ ℝ et ∈ ⊂, intervalles, vecteurs, identités (a+b)² et (a−b)² comme attendu, fonctions carré/inverse et tableaux de signes (2nde), second degré avec discriminant, dérivée (1ère)'
+  },
+  '2nde': {
+    prog: 'vocabulaire ensembliste et logique ; nombres réels : ℕ ⊂ ℤ ⊂ 𝔻 ⊂ ℚ ⊂ ℝ, intervalles, valeur absolue (intervalle de centre a), inéquations avec solutions en intervalles ; arithmétique (multiples, diviseurs, nombres premiers) ; algèbre : identités remarquables, équations et inéquations en lien avec les fonctions, comparaison par différence ou par rapport ; vecteurs (somme, relation de Chasles, colinéarité, coordonnées, milieu, distance) et droites du plan (équations, intersection) ; fonctions : ensemble de définition, fonctions de référence (affines, valeur absolue, carré, inverse, racine carrée, cube), parité, variations et extremums, tableaux de signes d\'un produit ou d\'un quotient ; information chiffrée et évolutions (coefficient multiplicateur, taux d\'évolution), moyenne, médiane, écart-type, boîtes à moustaches, croisement de deux variables qualitatives (fréquences conditionnelles et marginales) ; probabilités conditionnelles et arbres ; Python (variables, fonctions)',
+    pas: 'trigonométrie et projeté orthogonal (retirés du programme de 2nde), discriminant du second degré, dérivée, suites, exponentielle, produit scalaire (1ère), nombres complexes ℂ (Terminale)'
+  },
+  '1ère': {
+    prog: 'SPÉCIALITÉ : suites (arithmétiques, géométriques, comportement), second degré (forme canonique, discriminant, factorisation, parabole), dérivation (nombre dérivé, tangente, fonctions dérivées, dérivée de x↦g(ax+b), approximation affine), variations, fonction exponentielle (lien avec les suites géométriques, dérivée de t↦e^(at)), fonctions cosinus et sinus (cercle trigonométrique, parité, périodicité), produit scalaire et géométrie repérée, probabilités conditionnelles et indépendance, variables aléatoires (espérance, variance, formule de König-Huygens), Python (listes). SANS LA SPÉCIALITÉ : mathématiques intégrées à l\'enseignement scientifique (information chiffrée, deux variables quantitatives, variation linéaire, modélisation quadratique, exponentielles de base a, répétition d\'épreuves de Bernoulli n ≤ 4). Épreuve anticipée de mathématiques en fin de 1ère (automatismes)',
+    pas: 'limites de fonctions, continuité, logarithme, primitives et intégrales, loi binomiale générale, nombres complexes (Terminale)'
+  },
+  'Terminale': {
+    prog: 'SPÉCIALITÉ : suites (récurrence, limites), limites et continuité des fonctions, dérivation (composée, convexité), logarithme népérien, primitives et équations différentielles, calcul intégral, fonctions trigonométriques, dénombrement et combinatoire, loi binomiale, sommes de variables aléatoires, inégalité de Bienaymé-Tchebychev, loi des grands nombres, géométrie dans l\'espace (vecteurs, droites et plans, produit scalaire, représentations paramétriques). MATHS EXPERTES : nombres complexes, arithmétique (congruences, PGCD, Bézout, Gauss), graphes et matrices. MATHS COMPLÉMENTAIRES : modèles discrets et continus, fonctions, probabilités',
+    pas: ''
+  }
+};
+
 function getClasse() {
   var c = (typeof userProfile !== 'undefined' && userProfile.classe) || '';
   if (!c) { try { c = (JSON.parse(localStorage.getItem('sk_prof') || '{}') || {}).classe || ''; } catch(e) {} }
@@ -4528,7 +4630,7 @@ function examLabel() { return isLycee() ? 'bac' : 'brevet'; }
 var NIVEAU_REPERES = 'REPÈRES (classe où une notion et sa NOTATION apparaissent) : ' +
   'nombres entiers, décimaux, fractions simples, π (périmètre du cercle) 6ème ; nombres relatifs, priorités de calcul 5ème ; ' +
   'puissances, notation scientifique, Pythagore, racine carrée, opérations sur fractions et relatifs 4ème ; ' +
-  'nombres premiers, irrationnels (√2, π), Thalès, trigonométrie, fonctions linéaires et affines 3ème ' +
+  'cosinus 4ème ; nombres premiers, irrationnels (√2, π), Thalès (papillon), sinus et tangente, fonctions linéaires et affines 3ème ' +
   '(au collège on parle de « nombres entiers, décimaux, relatifs, fractions, irrationnels comme √2 ou π » SANS les symboles ℕ ℤ 𝔻 ℚ ℝ ni ∈ ⊂) ; ' +
   'ensembles de nombres ℕ ℤ 𝔻 ℚ ℝ, notations ∈ ⊂, intervalles, valeur absolue, vecteurs, mole 2nde ' +
   '(ordre EXACT : entiers naturels ⊂ entiers relatifs ⊂ décimaux ⊂ rationnels ⊂ réels, soit ℕ ⊂ ℤ ⊂ 𝔻 ⊂ ℚ ⊂ ℝ) ; ' +
@@ -4536,12 +4638,21 @@ var NIVEAU_REPERES = 'REPÈRES (classe où une notion et sa NOTATION apparaissen
 
 /* mode 'chat' (defaut) : l'eleve pose une question -> on explique toujours, meme une autre annee.
    mode 'revision' : contenu genere (fiches, flashcards, quiz...) -> strictement au niveau de la classe. */
-function niveauPrompt(mode) {
+/* Programme officiel detaille de maths, seulement si le sujet est mathematique */
+function progMathsBloc(c, sujet) {
+  var pm = PROG_MATHS[c];
+  if (!pm || detectMat(sujet || '') !== 'Maths') return '';
+  return 'PROGRAMME OFFICIEL DE MATHS EN ' + c.toUpperCase() + ' (année 2026-2027) : ' + pm.prog + '.\n' +
+    (pm.pas ? 'PAS ENCORE AU PROGRAMME EN ' + c.toUpperCase() + ' : ' + pm.pas + '.\n' : '');
+}
+
+function niveauPrompt(mode, sujet) {
   var c = getClasse(), n = NIVEAUX[c];
   var base = '--- NIVEAU DE L\'ÉLÈVE ---\n' +
     'L\'élève est en ' + c + ' (' + n.cycle + ', programme officiel français). Tutoie-le.\n' +
     'FAÇON DE PARLER : ' + n.ton + '\n' +
     'PROGRAMME DE ' + c.toUpperCase() + ' : ' + n.prog + '\n' +
+    progMathsBloc(c, sujet) +
     NIVEAU_REPERES + '\n' +
     'N\'affirme JAMAIS qu\'une notion est « au programme de ' + c + ' » si les repères ci-dessus la placent dans une autre classe.\n';
   if (mode === 'revision') {
@@ -4583,7 +4694,15 @@ function niveauPromptCourt() {
 /* Ajoute le bloc niveau au message systeme (ou en cree un).
    mode : 'court' (une ligne), 'revision' (contenu genere), sinon chat */
 function _withNiveau(messages, mode) {
-  var blk = mode === 'court' ? niveauPromptCourt() : niveauPrompt(mode);
+  /* sujet = texte du dernier message de l'eleve (pour choisir le programme detaille) */
+  var sujet = '';
+  for (var i = messages.length - 1; i >= 0; i--) {
+    if (messages[i].role !== 'user') continue;
+    var ct = messages[i].content;
+    sujet = typeof ct === 'string' ? ct : (Array.isArray(ct) ? ct.map(function(p) { return p.text || ''; }).join(' ') : '');
+    break;
+  }
+  var blk = mode === 'court' ? niveauPromptCourt() : niveauPrompt(mode, sujet);
   var out = messages.slice();
   if (out.length && out[0].role === 'system' && typeof out[0].content === 'string') {
     out[0] = { role: 'system', content: out[0].content + '\n\n' + blk };
@@ -4723,8 +4842,9 @@ var _matRules = {
 function detectMat(text) {
   var t = (text || '').toLowerCase();
   if (/math|algèbre|algeb|géomét|geomet|calcul|équation|equation|fonction|triangle|probabilit|statist|théorème|theoreme|pythagore|thales|vecteur|fraction|puissance|racine|pgcd|ppcm/.test(t)) return 'Maths';
+  if (/ensembles? de nombres|nombres? (relatif|décima|decima|rationnel|irrationnel|réel|reel|premier|entier|complexe)|dérivé|derive|dérivation|derivation|suites? (numérique|arithm|géom|geom)|intégrale|integrale|primitive|logarithme|exponentielle|trigonom|cosinus|sinus|tangente|pourcentage|proportionnalit|inéquation|inequation|identités? remarquable|développer|developper|factoris|valeur absolue|intervalle|périmètre|perimetre|second degré|discriminant|polynôme|polynome|produit scalaire|parabole|médiane|mediane|parallélogramme|parallelogramme|\baires?\b/.test(t)) return 'Maths';
   if (/physique|chimie|électr|electr|optique|force|énergie|energie|réaction|reaction|newton|courant|tension|résistance|resistance|vitesse|accélér|acceleration|atome|molécule|molecule/.test(t)) return 'Physique-Chimie';
-  if (/conjugaison|grammaire|orthographe|accord|participe|imparfait|subjonctif|conditionnel|impératif|infinitif|verbe|français|figure de style|roman|poème|narrateur|ponctuation|registre|tirade|sonnet/.test(t)) return 'Francais';
+  if (/conjugaison|grammaire|orthographe|accord|participe|imparfait|subjonctif|conditionnel|impératif|infinitif|verbe|français\b|figure de style|roman|poème|narrateur|ponctuation|registre|tirade|sonnet/.test(t)) return 'Francais';
   if (/histoire|guerre|révolution|empire|siècle|roi|reine|président|traité|moyen.age|antiquité|colonisation|débarquement|nazisme|shoah|fascisme|communisme|résistance|occupation/.test(t)) return 'Histoire-Geo';
   if (/géograph|geograph|continent|pays|capitale|relief|climat|population|mondialisation|territoire|aménagement|migration|espace|zone/.test(t)) return 'Histoire-Geo';
   if (/svt|biologie|écosystème|ecosysteme|cellule|organisme|génétique|genetique|évolution|evolution|respiration|digestion|nutriment|biodiversité|photosynthèse|photosynthese|gène|gene|adn|chromosome/.test(t)) return 'SVT';
@@ -4836,6 +4956,61 @@ async function callGroqVision(messages, maxTok, opts) {
     } catch(e) { lastErr = e.message; }
   }
   throw new Error(lastErr);
+}
+
+/* ══ RECHERCHE INTERNET (bouton 🌐 du chat) ══
+   Outil browser_search de gpt-oss sur Groq. Une recherche coute ~10 000 a 60 000 jetons
+   (les pages lues sont envoyees au modele) alors que le quota gratuit Groq est de
+   200 000 jetons/jour pour TOUTE l'app : d'ou la limite par appareil et par jour. */
+var WEB_MAX_PAR_JOUR = 5;
+var WEB_RULE = 'RECHERCHE INTERNET : tu DOIS chercher sur le web avant de répondre. Privilégie les sources fiables : ' +
+  'eduscol.education.gouv.fr et education.gouv.fr (programmes officiels), lumni.fr, sites institutionnels, encyclopédies, manuels et sites de cours reconnus. ' +
+  'Ignore les forums et les sites douteux. N\'ouvre pas de gros PDF si une page web suffit. Si les sources se contredisent ou si tu ne trouves rien de fiable, dis-le. ' +
+  'Réponds en français, clairement, puis termine sans liste de liens (les sources sont affichées à part).';
+function webUsedToday() {
+  try { var q = JSON.parse(localStorage.getItem('sk_web') || '{}'); return q.d === vcYmd(new Date()) ? (q.n || 0) : 0; } catch(e) { return 0; }
+}
+function webCount() {
+  try { localStorage.setItem('sk_web', JSON.stringify({ d: vcYmd(new Date()), n: webUsedToday() + 1 })); } catch(e) {}
+}
+/* Pages vraiment lues (ou, a defaut, premiers resultats) -> [{title, url}] */
+function _webSources(tools) {
+  var lues = [], trouvees = [];
+  (tools || []).forEach(function(t) {
+    var res = (t.search_results && t.search_results.results) || [];
+    if (t.type === 'browser_search') res.forEach(function(r) { if (r.url) trouvees.push({ title: r.title || r.url, url: r.url }); });
+    else if (/open/.test(t.type || '') && !/do not have access/i.test(t.output || '') && res[0] && res[0].url) {
+      var titre = String(t.output || '').split('\n').filter(function(l) { return /^L\d+: \S/.test(l) && !/URL:|https?:/.test(l); })[0];
+      lues.push({ title: titre ? titre.replace(/^L\d+: /, '').replace(/^#\s*/, '') : res[0].url, url: res[0].url });
+    }
+  });
+  var out = [], vu = {};
+  (lues.length ? lues : trouvees.slice(0, 3)).forEach(function(s) {
+    if (/^https?:\/\//.test(s.url) && !vu[s.url]) { vu[s.url] = 1; out.push(s); }
+  });
+  return out.slice(0, 4);
+}
+async function callGroqWeb(messages, maxTok) {
+  messages = _applyNiveau(messages);
+  messages[0] = { role: 'system', content: messages[0].content + '\n\n' + WEB_RULE };
+  var res = await fetch(GROQ_PROXY, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + SUPA_ANON },
+    body: JSON.stringify({ model: AI_TEXT_MODEL, reasoning_effort: 'low', max_tokens: maxTok || 2500,
+      tools: [{ type: 'browser_search' }], messages: messages })
+  });
+  var data = await res.json();
+  if (data.error) {
+    var m = data.error.message || '', code = data.error.code || '';
+    if (code === 'context_length_exceeded' || /reduce the length/i.test(m)) throw new Error('La page trouvée était trop longue. Reformule ta question de façon plus précise.');
+    if (res.status === 429 || /rate limit|quota/i.test(m)) throw new Error('Recherche internet indisponible pour le moment (limite atteinte). Réessaie plus tard.');
+    throw new Error(m);
+  }
+  var msg = (data.choices && data.choices[0] && data.choices[0].message) || {};
+  /* retire les marqueurs de citation internes du modele : 【1†L7-L9】 */
+  var txt = String(msg.content || '').replace(/【[^】]*】/g, '').replace(/[ \t]+\n/g, '\n').trim();
+  if (!txt) throw new Error(AI_EMPTY_MSG);
+  return { text: _cleanMath(txt), sources: _webSources(msg.executed_tools) };
 }
 
 async function callGroqStream(messages, onToken, maxTok, opts) {

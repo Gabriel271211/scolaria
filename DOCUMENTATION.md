@@ -107,7 +107,7 @@ async function callGroqVision(messages, maxTok, opts) { ... } // photos : essaie
 
 | Fonctionnalité | Description |
 |----------------|-------------|
-| **Chat IA** | Discussion avec ScolarIA (streaming). Détecte les demandes de fiche/flashcards/quiz et propose le résultat en carte. Support des **photos** (vision IA). |
+| **Chat IA** | Discussion avec ScolarIA (streaming). Détecte les demandes de fiche/flashcards/quiz et propose le résultat en carte. Support des **photos** (vision IA). Bouton **🌐 Recherche internet** (`callGroqWeb`, outil `browser_search`) : la prochaine question est cherchée sur le web, sources affichées sous la réponse ; 5 recherches/jour/appareil (`sk_web`) car une recherche consomme ~40× plus de quota Groq. |
 | **Devoirs** | Liste des devoirs avec dates. Ajout manuel ou par **scan de photo** (analyse d'agenda/cahier via vision IA). Swipe pour gérer. Les **contrôles à venir** de la Veille de contrôle y apparaissent aussi (lus en direct depuis `sk_ctrl`, pas de doublon) : badge « Contrôle », sujets, progression des révisions ; un appui ouvre le planning. Ils comptent dans le nombre de devoirs de l'accueil. |
 | **Révisions** | Génération IA de fiches, flashcards, résumés et interrogations à partir d'un sujet ou d'un cours collé. |
 | **Flashcards** | Decks de cartes (question/réponse), session de révision, stats de réussite. |
@@ -154,6 +154,7 @@ Préfixe commun : `sk_`.
 | `sk_ctrl` | Contrôles de la Veille de contrôle (date, sujets, planning, cases cochées, rappels) | ✅ |
 | `sk_day_*` | Activité journalière | ✅ (préfixe) |
 | `sk_theme` | Thème clair/sombre | ❌ (local au device) |
+| `sk_web` | Compteur de recherches internet du jour `{d, n}` | ❌ (local au device) |
 
 > La clé `sk_groq` (ancienne clé Groq stockée côté client) **n'existe plus** — supprimée lors de la migration vers le proxy.
 

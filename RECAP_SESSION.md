@@ -22,6 +22,7 @@
 | Nettoyage : Langues & Sciences archivés | ✅ |
 | Multi-niveaux 6ème → Terminale : l'IA s'adapte à la classe (programme + façon de parler) | ✅ |
 | Veille de contrôle v2 : date précise, plusieurs sujets, planning jour par jour, notifications | ✅ |
+| Programmes officiels de maths 2026-2027 intégrés (6ème → Terminale) + bouton 🌐 recherche internet dans le chat | ✅ |
 
 ---
 
@@ -37,7 +38,9 @@
 | 6 | Annales — Technologie | ~30 exos | ⬜ |
 | 7 | Version primaire (CM1, CM2) | Ajouter les classes dans `NIVEAUX` + onboarding, façon de parler encore plus simple | ⬜ |
 | 8 | Annales pour le lycée | Exercices type bac (bac de français, épreuve anticipée de maths, spécialités) | ⬜ |
-| 9 | _À compléter par Gabriel_ | | ⬜ |
+| 9 | Programmes détaillés des autres matières | Comme `PROG_MATHS` : physique-chimie, SVT, histoire-géo, français (programmes officiels eduscol) | ⬜ |
+| 10 | Mettre à jour `PROG_MATHS` à chaque rentrée | Rentrée 2027 : nouveau programme en 4ème et en Terminale. Rentrée 2028 : en 3ème | ⬜ |
+| 11 | _À compléter par Gabriel_ | | ⬜ |
 
 Change ⬜ en ✅ quand c'est fait.
 

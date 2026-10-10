@@ -1397,6 +1397,40 @@ body::after {
 .chat-src-t { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--mu); margin-bottom: 4px; }
 .chat-src a { display: block; color: var(--accent); text-decoration: none; padding: 3px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .chat-src a span { color: var(--mu); font-size: 11px; margin-left: 4px; }
+/* Interrogation dans le chat (outil de l'IA) */
+.cq-intro { font-size: 13px; color: var(--mu); line-height: 1.45; }
+.cq-intro b { display: block; font-size: 15px; color: var(--tx); margin-bottom: 3px; }
+.cq-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--mu); margin-bottom: 6px; }
+.cq-head span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cq-stop { flex-shrink: 0; background: none; border: none; color: var(--mu); font-size: 12px; font-weight: 600; font-family: var(--fb); cursor: pointer; padding: 2px 0; text-transform: none; letter-spacing: 0; text-decoration: underline; }
+.cq-prog { height: 4px; background: var(--bord); border-radius: 99px; overflow: hidden; margin-bottom: 10px; }
+.cq-prog i { display: block; height: 100%; background: var(--accent); border-radius: 99px; }
+.cq-q { font-size: 15px; font-weight: 700; line-height: 1.45; color: var(--tx); }
+.cq-opts { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+.cq-opt { display: flex; gap: 10px; align-items: center; text-align: left; width: 100%; padding: 10px 12px; border: 1.5px solid var(--bord); border-radius: 12px; background: var(--card); color: var(--tx); font-size: 14px; font-family: var(--fb); line-height: 1.35; cursor: pointer; -webkit-tap-highlight-color: transparent; transition: border-color .15s, background .15s; }
+.cq-opt:active { transform: scale(.99); }
+.cq-opt:disabled { cursor: default; }
+.cq-opt b { width: 24px; height: 24px; flex-shrink: 0; border-radius: 7px; background: var(--bg); display: flex; align-items: center; justify-content: center; font-size: 12px; }
+.cq-opt.ok { border-color: var(--success); background: color-mix(in srgb, var(--success) 10%, var(--card)); }
+.cq-opt.ok b { background: var(--success); color: #fff; }
+.cq-opt.ko { border-color: var(--danger); background: color-mix(in srgb, var(--danger) 8%, var(--card)); }
+.cq-opt.ko b { background: var(--danger); color: #fff; }
+.cq-hint { font-size: 12px; color: var(--mu); margin-top: 8px; }
+.cq-wait { font-size: 13px; color: var(--mu); }
+.cq-fb { border-left: 3px solid var(--bord); }
+.cq-fb.ok { border-left-color: var(--success); }
+.cq-fb.ko { border-left-color: var(--danger); }
+.cq-fb div { font-size: 13px; line-height: 1.45; margin-top: 4px; }
+.cq-sol { font-weight: 600; }
+.cq-end { text-align: center; }
+.cq-score { font-size: 34px; font-weight: 800; color: var(--accent); letter-spacing: -1px; line-height: 1.1; }
+.cq-end-t { font-size: 14px; color: var(--tx); margin: 4px 0 8px; }
+.cq-sec { text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--mu); margin: 10px 0 6px; }
+.cq-err { text-align: left; border: 1px solid var(--bord); border-radius: 10px; padding: 8px 10px; margin-bottom: 6px; font-size: 13px; line-height: 1.4; }
+.cq-err span { display: block; color: var(--success); font-weight: 600; margin-top: 3px; font-size: 12px; }
+.cq-btns { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+.cq-btns button { padding: 11px; border-radius: 12px; border: 1.5px solid var(--bord); background: var(--bg); color: var(--tx); font-weight: 700; font-size: 13px; font-family: var(--fb); cursor: pointer; }
+.cq-btns button:first-child { background: var(--accent); border-color: var(--accent); color: #fff; }
 .chat-web-tag { display: inline-block; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--accent); margin-bottom: 6px; }
 
 .chat-img {
@@ -3848,7 +3882,7 @@ function newChat() {
 const SHORTCUTS = {
   fiche:   'Génère-moi une fiche de révision complète sur : ',
   flash:   'Crée-moi 10 flashcards question/réponse sur : ',
-  interro: 'Lance-moi une interrogation de 8 questions (QCM + réponse courte) sur : ',
+  interro: 'Interroge-moi sur : ',
   résumer: 'Résume en 7 points clés : ',
   calc:    'Résous ce calcul étape par étape : ',
   conj:    'Conjugue ce verbe à tous les temps principaux (présent, imparfait, futur, conditionnel, subjonctif) : ',
@@ -4164,6 +4198,253 @@ function addMsg(text, role) {
   return div;
 }
 
+/* ══ INTERROGATION DANS LE CHAT (outil de l'IA) ══
+   L'IA du chat dispose de l'outil lancer_interrogation (function calling) : elle
+   l'appelle d'elle-meme quand l'eleve veut etre interroge. L'interro se deroule ensuite
+   dans le chat : une question a la fois (boutons pour les QCM, reponse ecrite en bas
+   sinon), correction apres chaque reponse, puis bilan. Fonctions cq*, CSS .cq- */
+var CHAT_TOOLS = [{
+  type: 'function',
+  function: {
+    name: 'lancer_interrogation',
+    description: 'Lance une interrogation INTERACTIVE dans le chat : l\'application pose les questions une par une, l\'élève répond, reçoit une correction puis son score. ' +
+      'Utilise cet outil dès que l\'élève veut être interrogé, testé ou évalué : « interroge-moi », « pose-moi des questions », « teste-moi », « fais-moi un quiz / un QCM », « vérifie si je connais ma leçon », « je veux m\'entraîner pour mon contrôle ». ' +
+      'Ne l\'utilise PAS pour une simple question, une explication, une fiche ou des flashcards.',
+    parameters: {
+      type: 'object',
+      properties: {
+        sujet: { type: 'string', description: 'Sujet précis (ex : « théorème de Pythagore »). Si l\'élève dit « là-dessus » ou « sur ça », reprends le sujet de la conversation.' },
+        nb_questions: { type: 'integer', description: 'Nombre de questions, de 3 à 10 (5 par défaut).' },
+        format: { type: 'string', enum: ['mixte', 'qcm', 'ouvertes'], description: 'mixte (par défaut) = QCM et questions ouvertes ; qcm = seulement des QCM ; ouvertes = seulement des réponses à écrire.' }
+      },
+      required: ['sujet']
+    }
+  }
+}];
+var CHAT_TOOL_HINT = 'OUTIL DISPONIBLE : quand l\'élève veut être interrogé, testé, vérifier ses connaissances ou faire un quiz, appelle l\'outil lancer_interrogation au lieu d\'écrire toi-même des questions ou un tableau.';
+/* Demande explicite d'interro -> on impose l'outil (l'IA choisit seulement sujet / nombre / format).
+   Attention : « l'interrogation directe » (grammaire) ne doit PAS declencher d'interro. */
+var CQ_DEMANDE = /interroge[sz]?[- ]?moi|m.interroger|interro sur|interrogation sur|une interro\b|teste[sz]?[- ]?moi|me tester|\bquiz|\bqcm|questionne[sz]?[- ]?moi|pose[sz]?[- ]?moi (des|quelques|\d+) questions|[ée]value[sz]?[- ]?moi/i;
+
+var _cq = null;       /* interro en cours : { sujet, qs, i, score, ratees, attente, el } */
+var _cqLast = null;   /* derniere interro (pour « Nouvelles questions ») */
+
+function cqBubble(html, el) {
+  var msgs = document.getElementById('chat-msgs');
+  var w = msgs.querySelector('.chat-welcome'); if (w) w.remove();
+  if (!el) { el = document.createElement('div'); msgs.appendChild(el); }
+  el.className = 'msg msg-ai cq-msg';
+  el.style.maxWidth = '100%';
+  el.innerHTML = html;
+  msgs.scrollTop = msgs.scrollHeight;
+  return el;
+}
+function cqSetInput(on) {
+  var inp = document.getElementById('chat-input');
+  if (inp && !_webMode) inp.placeholder = on ? 'Ta réponse…' : 'Pose ta question...';
+}
+function cqLettre(k) { return 'ABCD'.charAt(k); }
+
+/* Q: ... / A) ... B) ... / R: lettre ou réponse -> [{ q, opts, bon, a }] */
+function cqParse(text) {
+  var qs = [], cur = null;
+  String(text || '').split('\n').forEach(function(l) {
+    l = l.trim().replace(/\*\*/g, '');
+    var m;
+    if ((m = l.match(/^Q\s*\d*\s*[:.)-]\s*(.+)$/i))) { cur = { q: m[1].trim(), opts: [], a: '' }; qs.push(cur); }
+    else if (cur && (m = l.match(/^([A-D])\s*[).:-]\s*(.+)$/))) cur.opts.push(m[2].trim());
+    else if (cur && (m = l.match(/^R(?:éponse)?\s*[:.)-]\s*(.+)$/i))) cur.a = m[1].trim();
+  });
+  return qs.filter(function(q) {
+    if (!q.q || !q.a) return false;
+    if (q.opts.length < 2) { q.opts = []; return true; }
+    var lt = q.a.match(/^\(?([A-D])\b/i);
+    q.bon = lt ? 'ABCD'.indexOf(lt[1].toUpperCase())
+               : q.opts.map(function(o) { return o.toLowerCase(); }).indexOf(q.a.toLowerCase());
+    if (q.bon < 0 || q.bon >= q.opts.length) return false;   /* QCM mal forme : ignore */
+    q.a = cqLettre(q.bon) + '. ' + q.opts[q.bon];
+    return true;
+  });
+}
+
+async function cqStart(args, el, demande) {
+  args = args || {};
+  var sujet = String(args.sujet || '').trim() || demande;
+  var nb = Math.max(3, Math.min(10, parseInt(args.nb_questions, 10) || 5));
+  var format = (args.format === 'qcm' || args.format === 'ouvertes') ? args.format : 'mixte';
+  el.className = 'msg msg-ai thinking';
+  el.textContent = 'Je prépare ton interrogation sur « ' + sujet + ' »…';
+  var consigne = format === 'qcm' ? 'uniquement des QCM à 4 choix'
+    : format === 'ouvertes' ? 'uniquement des questions à réponse courte (aucun QCM)'
+    : 'environ moitié QCM à 4 choix, moitié questions à réponse courte';
+  var prompt = 'Prépare une interrogation de ' + nb + ' questions sur « ' + sujet + ' » : ' + consigne + '.\n' +
+    'Du plus simple au plus difficile, sur l\'essentiel de ce qui tombe en contrôle. Réponses courtes et exactes, une seule bonne réponse par QCM.\n' +
+    'FORMAT EXACT, rien d\'autre :\nQ: question\nA) choix\nB) choix\nC) choix\nD) choix\nR: lettre de la bonne réponse\n\n' +
+    'ou, pour une question ouverte :\nQ: question\nR: réponse attendue (courte)';
+  try {
+    var txt = await callGroq([{ role: 'system', content: SCOLARIA_SYSTEM }, { role: 'user', content: prompt }], 1600, { niveau: 'revision' });
+    var qs = cqParse(txt).slice(0, nb);
+    if (qs.length < 2) throw new Error('Je n\'ai pas réussi à préparer les questions, réessaie.');
+    _cq = { sujet: sujet, qs: qs, i: 0, score: 0, ratees: [], attente: false, el: null };
+    _cqLast = { sujet: sujet, nb_questions: nb, format: format };
+    cqBubble('<div class="cq-intro"><b>Interrogation : ' + esc(sujet) + '</b>' + qs.length +
+      ' questions. Touche la bonne lettre pour les QCM, sinon écris ta réponse en bas. Écris « stop » pour arrêter.</div>', el);
+    chatHistory.push({ role: 'user', content: demande });
+    chatHistory.push({ role: 'assistant', content: '[Interrogation interactive lancée : ' + qs.length + ' questions sur « ' + sujet + ' »]' });
+    if (chatHistory.length > 24) chatHistory = chatHistory.slice(-24);
+    saveChatLS();
+    cqSetInput(true);
+    cqAsk();
+  } catch(e) {
+    el.className = 'msg msg-ai';
+    el.textContent = 'Erreur : ' + e.message;
+  }
+}
+
+function cqAsk() {
+  var q = _cq.qs[_cq.i], n = _cq.qs.length;
+  var h = '<div class="cq-head"><span>Question ' + (_cq.i + 1) + '/' + n + ' · ' + esc(_cq.sujet) + '</span>' +
+      '<button class="cq-stop" onclick="cqStop()">Arrêter</button></div>' +
+    '<div class="cq-prog"><i style="width:' + Math.round(_cq.i / n * 100) + '%"></i></div>' +
+    '<div class="cq-q">' + esc(q.q) + '</div>';
+  if (q.opts.length) {
+    h += '<div class="cq-opts">' + q.opts.map(function(o, k) {
+      return '<button class="cq-opt" onclick="cqChoix(this,' + k + ')"><b>' + cqLettre(k) + '</b><span>' + esc(o) + '</span></button>';
+    }).join('') + '</div>';
+  } else {
+    h += '<div class="cq-hint">✍️ Écris ta réponse en bas</div>';
+  }
+  _cq.el = cqBubble(h);
+  _cq.attente = true;
+  if (!q.opts.length) { var inp = document.getElementById('chat-input'); if (inp) inp.focus(); }
+}
+
+/* Correction IA d'une reponse (courte, adaptee a la classe) */
+async function cqCorrigerIA(q, rep) {
+  var r = await callGroq([
+    { role: 'system', content: 'Tu corriges la réponse d\'un élève à une question d\'interrogation. Accepte une réponse juste même si elle est formulée autrement, avec des fautes d\'orthographe ou un détail mineur en moins. Réponds par CORRECT ou INCORRECT, puis 1 à 2 phrases simples : pourquoi, et la bonne réponse si c\'est faux.' + GRADER_RULE },
+    { role: 'user', content: 'Question : ' + q.q +
+      (q.opts.length ? '\nChoix : ' + q.opts.map(function(o, k) { return cqLettre(k) + ') ' + o; }).join(' ; ') : '') +
+      '\nRéponse attendue : ' + q.a + '\nRéponse de l\'élève : ' + rep }
+  ], 350, { niveau: 'court' });
+  return { ok: _verdictOk(r), expl: _verdictText(r).replace(/^(IN)?CORRECT\s*[.:!,—–-]*\s*/i, '') };
+}
+
+/* QCM : touche d'une lettre */
+async function cqChoix(btn, k) {
+  if (!_cq || !_cq.attente || !_cq.el || !_cq.el.contains(btn)) return;
+  _cq.attente = false;
+  var q = _cq.qs[_cq.i];
+  var boutons = _cq.el.querySelectorAll('.cq-opt');
+  Array.prototype.forEach.call(boutons, function(b, j) {
+    b.disabled = true;
+    if (j === q.bon) b.classList.add('ok');
+    else if (j === k) b.classList.add('ko');
+  });
+  addMsg(cqLettre(k) + '. ' + q.opts[k], 'user');
+  if (k === q.bon) { cqCorrection(null, true, q, cqLettre(k), ''); return; }
+  var fb = cqBubble('<div class="cq-wait">Correction…</div>');
+  var expl = '';
+  try { expl = (await cqCorrigerIA(q, cqLettre(k) + ') ' + q.opts[k])).expl; } catch(e) {}
+  cqCorrection(fb, false, q, cqLettre(k), expl);
+}
+
+/* Reponse ecrite dans la barre du chat */
+async function cqRepondreTexte(text) {
+  addMsg(text, 'user');
+  if (/^(stop|fin|quitter|arr[eê]te|arr[eê]ter|j.arr[eê]te)\b/i.test(text.trim())) { cqStop(); return; }
+  _cq.attente = false;
+  var q = _cq.qs[_cq.i];
+  /* QCM : une lettre seule suffit */
+  var lt = q.opts.length ? text.trim().match(/^([A-Da-d])\s*[).]?$/) : null;
+  if (lt) {
+    var k = 'ABCD'.indexOf(lt[1].toUpperCase());
+    if (k < q.opts.length) {
+      Array.prototype.forEach.call(_cq.el.querySelectorAll('.cq-opt'), function(b, j) {
+        b.disabled = true;
+        if (j === q.bon) b.classList.add('ok'); else if (j === k) b.classList.add('ko');
+      });
+      if (k === q.bon) { cqCorrection(null, true, q, text, ''); return; }
+    }
+  }
+  var fb = cqBubble('<div class="cq-wait">Correction…</div>');
+  try {
+    var c = await cqCorrigerIA(q, text);
+    cqCorrection(fb, c.ok, q, text, c.expl);
+  } catch(e) {
+    cqCorrection(fb, null, q, text, 'Je n\'ai pas pu corriger (' + e.message + ').');
+  }
+}
+
+/* ok : true / false / null (correction impossible : non comptee) */
+function cqCorrection(el, ok, q, rep, expl) {
+  if (!_cq) return;
+  if (ok === true) _cq.score++;
+  if (ok === false) _cq.ratees.push({ q: q.q, rep: rep, a: q.a });
+  var titre = ok === true ? '✅ Bonne réponse !' : ok === false ? '❌ Pas tout à fait' : '⚠️ Correction indisponible';
+  var html = '<b>' + titre + '</b>' + (expl ? '<div>' + esc(expl) + '</div>' : '') +
+    (ok !== true ? '<div class="cq-sol">Réponse attendue : ' + esc(q.a) + '</div>' : '');
+  el = cqBubble(html, el);
+  el.classList.add('cq-fb', ok === true ? 'ok' : 'ko');
+  _cq.i++;
+  setTimeout(function() {
+    if (!_cq) return;
+    if (_cq.i >= _cq.qs.length) cqFin(); else cqAsk();
+  }, ok === true ? 500 : 900);
+}
+
+function cqFin() {
+  var c = _cq; _cq = null;
+  cqSetInput(false);
+  var n = c.i;   /* questions vraiment posees (moins si arret) */
+  if (!n) { cqBubble('Interrogation arrêtée.'); return; }
+  var pct = Math.round(c.score / n * 100);
+  var mot = pct === 100 ? 'Parfait, tu maîtrises !' : pct >= 70 ? 'Très bien ! Revois juste les points ratés.'
+    : pct >= 40 ? 'C\'est un début : revois les points ratés.' : 'Pas de panique : relis ton cours puis recommence.';
+  var h = '<div class="cq-end"><div class="cq-score">' + c.score + '/' + n + '</div><div class="cq-end-t">' + mot + '</div>';
+  if (c.ratees.length) {
+    h += '<div class="cq-sec">À revoir</div>' + c.ratees.map(function(r) {
+      return '<div class="cq-err"><div>' + esc(r.q) + '</div><span>' + esc(r.a) + '</span></div>';
+    }).join('');
+  }
+  h += '<div class="cq-btns"><button onclick="cqRefaire()">Nouvelles questions</button>' +
+    (c.ratees.length ? '<button onclick="cqExpliquer()">Explique-moi mes erreurs</button>' : '') + '</div></div>';
+  cqBubble(h);
+  /* progression (anneau « Quiz » de l'accueil) + historique */
+  try {
+    var s = JSON.parse(localStorage.getItem('sk_quiz_stats') || '{"ok":0,"total":0}');
+    s.total += n; s.ok += c.score;
+    localStorage.setItem('sk_quiz_stats', JSON.stringify(s));
+  } catch(e) {}
+  addToHist('quiz', c.sujet, 'Interrogation', c.qs.map(function(q) {
+    return 'Q: ' + q.q + (q.opts.length ? '\n' + q.opts.map(function(o, k) { return cqLettre(k) + ') ' + o; }).join('\n') : '') + '\nR: ' + q.a;
+  }).join('\n\n'));
+  if (typeof renderFavs === 'function') renderFavs();
+  /* le chat se souvient du resultat : « explique-moi mes erreurs » fonctionne ensuite */
+  chatHistory.push({ role: 'assistant', content: 'Résultat de l\'interrogation sur « ' + c.sujet + ' » : ' + c.score + '/' + n + '.' +
+    (c.ratees.length ? ' Questions ratées : ' + c.ratees.map(function(r) { return r.q + ' (attendu : ' + r.a + ' ; réponse de l\'élève : ' + r.rep + ')'; }).join(' | ') : ' Aucune erreur.') });
+  if (chatHistory.length > 24) chatHistory = chatHistory.slice(-24);
+  saveChatLS();
+  updateStreak(); updateHomeProgression(); updateHomeStats();
+}
+function cqStop() {
+  if (!_cq) return;
+  _cq.attente = false;
+  if (_cq.el) Array.prototype.forEach.call(_cq.el.querySelectorAll('.cq-opt'), function(b) { b.disabled = true; });
+  cqFin();
+}
+function cqRefaire() {
+  if (_cq || !_cqLast) return;
+  var el = addMsg('', 'ai thinking');
+  cqStart(_cqLast, el, 'Interroge-moi encore sur ' + _cqLast.sujet);
+}
+function cqExpliquer() {
+  var inp = document.getElementById('chat-input');
+  if (!inp || _cq) return;
+  inp.value = 'Explique-moi mes erreurs de l\'interrogation, simplement.';
+  sendChat();
+}
+
 /* ── Recherche internet : bouton 🌐 (valable pour la prochaine question) ── */
 var _webMode = false;
 function setWebMode(on) {
@@ -4193,6 +4474,14 @@ async function sendChat() {
   const input = document.getElementById('chat-input');
   const text = input.value.trim();
   if (!text) return;
+  /* Interrogation en cours : ce qu'on ecrit est la reponse a la question */
+  if (_cq && !_webMode) {
+    if (!_cq.attente) { toast('Attends la correction…'); return; }
+    input.value = '';
+    autoResize(input);
+    cqRepondreTexte(text);
+    return;
+  }
   input.value = '';
   autoResize(input);
   updateStreak();
@@ -4229,7 +4518,7 @@ async function sendChat() {
 
   /* Fiche / flashcards → résultat en carte (pas de streaming).
      Tout le reste (questions, interrogations, résumés…) → streaming. */
-  var _structured = /\bfiches?\b|\bflashcards?\b/i.test(text);
+  var _structured = /\bfiches?\b|\bflashcards?\b/i.test(text) && !CQ_DEMANDE.test(text);
 
   try {
     var reply;
@@ -4238,13 +4527,20 @@ async function sendChat() {
       /* ── Streaming token par token ── */
       var sMsgs = [{ role: 'system', content: SCOLARIA_SYSTEM }];
       chatHistory.slice(-12).forEach(function(h){ sMsgs.push({ role: h.role, content: h.content }); });
+      /* consigne de l'outil juste avant le message : elle pese plus que perdue en haut du prompt */
+      sMsgs.push({ role: 'system', content: CHAT_TOOL_HINT });
       sMsgs.push({ role: 'user', content: text });
-      thinking.classList.remove('thinking');
-      thinking.style.maxWidth = '100%';
-      reply = await callGroqStream(sMsgs, function(full){
+      var gotText = false;
+      var forcer = CQ_DEMANDE.test(text);
+      var out = await callGroqStream(sMsgs, function(full){
+        if (!gotText) { gotText = true; thinking.classList.remove('thinking'); thinking.style.maxWidth = '100%'; }
         thinking.innerHTML = mdToHtml(full);
         msgs.scrollTop = msgs.scrollHeight;
-      });
+      }, undefined, { tools: CHAT_TOOLS, toolChoice: forcer ? { type: 'function', function: { name: 'lancer_interrogation' } } : 'auto' });
+      /* L'IA a decide d'utiliser l'outil d'interrogation */
+      var tool = out.toolCalls.filter(function(c){ return c.name === 'lancer_interrogation'; })[0];
+      if (tool) { await cqStart(tool.args, thinking, text); return; }
+      reply = out.text;
       chatHistory.push({ role: 'user', content: text });
       chatHistory.push({ role: 'assistant', content: reply });
       if (chatHistory.length > 24) chatHistory = chatHistory.slice(-24);
@@ -5096,16 +5392,20 @@ async function callGroqWeb(messages, maxTok) {
   return { text: _cleanMath(txt), sources: _webSources(msg.executed_tools) };
 }
 
+/* opts.tools : outils (function calling) que l'IA peut appeler d'elle-meme.
+   Avec opts.tools, renvoie { text, toolCalls: [{ name, args }] } au lieu d'un texte. */
 async function callGroqStream(messages, onToken, maxTok, opts) {
   messages = _applyNiveau(messages, opts);
-  var res = await _groqFetch({ model: AI_TEXT_MODEL, reasoning_effort: 'low', max_tokens: (maxTok || 1800) + 600, messages: messages, stream: true });
+  var payload0 = { model: AI_TEXT_MODEL, reasoning_effort: 'low', max_tokens: (maxTok || 1800) + 600, messages: messages, stream: true };
+  if (opts && opts.tools) { payload0.tools = opts.tools; payload0.tool_choice = opts.toolChoice || 'auto'; }
+  var res = await _groqFetch(payload0);
   if (!res.ok || !res.body) {
     var ed = null; try { ed = await res.json(); } catch(e) {}
     throw new Error(ed && ed.error ? ed.error.message : 'Erreur API Groq (' + res.status + ')');
   }
   var reader = res.body.getReader();
   var decoder = new TextDecoder();
-  var full = '', buf = '';
+  var full = '', buf = '', calls = [];
   while (true) {
     var chunk = await reader.read();
     if (chunk.done) break;
@@ -5119,12 +5419,24 @@ async function callGroqStream(messages, onToken, maxTok, opts) {
       if (payload === '[DONE]') continue;
       try {
         var j = JSON.parse(payload);
-        var delta = j.choices && j.choices[0] && j.choices[0].delta && j.choices[0].delta.content;
-        if (delta) { full += delta; onToken(_cleanMath(full)); }
+        var d = (j.choices && j.choices[0] && j.choices[0].delta) || {};
+        if (d.content) { full += d.content; onToken(_cleanMath(full)); }
+        /* appels d'outil : le nom puis les arguments peuvent arriver en plusieurs morceaux */
+        (d.tool_calls || []).forEach(function(tc) {
+          var k = tc.index || 0;
+          calls[k] = calls[k] || { name: '', args: '' };
+          if (tc.function && tc.function.name) calls[k].name += tc.function.name;
+          if (tc.function && tc.function.arguments) calls[k].args += tc.function.arguments;
+        });
       } catch(e) {}
     }
   }
-  if (!full.trim()) throw new Error(AI_EMPTY_MSG);
+  var toolCalls = calls.filter(Boolean).map(function(c) {
+    var a = {}; try { a = JSON.parse(c.args || '{}'); } catch(e) {}
+    return { name: c.name, args: a };
+  });
+  if (!full.trim() && !toolCalls.length) throw new Error(AI_EMPTY_MSG);
+  if (opts && opts.tools) return { text: _cleanMath(full), toolCalls: toolCalls };
   return _cleanMath(full);
 }
 

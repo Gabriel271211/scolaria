@@ -23,6 +23,7 @@
 | Multi-niveaux 6ème → Terminale : l'IA s'adapte à la classe (programme + façon de parler) | ✅ |
 | Veille de contrôle v2 : date précise, plusieurs sujets, planning jour par jour, notifications | ✅ |
 | Programmes officiels de maths 2026-2027 intégrés (6ème → Terminale) + bouton 🌐 recherche internet dans le chat | ✅ |
+| Interrogation interactive dans le chat : outil que l'IA lance d'elle-même quand l'élève veut être interrogé | ✅ |
 
 ---
 

@@ -4280,7 +4280,7 @@ async function cqStart(args, el, demande) {
   var prompt = 'Prépare une interrogation de ' + nb + ' questions sur « ' + sujet + ' » : ' + consigne + '.\n' +
     'Du plus simple au plus difficile, sur l\'essentiel de ce qui tombe en contrôle. Réponses courtes et exactes, une seule bonne réponse par QCM.\n' +
     'FORMAT EXACT, rien d\'autre :\nQ: question\nA) choix\nB) choix\nC) choix\nD) choix\nR: lettre de la bonne réponse\n\n' +
-    'ou, pour une question ouverte :\nQ: question\nR: réponse attendue (courte)';
+    'ou, pour une question ouverte :\nQ: question\nR: réponse attendue (courte ; si plusieurs réponses sont justes, donnes-en 2 ou 3 séparées par « ; »)';
   try {
     var txt = await callGroq([{ role: 'system', content: SCOLARIA_SYSTEM }, { role: 'user', content: prompt }], 1600, { niveau: 'revision' });
     var qs = cqParse(txt).slice(0, nb);
@@ -4320,15 +4320,7 @@ function cqAsk() {
 }
 
 /* Correction IA d'une reponse (courte, adaptee a la classe) */
-async function cqCorrigerIA(q, rep) {
-  var r = await callGroq([
-    { role: 'system', content: 'Tu corriges la réponse d\'un élève à une question d\'interrogation. Accepte une réponse juste même si elle est formulée autrement, avec des fautes d\'orthographe ou un détail mineur en moins. Réponds par CORRECT ou INCORRECT, puis 1 à 2 phrases simples : pourquoi, et la bonne réponse si c\'est faux.' + GRADER_RULE },
-    { role: 'user', content: 'Question : ' + q.q +
-      (q.opts.length ? '\nChoix : ' + q.opts.map(function(o, k) { return cqLettre(k) + ') ' + o; }).join(' ; ') : '') +
-      '\nRéponse attendue : ' + q.a + '\nRéponse de l\'élève : ' + rep }
-  ], 350, { niveau: 'court' });
-  return { ok: _verdictOk(r), expl: _verdictText(r).replace(/^(IN)?CORRECT\s*[.:!,—–-]*\s*/i, '') };
-}
+function cqCorrigerIA(q, rep) { return corrigerReponse(q.q, q.a, rep, q.opts); }
 
 /* QCM : touche d'une lettre */
 async function cqChoix(btn, k) {
@@ -4380,10 +4372,12 @@ async function cqRepondreTexte(text) {
 function cqCorrection(el, ok, q, rep, expl) {
   if (!_cq) return;
   if (ok === true) _cq.score++;
-  if (ok === false) _cq.ratees.push({ q: q.q, rep: rep, a: q.a });
+  if (ok === false) _cq.ratees.push({ q: q.q, rep: rep, a: q.a, qcm: q.opts.length > 0 });
   var titre = ok === true ? '✅ Bonne réponse !' : ok === false ? '❌ Pas tout à fait' : '⚠️ Correction indisponible';
+  /* question ouverte : la reponse prevue n'est qu'un exemple parmi d'autres bonnes reponses */
+  var solLbl = q.opts.length ? 'Bonne réponse : ' : 'Exemple de bonne réponse : ';
   var html = '<b>' + titre + '</b>' + (expl ? '<div>' + esc(expl) + '</div>' : '') +
-    (ok !== true ? '<div class="cq-sol">Réponse attendue : ' + esc(q.a) + '</div>' : '');
+    (ok !== true ? '<div class="cq-sol">' + solLbl + esc(q.a) + '</div>' : '');
   el = cqBubble(html, el);
   el.classList.add('cq-fb', ok === true ? 'ok' : 'ko');
   _cq.i++;
@@ -4404,7 +4398,7 @@ function cqFin() {
   var h = '<div class="cq-end"><div class="cq-score">' + c.score + '/' + n + '</div><div class="cq-end-t">' + mot + '</div>';
   if (c.ratees.length) {
     h += '<div class="cq-sec">À revoir</div>' + c.ratees.map(function(r) {
-      return '<div class="cq-err"><div>' + esc(r.q) + '</div><span>' + esc(r.a) + '</span></div>';
+      return '<div class="cq-err"><div>' + esc(r.q) + '</div><span>' + (r.qcm ? '' : 'Ex. : ') + esc(r.a) + '</span></div>';
     }).join('');
   }
   h += '<div class="cq-btns"><button onclick="cqRefaire()">Nouvelles questions</button>' +
@@ -5312,7 +5306,7 @@ async function callGroq(messages, maxTok, opts) {
   messages = _applyNiveau(messages, opts);
   /* Contenu de revision : plus de reflexion = definitions plus justes (~2 s de plus).
      max_tokens inclut la reflexion de gpt-oss, d'ou la marge ajoutee. */
-  var effort = (opts && opts.niveau === 'revision') ? 'medium' : 'low';
+  var effort = (opts && opts.effort) || ((opts && opts.niveau === 'revision') ? 'medium' : 'low');
   var res = await _groqFetch({ model: AI_TEXT_MODEL, reasoning_effort: effort, max_tokens: (maxTok || 1800) + (effort === 'medium' ? 1500 : 600), messages: messages });
   var data = await res.json();
   if (data.error) throw new Error(data.error.message);
@@ -5447,6 +5441,30 @@ function _verdictOk(r) {
   return !!m && m[1] === 'CORRECT';
 }
 function _verdictText(r) { return String(r || '').replace(/\*\*/g, '').trim(); }
+
+/* ══ CORRECTEUR COMMUN (interro du chat, Interro IA, Quiz vocal) ══
+   La reponse prevue n'est qu'UN EXEMPLE : beaucoup de questions acceptent plusieurs
+   bonnes reponses (« cite une cause », « donne un exemple », « un philosophe des Lumieres »).
+   L'IA juge donc le FOND de la reponse avec ses connaissances, pas la ressemblance. */
+var CORRECTEUR_SYS = 'Tu es un professeur bienveillant qui corrige la réponse d\'un élève.\n' +
+  'RÈGLES :\n' +
+  '- La « réponse prévue » n\'est qu\'UN EXEMPLE de bonne réponse, pas la seule. Si la question admet plusieurs bonnes réponses (une cause parmi d\'autres, un exemple, un personnage, une date équivalente, un synonyme, une autre méthode, une autre formulation…), TOUTE réponse juste est CORRECTE, même si elle est différente de l\'exemple.\n' +
+  '- Juge le FOND avec tes connaissances du cours : la réponse de l\'élève répond-elle correctement à la question posée ?\n' +
+  '- Ignore l\'orthographe, les accents, les majuscules, les fautes de frappe et la façon de formuler.\n' +
+  '- Si la question demande plusieurs éléments (« deux causes »), il faut ce nombre d\'éléments justes.\n' +
+  '- Une réponse fausse, hors sujet, trop vague ou « je ne sais pas » est INCORRECTE.\n' +
+  'Ensuite, 1 à 2 phrases simples : si c\'est correct, confirme pourquoi c\'est juste ; si c\'est faux, explique l\'erreur et donne une bonne réponse.' +
+  GRADER_RULE;
+/* choix : liste des propositions d'un QCM (facultatif) -> { ok, expl } */
+async function corrigerReponse(question, prevue, reponse, choix) {
+  var r = await callGroq([
+    { role: 'system', content: CORRECTEUR_SYS },
+    { role: 'user', content: 'Question : ' + question +
+      (choix && choix.length ? '\nChoix : ' + choix.map(function(o, k) { return 'ABCD'.charAt(k) + ') ' + o; }).join(' ; ') : '') +
+      '\nExemple de réponse prévue : ' + prevue + '\nRéponse de l\'élève : ' + reponse }
+  ], 400, { niveau: 'court', effort: 'medium' });
+  return { ok: _verdictOk(r), expl: _verdictText(r).replace(/^(IN)?CORRECT\s*[.:!,—–-]*\s*/i, '') };
+}
 var GRADER_RULE = ' Ta réponse commence OBLIGATOIREMENT par le mot CORRECT ou INCORRECT (sans gras, sans phrase avant).';
 
 /* ══ MODALES OUTILS ══ */
@@ -5897,15 +5915,11 @@ async function checkVQAnswer(answer) {
   var fbEl=document.getElementById('vq-feedback'); if(!fbEl) return;
   fbEl.style.display='block'; fbEl.textContent='⚡ Vérification...'; fbEl.className='vq-feedback';
   try{
-    var r=await callGroq([
-      {role:'system',content:'Tu corriges des réponses d\'élève. Réponds UNIQUEMENT par : CORRECT ou INCORRECT suivi d\'une phrase max.'+GRADER_RULE},
-      {role:'user',content:'Question : '+card.q+'\nRéponse attendue : '+card.a+'\nRéponse élève : '+answer+'\nCorrect ?'}
-    ], 300, { niveau: 'court' });
-    var isOk=_verdictOk(r);
-    if(isOk){vqOk++; fbEl.className='vq-feedback vq-ok';}
+    var c=await corrigerReponse(card.q, card.a, answer);
+    if(c.ok){vqOk++; fbEl.className='vq-feedback vq-ok';}
     else{fbEl.className='vq-feedback vq-ko';}
-    fbEl.textContent=_verdictText(r);
-  }catch(e){fbEl.className='vq-feedback vq-ko';fbEl.textContent='Réponse attendue : '+card.a;}
+    fbEl.textContent=(c.ok?'✅ ':'❌ ')+c.expl;
+  }catch(e){fbEl.className='vq-feedback vq-ko';fbEl.textContent='Correction impossible. Exemple de bonne réponse : '+card.a;}
   var nb=document.getElementById('vq-next-btn'); if(nb) nb.style.display='block';
 }
 function vqNext(){ vqIdx++; renderVQCard(); }
@@ -6004,15 +6018,11 @@ async function checkInterroAnswer() {
   var vb=document.getElementById('interro-val-btn'); if(vb){vb.disabled=true;vb.textContent='⚡ Correction...';}
   fb.style.display='block'; fb.textContent='Vérification...'; fb.className='interro-feedback';
   try{
-    var r=await callGroq([
-      {role:'system',content:'Tu corriges des réponses d\'élève. Réponds par CORRECT ou INCORRECT, puis 1-2 phrases d\'explication claires.'+GRADER_RULE},
-      {role:'user',content:'Question : '+q.q+'\nRéponse attendue : '+q.a+'\nRéponse élève : '+ans}
-    ], 400, { niveau: 'court' });
-    var ok=_verdictOk(r);
-    if(ok){interroScore++;fb.className='interro-feedback interro-ok';}
+    var c=await corrigerReponse(q.q, q.a, ans);
+    if(c.ok){interroScore++;fb.className='interro-feedback interro-ok';}
     else{fb.className='interro-feedback interro-ko';}
-    fb.textContent=_verdictText(r);
-  }catch(e){fb.className='interro-feedback interro-ko';fb.textContent='Réponse attendue : '+q.a;}
+    fb.textContent=(c.ok?'✅ ':'❌ ')+c.expl;
+  }catch(e){fb.className='interro-feedback interro-ko';fb.textContent='Correction impossible. Exemple de bonne réponse : '+q.a;}
   if(vb)vb.style.display='none';
   var nb=document.getElementById('interro-next-btn');if(nb)nb.style.display='block';
 }

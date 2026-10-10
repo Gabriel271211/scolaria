@@ -41,6 +41,7 @@ Tu travailles sur **ScolarIA**, une application scolaire pour élèves français
 - `NIVEAU_REPERES` dit dans quelle classe chaque notion **et sa notation** apparaissent (ex. ℕ ℤ ℚ ℝ en 2nde, ℂ en Terminale) : le compléter si l'IA attribue une notion à la mauvaise classe.
 - **Photos : toujours `callGroqVision(messages, maxTok, opts)`** (essaie chaque modèle de `AI_VISION_MODELS`), jamais un `fetch` direct.
 - Les trois fonctions **lèvent une erreur si l'IA renvoie un texte vide** (`AI_EMPTY_MSG`) : chaque appel doit être dans un `try/catch` ou avoir un `.catch`.
+- **Corriger une réponse d'élève : toujours `corrigerReponse(question, prevue, reponse, choix)`** → `{ ok, expl }` (utilisé par l'interro du chat, l'Interro IA et le Quiz vocal). La réponse prévue n'est qu'UN EXEMPLE : toute réponse juste est acceptée (une autre cause, un autre exemple…), l'orthographe est ignorée. Réflexion `medium` (~0,8 s). Afficher « Exemple de bonne réponse » pour une question ouverte.
 - Correcteurs : lire le verdict avec `_verdictOk(r)` (tolère le gras et une phrase avant), afficher avec `_verdictText(r)`, ajouter `GRADER_RULE` au prompt.
 - Règle IA : un sujet d'une autre année est **toujours expliqué** (signalé en 1re phrase, puis adapté au niveau de l'élève).
 - Ne JAMAIS réécrire « 3ème » ou « brevet » en dur dans un prompt : utiliser `getClasse()` et `examLabel()` (brevet/bac).

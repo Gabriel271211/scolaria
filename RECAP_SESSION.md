@@ -24,6 +24,7 @@
 | Veille de contrôle v2 : date précise, plusieurs sujets, planning jour par jour, notifications | ✅ |
 | Programmes officiels de maths 2026-2027 intégrés (6ème → Terminale) + bouton 🌐 recherche internet dans le chat | ✅ |
 | Interrogation interactive dans le chat : outil que l'IA lance d'elle-même quand l'élève veut être interrogé | ✅ |
+| Scanner → « Mes cours » : transcription fidèle, sauvegardée, modifiable, plusieurs pages, révisable (fiche, flashcards, interro) | ✅ |
 
 ---
 

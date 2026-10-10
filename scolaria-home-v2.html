@@ -1397,6 +1397,40 @@ body::after {
 .chat-src-t { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--mu); margin-bottom: 4px; }
 .chat-src a { display: block; color: var(--accent); text-decoration: none; padding: 3px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .chat-src a span { color: var(--mu); font-size: 11px; margin-left: 4px; }
+/* Mes cours (cours transcrits) */
+.mc-panel { position: fixed; inset: 0; z-index: 560; background: var(--bg); flex-direction: column; overflow: hidden; }
+.mc-top { display: flex; align-items: center; gap: 6px; padding: max(12px, env(safe-area-inset-top)) 12px 10px; border-bottom: 1px solid var(--bord); background: var(--card); flex-shrink: 0; }
+.mc-back { background: none; border: none; color: var(--tx); font-size: 28px; line-height: 1; width: 36px; height: 36px; cursor: pointer; padding: 0; }
+.mc-ttl { flex: 1; font-size: 16px; font-weight: 800; color: var(--tx); }
+.mc-top-act { display: flex; align-items: center; gap: 10px; }
+.mc-top-btn { background: var(--accent-l); color: var(--accent); border: none; border-radius: 10px; padding: 8px 14px; font-size: 13px; font-weight: 700; font-family: var(--fb); cursor: pointer; }
+.mc-etat { font-size: 11px; color: var(--mu); }
+.mc-body { flex: 1; overflow-y: auto; padding: 16px 16px max(24px, env(safe-area-inset-bottom)); max-width: 680px; width: 100%; margin: 0 auto; box-sizing: border-box; }
+.mc-liste { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+.mc-item { background: var(--card); border: 1.5px solid var(--bord); border-radius: 14px; padding: 12px 14px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.mc-item:active { transform: scale(.99); }
+.mc-item-s { margin-bottom: 8px; padding: 10px 12px; }
+.mc-item-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.mc-item-t { font-size: 15px; font-weight: 700; color: var(--tx); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mc-tag { flex-shrink: 0; font-size: 11px; font-weight: 700; color: var(--accent); background: var(--accent-l); border-radius: 99px; padding: 3px 9px; }
+.mc-item-p { font-size: 12px; color: var(--mu); margin-top: 4px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.mc-item-d { font-size: 11px; color: var(--mu); margin-top: 6px; }
+.mc-vide { font-size: 13px; color: var(--mu); line-height: 1.45; border: 1.5px dashed var(--bord); border-radius: 14px; padding: 14px; cursor: pointer; }
+.mc-head { margin-bottom: 14px; }
+.mc-h-t { font-size: 22px; font-weight: 800; letter-spacing: -.4px; color: var(--tx); line-height: 1.2; }
+.mc-h-s { font-size: 12px; color: var(--mu); margin-top: 4px; }
+.mc-texte { background: var(--card); border: 1px solid var(--bord); border-radius: 14px; padding: 14px 16px; font-size: 14px; line-height: 1.6; }
+.mc-sec { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--mu); margin: 20px 0 8px; }
+.mc-acts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 10px; }
+.mc-acts button { padding: 12px 6px; border-radius: 12px; border: 1.5px solid var(--bord); background: var(--card); color: var(--tx); font-size: 13px; font-weight: 700; font-family: var(--fb); cursor: pointer; }
+.mc-acts button:active { border-color: var(--accent); }
+.mc-btn2 { display: block; width: 100%; padding: 13px; border-radius: 14px; border: 1.5px solid var(--bord); background: var(--card); color: var(--tx); font-size: 14px; font-weight: 600; font-family: var(--fb); cursor: pointer; margin-top: 8px; }
+.mc-btn2.del { color: var(--danger); background: transparent; border-color: transparent; margin-top: 18px; }
+.mc-in-t { width: 100%; box-sizing: border-box; border: none; border-bottom: 1.5px solid var(--bord); background: transparent; color: var(--tx); font-size: 20px; font-weight: 800; font-family: var(--fb); padding: 6px 0 8px; margin-bottom: 12px; outline: none; }
+.mc-in-t:focus { border-bottom-color: var(--accent); }
+.mc-ta { width: 100%; box-sizing: border-box; min-height: 55vh; border: 1.5px solid var(--bord); border-radius: 14px; background: var(--card); color: var(--tx); font-size: 14px; line-height: 1.6; font-family: var(--fb); padding: 12px 14px; resize: vertical; outline: none; }
+.mc-ta:focus { border-color: var(--accent); }
+
 /* Interrogation dans le chat (outil de l'IA) */
 .cq-intro { font-size: 13px; color: var(--mu); line-height: 1.45; }
 .cq-intro b { display: block; font-size: 15px; color: var(--tx); margin-bottom: 3px; }
@@ -2022,6 +2056,15 @@ body.dark .ann-piege{background:#2a2110;border-color:#5a4516;color:#e0b860}
         <div class="dm-desc">Exercices type brevet + correction</div>
       </div>
     </div>
+    <div class="drawer-mode" onclick="openMesCours()">
+      <div class="dm-icon" style="background:#eef2ff">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#4f46e5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      </div>
+      <div class="dm-info">
+        <div class="dm-name">Mes cours</div>
+        <div class="dm-desc">Cours scannés, à relire et modifier</div>
+      </div>
+    </div>
     <div class="drawer-mode" id="dm-install" style="display:none" onclick="installApp()">
       <div class="dm-icon" style="background:#eef2ff">
         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#4f46e5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><polyline points="7 10 12 15 17 10"/><path d="M5 21h14"/></svg>
@@ -2474,7 +2517,12 @@ body.dark .ann-piege{background:#2a2110;border-color:#5a4516;color:#e0b860}
         <svg viewBox="0 0 24 24"><path d="M12 2l2 8 8 2-8 2-2 8-2-8-8-2 8-2z"/></svg>
         Générer
       </button>
-      <div class="home-section-title" style="margin-top:26px;margin-bottom:10px">Mes decks</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:26px;margin-bottom:10px">
+        <div class="home-section-title" style="margin:0">Mes cours</div>
+        <button onclick="openMesCours()" style="font-size:11px;color:var(--accent);background:none;border:none;cursor:pointer;font-family:var(--fb);font-weight:600;padding:4px 0">Tout voir</button>
+      </div>
+      <div id="rev-mc"></div>
+      <div class="home-section-title" style="margin-top:22px;margin-bottom:10px">Mes decks</div>
       <div id="rev-decks-s1"></div>
       <div id="rev-fav-section" style="display:none">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-top:18px;margin-bottom:6px">
@@ -4277,7 +4325,9 @@ async function cqStart(args, el, demande) {
   var consigne = format === 'qcm' ? 'uniquement des QCM à 4 choix'
     : format === 'ouvertes' ? 'uniquement des questions à réponse courte (aucun QCM)'
     : 'environ moitié QCM à 4 choix, moitié questions à réponse courte';
-  var prompt = 'Prépare une interrogation de ' + nb + ' questions sur « ' + sujet + ' » : ' + consigne + '.\n' +
+  /* args.cours : texte d'un cours de l'eleve (Mes cours) -> questions UNIQUEMENT sur ce cours */
+  var surCours = args.cours ? 'Les questions portent UNIQUEMENT sur ce cours de l\'élève :\n"""\n' + String(args.cours).slice(0, 6000) + '\n"""\n' : '';
+  var prompt = surCours + 'Prépare une interrogation de ' + nb + ' questions sur « ' + sujet + ' » : ' + consigne + '.\n' +
     'Du plus simple au plus difficile, sur l\'essentiel de ce qui tombe en contrôle. Réponses courtes et exactes, une seule bonne réponse par QCM.\n' +
     'FORMAT EXACT, rien d\'autre :\nQ: question\nA) choix\nB) choix\nC) choix\nD) choix\nR: lettre de la bonne réponse\n\n' +
     'ou, pour une question ouverte :\nQ: question\nR: réponse attendue (courte ; si plusieurs réponses sont justes, donnes-en 2 ou 3 séparées par « ; »)';
@@ -6044,18 +6094,271 @@ function closeScanCours() {
   var camInp=document.getElementById('scan-file-cam'); if(camInp) camInp.value='';
   var galInp=document.getElementById('scan-file-gal'); if(galInp) galInp.value='';
 }
+/* Reduit une photo (souvent 3-5 Mo sur telephone) : max 2000 px, JPEG 0,85.
+   Reste tres lisible pour l'IA et passe sous la limite d'image de Groq. */
+function imageReduite(file, cb) {
+  var url = URL.createObjectURL(file);
+  var img = new Image();
+  img.onload = function() {
+    var max = 2000, w = img.naturalWidth, h = img.naturalHeight, k = Math.min(1, max / Math.max(w, h));
+    var cv = document.createElement('canvas');
+    cv.width = Math.round(w * k); cv.height = Math.round(h * k);
+    cv.getContext('2d').drawImage(img, 0, 0, cv.width, cv.height);
+    URL.revokeObjectURL(url);
+    cb(cv.toDataURL('image/jpeg', 0.85));
+  };
+  img.onerror = function() { URL.revokeObjectURL(url); cb(null); };
+  img.src = url;
+}
 function handleScanFile(file) {
   if(!file) return;
-  var r=new FileReader();
-  r.onload=function(ev){
+  imageReduite(file, function(dataUrl){
+    if(!dataUrl){ toast('Impossible de lire cette image'); return; }
     var prev=document.getElementById('scan-preview');
-    if(prev){prev.src=ev.target.result;prev.style.display='block';}
-    scanImageData={b64:ev.target.result.split(',')[1],mime:file.type||'image/jpeg',full:ev.target.result};
+    if(prev){prev.src=dataUrl;prev.style.display='block';}
+    scanImageData={b64:dataUrl.split(',')[1],mime:'image/jpeg',full:dataUrl};
     var drop=document.getElementById('scan-drop');
     if(drop) drop.innerHTML='<div class="scan-drop-icon">✅</div><div class="scan-drop-txt"><strong>Image chargée</strong><br>Clique sur une option ci-dessous</div>';
     var acts=document.getElementById('scan-actions'); if(acts) acts.style.display='block';
-  };
-  r.readAsDataURL(file);
+  });
+}
+/* Scanner -> transcription fidele, sauvegardee dans « Mes cours » */
+async function scanTranscrire() {
+  if(!scanImageData){toast('Charge une image d\'abord');return;}
+  var res=document.getElementById('scan-result');
+  var acts=document.getElementById('scan-actions'); if(acts) acts.style.display='none';
+  res.innerHTML='<div class="rev-loading" style="padding:30px 0"><div class="rev-spin"></div><div class="rev-loading-txt">ScolarIA recopie ton cours...</div><div class="rev-loading-sub">Environ 10 secondes</div></div>';
+  try {
+    var t = await mcTranscrire(scanImageData.full);
+    var c = mcNouveau(t.titre, t.mat, t.texte);
+    closeScanCours();
+    openMesCours(c.id);
+    toast('Cours sauvegardé dans « Mes cours »');
+  } catch(e) {
+    res.innerHTML='<div class="rev-err-box">'+esc(e.message)+'<br><button onclick="scanTranscrire()">Réessayer</button></div>';
+    if(acts)acts.style.display='block';
+  }
+}
+
+/* ══════════════════════════════════════════════
+   MES COURS — cours transcrits, a relire et modifier
+   sk_cours (synchronise) : [{ id, titre, mat, texte, cree, maj }]
+   Fonctions mc*, CSS .mc-, panneau #mc-panel
+══════════════════════════════════════════════ */
+var MC_KEY = 'sk_cours';
+var _mcCur = null, _mcEdit = false, _mcTimer = null;
+
+function mcLoad() { try { var l = JSON.parse(localStorage.getItem(MC_KEY) || '[]'); return Array.isArray(l) ? l : []; } catch(e) { return []; } }
+function mcSaveAll(l) {
+  try { localStorage.setItem(MC_KEY, JSON.stringify(l)); }
+  catch(e) { toast('Mémoire pleine : supprime un ancien cours'); }
+  scheduleSync();
+  mcRenderRev();
+}
+function mcGet(id) { return mcLoad().filter(function(c) { return c.id === id; })[0] || null; }
+function mcPut(c) {
+  c.maj = Date.now();
+  var l = mcLoad(), trouve = false;
+  l = l.map(function(x) { if (x.id === c.id) { trouve = true; return c; } return x; });
+  if (!trouve) l.unshift(c);
+  mcSaveAll(l);
+}
+function mcNouveau(titre, mat, texte) {
+  var c = { id: 'm' + Date.now(), titre: titre || 'Cours sans titre', mat: mat || '', texte: texte || '', cree: Date.now(), maj: Date.now() };
+  mcPut(c);
+  return c;
+}
+function mcDate(ts) { return new Date(ts).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' }); }
+function mcMots(t) { return (String(t || '').match(/\S+/g) || []).length; }
+
+/* Photo -> { titre, mat, texte } : copie FIDELE (pas de resume, pas d'adaptation au niveau) */
+async function mcTranscrire(dataUrl) {
+  var prompt = 'Transcris FIDÈLEMENT tout le texte de cette photo de cours (manuscrit ou imprimé), dans l\'ordre de lecture.\n' +
+    'RÈGLES : ne résume pas, n\'ajoute rien, ne corrige pas le fond. Garde la structure avec du markdown simple : # pour les titres, ## pour les sous-titres, - pour les listes, **gras** pour ce qui est souligné ou encadré. ' +
+    'Recopie les formules telles quelles (x², √, π, fractions a/b). Mot illisible : [illisible]. Schéma ou dessin : [schéma : courte description]. Tableau : tableau markdown.\n' +
+    'FORMAT EXACT de ta réponse :\nTITRE: titre du cours (court)\nMATIERE: la matière (Maths, Français, Histoire-Géo, SVT, Physique-Chimie, Anglais…)\n---\n(la transcription)';
+  var txt = await callGroqVision([{ role: 'user', content: [
+    { type: 'image_url', image_url: { url: dataUrl } },
+    { type: 'text', text: prompt }
+  ]}], 3000, { noNiveau: true });
+  var titre = '', mat = '', corps = txt;
+  var sep = txt.indexOf('\n---');
+  if (sep !== -1) {
+    var tete = txt.slice(0, sep);
+    corps = txt.slice(sep + 4).replace(/^-*\s*\n/, '');
+    var mt = tete.match(/TITRE\s*:\s*(.+)/i); if (mt) titre = mt[1].replace(/\*\*/g, '').trim();
+    var mm = tete.match(/MATI[EÈ]RE\s*:\s*(.+)/i); if (mm) mat = mm[1].replace(/\*\*/g, '').trim();
+  }
+  corps = corps.trim();
+  if (!corps) throw new Error('Je n\'ai trouvé aucun texte sur cette photo.');
+  if (!titre) { var h = corps.match(/^#+\s*(.+)$/m); titre = h ? h[1].trim() : corps.split('\n')[0].slice(0, 50); }
+  return { titre: titre.slice(0, 80), mat: mat.slice(0, 30), texte: corps };
+}
+
+/* ── Panneau ── */
+function openMesCours(id) {
+  closeDrawer();
+  var p = document.getElementById('mc-panel');
+  if (p) p.style.display = 'flex';
+  if (id && mcGet(id)) mcShowCours(id); else mcShowList();
+}
+function closeMesCours() {
+  mcFlush();
+  var p = document.getElementById('mc-panel');
+  if (p) p.style.display = 'none';
+  _mcCur = null; _mcEdit = false;
+}
+function mcBack() {
+  if (_mcEdit && _mcCur) { mcFlush(); mcShowCours(_mcCur); return; }
+  if (_mcCur) { mcShowList(); return; }
+  closeMesCours();
+}
+function mcTop(titre, actions) {
+  document.getElementById('mc-ttl').textContent = titre;
+  document.getElementById('mc-top-act').innerHTML = actions || '';
+}
+
+function mcShowList() {
+  mcFlush();
+  _mcCur = null; _mcEdit = false;
+  mcTop('Mes cours', '');
+  var l = mcLoad().sort(function(a, b) { return b.maj - a.maj; });
+  var h = '<button class="rev-go-btn" style="margin-top:0" onclick="closeMesCours();openScanCours()">📷 Scanner un cours</button>' +
+    '<button class="mc-btn2" style="margin-top:8px" onclick="mcCreerVide()">✏️ Écrire un cours</button>';
+  if (l.length > 4) h += '<input class="vc-inp" id="mc-cherche" style="margin-top:14px" placeholder="Rechercher un cours…" oninput="mcFiltre(this.value)">';
+  h += '<div id="mc-liste" class="mc-liste">' + mcListeHtml(l) + '</div>';
+  document.getElementById('mc-body').innerHTML = h;
+}
+function mcListeHtml(l) {
+  if (!l.length) return '<div class="vc-empty"><b>Aucun cours sauvegardé</b>Scanne une page de ton cahier : ScolarIA la recopie pour que tu puisses la relire et la modifier quand tu veux.</div>';
+  return l.map(function(c) {
+    var apercu = String(c.texte || '').replace(/[#*>|`-]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 90);
+    return '<div class="mc-item" onclick="mcShowCours(\'' + c.id + '\')">' +
+      '<div class="mc-item-top"><span class="mc-item-t">' + esc(c.titre) + '</span>' + (c.mat ? '<span class="mc-tag">' + esc(c.mat) + '</span>' : '') + '</div>' +
+      '<div class="mc-item-p">' + esc(apercu) + '</div>' +
+      '<div class="mc-item-d">Modifié le ' + mcDate(c.maj) + ' · ' + mcMots(c.texte) + ' mots</div></div>';
+  }).join('');
+}
+function mcFiltre(q) {
+  q = String(q || '').toLowerCase();
+  var l = mcLoad().sort(function(a, b) { return b.maj - a.maj; }).filter(function(c) {
+    return !q || (c.titre + ' ' + c.mat + ' ' + c.texte).toLowerCase().indexOf(q) !== -1;
+  });
+  document.getElementById('mc-liste').innerHTML = mcListeHtml(l);
+}
+function mcCreerVide() { var c = mcNouveau('Nouveau cours', '', ''); _mcCur = c.id; mcEditer(); }
+
+function mcShowCours(id) {
+  var c = mcGet(id); if (!c) { mcShowList(); return; }
+  mcFlush();
+  _mcCur = id; _mcEdit = false;
+  mcTop('Cours', '<button class="mc-top-btn" onclick="mcEditer()">Modifier</button>');
+  document.getElementById('mc-body').innerHTML =
+    '<div class="mc-head"><div class="mc-h-t">' + esc(c.titre) + '</div>' +
+      '<div class="mc-h-s">' + (c.mat ? esc(c.mat) + ' · ' : '') + 'modifié le ' + mcDate(c.maj) + ' · ' + mcMots(c.texte) + ' mots</div></div>' +
+    '<div class="mc-texte rev-ia-result">' + (c.texte ? mdToHtml(c.texte) : '<span style="color:var(--mu)">Ce cours est vide. Touche « Modifier » pour écrire.</span>') + '</div>' +
+    '<div class="mc-sec">Réviser ce cours</div>' +
+    '<div class="mc-acts">' +
+      '<button onclick="mcGenerer(\'fiche\')">Fiche</button>' +
+      '<button onclick="mcGenerer(\'flashcards\')">Flashcards</button>' +
+      '<button onclick="mcInterroger()">M\'interroger</button>' +
+    '</div>' +
+    '<button class="mc-btn2" onclick="document.getElementById(\'mc-page-inp\').click()">📷 Ajouter une page (photo)</button>' +
+    '<div id="mc-page-etat"></div>' +
+    '<button class="mc-btn2 del" onclick="mcSupprimer()">Supprimer ce cours</button>';
+  document.getElementById('mc-body').scrollTop = 0;
+}
+
+function mcEditer() {
+  var c = mcGet(_mcCur); if (!c) return;
+  _mcEdit = true;
+  mcTop('Modifier', '<span class="mc-etat" id="mc-etat">Enregistré</span><button class="mc-top-btn" onclick="mcFlush();mcShowCours(_mcCur)">OK</button>');
+  document.getElementById('mc-body').innerHTML =
+    '<input class="mc-in-t" id="mc-in-titre" maxlength="80" placeholder="Titre du cours" value="' + esc(c.titre) + '" oninput="mcModif()">' +
+    '<input class="vc-inp" id="mc-in-mat" maxlength="30" placeholder="Matière (ex : Histoire-Géo)" value="' + esc(c.mat) + '" oninput="mcModif()" style="margin-bottom:10px">' +
+    '<textarea class="mc-ta" id="mc-in-texte" placeholder="Ton cours… (# Titre, ## Sous-titre, - liste, **gras**)" oninput="mcModif()">' + esc(c.texte) + '</textarea>' +
+    '<div class="vc-hint">Enregistrement automatique. Mise en forme : # titre, ## sous-titre, - liste, **gras**.</div>';
+  var ta = document.getElementById('mc-in-texte');
+  if (ta && !c.texte) ta.focus();
+}
+/* sauvegarde automatique 0,6 s apres la derniere frappe */
+function mcModif() {
+  var e = document.getElementById('mc-etat'); if (e) e.textContent = 'Enregistrement…';
+  clearTimeout(_mcTimer);
+  _mcTimer = setTimeout(mcFlush, 600);
+}
+function mcFlush() {
+  clearTimeout(_mcTimer); _mcTimer = null;
+  if (!_mcEdit || !_mcCur) return;
+  var c = mcGet(_mcCur); if (!c) return;
+  var t = document.getElementById('mc-in-titre'), m = document.getElementById('mc-in-mat'), x = document.getElementById('mc-in-texte');
+  if (!t || !x) return;
+  var nt = t.value.trim() || 'Cours sans titre', nm = m ? m.value.trim() : c.mat, nx = x.value;
+  if (nt === c.titre && nm === c.mat && nx === c.texte) { var e0 = document.getElementById('mc-etat'); if (e0) e0.textContent = 'Enregistré'; return; }
+  c.titre = nt; c.mat = nm; c.texte = nx;
+  mcPut(c);
+  var e = document.getElementById('mc-etat'); if (e) e.textContent = 'Enregistré ✓';
+}
+
+async function mcAjouterPage(file) {
+  if (!file || !_mcCur) return;
+  var etat = document.getElementById('mc-page-etat');
+  if (etat) etat.innerHTML = '<div class="rev-loading" style="padding:16px 0"><div class="rev-spin"></div><div class="rev-loading-txt">ScolarIA recopie la page…</div></div>';
+  imageReduite(file, async function(dataUrl) {
+    try {
+      if (!dataUrl) throw new Error('Impossible de lire cette image');
+      var t = await mcTranscrire(dataUrl);
+      var c = mcGet(_mcCur); if (!c) return;
+      c.texte = (c.texte ? c.texte.replace(/\s+$/, '') + '\n\n---\n\n' : '') + t.texte;
+      if (!c.mat && t.mat) c.mat = t.mat;
+      mcPut(c);
+      mcShowCours(c.id);
+      toast('Page ajoutée au cours');
+    } catch(e) {
+      if (etat) etat.innerHTML = '<div class="rev-err-box">' + esc(e.message) + '</div>';
+    }
+  });
+}
+function mcSupprimer() {
+  if (!_mcCur || !confirm('Supprimer ce cours ? Cette action est définitive.')) return;
+  var id = _mcCur;
+  _mcEdit = false;
+  mcSaveAll(mcLoad().filter(function(c) { return c.id !== id; }));
+  mcShowList();
+}
+
+/* ── Reviser a partir du cours ── */
+function mcGenerer(type) {
+  var c = mcGet(_mcCur); if (!c || !c.texte.trim()) { toast('Le cours est vide'); return; }
+  closeMesCours();
+  goSec('s-revisions', document.querySelector('.nav-btn[onclick*=s-revisions]'));
+  setTimeout(function() {
+    var inp = document.getElementById('rev-topic'); if (inp) inp.value = c.titre;
+    if (!revCoursOn) revToggleCours();
+    var ta = document.getElementById('rev-cours-txt'); if (ta) ta.value = c.texte;
+    revPickType(type);
+  }, 150);
+}
+function mcInterroger() {
+  var c = mcGet(_mcCur); if (!c || !c.texte.trim()) { toast('Le cours est vide'); return; }
+  if (_cq) { toast('Une interrogation est déjà en cours dans le chat'); return; }
+  closeMesCours();
+  goSec('s-chat', document.querySelectorAll('.nav-btn')[0]);
+  var demande = 'Interroge-moi sur mon cours « ' + c.titre + ' »';
+  addMsg(demande, 'user');
+  cqStart({ sujet: c.titre, cours: c.texte }, addMsg('', 'ai thinking'), demande);
+}
+
+/* Section « Mes cours » de l'ecran Revisions (3 derniers) */
+function mcRenderRev() {
+  var box = document.getElementById('rev-mc'); if (!box) return;
+  var l = mcLoad().sort(function(a, b) { return b.maj - a.maj; });
+  box.innerHTML = l.length
+    ? l.slice(0, 3).map(function(c) {
+        return '<div class="mc-item mc-item-s" onclick="openMesCours(\'' + c.id + '\')"><div class="mc-item-top"><span class="mc-item-t">' + esc(c.titre) + '</span>' +
+          (c.mat ? '<span class="mc-tag">' + esc(c.mat) + '</span>' : '') + '</div><div class="mc-item-d">Modifié le ' + mcDate(c.maj) + '</div></div>';
+      }).join('')
+    : '<div class="mc-vide" onclick="openScanCours()">📷 Scanne ton cahier : ScolarIA recopie ton cours pour le garder et le modifier.</div>';
 }
 async function scanGenerate(type) {
   if(!scanImageData){toast('Charge une image d\'abord');return;}
@@ -6772,6 +7075,7 @@ function initApp() {
   updateStreak();
   updateHomeProgression();
   vcInit();
+  mcRenderRev();
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -6799,7 +7103,7 @@ var _syncTimer  = null;
 
 var SYNC_KEYS = [
   'sk_dv','sk_prof','sk_decks','sk_hist','sk_chat',
-  'sk_fiche_count','sk_flash_stats','sk_quiz_stats','sk_streak','sk_ctrl'
+  'sk_fiche_count','sk_flash_stats','sk_quiz_stats','sk_streak','sk_ctrl','sk_cours'
 ];
 
 /* ── Sync ── */
@@ -7337,11 +7641,24 @@ _supa.auth.onAuthStateChange(function(event, session) {
     <img id="scan-preview" style="display:none;width:100%;border-radius:12px;margin-bottom:12px;max-height:200px;object-fit:cover">
     <div id="scan-result"></div>
     <div id="scan-actions" style="display:none">
-      <button class="rev-go-btn" onclick="scanGenerate('fiche')">Générer une fiche</button>
-      <button class="rev-go-btn" style="margin-top:8px;background:var(--bg);color:var(--tx);border:1.5px solid var(--bord)" onclick="scanGenerate('flash')">Générer des flashcards</button>
+      <button class="rev-go-btn" onclick="scanTranscrire()">Transcrire et sauvegarder</button>
+      <div class="vc-hint" style="text-align:center;margin:6px 0 4px">Recopie ton cours tel quel dans « Mes cours », modifiable ensuite</div>
+      <button class="rev-go-btn" style="margin-top:8px;background:var(--bg);color:var(--tx);border:1.5px solid var(--bord);box-shadow:none" onclick="scanGenerate('fiche')">Générer une fiche</button>
+      <button class="rev-go-btn" style="margin-top:8px;background:var(--bg);color:var(--tx);border:1.5px solid var(--bord);box-shadow:none" onclick="scanGenerate('flash')">Générer des flashcards</button>
     </div>
   </div>
 </div>
+
+<!-- ══ MES COURS (cours transcrits, modifiables) ══ -->
+<div id="mc-panel" class="mc-panel" style="display:none">
+  <div class="mc-top">
+    <button class="mc-back" onclick="mcBack()" aria-label="Retour">&#8249;</button>
+    <div class="mc-ttl" id="mc-ttl">Mes cours</div>
+    <div class="mc-top-act" id="mc-top-act"></div>
+  </div>
+  <div class="mc-body" id="mc-body"></div>
+</div>
+<input type="file" id="mc-page-inp" accept="image/*" style="display:none" onchange="mcAjouterPage(this.files[0]);this.value=''">
 
 <!-- ══ VEILLE DE CONTRÔLE ══ -->
 <div class="ia-modal" id="vc-modal" onclick="if(event.target===this)closeVeilleControle()">

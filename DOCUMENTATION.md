@@ -115,7 +115,8 @@ async function callGroqVision(messages, maxTok, opts) { ... } // photos : essaie
 | **Flashcards** | Decks de cartes (question/réponse), session de révision, stats de réussite. |
 | **Interrogation IA** | Questions générées par l'IA + correction automatique des réponses de l'élève. |
 | **Quiz vocal (VQ)** | Quiz avec réponse libre, correction IA. |
-| **Scanner de cours** | Photo d'un cours → fiche de révision ou flashcards générées par vision IA. |
+| **Scanner de cours** | Photo d'un cours (réduite à 2000 px avant envoi, `imageReduite`) → **Transcrire et sauvegarder** (copie fidèle dans « Mes cours »), ou fiche / flashcards générées par vision IA. |
+| **Mes cours** | Panneau `#mc-panel` (fonctions `mc*`, données `sk_cours` synchronisées) : liste avec recherche, lecture mise en forme, **Modifier** (titre, matière, texte markdown, sauvegarde auto), **+ Ajouter une page** (photo transcrite à la suite), **Fiche / Flashcards** (générateur des Révisions avec le cours collé) et **M'interroger** (interro du chat basée uniquement sur le cours). Accès : Révisions (« Mes cours »), menu ☰, Scanner. |
 | **Veille de contrôle** | Liste « Mes contrôles » (`sk_ctrl`, synchronisé). Chaque contrôle : matière, **date précise** (+ heure facultative), **plusieurs sujets**. L'IA génère un planning jour par jour calé sur les vraies dates (cases à cocher + progression). **Rappels** : la veille à 17h, le matin du contrôle (7h) et les jours de révision (17h), envoyés par `sw.js` (`checkCtrl`) via le cache `scolaria-data`. |
 | **Conjugaison** | FR (tables locales + IA pour irréguliers), EN et ES (local + enrichissement IA). |
 | **Pomodoro** | Minuteur de travail/pause avec alerte sonore (WebAudio) et vibration (haptique) en fin de cycle. |
@@ -153,6 +154,7 @@ Préfixe commun : `sk_`.
 | `sk_flash_stats` | Stats flashcards `{ok,total}` | ✅ |
 | `sk_quiz_stats` | Stats quiz `{ok,total}` | ✅ |
 | `sk_streak` | Série de jours `{count,date}` | ✅ |
+| `sk_cours` | Mes cours : `[{id, titre, mat, texte, cree, maj}]` | ✅ |
 | `sk_ctrl` | Contrôles de la Veille de contrôle (date, sujets, planning, cases cochées, rappels) | ✅ |
 | `sk_day_*` | Activité journalière | ✅ (préfixe) |
 | `sk_theme` | Thème clair/sombre | ❌ (local au device) |

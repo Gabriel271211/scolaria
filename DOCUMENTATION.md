@@ -98,6 +98,8 @@ async function callGroqVision(messages, maxTok, opts) { ... } // photos : essaie
 
 - Toutes les fonctions IA appellent `GROQ_PROXY` avec l'en-tête `Authorization: Bearer <SUPA_ANON>`.
 - Les appels vision (photos) passent tous par `callGroqVision` (scan d'agenda, photo dans le chat, scanner de cours).
+- Tous les appels passent par `_groqFetch()` : relance automatique si Groq répond 429 avec une attente courte (limite gratuite de 8 000 jetons/minute), sinon message en français.
+- Le bloc niveau contient le **programme officiel 2026-2027 de la matière détectée** (`PROG_MATIERES` : maths, physique-chimie, SVT, histoire-géo, français, philosophie).
 - Les trois fonctions ajoutent le bloc niveau (sauf `{noNiveau:true}` ; `{niveau:'court'}` = une ligne), nettoient les formules (`_cleanMath` : LaTeX → texte, exposants en ², ³, ⁻³…) et **lèvent une erreur si la réponse est vide**.
 - À la déconnexion, `logout()` efface aussi le cache `scolaria-data` et la vérification en arrière-plan : plus de rappels de contrôles pour l'ancien compte.
 

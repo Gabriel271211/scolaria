@@ -4546,7 +4546,7 @@ var NIVEAUX = {
   '5ème': {
     cycle: 'collège', examen: 'contrôle',
     ton: 'Parle simplement et clairement, avec des exemples concrets. Introduis le vocabulaire précis de chaque matière en l\'expliquant.',
-    prog: 'Maths : nombres relatifs, priorités de calcul, fractions (comparer, additionner), calcul littéral (débuts), proportionnalité, triangles et parallélogrammes, symétrie centrale, statistiques simples. Français : récits du Moyen Âge, héros et chevaliers, théâtre (comédie), accords et conjugaison. Histoire-Géo : chrétientés et islam (VIe-XIIIe s.), société féodale, Renaissance, Grandes découvertes, Réformes ; croissance démographique, ressources, changement climatique. SVT, Physique-Chimie et Technologie séparées. Début de la LV2.'
+    prog: 'Maths : nombres relatifs, priorités de calcul, fractions (comparer, additionner), calcul littéral (débuts), proportionnalité, triangles et parallélogrammes, symétrie centrale, statistiques simples. Français (nouveau programme 2026) : destins romanesques de héros et d\'héroïnes, poésie du voyage, théâtre et comédie, récits pour plaire et instruire ; grammaire et dictée chaque semaine. Histoire-Géo : chrétientés et islam (VIe-XIIIe s.), société féodale, Renaissance, Grandes découvertes, Réformes ; croissance démographique, ressources, changement climatique. SVT, Physique-Chimie et Technologie séparées. Début de la LV2.'
   },
   '4ème': {
     cycle: 'collège', examen: 'contrôle',
@@ -4615,6 +4615,61 @@ var PROG_MATHS = {
   }
 };
 
+/* ══ PROGRAMMES DES AUTRES MATIÈRES — ANNÉE 2026-2027 ══
+   Seuls le francais, les maths et les langues changent en 2026 au college (5e en 2026,
+   4e en 2027, 3e en 2028 ; francais 6e depuis 2025). Histoire-geo, SVT et physique-chimie
+   gardent les programmes de 2015/2020 (college) et 2019/2020 (lycee).
+   En physique-chimie et SVT au college, le programme est fixe sur le CYCLE 4 (5e-4e-3e) :
+   l'ordre depend du professeur (reperes de progression 2019 indicatifs). */
+var C4_NOTE = 'En physique-chimie et SVT au collège, le programme est fixé sur les 3 années du cycle 4 (5ème-4ème-3ème) et l\'ordre dépend du professeur : toute notion du cycle 4 est permise, adapte seulement la difficulté.';
+var C4_PC = 'PROGRAMME DU CYCLE 4 : matière (états et changements d\'état, conservation de la masse, mélanges et corps purs, solubilité, masse volumique, atomes et molécules, tableau périodique, transformations chimiques et équations de réaction, combustions, ions, noyau atomique ; pH mesuré au papier pH ou au pH-mètre sur une échelle de 0 à 14 : solution acide = plus d\'ions hydrogène H⁺, solution basique = plus d\'ions hydroxyde HO⁻ — au collège on écrit H⁺, JAMAIS H₃O⁺, et il n\'y a aucune formule de calcul du pH) ; mouvements et interactions (trajectoire, vitesse v = d/t, forces et leur représentation, poids P = m × g, gravitation) ; énergie (sources, formes, conversions, conservation, énergie cinétique Ec = ½mv², énergie potentielle, puissance et énergie électriques P = U × I, E = P × t) ; électricité (circuits série et dérivation, tension, intensité, lois des circuits, loi d\'Ohm U = R × I) ; signaux (propagation de la lumière, année-lumière, son et sa vitesse, fréquence, signal et information) ; Terre, système solaire, Univers. REPÈRES INDICATIFS : 5ème = états de la matière, mélanges, circuits simples, propagation de la lumière et du son ; 4ème = masse volumique, atomes et molécules, transformations chimiques, vitesse, tension et intensité ; 3ème = ions et pH, énergie cinétique et potentielle, puissance électrique, gravitation et poids (loi d\'Ohm en 4ème ou 3ème)';
+var C4_SVT = 'PROGRAMME DU CYCLE 4 : la planète Terre (système solaire, structure de la Terre, tectonique des plaques, séismes, volcans, météo et climat, risques naturels, ressources, écosystèmes et action humaine) ; le vivant et son évolution (cellule, nutrition des plantes et photosynthèse, reproduction sexuée et asexuée, biodiversité, classification par parenté, ADN, chromosomes, gènes et allèles, hérédité, évolution et sélection naturelle) ; le corps humain et la santé (digestion, respiration, circulation, effort physique, système nerveux, alimentation, puberté, reproduction humaine et contraception, micro-organismes, système immunitaire, vaccination, antibiotiques). REPÈRES INDICATIFS : la génétique, l\'évolution et l\'immunité sont souvent en 3ème';
+var C4_PC_PAS = 'formule pH = −log[H₃O⁺], ion oxonium H₃O⁺, concentrations molaires, logarithme (au collège le pH se MESURE et se lit sur une échelle de 0 à 14 : acide < 7 < basique, lié aux ions H⁺ et HO⁻) ; la mole et la quantité de matière, vecteurs force et vitesse, lois de Newton, schémas de Lewis (lycée)';
+var C3_SCI = 'SCIENCES ET TECHNOLOGIE (une seule matière en 6ème, programme de cycle 3) : matière (états, mélanges, propriétés, la masse), mouvements (trajectoire, vitesse), énergie (sources, formes, conversions, énergies renouvelables), signaux et information ; le vivant (classification, cellule, nutrition, besoins des plantes, reproduction, développement, rôle des micro-organismes) ; matériaux et objets techniques ; la Terre (système solaire, alternance jour-nuit, saisons, milieux et écosystèmes)';
+var PROG_MATIERES = {
+  'Maths': PROG_MATHS,
+  'Physique-Chimie': {
+    '6ème': { prog: C3_SCI, pas: 'atomes, molécules, ions, pH, équations de réaction, formules (v = d/t, P = m × g, loi d\'Ohm), tension et intensité mesurées' },
+    '5ème': { prog: C4_PC, note: C4_NOTE, pas: C4_PC_PAS },
+    '4ème': { prog: C4_PC, note: C4_NOTE, pas: C4_PC_PAS },
+    '3ème': { prog: C4_PC, note: C4_NOTE, pas: C4_PC_PAS },
+    '2nde': { prog: 'corps purs, mélanges, solutions, concentration en masse, dosage par étalonnage ; atome, noyau, configuration électronique, tableau périodique, ions monoatomiques, molécules et schémas de Lewis ; quantité de matière : la mole, constante d\'Avogadro ; transformations physiques, chimiques (équation, réactif limitant) et nucléaires ; mouvement (référentiel, vecteurs déplacement et vitesse), forces et principe d\'inertie ; son (fréquence, période, intensité sonore), lumière (spectres, réfraction avec les lois de Snell-Descartes, lentilles minces convergentes) ; circuits électriques, loi d\'Ohm, capteurs', pas: 'tableau d\'avancement et oxydoréduction, énergie mécanique et travail (1ère), pKa, cinétique, deuxième loi de Newton complète (Terminale)' },
+    '1ère': { prog: 'SPÉCIALITÉ : tableau d\'avancement, oxydoréduction, titrages colorimétriques ; géométrie et polarité des molécules, cohésion, solubilité ; chimie organique (groupes caractéristiques, nomenclature, synthèse) ; combustions et énergie ; interactions fondamentales et champs, fluides au repos (pression, loi de Mariotte) ; mouvement et variation du vecteur vitesse ; travail d\'une force, énergie cinétique, potentielle et mécanique ; ondes mécaniques progressives et périodiques ; lumière : images par une lentille, couleurs, modèles ondulatoire et particulaire (photon). Tronc commun : enseignement scientifique', pas: 'acides et bases avec pKa, cinétique chimique, radioactivité et décroissance, deuxième loi de Newton et mouvements dans un champ, thermodynamique, diffraction et interférences (Terminale)' },
+    'Terminale': { prog: 'SPÉCIALITÉ : acides et bases (pH, Ka, pKa), titrages, cinétique chimique, décroissance radioactive, sens d\'évolution spontanée (quotient de réaction, constante d\'équilibre), piles et électrolyse, stratégies de synthèse organique ; deuxième loi de Newton, mouvements dans un champ uniforme, satellites et lois de Kepler, mécanique des fluides ; premier principe de la thermodynamique et transferts thermiques ; ondes (diffraction, interférences, effet Doppler), lunette astronomique, effet photoélectrique, circuit RC', pas: '' }
+  },
+  'SVT': {
+    '6ème': { prog: C3_SCI, pas: 'ADN, gènes, chromosomes, tectonique des plaques, système immunitaire en détail' },
+    '5ème': { prog: C4_SVT, note: C4_NOTE, pas: 'méiose et brassage génétique, expression des gènes (transcription, traduction), datation absolue (lycée)' },
+    '4ème': { prog: C4_SVT, note: C4_NOTE, pas: 'méiose et brassage génétique, expression des gènes (transcription, traduction), datation absolue (lycée)' },
+    '3ème': { prog: C4_SVT, note: C4_NOTE, pas: 'méiose et brassage génétique, expression des gènes (transcription, traduction), datation absolue (lycée)' },
+    '2nde': { prog: 'l\'organisme pluricellulaire, ensemble de cellules spécialisées ; métabolisme des cellules ; biodiversité et évolution ; érosion, sols et dynamique des paysages ; agrosystèmes ; procréation et sexualité humaine ; micro-organismes et santé', pas: 'divisions cellulaires et mutations, immunité adaptative détaillée (1ère), méiose et brassage, datation (Terminale)' },
+    '1ère': { prog: 'SPÉCIALITÉ : divisions cellulaires (mitose), réplication de l\'ADN, mutations, expression du génome, biodiversité et évolution ; structure et dynamique interne de la Terre (lithosphère, dorsales, subduction) ; écosystèmes et services environnementaux ; variation génétique et santé ; immunité innée et adaptative, vaccination. Tronc commun : enseignement scientifique', pas: 'méiose et brassage génétique, datation relative et absolue, climats du passé (Terminale)' },
+    'Terminale': { prog: 'SPÉCIALITÉ : brassage génétique (méiose, fécondation) et évolution ; à la recherche du passé géologique (datation relative et absolue) ; climats passés et futurs ; plante domestiquée ; comportements, mouvement et système nerveux ; corps humain et stress', pas: '' }
+  },
+  'Histoire-Geo': {
+    '6ème': { prog: 'HISTOIRE : la longue histoire de l\'humanité et des migrations (Préhistoire, Néolithique, premiers États, premières écritures) ; récits fondateurs, croyances et citoyenneté dans la Méditerranée antique (monde grec, Athènes, débuts du judaïsme) ; l\'Empire romain dans le monde antique (conquêtes, débuts du christianisme). GÉOGRAPHIE : habiter une métropole, habiter un espace de faible densité, habiter les littoraux, le monde habité. EMC', pas: 'Moyen Âge (5ème), Révolution française (4ème), guerres mondiales (3ème)' },
+    '5ème': { prog: 'HISTOIRE : chrétientés et islam (VIe-XIIIe siècles), des mondes en contact ; société, Église et pouvoir politique dans l\'Occident féodal (XIe-XVe siècles) ; transformations de l\'Europe et ouverture sur le monde aux XVIe et XVIIe siècles (Grandes découvertes, Renaissance, Réformes, monarchie absolue). GÉOGRAPHIE : la question démographique et l\'inégal développement ; des ressources limitées, à gérer et à renouveler ; prévenir les risques, s\'adapter au changement global. EMC', pas: 'Lumières et Révolution française (4ème), XXe siècle (3ème)' },
+    '4ème': { prog: 'HISTOIRE : le XVIIIe siècle, expansions, Lumières et révolutions (traite et esclavage, Révolution française et Empire) ; l\'Europe et le monde au XIXe siècle (révolution industrielle, colonisation) ; société, culture et politique dans la France du XIXe siècle (IIIe République, place des femmes). GÉOGRAPHIE : l\'urbanisation du monde ; les mobilités humaines transnationales ; des espaces transformés par la mondialisation. EMC', pas: 'guerres mondiales, guerre froide, Ve République (3ème)' },
+    '3ème': { prog: 'HISTOIRE : l\'Europe, un théâtre majeur des guerres totales (1914-1945 : Première Guerre mondiale, régimes totalitaires, Seconde Guerre mondiale, génocides) ; le monde depuis 1945 (guerre froide, décolonisation, construction européenne) ; Françaises et Français dans une République repensée (1944-1947, Ve République, évolutions de la société). GÉOGRAPHIE : dynamiques territoriales de la France contemporaine (aires urbaines, espaces productifs, espaces de faible densité) ; pourquoi et comment aménager le territoire ; la France et l\'Union européenne. EMC. Examen : le brevet', pas: '' },
+    '2nde': { prog: 'HISTOIRE : le monde méditerranéen, empreintes de l\'Antiquité et du Moyen Âge ; XVe-XVIe siècles, un nouveau rapport au monde (Humanisme, Renaissance, Réformes) ; l\'État à l\'époque moderne (France et Angleterre) ; dynamiques et ruptures dans les sociétés des XVIIe et XVIIIe siècles (Lumières, révolution américaine). GÉOGRAPHIE : sociétés et environnements, des équilibres fragiles ; territoires, populations et développement ; des mobilités généralisées ; l\'Afrique australe, un espace en profonde mutation', pas: '' },
+    '1ère': { prog: 'HISTOIRE : l\'Europe face aux révolutions ; la France dans l\'Europe des nationalités (1848-1871) ; la IIIe République avant 1914 ; la Première Guerre mondiale, le « suicide de l\'Europe » et la fin des empires européens. GÉOGRAPHIE : la métropolisation ; une diversification des espaces et des acteurs de la production ; les espaces ruraux ; la Chine, des recompositions spatiales multiples. Spécialité possible : HGGSP', pas: '' },
+    'Terminale': { prog: 'HISTOIRE : fragilités des démocraties, totalitarismes et Seconde Guerre mondiale (1929-1945) ; la multiplication des acteurs internationaux dans un monde bipolaire (1945-début des années 1970) ; les remises en cause économiques, politiques et sociales (années 1970-1991) ; le monde, l\'Europe et la France depuis les années 1990. GÉOGRAPHIE : mers et océans, au cœur de la mondialisation ; dynamiques territoriales, coopérations et tensions dans la mondialisation ; l\'Union européenne dans la mondialisation ; la France et ses régions dans l\'UE et la mondialisation', pas: '' }
+  },
+  'Francais': {
+    '6ème': { prog: 'nouveau programme 2025 : lecture fluide et compréhension, 6 œuvres intégrales dans l\'année (contes, mythes et récits de l\'Antiquité, fables, récits d\'aventures, poésie, théâtre) ; grammaire (classes de mots, sujet, COD, COI, attribut du sujet, compléments circonstanciels, phrase simple), conjugaison de l\'indicatif (présent, imparfait, passé simple, futur, passé composé), accords dans le groupe nominal et sujet-verbe, vocabulaire ; écriture régulière ; oral', pas: 'subordonnées (4ème), voix passive, subjonctif, analyse de la phrase complexe' },
+    '5ème': { prog: 'NOUVEAU PROGRAMME 2026 — perspective « Éprouver, expérimenter : la découverte de soi, d\'autrui et du monde » ; 4 entrées (4 œuvres intégrales et au moins 2 groupements de textes) : « Devenir héroïne/héros : destins romanesques », « Voyager en poésie : du monde entier au cœur du monde », « Expérimenter et jouer au théâtre : la société sens dessus dessous », « Imaginer, sentir, raisonner : des histoires pour plaire et instruire » ; grammaire et orthographe travaillées chaque semaine, dictées régulières ; l\'orthographe rectifiée de 1990 est la référence mais les deux graphies sont acceptées (évènement / événement) ; vocabulaire et étymologie', pas: 'subordonnées et discours rapporté en détail (4ème), analyse logique de la phrase complexe (3ème)' },
+    '4ème': { prog: 'entrées (programme 2015-2020, encore en vigueur en 4ème) : « Dire l\'amour », « Individu et société : confrontations de valeurs ? », « La fiction pour interroger le réel », « Informer, s\'informer, déformer ? », « La ville, lieu de tous les possibles ? » ; grammaire : propositions subordonnées (relatives, conjonctives), voix active et passive, discours direct et indirect, modes (indicatif, subjonctif, conditionnel), accord du participe passé', pas: 'méthodes du lycée (commentaire, dissertation)' },
+    '3ème': { prog: 'entrées (programme 2015-2020, encore en vigueur en 3ème) : « Se raconter, se représenter », « Dénoncer les travers de la société », « Visions poétiques du monde », « Agir dans la cité : individu et pouvoir », « Progrès et rêves scientifiques » ; grammaire : phrase complexe, valeurs des temps et des modes, discours rapporté ; préparation du brevet : compréhension et compétences d\'interprétation, réécriture, dictée, rédaction (sujet d\'imagination ou de réflexion)', pas: 'commentaire et dissertation (lycée)' },
+    '2nde': { prog: 'objets d\'étude : la poésie du Moyen Âge au XVIIIe siècle ; la littérature d\'idées et la presse du XIXe au XXIe siècle ; le roman et le récit du XVIIIe au XXIe siècle ; le théâtre du XVIIe au XXIe siècle ; initiation au commentaire et à la dissertation', pas: '' },
+    '1ère': { prog: 'objets d\'étude : la poésie du XIXe au XXIe siècle ; la littérature d\'idées du XVIe au XVIIIe siècle ; le roman et le récit du Moyen Âge au XXIe siècle ; le théâtre du XVIIe au XXIe siècle, avec les œuvres au programme national (liste renouvelée régulièrement) ; épreuves anticipées du bac : écrit (commentaire ou dissertation ; voie technologique : commentaire ou contraction et essai), oral (explication linéaire, question de grammaire, entretien)', pas: '' },
+    'Terminale': { prog: 'plus de français en Terminale (le bac de français a lieu en 1ère) : voir la philosophie', pas: '' }
+  },
+  'Philosophie': {
+    'Terminale': { prog: '17 notions : l\'art, le bonheur, la conscience, le devoir, l\'État, l\'inconscient, la justice, le langage, la liberté, la nature, la raison, la religion, la science, la technique, le temps, le travail, la vérité ; exercices : dissertation et explication de texte ; Grand oral', pas: '' }
+  }
+};
+var MATIERE_LABEL = { 'Maths': 'MATHS', 'Physique-Chimie': 'PHYSIQUE-CHIMIE', 'SVT': 'SVT', 'Histoire-Geo': 'HISTOIRE-GÉOGRAPHIE', 'Francais': 'FRANÇAIS', 'Philosophie': 'PHILOSOPHIE' };
+
 function getClasse() {
   var c = (typeof userProfile !== 'undefined' && userProfile.classe) || '';
   if (!c) { try { c = (JSON.parse(localStorage.getItem('sk_prof') || '{}') || {}).classe || ''; } catch(e) {} }
@@ -4638,23 +4693,27 @@ var NIVEAU_REPERES = 'REPÈRES (classe où une notion et sa NOTATION apparaissen
 
 /* mode 'chat' (defaut) : l'eleve pose une question -> on explique toujours, meme une autre annee.
    mode 'revision' : contenu genere (fiches, flashcards, quiz...) -> strictement au niveau de la classe. */
-/* Programme officiel detaille de maths, seulement si le sujet est mathematique */
-function progMathsBloc(c, sujet) {
-  var pm = PROG_MATHS[c];
-  if (!pm || detectMat(sujet || '') !== 'Maths') return '';
-  return 'PROGRAMME OFFICIEL DE MATHS EN ' + c.toUpperCase() + ' (année 2026-2027) : ' + pm.prog + '.\n' +
+/* Programme officiel detaille de LA matiere du sujet (detectMat), pour la classe de l'eleve */
+function progMatiereBloc(c, sujet) {
+  var mat = detectMat(sujet || '');
+  var pm = PROG_MATIERES[mat] && PROG_MATIERES[mat][c];
+  if (!pm) return '';
+  var lbl = MATIERE_LABEL[mat] || mat.toUpperCase();
+  return 'PROGRAMME OFFICIEL DE ' + lbl + ' EN ' + c.toUpperCase() + ' (année 2026-2027) : ' + pm.prog + '.\n' +
+    (pm.note ? pm.note + '\n' : '') +
     (pm.pas ? 'PAS ENCORE AU PROGRAMME EN ' + c.toUpperCase() + ' : ' + pm.pas + '.\n' : '');
 }
 
 function niveauPrompt(mode, sujet) {
   var c = getClasse(), n = NIVEAUX[c];
+  /* Matiere reconnue -> seulement son programme detaille (plus precis et ~400 jetons de moins,
+     important avec la limite Groq de 8 000 jetons/minute). Sinon -> resume general + reperes. */
+  var bloc = progMatiereBloc(c, sujet);
   var base = '--- NIVEAU DE L\'ÉLÈVE ---\n' +
     'L\'élève est en ' + c + ' (' + n.cycle + ', programme officiel français). Tutoie-le.\n' +
     'FAÇON DE PARLER : ' + n.ton + '\n' +
-    'PROGRAMME DE ' + c.toUpperCase() + ' : ' + n.prog + '\n' +
-    progMathsBloc(c, sujet) +
-    NIVEAU_REPERES + '\n' +
-    'N\'affirme JAMAIS qu\'une notion est « au programme de ' + c + ' » si les repères ci-dessus la placent dans une autre classe.\n';
+    (bloc || ('PROGRAMME DE ' + c.toUpperCase() + ' : ' + n.prog + '\n' + NIVEAU_REPERES + '\n')) +
+    'N\'affirme JAMAIS qu\'une notion est « au programme de ' + c + ' » si le programme ci-dessus la place dans une autre classe.\n';
   if (mode === 'revision') {
     return base +
       'CONTENU DE RÉVISION (fiches, flashcards, quiz, interros, résumés, plannings) — RÈGLE STRICTE :\n' +
@@ -4841,13 +4900,15 @@ var _matRules = {
 /* Detecter la matière depuis le texte du sujet */
 function detectMat(text) {
   var t = (text || '').toLowerCase();
+  /* expressions de physique qui contiennent des mots de maths : a tester en premier */
+  if (/équation de réaction|equation de reaction|puissance électrique|puissance electrique|énergie|energie|tension électrique|loi d.ohm/.test(t)) return 'Physique-Chimie';
   if (/math|algèbre|algeb|géomét|geomet|calcul|équation|equation|fonction|triangle|probabilit|statist|théorème|theoreme|pythagore|thales|vecteur|fraction|puissance|racine|pgcd|ppcm/.test(t)) return 'Maths';
   if (/ensembles? de nombres|nombres? (relatif|décima|decima|rationnel|irrationnel|réel|reel|premier|entier|complexe)|dérivé|derive|dérivation|derivation|suites? (numérique|arithm|géom|geom)|intégrale|integrale|primitive|logarithme|exponentielle|trigonom|cosinus|sinus|tangente|pourcentage|proportionnalit|inéquation|inequation|identités? remarquable|développer|developper|factoris|valeur absolue|intervalle|périmètre|perimetre|second degré|discriminant|polynôme|polynome|produit scalaire|parabole|médiane|mediane|parallélogramme|parallelogramme|\baires?\b/.test(t)) return 'Maths';
-  if (/physique|chimie|électr|electr|optique|force|énergie|energie|réaction|reaction|newton|courant|tension|résistance|resistance|vitesse|accélér|acceleration|atome|molécule|molecule/.test(t)) return 'Physique-Chimie';
-  if (/conjugaison|grammaire|orthographe|accord|participe|imparfait|subjonctif|conditionnel|impératif|infinitif|verbe|français\b|figure de style|roman|poème|narrateur|ponctuation|registre|tirade|sonnet/.test(t)) return 'Francais';
-  if (/histoire|guerre|révolution|empire|siècle|roi|reine|président|traité|moyen.age|antiquité|colonisation|débarquement|nazisme|shoah|fascisme|communisme|résistance|occupation/.test(t)) return 'Histoire-Geo';
+  if (/physique|chimie|électri|electri|optique|\bforces?\b|réaction chimique|reaction chimique|transformation chimique|newton|résistance électrique|resistance electrique|\bohms?\b|vitesse|accélér|acceler|atome|molécule|molecule|\bions?\b|\bph\b|\bacides?\b|basique|\bmoles?\b|masse volumique|mélange|melange|dissolution|solubilit|changements? d.état|combustion|circuit|gravitation|\bpoids\b|signal|propagation|vitesse de la lumière|année.lumière|lentille|spectre|\bondes?\b|radioactiv|cinétique|cinetique|électrolyse|thermodynamique|kepler/.test(t)) return 'Physique-Chimie';
+  if (/conjugaison|grammaire|orthographe|accord|participe|imparfait|subjonctif|conditionnel|impératif|infinitif|verbe|français\b|figures? de style|roman|poème|narrateur|ponctuation|registre|tirade|sonnet|théâtre|theatre|comédie|comedie|tragédie|tragedie|poésie|poesie|poète|poete|récit|recit|\bcontes?\b|fable|mythe|argumentati|dissertation|commentaire|explication linéaire|subordonnée|subordonnee|complément d|\bcod\b|\bcoi\b|déterminant|determinant|adjectif|pronom|adverbe|dictée|dictee|réécriture|reecriture|métaphore|metaphore|personnage|œuvre intégrale|héroïne|heroine/.test(t)) return 'Francais';
+  if (/histoire|guerre|révolution|empire|siècle|roi|reine|président|traité|moyen.âge|moyen.age|antiquité|colonisation|débarquement|nazisme|shoah|fascisme|communisme|résistance|occupation|lumières|renaissance|réforme|féodal|chrétienté|\bislam|république|totalitar|décolonisation|union européenne|esclavage|napoléon|monarchie|absolutisme|démocratie|citoyenneté|\bemc\b|laïcité|préhistoire|néolithique/.test(t)) return 'Histoire-Geo';
   if (/géograph|geograph|continent|pays|capitale|relief|climat|population|mondialisation|territoire|aménagement|migration|espace|zone/.test(t)) return 'Histoire-Geo';
-  if (/svt|biologie|écosystème|ecosysteme|cellule|organisme|génétique|genetique|évolution|evolution|respiration|digestion|nutriment|biodiversité|photosynthèse|photosynthese|gène|gene|adn|chromosome/.test(t)) return 'SVT';
+  if (/svt|biologie|écosystème|ecosysteme|cellule|organisme|génétique|genetique|évolution|evolution|respiration|digestion|nutriment|biodiversité|photosynthèse|photosynthese|gène|gene|adn|chromosome|immunit|vaccin|séisme|seisme|volcan|tectonique|plaques lithosph|puberté|reproduction|nerveu|neurone|microbe|bactérie|bacterie|virus|anticorps|méiose|meiose|mitose|fossile/.test(t)) return 'SVT';
   if (/anglais|english|present perfect|past simple|tense|irregular|vocabulary|grammar|be going to|would|modal|should/.test(t)) return 'Anglais';
   if (/espagnol|español|presente|pretérito|preterito|futuro|subjuntivo|ser|estar|haber/.test(t)) return 'Espagnol';
   if (/philo|philosophie|liberté|liberte|conscience|vérité|verite|bonheur|justice|existence|morale|éthique|ethique/.test(t)) return 'Philosophie';
@@ -4919,16 +4980,44 @@ function _applyNiveau(messages, opts) {
 }
 var AI_EMPTY_MSG = 'L\'IA n\'a pas répondu, réessaie.';
 
+/* ══ ENVOI A GROQ AVEC RELANCE ══
+   Compte gratuit Groq : 8 000 jetons/minute et 200 000/jour pour TOUTE l'app.
+   Si Groq repond 429 "try again in 0.8s" (limite par minute), on attend et on relance
+   (2 fois max, attente <= 15 s). Sinon : message clair en francais (err.rateLimit = true). */
+function _groqWaitMs(msg) {
+  var m = /try again in (?:(\d+)h)?(?:(\d+)m(?!s))?([\d.]+)(ms|s)/i.exec(msg || '');
+  if (!m) return null;
+  return (m[1] ? +m[1] * 3600000 : 0) + (m[2] ? +m[2] * 60000 : 0) + (m[4] === 'ms' ? +m[3] : +m[3] * 1000);
+}
+async function _groqFetch(payload) {
+  for (var essai = 0; ; essai++) {
+    var res = await fetch(GROQ_PROXY, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + SUPA_ANON },
+      body: JSON.stringify(payload)
+    });
+    if (res.status !== 429) return res;
+    var info = null; try { info = await res.clone().json(); } catch(e) {}
+    var msg = (info && info.error && info.error.message) || '';
+    var wait = _groqWaitMs(msg);
+    if (essai < 2 && wait !== null && wait <= 15000) {
+      await new Promise(function(r) { setTimeout(r, wait + 400); });
+      continue;
+    }
+    var err = new Error(/per day|\(TPD\)|\(RPD\)/i.test(msg)
+      ? 'ScolarIA a atteint sa limite gratuite pour aujourd\'hui. Réessaie plus tard.'
+      : 'ScolarIA est très demandée en ce moment. Réessaie dans une minute.');
+    err.rateLimit = true;
+    throw err;
+  }
+}
+
 async function callGroq(messages, maxTok, opts) {
   messages = _applyNiveau(messages, opts);
   /* Contenu de revision : plus de reflexion = definitions plus justes (~2 s de plus).
      max_tokens inclut la reflexion de gpt-oss, d'ou la marge ajoutee. */
   var effort = (opts && opts.niveau === 'revision') ? 'medium' : 'low';
-  var res = await fetch(GROQ_PROXY, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + SUPA_ANON },
-    body: JSON.stringify({ model: AI_TEXT_MODEL, reasoning_effort: effort, max_tokens: (maxTok || 1800) + (effort === 'medium' ? 1500 : 600), messages: messages })
-  });
+  var res = await _groqFetch({ model: AI_TEXT_MODEL, reasoning_effort: effort, max_tokens: (maxTok || 1800) + (effort === 'medium' ? 1500 : 600), messages: messages });
   var data = await res.json();
   if (data.error) throw new Error(data.error.message);
   /* gpt-oss peut tout depenser en reflexion et renvoyer un texte vide : on le signale */
@@ -4943,17 +5032,16 @@ async function callGroqVision(messages, maxTok, opts) {
   var lastErr = 'Modèle vision indisponible';
   for (var mi = 0; mi < AI_VISION_MODELS.length; mi++) {
     try {
-      var res = await fetch(GROQ_PROXY, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + SUPA_ANON },
-        body: JSON.stringify({ model: AI_VISION_MODELS[mi], max_tokens: maxTok || 1800, messages: messages })
-      });
+      var res = await _groqFetch({ model: AI_VISION_MODELS[mi], max_tokens: maxTok || 1800, messages: messages });
       var data = await res.json();
       if (data.error) { lastErr = data.error.message; continue; }
       var txt = (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) || '';
       if (!txt.trim()) { lastErr = AI_EMPTY_MSG; continue; }
       return _cleanMath(txt);
-    } catch(e) { lastErr = e.message; }
+    } catch(e) {
+      if (e.rateLimit) throw e;   /* limite Groq : inutile d'essayer un autre modele */
+      lastErr = e.message;
+    }
   }
   throw new Error(lastErr);
 }
@@ -4993,17 +5081,12 @@ function _webSources(tools) {
 async function callGroqWeb(messages, maxTok) {
   messages = _applyNiveau(messages);
   messages[0] = { role: 'system', content: messages[0].content + '\n\n' + WEB_RULE };
-  var res = await fetch(GROQ_PROXY, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + SUPA_ANON },
-    body: JSON.stringify({ model: AI_TEXT_MODEL, reasoning_effort: 'low', max_tokens: maxTok || 2500,
-      tools: [{ type: 'browser_search' }], messages: messages })
-  });
+  var res = await _groqFetch({ model: AI_TEXT_MODEL, reasoning_effort: 'low', max_tokens: maxTok || 2500,
+    tools: [{ type: 'browser_search' }], messages: messages });
   var data = await res.json();
   if (data.error) {
     var m = data.error.message || '', code = data.error.code || '';
     if (code === 'context_length_exceeded' || /reduce the length/i.test(m)) throw new Error('La page trouvée était trop longue. Reformule ta question de façon plus précise.');
-    if (res.status === 429 || /rate limit|quota/i.test(m)) throw new Error('Recherche internet indisponible pour le moment (limite atteinte). Réessaie plus tard.');
     throw new Error(m);
   }
   var msg = (data.choices && data.choices[0] && data.choices[0].message) || {};
@@ -5015,11 +5098,7 @@ async function callGroqWeb(messages, maxTok) {
 
 async function callGroqStream(messages, onToken, maxTok, opts) {
   messages = _applyNiveau(messages, opts);
-  var res = await fetch(GROQ_PROXY, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + SUPA_ANON },
-    body: JSON.stringify({ model: AI_TEXT_MODEL, reasoning_effort: 'low', max_tokens: (maxTok || 1800) + 600, messages: messages, stream: true })
-  });
+  var res = await _groqFetch({ model: AI_TEXT_MODEL, reasoning_effort: 'low', max_tokens: (maxTok || 1800) + 600, messages: messages, stream: true });
   if (!res.ok || !res.body) {
     var ed = null; try { ed = await res.json(); } catch(e) {}
     throw new Error(ed && ed.error ? ed.error.message : 'Erreur API Groq (' + res.status + ')');

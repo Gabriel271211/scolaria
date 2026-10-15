@@ -1447,16 +1447,24 @@ body::after {
 .mc-papier {
   --mc-ligne: color-mix(in srgb, var(--accent) 17%, transparent);
   --mc-marge: color-mix(in srgb, #e84040 50%, transparent);
-  position: relative; margin: 4px 0 32px; padding: 28px 16px 56px 46px; min-height: 70vh;
-  background-color: var(--card); border-radius: 4px 16px 16px 4px;
-  box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 8px 24px rgba(0,0,0,.06);
+  /* une page = 1 ligne de marge + 26 lignes d’ecriture + 2 lignes de pied (= 29 x 28 px) */
+  position: relative; box-sizing: border-box; margin: 0 0 10px; padding: 28px 16px 56px 46px; min-height: 812px;
+  background-color: var(--card); border-radius: 0;
   background-image: linear-gradient(to right, transparent 33px, var(--mc-marge) 33px, var(--mc-marge) 35px, transparent 35px),
                     repeating-linear-gradient(to bottom, transparent 0, transparent 27px, var(--mc-ligne) 27px, var(--mc-ligne) 28px);
   font-size: 16px; line-height: 28px; color: var(--tx);
 }
 .mc-meta { display: flex; align-items: center; gap: 5px; height: 28px; font-size: 12px; color: var(--mu); }
 .mc-titre { font-size: 24px; font-weight: 800; letter-spacing: -.4px; line-height: 28px; min-height: 28px; outline: none; word-wrap: break-word; }
-.mc-note { outline: none; min-height: 45vh; padding-top: 0; word-wrap: break-word; -webkit-user-select: text; user-select: text; }
+/* dans un cours : les pages prennent toute la largeur, sans cadre ; un fin espace separe les pages */
+.mc-body.mc-body-cours { padding: 0 0 28px; max-width: 760px; }
+.mc-pied { position: absolute; left: 46px; right: 16px; bottom: 16px; text-align: center; font-size: 11px; font-weight: 600; letter-spacing: .5px; color: var(--mu); line-height: 20px; cursor: text; }
+.mc-ajout-page { display: flex; align-items: center; justify-content: center; gap: 8px; width: calc(100% - 32px); margin: 6px 16px 0; padding: 15px; border: 1.5px dashed color-mix(in srgb, var(--accent) 40%, var(--bord)); border-radius: 14px; background: transparent; color: var(--accent); font-size: 14px; font-weight: 700; font-family: var(--fb); cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.mc-ajout-page:active { background: var(--accent-l); }
+.mc-ajout-page svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2.2; stroke-linecap: round; }
+.mc-ajout-ico { width: 22px; text-align: center; font-size: 18px; flex-shrink: 0; }
+.mc-ligne-t small { display: block; font-size: 12px; color: var(--mu); white-space: normal; margin-top: 1px; }
+.mc-note { outline: none; min-height: 28px; padding-top: 0; word-wrap: break-word; -webkit-user-select: text; user-select: text; }
 .mc-titre:empty::before, .mc-note:empty::before { content: attr(data-ph); color: var(--mu); opacity: .7; pointer-events: none; }
 .mc-note h1 { font-size: 21px; font-weight: 800; line-height: 28px; margin: 28px 0 0; color: var(--accent); }
 .mc-note h2 { font-size: 18px; font-weight: 800; line-height: 28px; margin: 14px 0 0; padding-top: 14px; }
@@ -6210,10 +6218,37 @@ async function scanTranscrire() {
     if(acts)acts.style.display='block';
   }
 }
+/* Galerie : une photo -> choix (transcrire, fiche, flashcards) ; plusieurs -> un cours de plusieurs pages */
+function scanFichiers(files) {
+  if (!files || !files.length) return;
+  if (files.length > 1) scanTranscrirePlusieurs(files); else handleScanFile(files[0]);
+}
+async function scanTranscrirePlusieurs(files) {
+  files = Array.prototype.slice.call(files).filter(function(f) { return /^image\//.test(f.type); });
+  var res = document.getElementById('scan-result'), c = null, erreur = '';
+  for (var i = 0; i < files.length; i++) {
+    res.innerHTML = '<div class="rev-loading" style="padding:30px 0"><div class="rev-spin"></div><div class="rev-loading-txt">ScolarIA recopie la page ' + (i + 1) + ' / ' + files.length + '…</div><div class="rev-loading-sub">Environ 10 secondes par page</div></div>';
+    try {
+      var dataUrl = await new Promise(function(r) { imageReduite(files[i], r); });
+      if (!dataUrl) throw new Error('Image illisible');
+      var t = await mcTranscrire(dataUrl);
+      if (!c) c = mcDepuisScan(t);
+      else { c = mcGet(c.id); var pages = mcPagesDe(c); pages.push(mcMd(t.texte)); mcFixerPages(c, pages); mcPut(c); }
+    } catch(e) { erreur = e.message; }
+  }
+  if (!c) {
+    res.innerHTML = '<div class="rev-err-box">' + esc(erreur || 'Aucune image lisible') + '</div>';
+    var ch = document.getElementById('scan-choice'); if (ch) ch.style.display = 'grid';
+    return;
+  }
+  closeScanCours();
+  openMesCours(c.id);
+  toast('Cours de ' + mcPagesDe(mcGet(c.id)).length + ' pages sauvegardé' + (erreur ? ' (une photo n\'a pas pu être lue)' : ''), 3500);
+}
 
 /* ══════════════════════════════════════════════
    MES COURS — des notes facon « Notes » d'Apple, sur papier de cahier
-   sk_cours   (synchronise) : [{ id, titre, mat, html, texte, cahier, cree, maj }]
+   sk_cours   (synchronise) : [{ id, titre, mat, pages, suites, html, texte, cahier, cree, maj }]
    sk_cahiers (synchronise) : [{ id, nom, couleur, cree }]
    html  = contenu mis en forme (nettoye par mcPropre), modifie directement
    texte = version texte brut, utilisee par l'IA (fiche, flashcards, interro)
@@ -6244,7 +6279,7 @@ function mcPut(c, garderDate) {
   mcSaveAll(l);
 }
 function mcNouveau(titre, mat, html, texte, cahier) {
-  var c = { id: 'm' + Date.now(), titre: titre || '', mat: mat || '', html: html || '', texte: texte || '',
+  var c = { id: 'm' + Date.now(), titre: titre || '', mat: mat || '', html: html || '', texte: texte || '', pages: [html || ''],
             cahier: cahier || '', cree: Date.now(), maj: Date.now() };
   mcPut(c);
   return c;
@@ -6413,6 +6448,7 @@ window.addEventListener('popstate', function() {
 });
 /* barre du haut : texte du bouton retour + boutons de droite */
 function mcHaut(retour, droite) {
+  document.getElementById('mc-body').classList.toggle('mc-body-cours', _mc.vue === 'cours');
   document.getElementById('mc-retour-t').textContent = retour;
   document.getElementById('mc-haut-d').innerHTML = droite || '';
 }
@@ -6498,37 +6534,100 @@ function mcListeHtml(l, montrerCahier) {
   }).join('') + '</div>';
 }
 
-/* ── 3. Un cours : page de cahier, modifiable directement (comme Notes) ── */
+/* ── 3. Un cours : des PAGES de cahier, modifiables directement (comme Notes) ──
+   Un cours = plusieurs pages de taille fixe (MC_LIGNES_PAGE lignes de MC_LIGNE px).
+   Quand une page est pleine, la fin passe toute seule sur la page suivante (mcPaginer).
+   c.pages = [html de chaque page] ; c.html = pages jointes par <hr> ; c.texte = texte brut */
+var MC_LIGNES_PAGE = 26, MC_LIGNE = 28;
+var _mcDerniereNote = null;
+
+/* pages d'un cours (anciens cours : un seul html, les <hr> separaient les pages ajoutees) */
+function mcPagesDe(c) {
+  if (Array.isArray(c.pages) && c.pages.length) return c.pages.slice();
+  var html = c.html || (c.texte ? mcMd(c.texte) : '');
+  var p = String(html).split(/<hr\s*\/?>/i);
+  return p.length ? p : [''];
+}
+function mcEstVide(html) { return !mcTexteDe(html).trim(); }
+/* suites[i] = true : page de SUITE (creee quand la page d'avant deborde), recalculee a chaque
+   ouverture ; false : vraie page ajoutee par l'eleve (vierge ou photo), qui commence une feuille */
+function mcSuitesDe(c, n) { return Array.from({ length: n }, function(_, i) { return !!(Array.isArray(c.suites) && c.suites[i]); }); }
+function mcFixerPages(c, pages, suites) {
+  c.suites = suites || mcSuitesDe(c, pages.length);
+  c.pages = pages; c.html = pages.join('<hr>'); c.texte = mcTexteDe(c.html);
+}
+function mcNotes() { return Array.prototype.slice.call(document.querySelectorAll('#mc-pages .mc-note')); }
+
+function mcPageHtml(i, html, n, c, suite) {
+  var k = c.cahier ? mccGet(c.cahier) : null;
+  return '<div class="mc-papier" data-p="' + i + '" data-suite="' + (suite ? 1 : 0) + '" onclick="mcClicPage(event,this)">' +
+    (i === 0
+      ? '<div class="mc-meta">' + mcDateLongue(c.maj || Date.now()) + (k ? ' · <span class="mc-pastille" style="background:' + k.couleur + '"></span>' + esc(k.nom) : '') + '</div>' +
+        '<div class="mc-titre" id="mc-titre" contenteditable="true" spellcheck="true" data-ph="Titre" onkeydown="mcTitreTouche(event)" onpaste="mcCollerTexte(event)" oninput="mcModif()">' + esc(c.titre || '') + '</div>'
+      : '') +
+    '<div class="mc-note" contenteditable="true" spellcheck="true" data-ph="' + (i === 0 ? 'Commence à écrire ton cours…' : 'Page vide') + '" oninput="mcModif(this)" onkeydown="mcToucheNote(event,this)" onpaste="mcColler(event)">' + html + '</div>' +
+    '<div class="mc-pied">' + (i + 1) + ' / ' + n + '</div>' +
+  '</div>';
+}
+
 function mcVueCours(id) {
   var c = mcGet(id); if (!c) { mcVueCahiers(); return; }
   mcEnregistrer();
-  /* anciens cours (texte markdown seulement) -> HTML de note */
-  if (!c.html && c.texte) { c.html = mcMd(c.texte); c.texte = mcTexteDe(c.html); mcPut(c, true); }
+  /* pages vides oubliees (sauf la premiere) : retirees ; anciens cours convertis */
+  /* les pages de suite rejoignent leur page : la mise en pages est refaite a l'ouverture
+     (du texte efface remonte) ; les pages vides oubliees (sauf la 1re) sont retirees */
+  var brutes = mcPagesDe(c).map(mcPropre), suites = mcSuitesDe(c, brutes.length), pages = [];
+  brutes.forEach(function(h, i) {
+    if (i > 0 && suites[i] && pages.length) pages[pages.length - 1] += h;
+    else pages.push(h);
+  });
+  pages = pages.filter(function(h, i) { return i === 0 || !mcEstVide(h); });
   _mc.vue = 'cours'; _mc.cours = id;
   if (!_mc.cahier) _mc.cahier = c.cahier && mccGet(c.cahier) ? c.cahier : 'tous';
   mcHaut(mcNomCahier(_mc.cahier), '<button class="mc-haut-ok" id="mc-ok" onclick="mcFinEdition()">OK</button>' +
     '<button class="mc-haut-i" onclick="mcMenuCours(this)" aria-label="Plus d\'actions">' + MC_ICO.points + '</button>');
-  var k = c.cahier ? mccGet(c.cahier) : null;
-  document.getElementById('mc-body').innerHTML =
-    '<div class="mc-papier">' +
-      '<div class="mc-meta">' + mcDateLongue(c.maj) + (k ? ' · <span class="mc-pastille" style="background:' + k.couleur + '"></span>' + esc(k.nom) : '') + '</div>' +
-      '<div class="mc-titre" id="mc-titre" contenteditable="true" spellcheck="true" data-ph="Titre" onkeydown="mcTitreTouche(event)" onpaste="mcCollerTexte(event)" oninput="mcModif()">' + esc(c.titre) + '</div>' +
-      '<div class="mc-note" id="mc-note" contenteditable="true" spellcheck="true" data-ph="Commence à écrire ton cours…" oninput="mcModif()" onpaste="mcColler(event)">' + mcPropre(c.html) + '</div>' +
-    '</div>' +
+  var body = document.getElementById('mc-body');
+  body.innerHTML = '<div id="mc-pages">' + pages.map(function(h, i) { return mcPageHtml(i, h, pages.length, c); }).join('') + '</div>' +
+    '<button class="mc-ajout-page" onclick="mcMenuAjoutPage()">' + MC_ICO.plus + '<span>Ajouter une page</span></button>' +
     '<div id="mc-page-etat"></div>';
   mcBas('');
   try { document.execCommand('defaultParagraphSeparator', false, 'p'); } catch(e) {}
-  document.getElementById('mc-body').scrollTop = 0;
-  if (!c.titre && !c.texte) setTimeout(function() { var t = document.getElementById('mc-titre'); if (t) t.focus(); }, 80);
+  body.scrollTop = 0;
+  /* mise en pages : ce qui depasse d'une page passe sur la suivante */
+  requestAnimationFrame(function() { if (_mc.vue === 'cours' && _mc.cours === id) { mcPaginerTout(); mcEnregistrer(); } });
+  if (!c.titre && mcEstVide(c.html)) setTimeout(function() { var t = document.getElementById('mc-titre'); if (t) t.focus(); }, 80);
   mcSyncHistorique();
+}
+
+/* Toucher le vide d'une page = ecrire a la fin de cette page */
+function mcClicPage(e, papier) {
+  if (e.target !== papier && !e.target.classList.contains('mc-pied')) return;
+  var n = papier.querySelector('.mc-note'); if (!n) return;
+  n.focus(); mcCurseurFin(n);
+}
+function mcCurseurFin(el) {
+  var r = document.createRange(); r.selectNodeContents(el); r.collapse(false);
+  var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
 }
 /* Entree dans le titre -> on passe au texte ; pas de mise en forme dans le titre */
 function mcTitreTouche(e) {
-  if (e.key === 'Enter') { e.preventDefault(); var n = document.getElementById('mc-note'); if (n) { n.focus(); mcCurseurDebut(n); } }
+  if (e.key === 'Enter') { e.preventDefault(); var n = document.querySelector('#mc-pages .mc-note'); if (n) { n.focus(); mcCurseurDebut(n); } }
 }
 function mcCurseurDebut(el) {
   var r = document.createRange(); r.selectNodeContents(el); r.collapse(true);
   var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+}
+/* Effacer sur une page vide (sauf la 1re) supprime la page et remonte a la fin de la precedente */
+function mcToucheNote(e, note) {
+  if (e.key !== 'Backspace') return;
+  var papier = note.closest('.mc-papier'); if (!papier || papier.getAttribute('data-p') === '0') return;
+  if (!mcEstVide(note.innerHTML)) return;
+  e.preventDefault();
+  var prec = papier.previousElementSibling && papier.previousElementSibling.querySelector('.mc-note');
+  papier.remove();
+  mcNumeroter();
+  if (prec) { prec.focus(); mcCurseurFin(prec); }
+  mcModif();
 }
 function mcCollerTexte(e) {
   e.preventDefault();
@@ -6543,21 +6642,103 @@ function mcColler(e) {
   if (h) document.execCommand('insertHTML', false, mcPropre(h));
   else document.execCommand('insertText', false, cd.getData('text/plain'));
 }
-/* Sauvegarde automatique 0,6 s apres la derniere modification */
-function mcModif() {
+
+/* ── Mise en pages ── */
+function mcLimite(papier) {
+  return papier.getBoundingClientRect().top + parseFloat(getComputedStyle(papier).paddingTop) + MC_LIGNES_PAGE * MC_LIGNE;
+}
+function mcSauverCurseur() { var s = window.getSelection(); return s && s.rangeCount ? { n: s.focusNode, o: s.focusOffset } : null; }
+function mcRemettreCurseur(sv) {
+  if (!sv || !sv.n || !document.contains(sv.n)) return;
+  var el = sv.n.nodeType === 1 ? sv.n : sv.n.parentElement;
+  var note = el && el.closest('.mc-note'); if (!note) return;
+  if (document.activeElement !== note) note.focus({ preventScroll: true });
+  var r = document.createRange();
+  try { r.setStart(sv.n, Math.min(sv.o, sv.n.nodeType === 3 ? sv.n.length : sv.n.childNodes.length)); } catch(e) { return; }
+  r.collapse(true);
+  var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+}
+/* du texte tape directement dans la page (hors paragraphe) -> range dans un <p> */
+function mcEnBlocs(note) {
+  var p = null;
+  Array.prototype.slice.call(note.childNodes).forEach(function(n) {
+    if (n.nodeType === 1 && /^(H1|H2|H3|P|DIV|UL|OL|TABLE|BLOCKQUOTE|HR)$/.test(n.tagName)) { p = null; return; }
+    if (n.nodeType === 3 && !n.data.trim() && !p) return;
+    if (!p) { p = document.createElement('p'); note.insertBefore(p, n); }
+    p.appendChild(n);
+  });
+}
+/* Une page trop pleine : sa fin passe au debut de la page suivante (creee si besoin).
+   Les listes sont coupees entre deux puces. Un seul bloc plus grand qu'une page reste
+   sur sa page (qui s'allonge). Renvoie true si quelque chose a bouge. */
+function mcPaginer(note) {
+  var papier = note.closest('.mc-papier'); if (!papier) return false;
+  var limite = mcLimite(papier);
+  if (note.getBoundingClientRect().bottom <= limite + 1) return false;
+  var sv = mcSauverCurseur();
+  if (Array.prototype.some.call(note.childNodes, function(n) { return n.nodeType === 3 && n.data.trim(); })) mcEnBlocs(note);
+  var bouge = [];
+  while (note.children.length) {
+    var der = note.lastElementChild, r = der.getBoundingClientRect();
+    if (r.bottom <= limite + 1) break;
+    if ((der.tagName === 'UL' || der.tagName === 'OL') && r.top < limite && der.children.length > 1) {
+      var nl = document.createElement(der.tagName);
+      while (der.children.length > 1 && der.lastElementChild.getBoundingClientRect().bottom > limite + 1) nl.insertBefore(der.lastElementChild, nl.firstChild);
+      if (nl.children.length) bouge.unshift(nl);
+      break;
+    }
+    if (note.children.length === 1) break;
+    bouge.unshift(der);
+    note.removeChild(der);
+  }
+  if (!bouge.length) return false;
+  var suiv = papier.nextElementSibling;
+  /* on continue sur la page de suite existante, sinon on en insere une (jamais dans une vraie page) */
+  if (!suiv || !suiv.classList.contains('mc-papier') || suiv.getAttribute('data-suite') !== '1') suiv = mcCreerPageDom(papier, true);
+  var ns = suiv.querySelector('.mc-note');
+  if (mcEstVide(ns.innerHTML)) ns.innerHTML = '';
+  var avant = ns.firstChild;
+  bouge.forEach(function(b) { ns.insertBefore(b, avant); });
+  mcRemettreCurseur(sv);
+  mcPaginer(ns);
+  mcNumeroter();
+  return true;
+}
+function mcPaginerTout() { var change = false; mcNotes().forEach(function(n) { if (document.contains(n) && mcPaginer(n)) change = true; }); return change; }
+function mcCreerPageDom(apres, suite) {
+  var tmp = document.createElement('div');
+  tmp.innerHTML = mcPageHtml(1, '', 1, mcGet(_mc.cours) || {}, suite);
+  var pg = tmp.firstChild;
+  apres.parentNode.insertBefore(pg, apres.nextSibling);
+  return pg;
+}
+function mcNumeroter() {
+  var pp = document.querySelectorAll('#mc-pages .mc-papier'), n = pp.length;
+  Array.prototype.forEach.call(pp, function(p, i) {
+    p.setAttribute('data-p', i);
+    var s = p.querySelector('.mc-pied'); if (s) s.textContent = (i + 1) + ' / ' + n;
+  });
+}
+
+/* ── Sauvegarde automatique 0,6 s apres la derniere modification ── */
+function mcModif(note) {
   clearTimeout(_mcTimer);
   _mcTimer = setTimeout(mcEnregistrer, 600);
+  if (note && note.classList) requestAnimationFrame(function() { if (document.contains(note) && mcPaginer(note)) mcModif(); });
   mcCaretBientot();
 }
 function mcEnregistrer() {
   clearTimeout(_mcTimer); _mcTimer = null;
   if (_mc.vue !== 'cours' || !_mc.cours) return;
-  var t = document.getElementById('mc-titre'), n = document.getElementById('mc-note');
-  var c = mcGet(_mc.cours); if (!c || !t || !n) return;
+  var t = document.getElementById('mc-titre'), notes = mcNotes();
+  var c = mcGet(_mc.cours); if (!c || !t || !notes.length) return;
   var titre = t.textContent.replace(/\s+/g, ' ').trim();
-  var html = mcPropre(n.innerHTML);
-  if (titre === c.titre && html === c.html) return;
-  c.titre = titre; c.html = html; c.texte = mcTexteDe(html);
+  var pages = notes.map(function(n) { return mcPropre(n.innerHTML); });
+  var suites = notes.map(function(n) { return n.closest('.mc-papier').getAttribute('data-suite') === '1'; });
+  if (titre === c.titre && Array.isArray(c.pages) && pages.length === c.pages.length && pages.join('<hr>') === c.pages.join('<hr>') &&
+      JSON.stringify(suites) === JSON.stringify(mcSuitesDe(c, pages.length))) return;
+  c.titre = titre;
+  mcFixerPages(c, pages, suites);
   mcPut(c);
 }
 function mcFinEdition() {
@@ -6565,9 +6746,66 @@ function mcFinEdition() {
   if (document.activeElement) document.activeElement.blur();
 }
 
+/* ── Ajouter des pages : vierge, photo, ou plusieurs photos d'un coup ── */
+function mcMenuAjoutPage() {
+  mcEnregistrer();
+  mcSheet('<div class="mc-sheet-t">Ajouter une page</div><div class="mc-groupe">' +
+    '<div class="mc-ligne" onclick="mcFermerSheet();mcPageVierge()"><span class="mc-ajout-ico">📄</span><span class="mc-ligne-t">Page vierge</span></div>' +
+    '<div class="mc-ligne" onclick="mcFermerSheet();document.getElementById(\'mc-page-cam\').click()"><span class="mc-ajout-ico">📷</span><span class="mc-ligne-t">Prendre une photo</span></div>' +
+    '<div class="mc-ligne" onclick="mcFermerSheet();document.getElementById(\'mc-page-inp\').click()"><span class="mc-ajout-ico">🖼️</span><span class="mc-ligne-t">Photos de la galerie<small>Tu peux en choisir plusieurs : une page par photo</small></span></div>' +
+    '</div>');
+}
+function mcPageVierge() {
+  var pp = document.querySelectorAll('#mc-pages .mc-papier'); if (!pp.length) return;
+  var pg = mcCreerPageDom(pp[pp.length - 1], false);
+  mcNumeroter();
+  var n = pg.querySelector('.mc-note');
+  n.focus();
+  pg.scrollIntoView({ block: 'start', behavior: 'smooth' });
+  mcEnregistrer();
+}
+/* Une ou plusieurs photos -> recopiees, chacune a la suite sur une nouvelle page */
+async function mcAjouterPages(files) {
+  files = Array.prototype.slice.call(files || []).filter(function(f) { return /^image\//.test(f.type); });
+  if (!files.length || !_mc.cours) return;
+  mcEnregistrer();
+  var id = _mc.cours, ajoutees = 0, erreur = '', premiere = -1;
+  for (var i = 0; i < files.length; i++) {
+    var etat = document.getElementById('mc-page-etat');
+    if (etat) etat.innerHTML = '<div class="rev-loading" style="padding:16px 0"><div class="rev-spin"></div><div class="rev-loading-txt">ScolarIA recopie la photo ' + (i + 1) + ' / ' + files.length + '…</div></div>';
+    try {
+      var dataUrl = await new Promise(function(res) { imageReduite(files[i], res); });
+      if (!dataUrl) throw new Error('Image illisible');
+      var t = await mcTranscrire(dataUrl);
+      var c = mcGet(id); if (!c) return;
+      var pages = mcPagesDe(c);
+      if (pages.length === 1 && mcEstVide(pages[0])) { pages[0] = mcMd(t.texte); if (premiere < 0) premiere = 0; }
+      else { pages.push(mcMd(t.texte)); if (premiere < 0) premiere = pages.length - 1; }
+      if (!c.titre) c.titre = t.titre;
+      if (!c.mat && t.mat) c.mat = t.mat;
+      mcFixerPages(c, pages);
+      mcPut(c);
+      ajoutees++;
+    } catch(e) { erreur = e.message; }
+  }
+  var e2 = document.getElementById('mc-page-etat'); if (e2) e2.innerHTML = '';
+  if (_mc.vue === 'cours' && _mc.cours === id) {
+    mcVueCours(id);
+    if (premiere >= 0) setTimeout(function() { var pp = document.querySelectorAll('#mc-pages .mc-papier'); if (pp[premiere]) pp[premiere].scrollIntoView({ block: 'start', behavior: 'smooth' }); }, 120);
+  }
+  toast(ajoutees ? (ajoutees > 1 ? ajoutees + ' pages ajoutées' : 'Page ajoutée') + (erreur ? ' (une photo n\'a pas pu être lue)' : '') : 'Erreur : ' + erreur, 3500);
+}
+
 /* ── Barre de mise en forme (au-dessus du clavier pendant l'ecriture) ── */
+/* page en cours d'ecriture (ou la derniere touchee) */
+function mcNoteActive() {
+  var a = document.activeElement;
+  if (a && a.classList && a.classList.contains('mc-note')) return a;
+  if (_mcDerniereNote && document.contains(_mcDerniereNote)) return _mcDerniereNote;
+  return document.querySelector('#mc-pages .mc-note');
+}
 function mcFmt(cmd) {
-  var n = document.getElementById('mc-note'); if (!n) return;
+  var n = mcNoteActive(); if (!n) return;
   if (document.activeElement !== n) n.focus();
   try {
     if (cmd === 'h1' || cmd === 'h2' || cmd === 'p') document.execCommand('formatBlock', false, cmd);
@@ -6576,7 +6814,7 @@ function mcFmt(cmd) {
     else if (cmd === 'mark') mcSurligner();
     else document.execCommand(cmd);
   } catch(e) {}
-  mcModif();
+  mcModif(n);
   mcEtatFmt();
 }
 var MC_SURLIGNEUR = '#fde68a';
@@ -6584,7 +6822,7 @@ function mcSurligner() {
   var s = window.getSelection(); if (!s.rangeCount) return;
   var el = s.anchorNode && (s.anchorNode.nodeType === 1 ? s.anchorNode : s.anchorNode.parentNode);
   var mk = el && el.closest ? el.closest('mark, span[style*="background"]') : null;
-  if (mk && document.getElementById('mc-note').contains(mk)) {
+  if (mk && mk.closest('.mc-note')) {
     /* deja surligne : on enleve le surlignage */
     while (mk.firstChild) mk.parentNode.insertBefore(mk.firstChild, mk);
     mk.remove();
@@ -6620,7 +6858,7 @@ function mcAjusterHauteur() {
 /* La ligne ou l'on ecrit reste visible, juste au-dessus de la barre et du clavier */
 function mcCaretVisible() {
   if (_mc.vue !== 'cours') return;
-  var a = document.activeElement; if (!a || (a.id !== 'mc-note' && a.id !== 'mc-titre')) return;
+  var a = document.activeElement; if (!a || !(a.id === 'mc-titre' || (a.classList && a.classList.contains('mc-note')))) return;
   var s = window.getSelection(); if (!s || !s.rangeCount) return;
   var r = s.getRangeAt(0).cloneRange(); r.collapse(false);
   var rect = r.getClientRects()[0] || r.getBoundingClientRect();
@@ -6639,8 +6877,10 @@ function mcCaretBientot() { cancelAnimationFrame(_mcRaf); _mcRaf = requestAnimat
 function mcMajFmt() {
   var bar = document.getElementById('mc-fmt'), ok = document.getElementById('mc-ok'); if (!bar) return;
   var a = document.activeElement;
-  var ecrit = a && (a.id === 'mc-note' || a.id === 'mc-titre') && _mc.vue === 'cours';
-  bar.style.display = ecrit && a.id === 'mc-note' ? 'flex' : 'none';
+  var estNote = !!(a && a.classList && a.classList.contains('mc-note'));
+  if (estNote) _mcDerniereNote = a;
+  var ecrit = a && (estNote || a.id === 'mc-titre') && _mc.vue === 'cours';
+  bar.style.display = ecrit && estNote ? 'flex' : 'none';
   if (ok) ok.style.display = ecrit ? 'block' : 'none';
   mcAjusterHauteur();
   mcEtatFmt();
@@ -6678,7 +6918,7 @@ function mcMenuCours(btn) {
     { label: 'Flashcards', ico: '🃏', action: 'mcGenerer(\'flashcards\')' },
     { label: 'M\'interroger', ico: '❓', action: 'mcInterroger()' },
     { sep: true },
-    { label: 'Ajouter une page (photo)', ico: '📷', action: 'document.getElementById(\'mc-page-inp\').click()' },
+    { label: 'Ajouter une page', ico: '📄', action: 'mcMenuAjoutPage()' },
     { label: 'Ranger dans un cahier', ico: '📁', action: 'mcRanger()' },
     { sep: true },
     { label: 'Supprimer le cours', ico: '🗑', action: 'mcSupprimer()', danger: true }
@@ -6768,27 +7008,6 @@ function mcRangerDans(id) {
 function mcCahierCourant() { return (_mc.cahier && _mc.cahier !== 'tous' && _mc.cahier !== 'sans' && mccGet(_mc.cahier)) ? _mc.cahier : ''; }
 function mcEcrire() { var c = mcNouveau('', '', '', '', mcCahierCourant()); mcVueCours(c.id); }
 function mcScanner() { _mcScanCahier = mcCahierCourant() || null; closeMesCours(); openScanCours(); }
-async function mcAjouterPage(file) {
-  if (!file || !_mc.cours) return;
-  mcEnregistrer();
-  var etat = document.getElementById('mc-page-etat');
-  if (etat) etat.innerHTML = '<div class="rev-loading" style="padding:16px 0"><div class="rev-spin"></div><div class="rev-loading-txt">ScolarIA recopie la page…</div></div>';
-  imageReduite(file, async function(dataUrl) {
-    try {
-      if (!dataUrl) throw new Error('Impossible de lire cette image');
-      var t = await mcTranscrire(dataUrl);
-      var c = mcGet(_mc.cours); if (!c) return;
-      c.html = (c.html ? c.html + '<hr>' : '') + mcMd(t.texte);
-      c.texte = mcTexteDe(c.html);
-      if (!c.mat && t.mat) c.mat = t.mat;
-      mcPut(c);
-      mcVueCours(c.id);
-      toast('Page ajoutée au cours');
-    } catch(e) {
-      if (etat) etat.innerHTML = '<div class="rev-err-box">' + esc(e.message) + '</div>';
-    }
-  });
-}
 function mcSupprimer() {
   var c = mcGet(_mc.cours); if (!c) return;
   if (!confirm('Supprimer « ' + (c.titre || 'ce cours') + ' » ? Cette action est définitive.')) return;
@@ -8110,7 +8329,7 @@ _supa.auth.onAuthStateChange(function(event, session) {
       </button>
     </div>
     <input type="file" id="scan-file-cam" accept="image/*" capture="camera" style="display:none" onchange="handleScanFile(this.files[0]);document.getElementById('scan-choice').style.display='none'">
-    <input type="file" id="scan-file-gal" accept="image/*" style="display:none" onchange="handleScanFile(this.files[0]);document.getElementById('scan-choice').style.display='none'">
+    <input type="file" id="scan-file-gal" accept="image/*" multiple style="display:none" onchange="scanFichiers(this.files);document.getElementById('scan-choice').style.display='none'">
     <img id="scan-preview" style="display:none;width:100%;border-radius:12px;margin-bottom:12px;max-height:200px;object-fit:cover">
     <div id="scan-result"></div>
     <div id="scan-actions" style="display:none">
@@ -8151,7 +8370,8 @@ _supa.auth.onAuthStateChange(function(event, session) {
   <div id="mc-pop" style="display:none"></div>
   <div id="mc-sheet" style="display:none"></div>
 </div>
-<input type="file" id="mc-page-inp" accept="image/*" style="display:none" onchange="mcAjouterPage(this.files[0]);this.value=''">
+<input type="file" id="mc-page-inp" accept="image/*" multiple style="display:none" onchange="mcAjouterPages(this.files);this.value=''">
+<input type="file" id="mc-page-cam" accept="image/*" capture="environment" style="display:none" onchange="mcAjouterPages(this.files);this.value=''">
 
 <!-- ══ VEILLE DE CONTRÔLE ══ -->
 <div class="ia-modal" id="vc-modal" onclick="if(event.target===this)closeVeilleControle()">

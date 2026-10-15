@@ -26,6 +26,7 @@
 | Interrogation interactive dans le chat : outil que l'IA lance d'elle-même quand l'élève veut être interrogé | ✅ |
 | Scanner → « Mes cours » : transcription fidèle, sauvegardée, modifiable, plusieurs pages, révisable (fiche, flashcards, interro) | ✅ |
 | Mes cours v2 (style Notes d'Apple) : cahiers colorés, page de cahier modifiable directement, barre de mise en forme, menu ⋯, rangement automatique | ✅ |
+| Mes cours : vraies pages (26 lignes, numérotées, débordement automatique), ajout de pages facile (vierge / photo / plusieurs photos), bouton retour Android, clavier aligné | ✅ |
 
 ---
 

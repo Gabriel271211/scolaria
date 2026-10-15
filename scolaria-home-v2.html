@@ -1398,7 +1398,7 @@ body::after {
 .chat-src a { display: block; color: var(--accent); text-decoration: none; padding: 3px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .chat-src a span { color: var(--mu); font-size: 11px; margin-left: 4px; }
 /* Mes cours — facon « Notes » d'Apple, sur papier de cahier */
-.mc-panel { position: fixed; inset: 0; z-index: 560; background: var(--bg); flex-direction: column; overflow: hidden; }
+.mc-panel { position: fixed; top: 0; left: 0; right: 0; height: 100%; z-index: 560; background: var(--bg); flex-direction: column; overflow: hidden; }
 .mc-haut { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: max(10px, env(safe-area-inset-top)) 8px 4px; flex-shrink: 0; }
 .mc-retour { display: flex; align-items: center; gap: 0; background: none; border: none; color: var(--accent); font-size: 16px; font-weight: 600; font-family: var(--fb); cursor: pointer; padding: 6px 4px; max-width: 62%; -webkit-tap-highlight-color: transparent; }
 .mc-retour svg { width: 24px; height: 24px; stroke: currentColor; fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
@@ -1447,7 +1447,7 @@ body::after {
 .mc-papier {
   --mc-ligne: color-mix(in srgb, var(--accent) 17%, transparent);
   --mc-marge: color-mix(in srgb, #e84040 50%, transparent);
-  position: relative; margin: 4px 0 90px; padding: 28px 16px 56px 46px; min-height: 70vh;
+  position: relative; margin: 4px 0 32px; padding: 28px 16px 56px 46px; min-height: 70vh;
   background-color: var(--card); border-radius: 4px 16px 16px 4px;
   box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 8px 24px rgba(0,0,0,.06);
   background-image: linear-gradient(to right, transparent 33px, var(--mc-marge) 33px, var(--mc-marge) 35px, transparent 35px),
@@ -1472,7 +1472,7 @@ body::after {
 .mc-note td, .mc-note th { border: 1px solid var(--bord); padding: 0 6px; text-align: left; }
 .mc-note code { font-size: 14px; background: var(--bg); border-radius: 4px; padding: 0 4px; }
 /* barre de mise en forme */
-.mc-fmt { position: fixed; left: 0; right: 0; bottom: 0; z-index: 565; display: flex; align-items: center; gap: 2px; padding: 6px 8px; background: var(--card); border-top: 1px solid var(--bord); box-shadow: 0 -4px 16px rgba(0,0,0,.06); overflow-x: auto; scrollbar-width: none; }
+.mc-fmt { position: relative; flex-shrink: 0; z-index: 2; display: flex; align-items: center; gap: 2px; padding: 6px 8px; background: var(--card); border-top: 1px solid var(--bord); box-shadow: 0 -4px 16px rgba(0,0,0,.06); overflow-x: auto; scrollbar-width: none; }
 .mc-fmt::-webkit-scrollbar { display: none; }
 .mc-fmt button { flex-shrink: 0; min-width: 38px; height: 36px; padding: 0 9px; border: none; border-radius: 9px; background: transparent; color: var(--tx); font-size: 14px; font-weight: 600; font-family: var(--fb); cursor: pointer; display: flex; align-items: center; justify-content: center; -webkit-tap-highlight-color: transparent; }
 .mc-fmt button.on { background: var(--accent-l); color: var(--accent); }
@@ -6363,24 +6363,54 @@ function mcDepuisScan(t) {
   return c;
 }
 
-/* ══ PANNEAU ══ */
+/* ══ PANNEAU ══
+   Bouton retour du telephone : chaque niveau (cahiers = 1, liste = 2, cours = 3) a une
+   entree dans l'historique du navigateur. Le retour Android declenche « popstate » :
+   on remonte alors d'un niveau, exactement comme la fleche ‹ en haut a gauche. */
+var _mcPile = 0, _mcIgnorePop = 0;
+function mcPanelOuvert() { var p = document.getElementById('mc-panel'); return !!p && p.style.display !== 'none'; }
+function mcSyncHistorique() {
+  if (!mcPanelOuvert()) return;
+  var voulu = _mc.vue === 'cours' ? 3 : _mc.vue === 'liste' ? 2 : 1;
+  while (_mcPile < voulu) { try { history.pushState({ mc: _mcPile + 1 }, ''); } catch(e) { break; } _mcPile++; }
+  if (_mcPile > voulu) { var n = _mcPile - voulu; _mcPile = voulu; _mcIgnorePop++; history.go(-n); }
+}
 function openMesCours(id) {
   if (typeof closeDrawer === 'function') closeDrawer();
   var p = document.getElementById('mc-panel'); if (p) p.style.display = 'flex';
+  mcAjusterHauteur();
   if (id && mcGet(id)) { var c = mcGet(id); _mc.cahier = c.cahier && mccGet(c.cahier) ? c.cahier : 'tous'; mcVueCours(id); }
   else mcVueCahiers();
 }
 function closeMesCours() {
   mcEnregistrer();
   mcFermerPop();
-  var p = document.getElementById('mc-panel'); if (p) p.style.display = 'none';
+  mcFermerSheet();
+  var p = document.getElementById('mc-panel');
+  if (p) { p.style.display = 'none'; p.style.height = ''; p.style.top = ''; }
   _mc.cours = null;
+  /* fermeture par un bouton (Fiche, Scanner…) : on retire nos entrees d'historique */
+  if (_mcPile > 0) { var n = _mcPile; _mcPile = 0; _mcIgnorePop++; history.go(-n); }
 }
-function mcRetour() {
+function mcRetourInterne() {
   if (_mc.vue === 'cours') { mcEnregistrer(); mcVueListe(_mc.cahier || 'tous'); return; }
   if (_mc.vue === 'liste') { mcVueCahiers(); return; }
   closeMesCours();
 }
+/* fleche ‹ : passe par l'historique pour rester synchronise avec le bouton du telephone */
+function mcRetour() { if (_mcPile > 0) history.back(); else mcRetourInterne(); }
+window.addEventListener('popstate', function() {
+  if (_mcIgnorePop > 0) { _mcIgnorePop--; return; }
+  if (_mcPile <= 0 || !mcPanelOuvert()) return;
+  _mcPile--;
+  /* un menu ou une fenetre ouverte : le retour la ferme seulement */
+  var sh = document.getElementById('mc-sheet'), po = document.getElementById('mc-pop');
+  if ((sh && sh.style.display !== 'none') || (po && po.style.display !== 'none')) {
+    mcFermerSheet(); mcFermerPop(); mcSyncHistorique(); return;
+  }
+  var a = document.activeElement; if (a && a.isContentEditable) a.blur();
+  mcRetourInterne();
+});
 /* barre du haut : texte du bouton retour + boutons de droite */
 function mcHaut(retour, droite) {
   document.getElementById('mc-retour-t').textContent = retour;
@@ -6424,6 +6454,7 @@ function mcVueCahiers() {
     '<span class="mc-bas-c">' + tous.length + ' cours</span>' +
     '<span class="mc-bas-d"><button class="mc-bas-i" onclick="mcScanner()" aria-label="Scanner un cours">' + MC_ICO.photo + '</button>' +
     '<button class="mc-bas-i" onclick="mcEcrire()" aria-label="Écrire un cours">' + MC_ICO.ecrire + '</button></span>');
+  mcSyncHistorique();
 }
 function mcLigneCahier(id, nom, n, couleur, icoTous) {
   return '<div class="mc-ligne" onclick="mcVueListe(\'' + id + '\')">' +
@@ -6452,6 +6483,7 @@ function mcVueListe(id) {
   mcBas('<span></span><span class="mc-bas-c">' + l.length + ' cours</span>' +
     '<span class="mc-bas-d"><button class="mc-bas-i" onclick="mcScanner()" aria-label="Scanner un cours">' + MC_ICO.photo + '</button>' +
     '<button class="mc-bas-i" onclick="mcEcrire()" aria-label="Écrire un cours">' + MC_ICO.ecrire + '</button></span>');
+  mcSyncHistorique();
 }
 function mcListeHtml(l, montrerCahier) {
   if (!l.length) return '<div class="vc-empty"><b>Aucun cours ici</b>Touche l\'appareil photo pour scanner une page, ou le crayon pour écrire.</div>';
@@ -6488,6 +6520,7 @@ function mcVueCours(id) {
   try { document.execCommand('defaultParagraphSeparator', false, 'p'); } catch(e) {}
   document.getElementById('mc-body').scrollTop = 0;
   if (!c.titre && !c.texte) setTimeout(function() { var t = document.getElementById('mc-titre'); if (t) t.focus(); }, 80);
+  mcSyncHistorique();
 }
 /* Entree dans le titre -> on passe au texte ; pas de mise en forme dans le titre */
 function mcTitreTouche(e) {
@@ -6514,6 +6547,7 @@ function mcColler(e) {
 function mcModif() {
   clearTimeout(_mcTimer);
   _mcTimer = setTimeout(mcEnregistrer, 600);
+  mcCaretBientot();
 }
 function mcEnregistrer() {
   clearTimeout(_mcTimer); _mcTimer = null;
@@ -6573,23 +6607,53 @@ function mcEtatFmt() {
     var b = bar.querySelector('[data-c="' + c + '"]'); if (b) b.classList.toggle('on', bloc === c);
   });
 }
-/* barre visible seulement quand on ecrit dans la note ; suit le clavier (visualViewport) */
+/* ── Clavier ──
+   Sur Android, le clavier ne reduit que la zone VISIBLE (visualViewport). On donne au
+   panneau exactement cette hauteur : la barre de mise en forme, derniere de la colonne,
+   se pose donc pile sur le clavier, et la zone de texte s'arrete juste au-dessus. */
+function mcAjusterHauteur() {
+  var p = document.getElementById('mc-panel'); if (!p || p.style.display === 'none') return;
+  var vv = window.visualViewport; if (!vv) return;
+  p.style.height = Math.round(vv.height) + 'px';
+  p.style.top = Math.round(vv.offsetTop) + 'px';
+}
+/* La ligne ou l'on ecrit reste visible, juste au-dessus de la barre et du clavier */
+function mcCaretVisible() {
+  if (_mc.vue !== 'cours') return;
+  var a = document.activeElement; if (!a || (a.id !== 'mc-note' && a.id !== 'mc-titre')) return;
+  var s = window.getSelection(); if (!s || !s.rangeCount) return;
+  var r = s.getRangeAt(0).cloneRange(); r.collapse(false);
+  var rect = r.getClientRects()[0] || r.getBoundingClientRect();
+  if (!rect || (!rect.top && !rect.bottom)) {   /* ligne vide : on prend la ligne elle-meme */
+    var n = s.focusNode, el = n && (n.nodeType === 1 ? n : n.parentElement);
+    if (!el) return;
+    rect = el.getBoundingClientRect();
+  }
+  var body = document.getElementById('mc-body'), b = body.getBoundingClientRect();
+  if (rect.bottom > b.bottom - 6) body.scrollTop += rect.bottom - b.bottom + 28;   /* + une ligne de marge */
+  else if (rect.top < b.top + 6) body.scrollTop -= b.top - rect.top + 28;
+}
+var _mcRaf = 0;
+function mcCaretBientot() { cancelAnimationFrame(_mcRaf); _mcRaf = requestAnimationFrame(mcCaretVisible); }
+/* barre visible seulement quand on ecrit dans la note ; bouton OK pendant l'ecriture */
 function mcMajFmt() {
   var bar = document.getElementById('mc-fmt'), ok = document.getElementById('mc-ok'); if (!bar) return;
   var a = document.activeElement;
   var ecrit = a && (a.id === 'mc-note' || a.id === 'mc-titre') && _mc.vue === 'cours';
   bar.style.display = ecrit && a.id === 'mc-note' ? 'flex' : 'none';
   if (ok) ok.style.display = ecrit ? 'block' : 'none';
-  if (ecrit && window.visualViewport) {
-    var vv = window.visualViewport;
-    bar.style.bottom = Math.max(0, window.innerHeight - vv.height - vv.offsetTop) + 'px';
-  } else bar.style.bottom = '0px';
+  mcAjusterHauteur();
   mcEtatFmt();
+  if (ecrit) mcCaretBientot();
 }
 document.addEventListener('focusin', mcMajFmt);
 document.addEventListener('focusout', function() { setTimeout(mcMajFmt, 50); });
-document.addEventListener('selectionchange', function() { if (_mc.vue === 'cours') mcEtatFmt(); });
-if (window.visualViewport) window.visualViewport.addEventListener('resize', mcMajFmt);
+document.addEventListener('selectionchange', function() { if (_mc.vue === 'cours') { mcEtatFmt(); mcCaretBientot(); } });
+if (window.visualViewport) {
+  /* le clavier s'ouvre, se ferme ou fait defiler la zone visible */
+  window.visualViewport.addEventListener('resize', mcMajFmt);
+  window.visualViewport.addEventListener('scroll', function() { mcAjusterHauteur(); mcCaretBientot(); });
+}
 
 /* ── Menus « ⋯ » ── */
 function mcPop(btn, items) {

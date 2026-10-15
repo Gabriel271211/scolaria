@@ -116,7 +116,7 @@ async function callGroqVision(messages, maxTok, opts) { ... } // photos : essaie
 | **Interrogation IA** | Questions générées par l'IA + correction automatique des réponses de l'élève. |
 | **Quiz vocal (VQ)** | Quiz avec réponse libre, correction IA. |
 | **Scanner de cours** | Photo d'un cours (réduite à 2000 px avant envoi, `imageReduite`) → **Transcrire et sauvegarder** (copie fidèle dans « Mes cours »), ou fiche / flashcards générées par vision IA. |
-| **Mes cours** | Panneau `#mc-panel` (fonctions `mc*`, données `sk_cours` synchronisées) : liste avec recherche, lecture mise en forme, **Modifier** (titre, matière, texte markdown, sauvegarde auto), **+ Ajouter une page** (photo transcrite à la suite), **Fiche / Flashcards** (générateur des Révisions avec le cours collé) et **M'interroger** (interro du chat basée uniquement sur le cours). Accès : Révisions (« Mes cours »), menu ☰, Scanner. |
+| **Mes cours** | Inspiré de Notes d'Apple. Panneau `#mc-panel` (fonctions `mc*`, CSS `.mc-`). **Cahiers** (`sk_cahiers` : nom + couleur) → liste des cours → **page de cahier** (lignes + marge rouge) **modifiable directement** (`contenteditable`, sauvegarde auto 0,6 s) avec barre de mise en forme au-dessus du clavier (Titre, Sous-titre, Texte, gras, italique, souligné, surligneur, listes). Menu **⋯** : Fiche, Flashcards, M'interroger, Ajouter une page (photo), Ranger dans un cahier, Supprimer. Recherche dans tous les cours. Un cours scanné est **rangé automatiquement** dans le cahier de sa matière (`mcCahierAuto`). Le HTML est toujours nettoyé par `mcPropre` (seules les balises de mise en forme, aucun attribut) ; `texte` = version brute pour l'IA. |
 | **Veille de contrôle** | Liste « Mes contrôles » (`sk_ctrl`, synchronisé). Chaque contrôle : matière, **date précise** (+ heure facultative), **plusieurs sujets**. L'IA génère un planning jour par jour calé sur les vraies dates (cases à cocher + progression). **Rappels** : la veille à 17h, le matin du contrôle (7h) et les jours de révision (17h), envoyés par `sw.js` (`checkCtrl`) via le cache `scolaria-data`. |
 | **Conjugaison** | FR (tables locales + IA pour irréguliers), EN et ES (local + enrichissement IA). |
 | **Pomodoro** | Minuteur de travail/pause avec alerte sonore (WebAudio) et vibration (haptique) en fin de cycle. |
@@ -154,7 +154,8 @@ Préfixe commun : `sk_`.
 | `sk_flash_stats` | Stats flashcards `{ok,total}` | ✅ |
 | `sk_quiz_stats` | Stats quiz `{ok,total}` | ✅ |
 | `sk_streak` | Série de jours `{count,date}` | ✅ |
-| `sk_cours` | Mes cours : `[{id, titre, mat, texte, cree, maj}]` | ✅ |
+| `sk_cours` | Mes cours : `[{id, titre, mat, html, texte, cahier, cree, maj}]` | ✅ |
+| `sk_cahiers` | Cahiers de Mes cours : `[{id, nom, couleur, cree}]` | ✅ |
 | `sk_ctrl` | Contrôles de la Veille de contrôle (date, sujets, planning, cases cochées, rappels) | ✅ |
 | `sk_day_*` | Activité journalière | ✅ (préfixe) |
 | `sk_theme` | Thème clair/sombre | ❌ (local au device) |

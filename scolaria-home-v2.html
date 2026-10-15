@@ -1397,39 +1397,110 @@ body::after {
 .chat-src-t { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--mu); margin-bottom: 4px; }
 .chat-src a { display: block; color: var(--accent); text-decoration: none; padding: 3px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .chat-src a span { color: var(--mu); font-size: 11px; margin-left: 4px; }
-/* Mes cours (cours transcrits) */
+/* Mes cours — facon « Notes » d'Apple, sur papier de cahier */
 .mc-panel { position: fixed; inset: 0; z-index: 560; background: var(--bg); flex-direction: column; overflow: hidden; }
-.mc-top { display: flex; align-items: center; gap: 6px; padding: max(12px, env(safe-area-inset-top)) 12px 10px; border-bottom: 1px solid var(--bord); background: var(--card); flex-shrink: 0; }
-.mc-back { background: none; border: none; color: var(--tx); font-size: 28px; line-height: 1; width: 36px; height: 36px; cursor: pointer; padding: 0; }
-.mc-ttl { flex: 1; font-size: 16px; font-weight: 800; color: var(--tx); }
-.mc-top-act { display: flex; align-items: center; gap: 10px; }
-.mc-top-btn { background: var(--accent-l); color: var(--accent); border: none; border-radius: 10px; padding: 8px 14px; font-size: 13px; font-weight: 700; font-family: var(--fb); cursor: pointer; }
-.mc-etat { font-size: 11px; color: var(--mu); }
-.mc-body { flex: 1; overflow-y: auto; padding: 16px 16px max(24px, env(safe-area-inset-bottom)); max-width: 680px; width: 100%; margin: 0 auto; box-sizing: border-box; }
-.mc-liste { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
-.mc-item { background: var(--card); border: 1.5px solid var(--bord); border-radius: 14px; padding: 12px 14px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
-.mc-item:active { transform: scale(.99); }
-.mc-item-s { margin-bottom: 8px; padding: 10px 12px; }
-.mc-item-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-.mc-item-t { font-size: 15px; font-weight: 700; color: var(--tx); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.mc-tag { flex-shrink: 0; font-size: 11px; font-weight: 700; color: var(--accent); background: var(--accent-l); border-radius: 99px; padding: 3px 9px; }
-.mc-item-p { font-size: 12px; color: var(--mu); margin-top: 4px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-.mc-item-d { font-size: 11px; color: var(--mu); margin-top: 6px; }
+.mc-haut { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: max(10px, env(safe-area-inset-top)) 8px 4px; flex-shrink: 0; }
+.mc-retour { display: flex; align-items: center; gap: 0; background: none; border: none; color: var(--accent); font-size: 16px; font-weight: 600; font-family: var(--fb); cursor: pointer; padding: 6px 4px; max-width: 62%; -webkit-tap-highlight-color: transparent; }
+.mc-retour svg { width: 24px; height: 24px; stroke: currentColor; fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+.mc-retour span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mc-haut-d { display: flex; align-items: center; gap: 2px; }
+.mc-haut-i { width: 40px; height: 40px; border-radius: 50%; border: none; background: none; color: var(--accent); cursor: pointer; display: flex; align-items: center; justify-content: center; -webkit-tap-highlight-color: transparent; }
+.mc-haut-i:active { background: var(--accent-l); }
+.mc-haut-i svg { width: 22px; height: 22px; fill: currentColor; }
+.mc-haut-ok { display: none; background: none; border: none; color: var(--accent); font-size: 16px; font-weight: 700; font-family: var(--fb); padding: 6px 10px; cursor: pointer; }
+.mc-body { flex: 1; overflow-y: auto; padding: 0 16px 28px; max-width: 720px; width: 100%; margin: 0 auto; box-sizing: border-box; -webkit-overflow-scrolling: touch; }
+.mc-grand { display: flex; align-items: center; gap: 10px; font-size: 30px; font-weight: 800; letter-spacing: -.7px; color: var(--tx); margin: 2px 2px 12px; line-height: 1.15; }
+.mc-cherche { display: flex; align-items: center; gap: 8px; background: color-mix(in srgb, var(--mu) 13%, transparent); border-radius: 11px; padding: 9px 12px; margin-bottom: 20px; }
+.mc-cherche svg { width: 17px; height: 17px; stroke: var(--mu); fill: none; stroke-width: 2.2; stroke-linecap: round; flex-shrink: 0; }
+.mc-cherche input { flex: 1; min-width: 0; border: none; background: transparent; outline: none; font-size: 15px; font-family: var(--fb); color: var(--tx); }
+.mc-sec { font-size: 13px; font-weight: 700; color: var(--mu); margin: 0 4px 8px; }
+.mc-groupe { background: var(--card); border: 1px solid var(--bord); border-radius: 14px; overflow: hidden; }
+.mc-ligne { display: flex; align-items: center; gap: 12px; padding: 13px 14px; border-bottom: 1px solid var(--bord); cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.mc-ligne:last-child, .mc-note-l:last-child { border-bottom: none; }
+.mc-ligne:active, .mc-note-l:active { background: var(--bg); }
+.mc-ligne > .mc-pastille { margin: 0 5px; }
+.mc-pastille { display: inline-block; width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; vertical-align: middle; }
+.mc-pastille-g { width: 14px; height: 14px; }
+.mc-ico-tous { display: flex; flex-shrink: 0; }
+.mc-ico-tous svg { width: 20px; height: 20px; stroke: var(--accent); fill: none; stroke-width: 2; stroke-linecap: round; display: block; }
+.mc-ligne-t { flex: 1; min-width: 0; font-size: 15px; color: var(--tx); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mc-ligne-n { font-size: 15px; color: var(--mu); }
+.mc-chev svg { width: 7px; height: 12px; stroke: var(--mu); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; display: block; }
+.mc-coche { color: var(--accent); font-weight: 800; }
+.mc-astuce { font-size: 12px; color: var(--mu); line-height: 1.45; margin: 10px 4px 0; }
+.mc-note-l { padding: 11px 14px; border-bottom: 1px solid var(--bord); cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.mc-note-t { font-size: 15px; font-weight: 700; color: var(--tx); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mc-note-s { display: flex; align-items: center; gap: 5px; font-size: 13px; color: var(--mu); margin-top: 2px; overflow: hidden; white-space: nowrap; }
+.mc-note-s b { color: var(--tx); font-weight: 600; flex-shrink: 0; }
+.mc-note-k { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--mu); margin-top: 3px; }
 .mc-vide { font-size: 13px; color: var(--mu); line-height: 1.45; border: 1.5px dashed var(--bord); border-radius: 14px; padding: 14px; cursor: pointer; }
-.mc-head { margin-bottom: 14px; }
-.mc-h-t { font-size: 22px; font-weight: 800; letter-spacing: -.4px; color: var(--tx); line-height: 1.2; }
-.mc-h-s { font-size: 12px; color: var(--mu); margin-top: 4px; }
-.mc-texte { background: var(--card); border: 1px solid var(--bord); border-radius: 14px; padding: 14px 16px; font-size: 14px; line-height: 1.6; }
-.mc-sec { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--mu); margin: 20px 0 8px; }
-.mc-acts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 10px; }
-.mc-acts button { padding: 12px 6px; border-radius: 12px; border: 1.5px solid var(--bord); background: var(--card); color: var(--tx); font-size: 13px; font-weight: 700; font-family: var(--fb); cursor: pointer; }
-.mc-acts button:active { border-color: var(--accent); }
-.mc-btn2 { display: block; width: 100%; padding: 13px; border-radius: 14px; border: 1.5px solid var(--bord); background: var(--card); color: var(--tx); font-size: 14px; font-weight: 600; font-family: var(--fb); cursor: pointer; margin-top: 8px; }
-.mc-btn2.del { color: var(--danger); background: transparent; border-color: transparent; margin-top: 18px; }
-.mc-in-t { width: 100%; box-sizing: border-box; border: none; border-bottom: 1.5px solid var(--bord); background: transparent; color: var(--tx); font-size: 20px; font-weight: 800; font-family: var(--fb); padding: 6px 0 8px; margin-bottom: 12px; outline: none; }
-.mc-in-t:focus { border-bottom-color: var(--accent); }
-.mc-ta { width: 100%; box-sizing: border-box; min-height: 55vh; border: 1.5px solid var(--bord); border-radius: 14px; background: var(--card); color: var(--tx); font-size: 14px; line-height: 1.6; font-family: var(--fb); padding: 12px 14px; resize: vertical; outline: none; }
-.mc-ta:focus { border-color: var(--accent); }
+.mc-btn2 { display: block; width: 100%; padding: 13px; border-radius: 14px; border: 1.5px solid var(--bord); background: var(--card); color: var(--tx); font-size: 14px; font-weight: 600; font-family: var(--fb); cursor: pointer; margin-top: 10px; }
+/* barre du bas (nouveau cahier · nombre · scanner / ecrire) */
+.mc-bas { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 6px 10px max(8px, env(safe-area-inset-bottom)); border-top: 1px solid var(--bord); background: var(--bg); flex-shrink: 0; }
+.mc-bas-b { display: flex; align-items: center; gap: 6px; background: none; border: none; color: var(--accent); font-size: 14px; font-weight: 600; font-family: var(--fb); cursor: pointer; padding: 6px 4px; }
+.mc-bas-b svg, .mc-bas-i svg { width: 23px; height: 23px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.mc-bas-c { font-size: 12px; color: var(--mu); }
+.mc-bas-d { display: flex; gap: 2px; }
+.mc-bas-i { width: 42px; height: 42px; border: none; background: none; color: var(--accent); cursor: pointer; display: flex; align-items: center; justify-content: center; border-radius: 50%; -webkit-tap-highlight-color: transparent; }
+.mc-bas-i:active { background: var(--accent-l); }
+/* la page de cahier : lignes bleutees + marge rouge */
+.mc-papier {
+  --mc-ligne: color-mix(in srgb, var(--accent) 17%, transparent);
+  --mc-marge: color-mix(in srgb, #e84040 50%, transparent);
+  position: relative; margin: 4px 0 90px; padding: 28px 16px 56px 46px; min-height: 70vh;
+  background-color: var(--card); border-radius: 4px 16px 16px 4px;
+  box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 8px 24px rgba(0,0,0,.06);
+  background-image: linear-gradient(to right, transparent 33px, var(--mc-marge) 33px, var(--mc-marge) 35px, transparent 35px),
+                    repeating-linear-gradient(to bottom, transparent 0, transparent 27px, var(--mc-ligne) 27px, var(--mc-ligne) 28px);
+  font-size: 16px; line-height: 28px; color: var(--tx);
+}
+.mc-meta { display: flex; align-items: center; gap: 5px; height: 28px; font-size: 12px; color: var(--mu); }
+.mc-titre { font-size: 24px; font-weight: 800; letter-spacing: -.4px; line-height: 28px; min-height: 28px; outline: none; word-wrap: break-word; }
+.mc-note { outline: none; min-height: 45vh; padding-top: 0; word-wrap: break-word; -webkit-user-select: text; user-select: text; }
+.mc-titre:empty::before, .mc-note:empty::before { content: attr(data-ph); color: var(--mu); opacity: .7; pointer-events: none; }
+.mc-note h1 { font-size: 21px; font-weight: 800; line-height: 28px; margin: 28px 0 0; color: var(--accent); }
+.mc-note h2 { font-size: 18px; font-weight: 800; line-height: 28px; margin: 14px 0 0; padding-top: 14px; }
+.mc-note h3 { font-size: 16px; font-weight: 800; line-height: 28px; margin: 0; }
+.mc-note > :first-child { margin-top: 0; padding-top: 0; }
+.mc-note p, .mc-note div, .mc-note blockquote { margin: 0; }
+.mc-note ul, .mc-note ol { margin: 0; padding-left: 22px; }
+.mc-note li { margin: 0; }
+.mc-note b, .mc-note strong { font-weight: 800; }
+.mc-note mark, .mc-note span[style*="background"] { background: #fde68a !important; color: #1a1a1a; border-radius: 3px; padding: 0 2px; }
+.mc-note hr { border: none; height: 28px; margin: 0; background-image: linear-gradient(to right, color-mix(in srgb, var(--mu) 55%, transparent) 50%, transparent 50%); background-size: 10px 1.5px; background-repeat: repeat-x; background-position: 0 50%; }
+.mc-note table { border-collapse: collapse; width: 100%; font-size: 14px; line-height: 27px; background: var(--card); }
+.mc-note td, .mc-note th { border: 1px solid var(--bord); padding: 0 6px; text-align: left; }
+.mc-note code { font-size: 14px; background: var(--bg); border-radius: 4px; padding: 0 4px; }
+/* barre de mise en forme */
+.mc-fmt { position: fixed; left: 0; right: 0; bottom: 0; z-index: 565; display: flex; align-items: center; gap: 2px; padding: 6px 8px; background: var(--card); border-top: 1px solid var(--bord); box-shadow: 0 -4px 16px rgba(0,0,0,.06); overflow-x: auto; scrollbar-width: none; }
+.mc-fmt::-webkit-scrollbar { display: none; }
+.mc-fmt button { flex-shrink: 0; min-width: 38px; height: 36px; padding: 0 9px; border: none; border-radius: 9px; background: transparent; color: var(--tx); font-size: 14px; font-weight: 600; font-family: var(--fb); cursor: pointer; display: flex; align-items: center; justify-content: center; -webkit-tap-highlight-color: transparent; }
+.mc-fmt button.on { background: var(--accent-l); color: var(--accent); }
+.mc-fmt button:active { background: var(--bg); }
+.mc-fmt svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.mc-fmt-sep { width: 1px; height: 22px; background: var(--bord); flex-shrink: 0; margin: 0 4px; }
+.mc-fmt-stabilo { background: #fde68a; color: #1a1a1a; border-radius: 4px; padding: 0 5px; font-weight: 700; }
+/* menu « ⋯ » */
+#mc-pop { position: fixed; inset: 0; z-index: 570; }
+.mc-pop-fond { position: absolute; inset: 0; }
+.mc-pop-menu { position: absolute; right: 10px; width: 250px; max-width: calc(100vw - 20px); background: var(--card); border-radius: 14px; padding: 4px 0; box-shadow: 0 12px 40px rgba(0,0,0,.18), 0 0 0 1px var(--bord); transform-origin: top right; animation: mcPopIn .14s ease-out; }
+@keyframes mcPopIn { from { opacity: 0; transform: scale(.92); } to { opacity: 1; transform: none; } }
+.mc-pop-it { display: flex; align-items: center; justify-content: space-between; gap: 10px; width: 100%; padding: 11px 16px; border: none; background: none; color: var(--tx); font-size: 15px; font-family: var(--fb); text-align: left; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.mc-pop-it:active { background: var(--bg); }
+.mc-pop-it.danger { color: var(--danger); }
+.mc-pop-ico { width: 22px; text-align: center; font-size: 16px; }
+.mc-pop-sep { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--mu); padding: 9px 16px 3px; border-top: 1px solid var(--bord); margin-top: 4px; }
+.mc-pop-menu > .mc-pop-sep:first-child { border-top: none; margin-top: 0; }
+.mc-pop-sep:empty { padding: 0; margin: 4px 0; }
+/* feuilles du bas (nouveau cahier, ranger) */
+#mc-sheet { position: fixed; inset: 0; z-index: 575; }
+.mc-sheet-fond { position: absolute; inset: 0; background: rgba(0,0,0,.35); }
+.mc-sheet-box { position: absolute; left: 0; right: 0; bottom: 0; max-width: 560px; margin: 0 auto; max-height: 80vh; overflow-y: auto; background: var(--card); border-radius: 20px 20px 0 0; padding: 18px 16px max(18px, env(safe-area-inset-bottom)); box-sizing: border-box; animation: tmup .25s ease; }
+.mc-sheet-t { font-size: 17px; font-weight: 800; color: var(--tx); margin-bottom: 12px; }
+.mc-sheet-box .mc-groupe { background: var(--bg); }
+.mc-couleurs { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+.mc-coul { width: 32px; height: 32px; border-radius: 50%; border: 3px solid var(--card); cursor: pointer; box-shadow: 0 0 0 1px var(--bord); }
+.mc-coul.on { box-shadow: 0 0 0 2px var(--tx); }
 
 /* Interrogation dans le chat (outil de l'IA) */
 .cq-intro { font-size: 13px; color: var(--mu); line-height: 1.45; }
@@ -6130,7 +6201,7 @@ async function scanTranscrire() {
   res.innerHTML='<div class="rev-loading" style="padding:30px 0"><div class="rev-spin"></div><div class="rev-loading-txt">ScolarIA recopie ton cours...</div><div class="rev-loading-sub">Environ 10 secondes</div></div>';
   try {
     var t = await mcTranscrire(scanImageData.full);
-    var c = mcNouveau(t.titre, t.mat, t.texte);
+    var c = mcDepuisScan(t);
     closeScanCours();
     openMesCours(c.id);
     toast('Cours sauvegardé dans « Mes cours »');
@@ -6141,13 +6212,19 @@ async function scanTranscrire() {
 }
 
 /* ══════════════════════════════════════════════
-   MES COURS — cours transcrits, a relire et modifier
-   sk_cours (synchronise) : [{ id, titre, mat, texte, cree, maj }]
+   MES COURS — des notes facon « Notes » d'Apple, sur papier de cahier
+   sk_cours   (synchronise) : [{ id, titre, mat, html, texte, cahier, cree, maj }]
+   sk_cahiers (synchronise) : [{ id, nom, couleur, cree }]
+   html  = contenu mis en forme (nettoye par mcPropre), modifie directement
+   texte = version texte brut, utilisee par l'IA (fiche, flashcards, interro)
    Fonctions mc*, CSS .mc-, panneau #mc-panel
 ══════════════════════════════════════════════ */
-var MC_KEY = 'sk_cours';
-var _mcCur = null, _mcEdit = false, _mcTimer = null;
+var MC_KEY = 'sk_cours', MCC_KEY = 'sk_cahiers';
+var MC_COULEURS = ['#4f46e5', '#e84040', '#16a34a', '#f59e0b', '#0ea5e9', '#a855f7', '#ec4899', '#64748b'];
+var _mc = { vue: 'cahiers', cahier: null, cours: null };   /* cahier : id, 'tous' ou 'sans' */
+var _mcTimer = null, _mcScanCahier = null, _mcSheetCb = null;
 
+/* ── Donnees ── */
 function mcLoad() { try { var l = JSON.parse(localStorage.getItem(MC_KEY) || '[]'); return Array.isArray(l) ? l : []; } catch(e) { return []; } }
 function mcSaveAll(l) {
   try { localStorage.setItem(MC_KEY, JSON.stringify(l)); }
@@ -6155,23 +6232,105 @@ function mcSaveAll(l) {
   scheduleSync();
   mcRenderRev();
 }
+function mccLoad() { try { var l = JSON.parse(localStorage.getItem(MCC_KEY) || '[]'); return Array.isArray(l) ? l : []; } catch(e) { return []; } }
+function mccSaveAll(l) { try { localStorage.setItem(MCC_KEY, JSON.stringify(l)); } catch(e) {} scheduleSync(); }
+function mccGet(id) { return mccLoad().filter(function(k) { return k.id === id; })[0] || null; }
 function mcGet(id) { return mcLoad().filter(function(c) { return c.id === id; })[0] || null; }
-function mcPut(c) {
-  c.maj = Date.now();
+function mcPut(c, garderDate) {
+  if (!garderDate) c.maj = Date.now();
   var l = mcLoad(), trouve = false;
   l = l.map(function(x) { if (x.id === c.id) { trouve = true; return c; } return x; });
   if (!trouve) l.unshift(c);
   mcSaveAll(l);
 }
-function mcNouveau(titre, mat, texte) {
-  var c = { id: 'm' + Date.now(), titre: titre || 'Cours sans titre', mat: mat || '', texte: texte || '', cree: Date.now(), maj: Date.now() };
+function mcNouveau(titre, mat, html, texte, cahier) {
+  var c = { id: 'm' + Date.now(), titre: titre || '', mat: mat || '', html: html || '', texte: texte || '',
+            cahier: cahier || '', cree: Date.now(), maj: Date.now() };
   mcPut(c);
   return c;
 }
+function mcDuCahier(id) {
+  return mcLoad().filter(function(c) {
+    if (id === 'tous') return true;
+    if (id === 'sans') return !c.cahier || !mccGet(c.cahier);
+    return c.cahier === id;
+  }).sort(function(a, b) { return b.maj - a.maj; });
+}
+function mcNomCahier(id) {
+  if (id === 'tous') return 'Tous les cours';
+  if (id === 'sans') return 'Sans cahier';
+  var k = mccGet(id); return k ? k.nom : 'Cahier';
+}
+function mcSansAccent(s) { return String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); }
+/* Range un cours dans le cahier de sa matiere s'il existe (« Maths » <-> « Mathématiques ») */
+function mcCahierAuto(mat) {
+  var m = mcSansAccent(mat); if (!m) return '';
+  var k = mccLoad().filter(function(k) {
+    var n = mcSansAccent(k.nom);
+    return n && (n.indexOf(m) !== -1 || m.indexOf(n) !== -1 || (n.length >= 4 && m.slice(0, 4) === n.slice(0, 4)));
+  })[0];
+  return k ? k.id : '';
+}
 function mcDate(ts) { return new Date(ts).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' }); }
+function mcDateLongue(ts) { return new Date(ts).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }); }
 function mcMots(t) { return (String(t || '').match(/\S+/g) || []).length; }
 
-/* Photo -> { titre, mat, texte } : copie FIDELE (pas de resume, pas d'adaptation au niveau) */
+/* ── HTML sur : seules les balises de mise en forme sont gardees, sans aucun attribut ── */
+var MC_TAGS = { H1:1, H2:1, H3:1, P:1, DIV:1, BR:1, UL:1, OL:1, LI:1, B:1, STRONG:1, I:1, EM:1, U:1, S:1, MARK:1,
+  TABLE:1, THEAD:1, TBODY:1, TR:1, TH:1, TD:1, HR:1, BLOCKQUOTE:1, CODE:1, SUP:1, SUB:1 };
+var MC_JETER = { SCRIPT:1, STYLE:1, IFRAME:1, OBJECT:1, EMBED:1, LINK:1, META:1, IMG:1, SVG:1, VIDEO:1, AUDIO:1,
+  FORM:1, INPUT:1, BUTTON:1, TEXTAREA:1, SELECT:1, TEMPLATE:1 };
+function mcPropre(html) {
+  var tpl = document.createElement('template');
+  tpl.innerHTML = String(html || '');
+  (function nettoie(parent) {
+    Array.prototype.slice.call(parent.childNodes).forEach(function(n) {
+      if (n.nodeType === 3) return;
+      if (n.nodeType !== 1) { n.remove(); return; }
+      var tag = n.tagName;
+      if (MC_JETER[tag]) { n.remove(); return; }
+      nettoie(n);
+      var fond = n.style ? n.style.backgroundColor : '';
+      if (tag === 'SPAN' || tag === 'FONT' || !MC_TAGS[tag]) {
+        /* le surligneur de l'editeur cree un <span style="background-color"> : on le garde en <mark> */
+        if (fond && fond !== 'transparent' && fond !== 'rgba(0, 0, 0, 0)' && fond !== 'inherit') {
+          var mk = document.createElement('mark');
+          while (n.firstChild) mk.appendChild(n.firstChild);
+          n.replaceWith(mk);
+        } else {
+          while (n.firstChild) parent.insertBefore(n.firstChild, n);
+          n.remove();
+        }
+        return;
+      }
+      Array.prototype.slice.call(n.attributes).forEach(function(a) { n.removeAttribute(a.name); });
+    });
+  })(tpl.content);
+  return tpl.innerHTML;
+}
+/* Texte brut (pour l'IA) a partir du HTML */
+function mcTexteDe(html) {
+  var d = document.createElement('div');
+  d.innerHTML = String(html || '')
+    .replace(/<li[^>]*>/gi, '<li>- ')
+    .replace(/<(br|hr)[^>]*>/gi, '\n')
+    .replace(/<\/(p|div|h1|h2|h3|li|tr|blockquote)>/gi, '\n');
+  return d.textContent.replace(/\n{3,}/g, '\n\n').trim();
+}
+/* Markdown de la transcription -> HTML de note (# titre, ## sous-titre, ### ...) */
+function mcMd(md) {
+  var out = '', buf = [];
+  function vide() { if (buf.length) { out += mdToHtml(buf.join('\n')); buf = []; } }
+  String(md || '').split('\n').forEach(function(l) {
+    var m = l.trim().match(/^(#{1,3})\s+(.+)$/);
+    if (m) { vide(); var n = m[1].length; out += '<h' + n + '>' + esc(m[2].replace(/\*\*/g, '')) + '</h' + n + '>'; }
+    else buf.push(l);
+  });
+  vide();
+  return mcPropre(out.replace(/<br>/g, '<p><br></p>'));
+}
+
+/* Photo -> { titre, mat, texte (markdown) } : copie FIDELE (pas de resume, pas d'adaptation au niveau) */
 async function mcTranscrire(dataUrl) {
   var prompt = 'Transcris FIDÈLEMENT tout le texte de cette photo de cours (manuscrit ou imprimé), dans l\'ordre de lecture.\n' +
     'RÈGLES : ne résume pas, n\'ajoute rien, ne corrige pas le fond. Garde la structure avec du markdown simple : # pour les titres, ## pour les sous-titres, - pour les listes, **gras** pour ce qui est souligné ou encadré. ' +
@@ -6194,125 +6353,372 @@ async function mcTranscrire(dataUrl) {
   if (!titre) { var h = corps.match(/^#+\s*(.+)$/m); titre = h ? h[1].trim() : corps.split('\n')[0].slice(0, 50); }
   return { titre: titre.slice(0, 80), mat: mat.slice(0, 30), texte: corps };
 }
+/* Nouveau cours a partir d'une transcription (scanner) */
+function mcDepuisScan(t) {
+  var cahier = (_mcScanCahier && mccGet(_mcScanCahier)) ? _mcScanCahier : mcCahierAuto(t.mat);
+  _mcScanCahier = null;
+  var html = mcMd(t.texte);
+  var c = mcNouveau(t.titre, t.mat, html, mcTexteDe(html), cahier);
+  if (cahier) toast('Rangé dans le cahier « ' + mcNomCahier(cahier) + ' »');
+  return c;
+}
 
-/* ── Panneau ── */
+/* ══ PANNEAU ══ */
 function openMesCours(id) {
-  closeDrawer();
-  var p = document.getElementById('mc-panel');
-  if (p) p.style.display = 'flex';
-  if (id && mcGet(id)) mcShowCours(id); else mcShowList();
+  if (typeof closeDrawer === 'function') closeDrawer();
+  var p = document.getElementById('mc-panel'); if (p) p.style.display = 'flex';
+  if (id && mcGet(id)) { var c = mcGet(id); _mc.cahier = c.cahier && mccGet(c.cahier) ? c.cahier : 'tous'; mcVueCours(id); }
+  else mcVueCahiers();
 }
 function closeMesCours() {
-  mcFlush();
-  var p = document.getElementById('mc-panel');
-  if (p) p.style.display = 'none';
-  _mcCur = null; _mcEdit = false;
+  mcEnregistrer();
+  mcFermerPop();
+  var p = document.getElementById('mc-panel'); if (p) p.style.display = 'none';
+  _mc.cours = null;
 }
-function mcBack() {
-  if (_mcEdit && _mcCur) { mcFlush(); mcShowCours(_mcCur); return; }
-  if (_mcCur) { mcShowList(); return; }
+function mcRetour() {
+  if (_mc.vue === 'cours') { mcEnregistrer(); mcVueListe(_mc.cahier || 'tous'); return; }
+  if (_mc.vue === 'liste') { mcVueCahiers(); return; }
   closeMesCours();
 }
-function mcTop(titre, actions) {
-  document.getElementById('mc-ttl').textContent = titre;
-  document.getElementById('mc-top-act').innerHTML = actions || '';
+/* barre du haut : texte du bouton retour + boutons de droite */
+function mcHaut(retour, droite) {
+  document.getElementById('mc-retour-t').textContent = retour;
+  document.getElementById('mc-haut-d').innerHTML = droite || '';
+}
+var MC_ICO = {
+  plus: '<svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>',
+  ecrire: '<svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>',
+  photo: '<svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>',
+  dossier: '<svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/><line x1="12" y1="11" x2="12" y2="17"/><line x1="9" y1="14" x2="15" y2="14"/></svg>',
+  points: '<svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>',
+  chev: '<svg viewBox="0 0 8 14"><path d="M1.5 1.5L6.5 7L1.5 12.5"/></svg>',
+  tous: '<svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="13" y2="16"/></svg>'
+};
+function mcBas(html) {
+  var b = document.getElementById('mc-bas');
+  b.innerHTML = html || '';
+  b.style.display = html ? 'flex' : 'none';
 }
 
-function mcShowList() {
-  mcFlush();
-  _mcCur = null; _mcEdit = false;
-  mcTop('Mes cours', '');
-  var l = mcLoad().sort(function(a, b) { return b.maj - a.maj; });
-  var h = '<button class="rev-go-btn" style="margin-top:0" onclick="closeMesCours();openScanCours()">📷 Scanner un cours</button>' +
-    '<button class="mc-btn2" style="margin-top:8px" onclick="mcCreerVide()">✏️ Écrire un cours</button>';
-  if (l.length > 4) h += '<input class="vc-inp" id="mc-cherche" style="margin-top:14px" placeholder="Rechercher un cours…" oninput="mcFiltre(this.value)">';
-  h += '<div id="mc-liste" class="mc-liste">' + mcListeHtml(l) + '</div>';
+/* ── 1. Les cahiers ── */
+function mcVueCahiers() {
+  _mc.vue = 'cahiers'; _mc.cours = null;
+  mcHaut('Retour', '');
+  var cahiers = mccLoad(), tous = mcLoad();
+  var compte = function(id) { return mcDuCahier(id).length; };
+  var h = '<div class="mc-grand">Mes cours</div>' +
+    '<div class="mc-cherche"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.6" y2="16.6"/></svg>' +
+      '<input id="mc-q" placeholder="Rechercher dans mes cours" oninput="mcChercher(this.value)"></div>' +
+    '<div id="mc-zone">';
+  h += '<div class="mc-sec">Cahiers</div><div class="mc-groupe">' +
+    mcLigneCahier('tous', 'Tous les cours', compte('tous'), 'var(--mu)', true) +
+    cahiers.map(function(k) { return mcLigneCahier(k.id, k.nom, compte(k.id), k.couleur); }).join('') +
+    (compte('sans') && cahiers.length ? mcLigneCahier('sans', 'Sans cahier', compte('sans'), 'var(--bord)') : '') +
+    '</div>';
+  if (!cahiers.length) h += '<div class="mc-astuce">Crée un cahier par matière (Maths, Histoire…) : les cours scannés y seront rangés automatiquement.</div>';
+  if (!tous.length) h += '<div class="vc-empty"><b>Aucun cours pour l\'instant</b>Scanne une page de ton cahier ou écris un cours : tu pourras le relire et le modifier quand tu veux.</div>';
+  h += '</div>';
   document.getElementById('mc-body').innerHTML = h;
+  mcBas('<button class="mc-bas-b" onclick="mcNouveauCahier()">' + MC_ICO.dossier + '<span>Nouveau cahier</span></button>' +
+    '<span class="mc-bas-c">' + tous.length + ' cours</span>' +
+    '<span class="mc-bas-d"><button class="mc-bas-i" onclick="mcScanner()" aria-label="Scanner un cours">' + MC_ICO.photo + '</button>' +
+    '<button class="mc-bas-i" onclick="mcEcrire()" aria-label="Écrire un cours">' + MC_ICO.ecrire + '</button></span>');
 }
-function mcListeHtml(l) {
-  if (!l.length) return '<div class="vc-empty"><b>Aucun cours sauvegardé</b>Scanne une page de ton cahier : ScolarIA la recopie pour que tu puisses la relire et la modifier quand tu veux.</div>';
-  return l.map(function(c) {
-    var apercu = String(c.texte || '').replace(/[#*>|`-]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 90);
-    return '<div class="mc-item" onclick="mcShowCours(\'' + c.id + '\')">' +
-      '<div class="mc-item-top"><span class="mc-item-t">' + esc(c.titre) + '</span>' + (c.mat ? '<span class="mc-tag">' + esc(c.mat) + '</span>' : '') + '</div>' +
-      '<div class="mc-item-p">' + esc(apercu) + '</div>' +
-      '<div class="mc-item-d">Modifié le ' + mcDate(c.maj) + ' · ' + mcMots(c.texte) + ' mots</div></div>';
-  }).join('');
+function mcLigneCahier(id, nom, n, couleur, icoTous) {
+  return '<div class="mc-ligne" onclick="mcVueListe(\'' + id + '\')">' +
+    (icoTous ? '<span class="mc-ico-tous">' + MC_ICO.tous + '</span>' : '<span class="mc-pastille" style="background:' + couleur + '"></span>') +
+    '<span class="mc-ligne-t">' + esc(nom) + '</span><span class="mc-ligne-n">' + n + '</span><span class="mc-chev">' + MC_ICO.chev + '</span></div>';
 }
-function mcFiltre(q) {
-  q = String(q || '').toLowerCase();
-  var l = mcLoad().sort(function(a, b) { return b.maj - a.maj; }).filter(function(c) {
-    return !q || (c.titre + ' ' + c.mat + ' ' + c.texte).toLowerCase().indexOf(q) !== -1;
-  });
-  document.getElementById('mc-liste').innerHTML = mcListeHtml(l);
+function mcChercher(q) {
+  q = mcSansAccent(q).trim();
+  var zone = document.getElementById('mc-zone'); if (!zone) return;
+  if (!q) { mcVueCahiers(); var i = document.getElementById('mc-q'); if (i) i.focus(); return; }
+  var l = mcLoad().filter(function(c) { return mcSansAccent(c.titre + ' ' + c.mat + ' ' + c.texte).indexOf(q) !== -1; })
+    .sort(function(a, b) { return b.maj - a.maj; });
+  zone.innerHTML = '<div class="mc-sec">' + l.length + ' résultat' + (l.length > 1 ? 's' : '') + '</div>' + mcListeHtml(l, true);
 }
-function mcCreerVide() { var c = mcNouveau('Nouveau cours', '', ''); _mcCur = c.id; mcEditer(); }
 
-function mcShowCours(id) {
-  var c = mcGet(id); if (!c) { mcShowList(); return; }
-  mcFlush();
-  _mcCur = id; _mcEdit = false;
-  mcTop('Cours', '<button class="mc-top-btn" onclick="mcEditer()">Modifier</button>');
+/* ── 2. La liste des cours d'un cahier ── */
+function mcVueListe(id) {
+  _mc.vue = 'liste'; _mc.cahier = id; _mc.cours = null;
+  var reel = id !== 'tous' && id !== 'sans';
+  if (reel && !mccGet(id)) { mcVueCahiers(); return; }
+  mcHaut('Cahiers', reel ? '<button class="mc-haut-i" onclick="mcMenuCahier(this)" aria-label="Options du cahier">' + MC_ICO.points + '</button>' : '');
+  var l = mcDuCahier(id), k = reel ? mccGet(id) : null;
   document.getElementById('mc-body').innerHTML =
-    '<div class="mc-head"><div class="mc-h-t">' + esc(c.titre) + '</div>' +
-      '<div class="mc-h-s">' + (c.mat ? esc(c.mat) + ' · ' : '') + 'modifié le ' + mcDate(c.maj) + ' · ' + mcMots(c.texte) + ' mots</div></div>' +
-    '<div class="mc-texte rev-ia-result">' + (c.texte ? mdToHtml(c.texte) : '<span style="color:var(--mu)">Ce cours est vide. Touche « Modifier » pour écrire.</span>') + '</div>' +
-    '<div class="mc-sec">Réviser ce cours</div>' +
-    '<div class="mc-acts">' +
-      '<button onclick="mcGenerer(\'fiche\')">Fiche</button>' +
-      '<button onclick="mcGenerer(\'flashcards\')">Flashcards</button>' +
-      '<button onclick="mcInterroger()">M\'interroger</button>' +
+    '<div class="mc-grand">' + (k ? '<span class="mc-pastille mc-pastille-g" style="background:' + k.couleur + '"></span>' : '') + esc(mcNomCahier(id)) + '</div>' +
+    mcListeHtml(l, id === 'tous');
+  mcBas('<span></span><span class="mc-bas-c">' + l.length + ' cours</span>' +
+    '<span class="mc-bas-d"><button class="mc-bas-i" onclick="mcScanner()" aria-label="Scanner un cours">' + MC_ICO.photo + '</button>' +
+    '<button class="mc-bas-i" onclick="mcEcrire()" aria-label="Écrire un cours">' + MC_ICO.ecrire + '</button></span>');
+}
+function mcListeHtml(l, montrerCahier) {
+  if (!l.length) return '<div class="vc-empty"><b>Aucun cours ici</b>Touche l\'appareil photo pour scanner une page, ou le crayon pour écrire.</div>';
+  return '<div class="mc-groupe">' + l.map(function(c) {
+    var apercu = String(c.texte || '').replace(/^.*\n?/, '').replace(/[#*>|`-]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 80);
+    var k = montrerCahier && c.cahier ? mccGet(c.cahier) : null;
+    return '<div class="mc-note-l" onclick="mcVueCours(\'' + c.id + '\')">' +
+      '<div class="mc-note-t">' + esc(c.titre || 'Nouveau cours') + '</div>' +
+      '<div class="mc-note-s"><b>' + mcDate(c.maj) + '</b> ' + esc(apercu || 'Pas de texte') + '</div>' +
+      (k ? '<div class="mc-note-k"><span class="mc-pastille" style="background:' + k.couleur + '"></span>' + esc(k.nom) + '</div>' : '') +
+    '</div>';
+  }).join('') + '</div>';
+}
+
+/* ── 3. Un cours : page de cahier, modifiable directement (comme Notes) ── */
+function mcVueCours(id) {
+  var c = mcGet(id); if (!c) { mcVueCahiers(); return; }
+  mcEnregistrer();
+  /* anciens cours (texte markdown seulement) -> HTML de note */
+  if (!c.html && c.texte) { c.html = mcMd(c.texte); c.texte = mcTexteDe(c.html); mcPut(c, true); }
+  _mc.vue = 'cours'; _mc.cours = id;
+  if (!_mc.cahier) _mc.cahier = c.cahier && mccGet(c.cahier) ? c.cahier : 'tous';
+  mcHaut(mcNomCahier(_mc.cahier), '<button class="mc-haut-ok" id="mc-ok" onclick="mcFinEdition()">OK</button>' +
+    '<button class="mc-haut-i" onclick="mcMenuCours(this)" aria-label="Plus d\'actions">' + MC_ICO.points + '</button>');
+  var k = c.cahier ? mccGet(c.cahier) : null;
+  document.getElementById('mc-body').innerHTML =
+    '<div class="mc-papier">' +
+      '<div class="mc-meta">' + mcDateLongue(c.maj) + (k ? ' · <span class="mc-pastille" style="background:' + k.couleur + '"></span>' + esc(k.nom) : '') + '</div>' +
+      '<div class="mc-titre" id="mc-titre" contenteditable="true" spellcheck="true" data-ph="Titre" onkeydown="mcTitreTouche(event)" onpaste="mcCollerTexte(event)" oninput="mcModif()">' + esc(c.titre) + '</div>' +
+      '<div class="mc-note" id="mc-note" contenteditable="true" spellcheck="true" data-ph="Commence à écrire ton cours…" oninput="mcModif()" onpaste="mcColler(event)">' + mcPropre(c.html) + '</div>' +
     '</div>' +
-    '<button class="mc-btn2" onclick="document.getElementById(\'mc-page-inp\').click()">📷 Ajouter une page (photo)</button>' +
-    '<div id="mc-page-etat"></div>' +
-    '<button class="mc-btn2 del" onclick="mcSupprimer()">Supprimer ce cours</button>';
+    '<div id="mc-page-etat"></div>';
+  mcBas('');
+  try { document.execCommand('defaultParagraphSeparator', false, 'p'); } catch(e) {}
   document.getElementById('mc-body').scrollTop = 0;
+  if (!c.titre && !c.texte) setTimeout(function() { var t = document.getElementById('mc-titre'); if (t) t.focus(); }, 80);
 }
-
-function mcEditer() {
-  var c = mcGet(_mcCur); if (!c) return;
-  _mcEdit = true;
-  mcTop('Modifier', '<span class="mc-etat" id="mc-etat">Enregistré</span><button class="mc-top-btn" onclick="mcFlush();mcShowCours(_mcCur)">OK</button>');
-  document.getElementById('mc-body').innerHTML =
-    '<input class="mc-in-t" id="mc-in-titre" maxlength="80" placeholder="Titre du cours" value="' + esc(c.titre) + '" oninput="mcModif()">' +
-    '<input class="vc-inp" id="mc-in-mat" maxlength="30" placeholder="Matière (ex : Histoire-Géo)" value="' + esc(c.mat) + '" oninput="mcModif()" style="margin-bottom:10px">' +
-    '<textarea class="mc-ta" id="mc-in-texte" placeholder="Ton cours… (# Titre, ## Sous-titre, - liste, **gras**)" oninput="mcModif()">' + esc(c.texte) + '</textarea>' +
-    '<div class="vc-hint">Enregistrement automatique. Mise en forme : # titre, ## sous-titre, - liste, **gras**.</div>';
-  var ta = document.getElementById('mc-in-texte');
-  if (ta && !c.texte) ta.focus();
+/* Entree dans le titre -> on passe au texte ; pas de mise en forme dans le titre */
+function mcTitreTouche(e) {
+  if (e.key === 'Enter') { e.preventDefault(); var n = document.getElementById('mc-note'); if (n) { n.focus(); mcCurseurDebut(n); } }
 }
-/* sauvegarde automatique 0,6 s apres la derniere frappe */
+function mcCurseurDebut(el) {
+  var r = document.createRange(); r.selectNodeContents(el); r.collapse(true);
+  var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+}
+function mcCollerTexte(e) {
+  e.preventDefault();
+  var t = (e.clipboardData || window.clipboardData).getData('text/plain').replace(/\s+/g, ' ');
+  document.execCommand('insertText', false, t);
+}
+/* Coller dans la note : HTML nettoye (pas de styles bizarres venant d'un site) */
+function mcColler(e) {
+  var cd = e.clipboardData || window.clipboardData; if (!cd) return;
+  var h = cd.getData('text/html');
+  e.preventDefault();
+  if (h) document.execCommand('insertHTML', false, mcPropre(h));
+  else document.execCommand('insertText', false, cd.getData('text/plain'));
+}
+/* Sauvegarde automatique 0,6 s apres la derniere modification */
 function mcModif() {
-  var e = document.getElementById('mc-etat'); if (e) e.textContent = 'Enregistrement…';
   clearTimeout(_mcTimer);
-  _mcTimer = setTimeout(mcFlush, 600);
+  _mcTimer = setTimeout(mcEnregistrer, 600);
 }
-function mcFlush() {
+function mcEnregistrer() {
   clearTimeout(_mcTimer); _mcTimer = null;
-  if (!_mcEdit || !_mcCur) return;
-  var c = mcGet(_mcCur); if (!c) return;
-  var t = document.getElementById('mc-in-titre'), m = document.getElementById('mc-in-mat'), x = document.getElementById('mc-in-texte');
-  if (!t || !x) return;
-  var nt = t.value.trim() || 'Cours sans titre', nm = m ? m.value.trim() : c.mat, nx = x.value;
-  if (nt === c.titre && nm === c.mat && nx === c.texte) { var e0 = document.getElementById('mc-etat'); if (e0) e0.textContent = 'Enregistré'; return; }
-  c.titre = nt; c.mat = nm; c.texte = nx;
+  if (_mc.vue !== 'cours' || !_mc.cours) return;
+  var t = document.getElementById('mc-titre'), n = document.getElementById('mc-note');
+  var c = mcGet(_mc.cours); if (!c || !t || !n) return;
+  var titre = t.textContent.replace(/\s+/g, ' ').trim();
+  var html = mcPropre(n.innerHTML);
+  if (titre === c.titre && html === c.html) return;
+  c.titre = titre; c.html = html; c.texte = mcTexteDe(html);
   mcPut(c);
-  var e = document.getElementById('mc-etat'); if (e) e.textContent = 'Enregistré ✓';
+}
+function mcFinEdition() {
+  mcEnregistrer();
+  if (document.activeElement) document.activeElement.blur();
 }
 
+/* ── Barre de mise en forme (au-dessus du clavier pendant l'ecriture) ── */
+function mcFmt(cmd) {
+  var n = document.getElementById('mc-note'); if (!n) return;
+  if (document.activeElement !== n) n.focus();
+  try {
+    if (cmd === 'h1' || cmd === 'h2' || cmd === 'p') document.execCommand('formatBlock', false, cmd);
+    else if (cmd === 'ul') document.execCommand('insertUnorderedList');
+    else if (cmd === 'ol') document.execCommand('insertOrderedList');
+    else if (cmd === 'mark') mcSurligner();
+    else document.execCommand(cmd);
+  } catch(e) {}
+  mcModif();
+  mcEtatFmt();
+}
+var MC_SURLIGNEUR = '#fde68a';
+function mcSurligner() {
+  var s = window.getSelection(); if (!s.rangeCount) return;
+  var el = s.anchorNode && (s.anchorNode.nodeType === 1 ? s.anchorNode : s.anchorNode.parentNode);
+  var mk = el && el.closest ? el.closest('mark, span[style*="background"]') : null;
+  if (mk && document.getElementById('mc-note').contains(mk)) {
+    /* deja surligne : on enleve le surlignage */
+    while (mk.firstChild) mk.parentNode.insertBefore(mk.firstChild, mk);
+    mk.remove();
+    return;
+  }
+  if (s.isCollapsed) { toast('Sélectionne le texte à surligner'); return; }
+  document.execCommand('styleWithCSS', false, true);
+  document.execCommand('hiliteColor', false, MC_SURLIGNEUR);
+  document.execCommand('styleWithCSS', false, false);
+}
+/* boutons B / I / U allumes selon la selection */
+function mcEtatFmt() {
+  var bar = document.getElementById('mc-fmt'); if (!bar || bar.style.display === 'none') return;
+  ['bold', 'italic', 'underline'].forEach(function(c) {
+    var b = bar.querySelector('[data-c="' + c + '"]');
+    if (b) { var on = false; try { on = document.queryCommandState(c); } catch(e) {} b.classList.toggle('on', on); }
+  });
+  var bloc = ''; try { bloc = String(document.queryCommandValue('formatBlock') || '').toLowerCase(); } catch(e) {}
+  ['h1', 'h2', 'p'].forEach(function(c) {
+    var b = bar.querySelector('[data-c="' + c + '"]'); if (b) b.classList.toggle('on', bloc === c);
+  });
+}
+/* barre visible seulement quand on ecrit dans la note ; suit le clavier (visualViewport) */
+function mcMajFmt() {
+  var bar = document.getElementById('mc-fmt'), ok = document.getElementById('mc-ok'); if (!bar) return;
+  var a = document.activeElement;
+  var ecrit = a && (a.id === 'mc-note' || a.id === 'mc-titre') && _mc.vue === 'cours';
+  bar.style.display = ecrit && a.id === 'mc-note' ? 'flex' : 'none';
+  if (ok) ok.style.display = ecrit ? 'block' : 'none';
+  if (ecrit && window.visualViewport) {
+    var vv = window.visualViewport;
+    bar.style.bottom = Math.max(0, window.innerHeight - vv.height - vv.offsetTop) + 'px';
+  } else bar.style.bottom = '0px';
+  mcEtatFmt();
+}
+document.addEventListener('focusin', mcMajFmt);
+document.addEventListener('focusout', function() { setTimeout(mcMajFmt, 50); });
+document.addEventListener('selectionchange', function() { if (_mc.vue === 'cours') mcEtatFmt(); });
+if (window.visualViewport) window.visualViewport.addEventListener('resize', mcMajFmt);
+
+/* ── Menus « ⋯ » ── */
+function mcPop(btn, items) {
+  mcFermerPop();
+  var r = btn.getBoundingClientRect();
+  var pop = document.getElementById('mc-pop');
+  pop.innerHTML = '<div class="mc-pop-fond" onclick="mcFermerPop()"></div><div class="mc-pop-menu" style="top:' + Math.round(r.bottom + 6) + 'px">' +
+    items.map(function(it) {
+      if (it.sep) return '<div class="mc-pop-sep">' + (it.sep === true ? '' : esc(it.sep)) + '</div>';
+      return '<button class="mc-pop-it' + (it.danger ? ' danger' : '') + '" onclick="mcFermerPop();' + it.action + '">' +
+        '<span>' + esc(it.label) + '</span>' + (it.ico ? '<span class="mc-pop-ico">' + it.ico + '</span>' : '') + '</button>';
+    }).join('') + '</div>';
+  pop.style.display = 'block';
+}
+function mcFermerPop() { var p = document.getElementById('mc-pop'); if (p) { p.style.display = 'none'; p.innerHTML = ''; } }
+function mcMenuCours(btn) {
+  mcEnregistrer();
+  if (document.activeElement) document.activeElement.blur();
+  mcPop(btn, [
+    { sep: 'Réviser ce cours' },
+    { label: 'Fiche de révision', ico: '📄', action: 'mcGenerer(\'fiche\')' },
+    { label: 'Flashcards', ico: '🃏', action: 'mcGenerer(\'flashcards\')' },
+    { label: 'M\'interroger', ico: '❓', action: 'mcInterroger()' },
+    { sep: true },
+    { label: 'Ajouter une page (photo)', ico: '📷', action: 'document.getElementById(\'mc-page-inp\').click()' },
+    { label: 'Ranger dans un cahier', ico: '📁', action: 'mcRanger()' },
+    { sep: true },
+    { label: 'Supprimer le cours', ico: '🗑', action: 'mcSupprimer()', danger: true }
+  ]);
+}
+function mcMenuCahier(btn) {
+  mcPop(btn, [
+    { label: 'Renommer le cahier', ico: '✏️', action: 'mcRenommerCahier()' },
+    { label: 'Supprimer le cahier', ico: '🗑', action: 'mcSupprimerCahier()', danger: true }
+  ]);
+}
+
+/* ── Feuilles du bas (nouveau cahier, renommer, ranger) ── */
+function mcSheet(html, cb) {
+  var s = document.getElementById('mc-sheet');
+  s.innerHTML = '<div class="mc-sheet-fond" onclick="mcFermerSheet()"></div><div class="mc-sheet-box">' + html + '</div>';
+  s.style.display = 'block';
+  _mcSheetCb = cb || null;
+}
+function mcFermerSheet() { var s = document.getElementById('mc-sheet'); if (s) { s.style.display = 'none'; s.innerHTML = ''; } _mcSheetCb = null; }
+function mcFormCahier(titre, nom, couleur, bouton) {
+  return '<div class="mc-sheet-t">' + titre + '</div>' +
+    '<input class="vc-inp" id="mc-k-nom" maxlength="30" placeholder="Nom du cahier (ex : Maths)" value="' + esc(nom || '') + '" onkeydown="if(event.key===\'Enter\')mcValiderSheet()">' +
+    '<div class="mc-couleurs">' + MC_COULEURS.map(function(co) {
+      return '<button class="mc-coul' + (co === couleur ? ' on' : '') + '" style="background:' + co + '" onclick="mcChoixCouleur(this,\'' + co + '\')" aria-label="Couleur"></button>';
+    }).join('') + '</div>' +
+    '<button class="rev-go-btn" style="margin-top:14px" onclick="mcValiderSheet()">' + bouton + '</button>';
+}
+var _mcCouleur = MC_COULEURS[0];
+function mcChoixCouleur(b, co) {
+  _mcCouleur = co;
+  Array.prototype.forEach.call(b.parentNode.children, function(x) { x.classList.remove('on'); });
+  b.classList.add('on');
+}
+function mcValiderSheet() {
+  var i = document.getElementById('mc-k-nom'); var nom = i ? i.value.trim() : '';
+  if (!nom) { if (i) i.focus(); return; }
+  var cb = _mcSheetCb; mcFermerSheet();
+  if (cb) cb(nom, _mcCouleur);
+}
+function mcNouveauCahier(apres) {
+  _mcCouleur = MC_COULEURS[mccLoad().length % MC_COULEURS.length];
+  mcSheet(mcFormCahier('Nouveau cahier', '', _mcCouleur, 'Créer le cahier'), function(nom, couleur) {
+    var k = { id: 'k' + Date.now(), nom: nom, couleur: couleur, cree: Date.now() };
+    var l = mccLoad(); l.push(k); mccSaveAll(l);
+    if (apres) apres(k); else mcVueCahiers();
+    toast('Cahier « ' + nom + ' » créé');
+  });
+  setTimeout(function() { var i = document.getElementById('mc-k-nom'); if (i) i.focus(); }, 80);
+}
+function mcRenommerCahier() {
+  var k = mccGet(_mc.cahier); if (!k) return;
+  _mcCouleur = k.couleur;
+  mcSheet(mcFormCahier('Modifier le cahier', k.nom, k.couleur, 'Enregistrer'), function(nom, couleur) {
+    mccSaveAll(mccLoad().map(function(x) { if (x.id === k.id) { x.nom = nom; x.couleur = couleur; } return x; }));
+    mcVueListe(k.id);
+  });
+}
+function mcSupprimerCahier() {
+  var k = mccGet(_mc.cahier); if (!k) return;
+  var n = mcDuCahier(k.id).length;
+  if (!confirm('Supprimer le cahier « ' + k.nom + ' » ?' + (n ? ' Ses ' + n + ' cours ne sont pas supprimés : ils vont dans « Sans cahier ».' : ''))) return;
+  mccSaveAll(mccLoad().filter(function(x) { return x.id !== k.id; }));
+  mcSaveAll(mcLoad().map(function(c) { if (c.cahier === k.id) c.cahier = ''; return c; }));
+  mcVueCahiers();
+}
+function mcRanger() {
+  var c = mcGet(_mc.cours); if (!c) return;
+  var h = '<div class="mc-sheet-t">Ranger dans un cahier</div><div class="mc-groupe">' +
+    mccLoad().map(function(k) {
+      return '<div class="mc-ligne" onclick="mcRangerDans(\'' + k.id + '\')"><span class="mc-pastille" style="background:' + k.couleur + '"></span>' +
+        '<span class="mc-ligne-t">' + esc(k.nom) + '</span>' + (c.cahier === k.id ? '<span class="mc-coche">✓</span>' : '') + '</div>';
+    }).join('') +
+    '<div class="mc-ligne" onclick="mcRangerDans(\'\')"><span class="mc-pastille" style="background:var(--bord)"></span><span class="mc-ligne-t">Sans cahier</span>' + (!c.cahier ? '<span class="mc-coche">✓</span>' : '') + '</div>' +
+    '</div><button class="mc-btn2" onclick="mcFermerSheet();mcNouveauCahier(function(k){mcRangerDans(k.id)})">+ Nouveau cahier</button>';
+  mcSheet(h);
+}
+function mcRangerDans(id) {
+  var c = mcGet(_mc.cours); mcFermerSheet(); if (!c) return;
+  c.cahier = id; mcPut(c, true);
+  _mc.cahier = id || 'sans';
+  mcVueCours(c.id);
+  toast(id ? 'Rangé dans « ' + mcNomCahier(id) + ' »' : 'Retiré du cahier');
+}
+
+/* ── Creer, scanner, ajouter une page, supprimer ── */
+function mcCahierCourant() { return (_mc.cahier && _mc.cahier !== 'tous' && _mc.cahier !== 'sans' && mccGet(_mc.cahier)) ? _mc.cahier : ''; }
+function mcEcrire() { var c = mcNouveau('', '', '', '', mcCahierCourant()); mcVueCours(c.id); }
+function mcScanner() { _mcScanCahier = mcCahierCourant() || null; closeMesCours(); openScanCours(); }
 async function mcAjouterPage(file) {
-  if (!file || !_mcCur) return;
+  if (!file || !_mc.cours) return;
+  mcEnregistrer();
   var etat = document.getElementById('mc-page-etat');
   if (etat) etat.innerHTML = '<div class="rev-loading" style="padding:16px 0"><div class="rev-spin"></div><div class="rev-loading-txt">ScolarIA recopie la page…</div></div>';
   imageReduite(file, async function(dataUrl) {
     try {
       if (!dataUrl) throw new Error('Impossible de lire cette image');
       var t = await mcTranscrire(dataUrl);
-      var c = mcGet(_mcCur); if (!c) return;
-      c.texte = (c.texte ? c.texte.replace(/\s+$/, '') + '\n\n---\n\n' : '') + t.texte;
+      var c = mcGet(_mc.cours); if (!c) return;
+      c.html = (c.html ? c.html + '<hr>' : '') + mcMd(t.texte);
+      c.texte = mcTexteDe(c.html);
       if (!c.mat && t.mat) c.mat = t.mat;
       mcPut(c);
-      mcShowCours(c.id);
+      mcVueCours(c.id);
       toast('Page ajoutée au cours');
     } catch(e) {
       if (etat) etat.innerHTML = '<div class="rev-err-box">' + esc(e.message) + '</div>';
@@ -6320,33 +6726,35 @@ async function mcAjouterPage(file) {
   });
 }
 function mcSupprimer() {
-  if (!_mcCur || !confirm('Supprimer ce cours ? Cette action est définitive.')) return;
-  var id = _mcCur;
-  _mcEdit = false;
-  mcSaveAll(mcLoad().filter(function(c) { return c.id !== id; }));
-  mcShowList();
+  var c = mcGet(_mc.cours); if (!c) return;
+  if (!confirm('Supprimer « ' + (c.titre || 'ce cours') + ' » ? Cette action est définitive.')) return;
+  _mc.vue = 'liste';
+  mcSaveAll(mcLoad().filter(function(x) { return x.id !== c.id; }));
+  mcVueListe(_mc.cahier || 'tous');
 }
 
 /* ── Reviser a partir du cours ── */
 function mcGenerer(type) {
-  var c = mcGet(_mcCur); if (!c || !c.texte.trim()) { toast('Le cours est vide'); return; }
+  mcEnregistrer();
+  var c = mcGet(_mc.cours); if (!c || !c.texte.trim()) { toast('Le cours est vide'); return; }
   closeMesCours();
   goSec('s-revisions', document.querySelector('.nav-btn[onclick*=s-revisions]'));
   setTimeout(function() {
-    var inp = document.getElementById('rev-topic'); if (inp) inp.value = c.titre;
+    var inp = document.getElementById('rev-topic'); if (inp) inp.value = c.titre || 'Mon cours';
     if (!revCoursOn) revToggleCours();
     var ta = document.getElementById('rev-cours-txt'); if (ta) ta.value = c.texte;
     revPickType(type);
   }, 150);
 }
 function mcInterroger() {
-  var c = mcGet(_mcCur); if (!c || !c.texte.trim()) { toast('Le cours est vide'); return; }
+  mcEnregistrer();
+  var c = mcGet(_mc.cours); if (!c || !c.texte.trim()) { toast('Le cours est vide'); return; }
   if (_cq) { toast('Une interrogation est déjà en cours dans le chat'); return; }
   closeMesCours();
   goSec('s-chat', document.querySelectorAll('.nav-btn')[0]);
-  var demande = 'Interroge-moi sur mon cours « ' + c.titre + ' »';
+  var demande = 'Interroge-moi sur mon cours « ' + (c.titre || 'sans titre') + ' »';
   addMsg(demande, 'user');
-  cqStart({ sujet: c.titre, cours: c.texte }, addMsg('', 'ai thinking'), demande);
+  cqStart({ sujet: c.titre || 'mon cours', cours: c.texte }, addMsg('', 'ai thinking'), demande);
 }
 
 /* Section « Mes cours » de l'ecran Revisions (3 derniers) */
@@ -6354,10 +6762,11 @@ function mcRenderRev() {
   var box = document.getElementById('rev-mc'); if (!box) return;
   var l = mcLoad().sort(function(a, b) { return b.maj - a.maj; });
   box.innerHTML = l.length
-    ? l.slice(0, 3).map(function(c) {
-        return '<div class="mc-item mc-item-s" onclick="openMesCours(\'' + c.id + '\')"><div class="mc-item-top"><span class="mc-item-t">' + esc(c.titre) + '</span>' +
-          (c.mat ? '<span class="mc-tag">' + esc(c.mat) + '</span>' : '') + '</div><div class="mc-item-d">Modifié le ' + mcDate(c.maj) + '</div></div>';
-      }).join('')
+    ? '<div class="mc-groupe">' + l.slice(0, 3).map(function(c) {
+        var k = c.cahier ? mccGet(c.cahier) : null;
+        return '<div class="mc-note-l" onclick="openMesCours(\'' + c.id + '\')"><div class="mc-note-t">' + esc(c.titre || 'Nouveau cours') + '</div>' +
+          '<div class="mc-note-s"><b>' + mcDate(c.maj) + '</b> ' + (k ? '<span class="mc-pastille" style="background:' + k.couleur + '"></span>' + esc(k.nom) : '') + '</div></div>';
+      }).join('') + '</div>'
     : '<div class="mc-vide" onclick="openScanCours()">📷 Scanne ton cahier : ScolarIA recopie ton cours pour le garder et le modifier.</div>';
 }
 async function scanGenerate(type) {
@@ -7103,7 +7512,7 @@ var _syncTimer  = null;
 
 var SYNC_KEYS = [
   'sk_dv','sk_prof','sk_decks','sk_hist','sk_chat',
-  'sk_fiche_count','sk_flash_stats','sk_quiz_stats','sk_streak','sk_ctrl','sk_cours'
+  'sk_fiche_count','sk_flash_stats','sk_quiz_stats','sk_streak','sk_ctrl','sk_cours','sk_cahiers'
 ];
 
 /* ── Sync ── */
@@ -7651,12 +8060,32 @@ _supa.auth.onAuthStateChange(function(event, session) {
 
 <!-- ══ MES COURS (cours transcrits, modifiables) ══ -->
 <div id="mc-panel" class="mc-panel" style="display:none">
-  <div class="mc-top">
-    <button class="mc-back" onclick="mcBack()" aria-label="Retour">&#8249;</button>
-    <div class="mc-ttl" id="mc-ttl">Mes cours</div>
-    <div class="mc-top-act" id="mc-top-act"></div>
+  <div class="mc-haut">
+    <button class="mc-retour" onclick="mcRetour()">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg><span id="mc-retour-t">Retour</span>
+    </button>
+    <div class="mc-haut-d" id="mc-haut-d"></div>
   </div>
   <div class="mc-body" id="mc-body"></div>
+  <div class="mc-bas" id="mc-bas"></div>
+  <!-- barre de mise en forme (au-dessus du clavier pendant l'ecriture) -->
+  <div class="mc-fmt" id="mc-fmt" style="display:none">
+    <button data-c="h1" onpointerdown="event.preventDefault()" onmousedown="event.preventDefault()" onclick="mcFmt('h1')">Titre</button>
+    <button data-c="h2" onpointerdown="event.preventDefault()" onmousedown="event.preventDefault()" onclick="mcFmt('h2')">Sous-titre</button>
+    <button data-c="p" onpointerdown="event.preventDefault()" onmousedown="event.preventDefault()" onclick="mcFmt('p')">Texte</button>
+    <span class="mc-fmt-sep"></span>
+    <button data-c="bold" onpointerdown="event.preventDefault()" onmousedown="event.preventDefault()" onclick="mcFmt('bold')" aria-label="Gras"><b>B</b></button>
+    <button data-c="italic" onpointerdown="event.preventDefault()" onmousedown="event.preventDefault()" onclick="mcFmt('italic')" aria-label="Italique"><i style="font-family:Georgia,serif">I</i></button>
+    <button data-c="underline" onpointerdown="event.preventDefault()" onmousedown="event.preventDefault()" onclick="mcFmt('underline')" aria-label="Souligné"><u>U</u></button>
+    <button onpointerdown="event.preventDefault()" onmousedown="event.preventDefault()" onclick="mcFmt('mark')" aria-label="Surligner"><span class="mc-fmt-stabilo">ab</span></button>
+    <span class="mc-fmt-sep"></span>
+    <button onpointerdown="event.preventDefault()" onmousedown="event.preventDefault()" onclick="mcFmt('ul')" aria-label="Liste à puces"><svg viewBox="0 0 24 24"><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/><circle cx="4.5" cy="6" r="1"/><circle cx="4.5" cy="12" r="1"/><circle cx="4.5" cy="18" r="1"/></svg></button>
+    <button onpointerdown="event.preventDefault()" onmousedown="event.preventDefault()" onclick="mcFmt('ol')" aria-label="Liste numérotée"><svg viewBox="0 0 24 24"><line x1="10" y1="6" x2="20" y2="6"/><line x1="10" y1="12" x2="20" y2="12"/><line x1="10" y1="18" x2="20" y2="18"/><path d="M4 4.5h1.2v3.5M3.8 8h2.4M3.8 11.2c.3-.6 2.2-.8 2.2.4 0 .9-2.2 1.6-2.2 2.4h2.3M3.8 16.3c.4-.6 2.2-.6 2.2.4 0 .6-.6.8-1.2.8.7 0 1.3.2 1.3.9 0 1-1.9 1-2.4.4"/></svg></button>
+    <span class="mc-fmt-sep"></span>
+    <button onpointerdown="event.preventDefault()" onmousedown="event.preventDefault()" onclick="mcFinEdition()" aria-label="Fermer le clavier"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>
+  </div>
+  <div id="mc-pop" style="display:none"></div>
+  <div id="mc-sheet" style="display:none"></div>
 </div>
 <input type="file" id="mc-page-inp" accept="image/*" style="display:none" onchange="mcAjouterPage(this.files[0]);this.value=''">
 

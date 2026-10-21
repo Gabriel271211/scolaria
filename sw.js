@@ -23,20 +23,36 @@ self.addEventListener('activate', e => {
   );
 });
 
+/* Reseau qui ne repond pas (une seule barre, wifi sans internet) : au bout de 4 s on sert la copie
+   en cache au lieu de laisser l'app bloquee sur le logo ; le reseau met quand meme le cache a jour */
+const RESEAU_MAX = 4000;
+
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
   if (API_HOSTS.some(h => e.request.url.includes(h))) return;
   /* reseau d'abord, cache en secours ; une page ouverte avec ?ctrl=… (notification) retrouve la page en cache */
   const opts = e.request.mode === 'navigate' ? { ignoreSearch: true } : undefined;
-  e.respondWith(
-    fetch(e.request).then(resp => {
-      if (resp.ok) {
-        const clone = resp.clone();
-        caches.open(CACHE).then(c => c.put(e.request, clone)).catch(() => {});
-      }
-      return resp;
-    }).catch(() => caches.match(e.request, opts))
-  );
+  const copie = () => caches.match(e.request, opts);
+  let maj = Promise.resolve();
+  const reseau = fetch(e.request).then(resp => {
+    if (resp.ok) {
+      const clone = resp.clone();
+      maj = caches.open(CACHE).then(c => c.put(e.request, clone)).catch(() => {});
+    }
+    return resp;
+  });
+  /* garde le service worker en vie jusqu'a la fin du telechargement (mise a jour du cache) */
+  e.waitUntil(reseau.then(() => maj, () => {}));
+  e.respondWith(new Promise((resolve, reject) => {
+    let fini = false;
+    const servir = r => { if (!fini) { fini = true; resolve(r); } };
+    const minuteur = setTimeout(() => { copie().then(r => { if (r) servir(r); }); }, RESEAU_MAX);
+    reseau.then(resp => { clearTimeout(minuteur); servir(resp); }, () => {
+      clearTimeout(minuteur);
+      if (fini) return;
+      copie().then(r => { if (r) servir(r); else { fini = true; reject(new Error('hors ligne')); } });
+    });
+  }));
 });
 
 /* ══ RAPPELS DES CONTROLES (Veille de controle) ══

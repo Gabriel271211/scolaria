@@ -7771,15 +7771,19 @@ async function syncFromCloud() {
     /* changements locaux pas encore envoyes et plus recents que le cloud : c'est eux qu'on garde */
     if (_syncEnAttente() && _syncNum('sk__modif') > rModif) { await syncToCloud(); return; }
     if (!remote) return;
+    /* deja a jour (rien de nouveau dans le cloud) : on ne reecrit rien */
+    if (rModif && rModif === _syncNum('sk__envoi') && !_syncEnAttente()) return false;
     Object.keys(remote).forEach(function(k) {
       if (k.indexOf('sk_') === 0 && k.indexOf('sk__') !== 0) {
         try { localStorage.setItem(k, remote[k]); } catch(e2) {}
       }
     });
     try { localStorage.setItem('sk__modif', String(rModif)); localStorage.setItem('sk__envoi', String(rModif)); } catch(e3) {}
+    return true;   /* des donnees du cloud ont ete copiees sur le telephone */
   } catch(e) {
     console.warn('syncFromCloud échoué:', e.message);
   }
+  return false;
 }
 
 /* Envoi immediat quand on quitte l'app (Android peut la geler avant les 3 s) ou au retour du reseau */
@@ -8087,7 +8091,16 @@ function obFinish() {
 /* ── Écoute des changements de session ── */
 function _demarrerSession(user) {
   _updateDrawerUser(user);
-  syncFromCloud().then(function() {
+  /* Jamais plus de 8 s d'attente du cloud (sans reseau, Supabase peut essayer longtemps de
+     renouveler la session : l'app restait bloquee sur le logo). Hors ligne : pas d'attente du tout. */
+  var sync = navigator.onLine === false ? Promise.resolve(false)
+    : Promise.race([syncFromCloud(), new Promise(function(r) { setTimeout(function() { r(false); }, 8000); })]);
+  sync.then(function(recu) {
+    if (_appDemarre) {
+      /* app deja ouverte (hors connexion) : on rafraichit seulement si le cloud a apporte du nouveau */
+      if (recu) { initApp(); toast('Tes données ont été mises à jour depuis ton compte'); }
+      return;
+    }
     var overlay = document.getElementById('fb-login');
     if (overlay) overlay.style.display = 'none';
     var prof = null;
@@ -8128,7 +8141,7 @@ function _aSessionLocale() {
   return false;
 }
 function _demarrageHorsLigne() {
-  if (_appDemarre || currentUser) return;
+  if (_appDemarre) return;
   var prof = null;
   try { prof = JSON.parse(localStorage.getItem('sk_prof') || 'null'); } catch(e) {}
   if (!prof || !prof.prenom) {
@@ -8143,6 +8156,12 @@ function _demarrageHorsLigne() {
   toast('Hors connexion : tes données restent sur ce téléphone', 4000);
 }
 if (!_supa) document.addEventListener('DOMContentLoaded', _demarrageHorsLigne);
+else if (navigator.onLine === false) {
+  /* mode avion : rien a attendre, on ouvre des que la page est chargee */
+  var _hlDirect = function() { if (_aSessionLocale()) _demarrageHorsLigne(); };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', _hlDirect);
+  else _hlDirect();
+}
 else setTimeout(function() { if (_aSessionLocale()) _demarrageHorsLigne(); }, 6000);
 </script>
 

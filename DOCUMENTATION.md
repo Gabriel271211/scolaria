@@ -32,6 +32,7 @@ Cible principale : **smartphone Android sous Chrome** (installable comme app PWA
 | `sw.js` | Service Worker (cache hors-ligne, stratégie network-first). |
 | `vercel.json` | Config Vercel : rewrite `/` → `scolaria-home-v2.html`, en-têtes de sécurité (nosniff, referrer, anti-iframe, caméra/micro limités au site), no-cache sur les `.html` et `sw.js`. |
 | `supabase/functions/groq-proxy/index.ts` | **Edge Function** Deno qui relaie les appels IA vers Groq en gardant la clé secrète côté serveur. |
+| `supabase/functions/supprimer-compte/index.ts` | **Edge Function** « Supprimer mon compte » (RGPD) : efface les données (`user_data`) puis le compte de l'élève connecté. |
 | `CLAUDE.md` | Instructions de travail pour l'assistant IA. |
 | `DOCUMENTATION.md` | Ce document. |
 | `CONTEXTE-PROMPT.md` | Prompt de contexte réutilisable pour de futures sessions IA. |
@@ -61,7 +62,7 @@ Cible principale : **smartphone Android sous Chrome** (installable comme app PWA
    - `scheduleSync()` (à appeler après chaque écriture d'une donnée synchronisée) met à jour `sk__modif` et envoie au bout de 3 s ; envoi immédiat quand on quitte l'app (`visibilitychange`) ou au retour du réseau (`online`).
    - `syncToCloud` → `upsert` ; l'erreur éventuelle est vérifiée (`r.error`) et, en cas d'échec, les changements restent « en attente » (`sk__modif` > `sk__envoi`) pour être renvoyés.
    - `syncFromCloud` → si des changements locaux en attente sont plus récents que le cloud, **ils sont envoyés au lieu d'être écrasés** (travail hors ligne, app fermée trop vite) ; sinon le cloud est récupéré.
-   - `logout()` envoie d'abord les modifs en attente (et prévient s'il n'y a pas de réseau) ; « Réinitialiser toutes mes données » (`resetDonnees()`) vide le téléphone **et** le cloud.
+   - `logout()` envoie d'abord les modifs en attente (et prévient s'il n'y a pas de réseau) ; « Réinitialiser toutes mes données » (`resetDonnees()`) vide le téléphone **et** le cloud (le compte reste). « Supprimer mon compte » (Profil → Données) supprime le compte lui-même : voir l'Edge Function `supprimer-compte` ci-dessous.
    - Seules les clés listées dans `SYNC_KEYS` + les clés `sk_day_*` sont synchronisées.
 
 3. **Edge Function `groq-proxy`** (proxy IA)
@@ -70,6 +71,12 @@ Cible principale : **smartphone Android sous Chrome** (installable comme app PWA
    - Garde le secret `GROQ_API_KEY` côté serveur.
    - Reçoit la requête du client, ajoute l'en-tête `Authorization: Bearer <GROQ_API_KEY>`, et relaie vers l'API Groq. Renvoie tel quel le flux (SSE streaming ou JSON) + en-têtes CORS.
    - **Version durcie (code du dépôt, oct. 2026)** : l'app envoie le jeton de session de l'élève ; la fonction le vérifie auprès de Supabase (`/auth/v1/user`, cache 5 min) et refuse (401) les appels sans élève connecté ; `max_tokens` plafonné à 8000, `n` = 1, demande ≤ 4,5 Mo, outils limités à `function` et `browser_search`. Secret `AUTH_OBLIGATOIRE = 0` pour couper la vérification en urgence. **Se redéploie à la main** (dashboard Supabase → Edge Functions → groq-proxy → Code → coller → Deploy).
+
+4. **Edge Function `supprimer-compte`** (RGPD : droit à l'effacement)
+   - URL : `https://vefnkztjmodchvmspukh.supabase.co/functions/v1/supprimer-compte` — code dans `supabase/functions/supprimer-compte/index.ts`.
+   - Déployée à la main comme `groq-proxy` (dashboard → Edge Functions → Deploy a new function → Via Editor), **"Verify JWT" = OFF**.
+   - Identifie l'élève par **son jeton de session** (`auth.getUser`), jamais par un identifiant envoyé par l'app ; efface sa ligne `user_data`, puis son compte (`auth.admin.deleteUser`). Clé service fournie automatiquement par Supabase (`SUPABASE_SERVICE_ROLE_KEY` ou `SUPABASE_SECRET_KEYS`).
+   - Côté app (`js/compte.js`) : fenêtre `#suppr-modal` (ce qui sera effacé + **mot de passe redemandé** via `signInWithPassword`), puis `logout({ compteSupprime: true })` : déconnexion locale, téléphone vidé, **rien n'est renvoyé au cloud**, message de confirmation après rechargement. Testé par `node tests/run.mjs supprimer` (mauvais mot de passe, erreur serveur, fonction absente, suppression réussie).
 
 ### 3.2 Groq (intelligence artificielle)
 

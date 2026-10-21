@@ -834,6 +834,11 @@
     <div class="prof-card" style="border-color:rgba(239,68,68,.2)">
       <div class="prof-card-title" style="color:var(--danger)">⚠️ Données</div>
       <button class="prof-reset-btn" onclick="resetDonnees()">Réinitialiser toutes mes données</button>
+      <button class="prof-reset-btn suppr-ouvrir" onclick="openSupprCompte()">
+        <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>
+        Supprimer mon compte
+      </button>
+      <div class="vc-hint">Réinitialiser vide ton compte mais le garde. Supprimer efface ton compte et toutes tes données, définitivement.</div>
     </div>
 
     <div style="text-align:center;font-size:11px;color:var(--mu);padding:8px 0 16px">
@@ -1149,6 +1154,55 @@
       <button class="ia-cls" onclick="closeVeilleControle()">✕</button>
     </div>
     <div id="vc-view"></div>
+  </div>
+</div>
+
+<!-- ══ SUPPRIMER MON COMPTE (RGPD : droit à l'effacement) ══ -->
+<div class="ia-modal" id="suppr-modal" onclick="if(event.target===this)closeSupprCompte()">
+  <div class="ia-box">
+    <div class="ia-hdr">
+      <span class="ia-ttl">Supprimer mon compte</span>
+      <button class="ia-cls" onclick="closeSupprCompte()" aria-label="Fermer">✕</button>
+    </div>
+    <div class="suppr-alerte">
+      <div class="suppr-alerte-ic">
+        <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      </div>
+      <div>
+        <div class="suppr-alerte-t">C'est définitif</div>
+        <div class="suppr-alerte-d">Le compte <b id="suppr-email"></b> et toutes ses données seront effacés, sur ce téléphone et dans le cloud. Impossible de les récupérer ensuite.</div>
+      </div>
+    </div>
+    <label class="rev-topic-lbl">Ce qui sera effacé</label>
+    <div class="suppr-liste">
+      <div class="suppr-item">
+        <span class="suppr-item-ic"><svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></span>
+        Devoirs, contrôles et rappels
+      </div>
+      <div class="suppr-item">
+        <span class="suppr-item-ic"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg></span>
+        Cours, fiches, flashcards et historique
+      </div>
+      <div class="suppr-item">
+        <span class="suppr-item-ic"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+        Profil, série et progression
+      </div>
+    </div>
+    <label class="rev-topic-lbl" for="suppr-pass">Ton mot de passe</label>
+    <div class="fb-pw-wrap">
+      <input type="password" id="suppr-pass" class="rev-topic-inp suppr-pass" placeholder="Pour confirmer que c'est bien toi" autocomplete="current-password" oninput="this.classList.remove('err')" onkeydown="if(event.key==='Enter')supprimerCompte()">
+      <button class="fb-eye" type="button" onclick="togglePwVis('suppr-pass',this)" tabindex="-1" aria-label="Afficher le mot de passe">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+      </button>
+    </div>
+    <div id="suppr-msg" class="suppr-msg" style="display:none"></div>
+    <div class="mob">
+      <button class="mo-c" onclick="closeSupprCompte()">Annuler</button>
+      <button class="suppr-btn" id="suppr-btn" onclick="supprimerCompte()">
+        <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>
+        <span id="suppr-btn-t">Supprimer</span>
+      </button>
+    </div>
   </div>
 </div>
 

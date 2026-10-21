@@ -16,11 +16,12 @@ Tu travailles sur **ScolarIA**, une application scolaire pour élèves français
 | `reset-password.html` | Réinitialisation mot de passe (code OTP Supabase). |
 | `manifest.json` + `sw.js` | PWA. Précache **tout ou rien** de `APP_FILES` (HTML, CSS, JS). **Bumper `CACHE` dans `sw.js`** quand on ajoute un fichier au précache. Une page servie depuis le cache prend aussi ses JS/CSS dans le cache (jamais deux versions mélangées). |
 | `supabase/functions/groq-proxy/index.ts` | Edge Function qui relaie les appels IA vers Groq (clé côté serveur). Version durcie (oct. 2026) : seuls les élèves connectés (jeton de session vérifié), `max_tokens` ≤ 8000, outils limités. **Ne se déploie pas avec git push** : dashboard Supabase → Edge Functions → groq-proxy → coller le code → Deploy. |
+| `supabase/functions/supprimer-compte/index.ts` | Edge Function **« Supprimer mon compte »** (RGPD) : vérifie le jeton de session de l'élève, efface sa ligne `user_data` puis son compte Auth (clé service fournie par Supabase, jamais dans l'app). Bouton Profil → Données → fenêtre `#suppr-modal` (mot de passe redemandé, `supprimerCompte()` dans `js/compte.js`), puis `logout({ compteSupprime: true })` (rien n'est renvoyé au cloud). **Déploiement manuel** comme groq-proxy (Verify JWT OFF). |
 | `archive/` | Ancien projet (Langues, Sciences, anciens plans). Exclu du déploiement via `.vercelignore`. |
 | `DOCUMENTATION.md` | Doc complète (architecture, connexions, fonctionnalités, données). |
 | `CONTEXTE-PROMPT.md` | Prompt de contexte à copier-coller dans une autre IA. |
 | `RECAP_SESSION.md` | **Objectifs / feuille de route** + checklist de session. |
-| `tests/run.mjs` | **Tests automatiques** (86 tests, ~1 min, sans dépendance : Node + Chrome du PC, Supabase et IA simulés). `node tests/run.mjs` après CHAQUE modif. Non déployé (`.vercelignore`). Détail : `DOCUMENTATION.md` § 8 bis. |
+| `tests/run.mjs` | **Tests automatiques** (90 tests, ~1 min, sans dépendance : Node + Chrome du PC, Supabase et IA simulés). `node tests/run.mjs` après CHAQUE modif. Non déployé (`.vercelignore`). Détail : `DOCUMENTATION.md` § 8 bis. |
 
 ### Connexions externes
 - **Supabase** (`vefnkztjmodchvmspukh`) : auth email/mdp, sync cloud (table `user_data`), Edge Function `groq-proxy`. ⚠️ Projet gratuit : **mis en pause après ~7 jours d'inactivité** → connexion ET IA cassées. **Évité par la tâche GitHub Actions `.github/workflows/supabase-reveil.yml`** (requête quotidienne + vérif auth et proxy IA ; si ça ne répond pas, la tâche échoue et GitHub envoie un e-mail). Si l'adresse `*.supabase.co` ne répond plus : dashboard Supabase → Restore project.

@@ -1697,6 +1697,31 @@ body.dark #hdr-streak-badge { background: #2a2110; border-color: #5a4516; color:
 .prof-card.collapsed .prof-card-chev{transform:rotate(-90deg)}
 .prof-card-body{padding-top:14px}
 
+/* ── SUPPRIMER MON COMPTE ── (mode clair par defaut, body.dark en dessous) */
+.suppr-ouvrir{display:flex;align-items:center;justify-content:center;gap:8px}
+.suppr-ouvrir svg,.suppr-btn svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.suppr-alerte{display:flex;gap:12px;align-items:flex-start;background:#FEF2F2;border:1.5px solid #FECACA;border-radius:14px;padding:14px;margin-bottom:16px}
+.suppr-alerte-ic{width:36px;height:36px;border-radius:10px;background:#FEE2E2;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.suppr-alerte-ic svg{width:20px;height:20px;fill:none;stroke:#DC2626;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.suppr-alerte-t{font-size:14px;font-weight:800;color:#B91C1C;margin-bottom:3px}
+.suppr-alerte-d{font-size:13px;color:#7F1D1D;line-height:1.45}
+#suppr-email{word-break:break-all}
+.suppr-liste{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+.suppr-item{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg);border:1px solid var(--bord);border-radius:12px;font-size:13px;font-weight:600;color:var(--tx)}
+.suppr-item-ic{width:28px;height:28px;border-radius:8px;background:var(--card);border:1px solid var(--bord);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.suppr-item-ic svg{width:15px;height:15px;fill:none;stroke:var(--mu);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.suppr-pass{padding-right:44px;background:var(--bg)}
+.suppr-msg{font-size:13px;font-weight:600;color:var(--danger);line-height:1.4;margin-top:10px}
+.suppr-btn{flex:2;padding:11px;border:none;border-radius:12px;background:var(--danger);color:#fff;font-size:14px;font-weight:800;font-family:var(--fb);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;box-shadow:0 4px 14px rgba(239,68,68,.3);-webkit-tap-highlight-color:transparent;transition:opacity .15s}
+.suppr-btn:active{opacity:.88}
+.suppr-btn:disabled{opacity:.6;cursor:default;box-shadow:none}
+body.dark .suppr-alerte{background:#2a1414;border-color:#5a2323}
+body.dark .suppr-alerte-ic{background:#3d1a1a}
+body.dark .suppr-alerte-ic svg{stroke:#f87171}
+body.dark .suppr-alerte-t{color:#fca5a5}
+body.dark .suppr-alerte-d{color:#e8c4c4}
+body.dark .suppr-btn{box-shadow:0 4px 14px rgba(239,68,68,.22)}
+
 /* ── AVATAR GRID AMÉLIORÉ ── */
 .prof-av-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid var(--bord)}
 .prof-av-btn{font-size:26px;background:var(--bg);border:2.5px solid var(--bord);border-radius:12px;padding:8px 4px;cursor:pointer;transition:all .18s;text-align:center;-webkit-tap-highlight-color:transparent;display:flex;align-items:center;justify-content:center;aspect-ratio:1;line-height:1}

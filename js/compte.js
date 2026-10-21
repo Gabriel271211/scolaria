@@ -194,11 +194,14 @@ async function submitFbAuth() {
 
 
 /* ── Déconnexion ── */
-async function logout() {
+/* opts.compteSupprime : le compte vient d'etre supprime, on efface tout SANS rien renvoyer au cloud */
+async function logout(opts) {
+  var supprime = !!(opts && opts.compteSupprime);
   /* changements pas encore dans le cloud : on les envoie avant de tout effacer */
-  if (currentUser && _syncEnAttente()) await syncToCloud();
-  if (_syncEnAttente() && !confirm('Tes dernières modifications ne sont pas encore sauvegardées dans ton compte (pas de connexion). Te déconnecter quand même ? Elles seront perdues.')) return;
-  if (_supa) { try { await _supa.auth.signOut(); } catch(e) {} }
+  if (!supprime && currentUser && _syncEnAttente()) await syncToCloud();
+  if (!supprime && _syncEnAttente() && !confirm('Tes dernières modifications ne sont pas encore sauvegardées dans ton compte (pas de connexion). Te déconnecter quand même ? Elles seront perdues.')) return;
+  /* compte supprime : sa session n'existe plus sur le serveur, on l'oublie seulement ici */
+  if (_supa) { try { await _supa.auth.signOut(supprime ? { scope: 'local' } : undefined); } catch(e) {} }
   /* Plus de rappels de controles pour ce compte : copie du service worker + verif en arriere-plan */
   try { if ('caches' in window) await caches.delete('scolaria-data'); } catch(e) {}
   try {
@@ -210,8 +213,73 @@ async function logout() {
   var theme = localStorage.getItem('sk_theme');
   localStorage.clear();
   if (theme) localStorage.setItem('sk_theme', theme);
+  if (supprime) { try { sessionStorage.setItem('scolaria_msg', 'Ton compte et toutes tes données ont été supprimés.'); } catch(e) {} }
   window.location.reload();
 }
+
+/* ── Supprimer mon compte (RGPD : droit a l'effacement, eleves mineurs) ──
+   Efface les donnees du cloud (user_data) ET le compte via l'Edge Function « supprimer-compte »
+   (la cle service reste cote serveur), puis tout ce qui est sur le telephone. Le mot de passe
+   est redemande : un telephone prete ou laisse ouvert ne suffit pas a supprimer un compte. */
+var SUPPR_URL = 'https://vefnkztjmodchvmspukh.supabase.co/functions/v1/supprimer-compte';
+function openSupprCompte() {
+  if (!currentUser || !_supa) {
+    toast(navigator.onLine === false ? 'Il faut une connexion internet pour supprimer ton compte.' : 'Connecte-toi à ton compte pour pouvoir le supprimer.', 4000);
+    return;
+  }
+  document.getElementById('suppr-email').textContent = currentUser.email || '';
+  var p = document.getElementById('suppr-pass');
+  p.value = ''; p.classList.remove('err');
+  _supprMsg('');
+  _supprBouton(false);
+  document.getElementById('suppr-modal').classList.add('open');
+}
+function closeSupprCompte() { document.getElementById('suppr-modal').classList.remove('open'); }
+/* message d'erreur ; champ du mot de passe en rouge si c'est lui le probleme */
+function _supprMsg(t, champ) {
+  var m = document.getElementById('suppr-msg');
+  m.textContent = t; m.style.display = t ? 'block' : 'none';
+  if (champ) document.getElementById('suppr-pass').classList.add('err');
+}
+function _supprBouton(occupe) {
+  document.getElementById('suppr-btn').disabled = occupe;
+  document.getElementById('suppr-btn-t').textContent = occupe ? 'Suppression…' : 'Supprimer';
+}
+async function supprimerCompte() {
+  var mdp = document.getElementById('suppr-pass').value;
+  if (!mdp) { _supprMsg('Entre ton mot de passe pour confirmer.', true); return; }
+  if (!currentUser || !_supa) { _supprMsg('Tu n\'es plus connecté : reconnecte-toi puis réessaie.'); return; }
+  if (navigator.onLine === false) { _supprMsg('Pas de connexion internet : réessaie quand tu as du réseau.'); return; }
+  _supprMsg('');
+  _supprBouton(true);
+  try {
+    /* 1. c'est bien l'eleve : on verifie son mot de passe */
+    var v = await _supa.auth.signInWithPassword({ email: currentUser.email, password: mdp });
+    if (v.error) throw new Error(/invalid login|invalid_credentials/i.test(v.error.message || '') ? 'Mot de passe incorrect.' : _supaErrMsg(v.error.message));
+    var jeton = v.data && v.data.session && v.data.session.access_token;
+    /* 2. suppression dans le cloud (donnees puis compte) */
+    var r;
+    try {
+      r = await fetch(SUPPR_URL, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + jeton }, body: '{}' });
+    } catch(e) { throw new Error('Impossible de joindre ScolarIA. Vérifie ta connexion et réessaie.'); }
+    var j = null; try { j = await r.json(); } catch(e) {}
+    if (r.status === 404 && !(j && j.error)) throw new Error('La suppression de compte n\'est pas encore activée sur le serveur. Réessaie plus tard.');
+    if (!r.ok || !j || !j.ok) throw new Error((j && j.error && j.error.message) || 'La suppression a échoué (erreur ' + r.status + '). Réessaie.');
+  } catch(e) {
+    _supprMsg(e.message, e.message === 'Mot de passe incorrect.');
+    _supprBouton(false);
+    return;
+  }
+  /* 3. le compte n'existe plus : plus aucun envoi vers le cloud, puis on efface le telephone */
+  currentUser = null;
+  clearTimeout(_syncTimer);
+  await logout({ compteSupprime: true });
+}
+/* apres la suppression (la page a ete rechargee) : on le confirme a l'eleve */
+document.addEventListener('DOMContentLoaded', function() {
+  var m = null; try { m = sessionStorage.getItem('scolaria_msg'); sessionStorage.removeItem('scolaria_msg'); } catch(e) {}
+  if (m) setTimeout(function() { toast(m, 6000); }, 600);
+});
 
 /* ── Mise à jour de l'avatar dans le drawer ── */
 function _updateDrawerUser(user) {

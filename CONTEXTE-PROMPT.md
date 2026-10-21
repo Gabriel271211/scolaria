@@ -57,7 +57,7 @@ DONNÉES LOCALES (localStorage, préfixe sk_)
 
 RÈGLES DE DÉVELOPPEMENT
 - Lire le fichier concerné en entier avant toute modif.
-- Après CHAQUE modif : node tests/run.mjs (86 tests automatiques, ~1 min, tout doit être ✅).
+- Après CHAQUE modif : node tests/run.mjs (90 tests automatiques, ~1 min, tout doit être ✅).
 - Compter les <div ouverts et fermés : ils doivent être égaux.
 - Pas d'apostrophes non échappées dans les strings JS en '...'.
 - Pas de template literals (backticks) dans le HTML inline.

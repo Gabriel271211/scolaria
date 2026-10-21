@@ -304,6 +304,7 @@ function fausseSession(valideEncore = 86400) {
   return { jeton, json: JSON.stringify({ access_token: jeton, token_type: 'bearer', expires_in: 86400, expires_at: exp, refresh_token: 'jeton-de-test', user: USER }) };
 }
 const PROFIL = JSON.stringify({ prenom: 'Léa', classe: '3ème', avatar: '🎓' });
+const MOT_DE_PASSE = 'mot-de-passe-de-test';   /* le seul accepté par la fausse connexion */
 
 /* Reponses simulees de l'IA (meme format que Groq / le proxy) */
 const iaTexte = t => ({ status: 200, json: { choices: [{ message: { role: 'assistant', content: t } }] } });
@@ -358,7 +359,7 @@ class Onglet {
   }
   constructor(cdp, base, sessionId, contexte, opts) {
     Object.assign(this, { cdp, base, sessionId, contexte, opts });
-    this.erreurs = []; this.requetes = []; this.envois = []; this.appelsIA = []; this.ia = []; this.dialogues = [];
+    this.erreurs = []; this.requetes = []; this.envois = []; this.appelsIA = []; this.ia = []; this.dialogues = []; this.suppressions = [];
     this.cloud = opts.cloud === undefined ? null : opts.cloud;
     this._charge = null;
   }
@@ -414,8 +415,17 @@ class Onglet {
         const r = this.ia.shift();
         return this._repondre(id, typeof r === 'function' ? r(payload) : (r || iaErreur(500, 'test : aucune réponse IA prévue')));
       }
+      if (url.includes('/functions/v1/supprimer-compte')) {
+        this.suppressions.push(q.headers.Authorization || q.headers.authorization || '');
+        return this._repondre(id, this.opts.suppression || { json: { ok: true } });
+      }
       const mode = this.opts.reseauSupabase || 'ok';
       if (mode !== 'ok') return this._repondre(id, mode);
+      if (url.includes('/auth/v1/token') && url.includes('grant_type=password')) {
+        let c = {}; try { c = JSON.parse(q.postData || '{}'); } catch (e) {}
+        if (c.password !== MOT_DE_PASSE) return this._repondre(id, { status: 400, json: { code: 'invalid_credentials', error: 'invalid_grant', error_description: 'Invalid login credentials', msg: 'Invalid login credentials' } });
+        return this._repondre(id, { json: JSON.parse(fausseSession().json) });
+      }
       if (url.includes('/auth/v1/user')) return this._repondre(id, { json: USER });
       if (url.includes('/auth/v1/')) return this._repondre(id, { status: 400, json: { error: 'invalid_grant', error_description: 'test' } });
       if (url.includes('/rest/v1/user_data')) {
@@ -641,6 +651,54 @@ async function testsNavigateur(nav, base) {
     await o.fermer();
   }
 
+  /* ── Supprimer mon compte (RGPD) ── */
+  if (groupe('Supprimer mon compte') && LIB_SUPABASE) {
+    const o = await ouvrir({ stockage: { ...ELEVE, sk_dv: '[{"id":1,"mat":"Maths","desc":"à effacer","due":"","date":"?","done":false}]' }, cloud: { __modif: 1, sk_prof: PROFIL } });
+    await o.aller();
+    await o.attendre('_appDemarre === true', 8000, 'app pas démarrée');
+    const essayer = async mdp => {
+      await o.ev('openSupprCompte(); document.getElementById("suppr-pass").value = ' + JSON.stringify(mdp));
+      await o.ev('supprimerCompte()');
+      return o.ev('document.getElementById("suppr-msg").style.display === "none" ? "" : document.getElementById("suppr-msg").textContent');
+    };
+    const intact = async () => {
+      vrai(await o.ev('!!localStorage.getItem("sk_prof") && !!localStorage.getItem("sk_dv") && !!currentUser'), 'des données ont été effacées alors que la suppression a échoué');
+      vrai(await o.ev('document.getElementById("suppr-modal").classList.contains("open") && !document.getElementById("suppr-btn").disabled'), 'la fenêtre devrait rester ouverte, bouton réactivé');
+    };
+
+    await test('Mauvais mot de passe : rien n\'est supprimé', async () => {
+      vrai(/Mot de passe incorrect/.test(await essayer('faux')), 'message « Mot de passe incorrect » absent');
+      egal(o.suppressions.length, 0, 'appels au serveur');
+      await intact();
+      vrai(/Entre ton mot de passe/.test(await essayer('')), 'mot de passe vide accepté');
+      o.sansErreur();
+    });
+
+    await test('Erreur du serveur : message clair, rien n\'est effacé sur le téléphone', async () => {
+      o.opts.suppression = { status: 500, json: { error: { message: 'Impossible d\'effacer tes donnees pour le moment.' } } };
+      vrai(/Impossible d'effacer/.test(await essayer(MOT_DE_PASSE)), 'message du serveur absent');
+      await intact();
+      o.opts.suppression = { status: 404, json: { code: 'NOT_FOUND', message: 'Requested function was not found' } };
+      vrai(/pas encore activée/.test(await essayer(MOT_DE_PASSE)), 'fonction absente du serveur : message absent');
+      await intact();
+      o.sansErreur();
+    });
+
+    await test('Suppression réussie : compte supprimé, téléphone vidé, retour à la connexion', async () => {
+      o.opts.suppression = null;
+      o.suppressions = []; o.envois = [];
+      await o.ev('openSupprCompte(); document.getElementById("suppr-pass").value = ' + JSON.stringify(MOT_DE_PASSE) + '; supprimerCompte(); 1');
+      await o.attendre('_appDemarre === false && getComputedStyle(document.getElementById("fb-auth-forms")).display === "flex"', 8000, 'pas revenu à l\'écran de connexion');
+      egal(o.suppressions.length, 1, 'appels au serveur');
+      vrai(/^Bearer eyJ/.test(o.suppressions[0]), 'le jeton de session de l\'élève n\'est pas envoyé');
+      egal(await o.ev('Object.keys(localStorage).filter(function(k) { return k !== "sk_theme"; })'), [], 'reste sur le téléphone');
+      egal(o.envois.length, 0, 'données renvoyées au cloud après la suppression');
+      await o.attendre('/supprimés/.test(document.getElementById("sk-toast").textContent)', 3000, 'message de confirmation absent');
+      o.sansErreur();
+    });
+    await o.fermer();
+  }
+
   /* ── L'app en usage (un seul onglet, eleve connecte) ── */
   const actif = n => !FILTRE || n.toLowerCase().includes(FILTRE);
   if (!actif(G_ECRANS) && !actif(G_FONCTIONS)) return;
@@ -671,17 +729,17 @@ async function testsNavigateur(nav, base) {
     o.sansErreur();
   });
 
-  const OUVERTS = '(function() { return ["drawer", "mo", "pomo-modal", "moy-modal", "tool-modal", "vq-modal", "interro-ai-modal", "scan-modal", "vc-modal"]' +
+  const OUVERTS = '(function() { return ["drawer", "mo", "pomo-modal", "moy-modal", "tool-modal", "vq-modal", "interro-ai-modal", "scan-modal", "vc-modal", "suppr-modal"]' +
     '.filter(function(id) { var e = document.getElementById(id); return e && e.classList.contains("open"); })' +
     '.concat(["hist-panel", "rev-fullscreen", "mc-panel"].filter(function(id) { var e = document.getElementById(id); return e && e.style.display && e.style.display !== "none"; })); })()';
   const FENETRES = [
     ['menu', 'toggleDrawer()'], ['Pomodoro', 'openTool("pomo")'], ['Moyenne', 'openTool("moy")'], ['Calculatrice', 'openTool("calc")'],
     ['Convertisseur', 'openTool("conv")'], ['Conjugueur', 'openTool("conj")'], ['nouveau devoir', 'openMo()'], ['Quiz vocal', 'openVocalQuiz()'],
     ['Interro IA', 'openInterroAI()'], ['Scanner de cours', 'openScanCours()'], ['Veille de contrôle', 'openVeilleControle()'],
-    ['Historique', 'openHistPanel()'], ['Mes cours', 'openMesCours()']
+    ['Historique', 'openHistPanel()'], ['Mes cours', 'openMesCours()'], ['Supprimer mon compte', 'openSupprCompte()']
   ];
   /* apres chaque test de fenetre (meme rate) : tout est referme, pour que l'echec d'un test n'entraine pas les suivants */
-  const TOUT_FERMER = '["drawer", "mo", "pomo-modal", "moy-modal", "tool-modal", "vq-modal", "interro-ai-modal", "scan-modal", "vc-modal"].forEach(function(id) { var e = document.getElementById(id); if (e) e.classList.remove("open"); });' +
+  const TOUT_FERMER = '["drawer", "mo", "pomo-modal", "moy-modal", "tool-modal", "vq-modal", "interro-ai-modal", "scan-modal", "vc-modal", "suppr-modal"].forEach(function(id) { var e = document.getElementById(id); if (e) e.classList.remove("open"); });' +
     'if (mcPanelOuvert()) closeMesCours(); ["hist-panel", "rev-fullscreen"].forEach(function(id) { var e = document.getElementById(id); if (e) e.style.display = "none"; });' +
     'goSec("s-home", document.querySelector(\'.nav-btn[onclick*="s-home"]\'))';
   for (const [nom, ouvre] of FENETRES) {

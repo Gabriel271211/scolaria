@@ -80,7 +80,7 @@ function navFermerHaut() {
   }
   var fermer = { 'vq-modal': closeVocalQuiz, 'interro-ai-modal': closeInterroAI, 'scan-modal': closeScanCours,
     'pomo-modal': function() { closeTool('pomo'); }, 'moy-modal': function() { closeTool('moy'); },
-    'tool-modal': function() { closeTool('tool'); }, 'mo': closeMo };
+    'tool-modal': function() { closeTool('tool'); }, 'mo': closeMo, 'suppr-modal': closeSupprCompte };
   for (var id in fermer) {
     var m = document.getElementById(id);
     if (m && m.classList.contains('open')) { fermer[id](); return true; }

@@ -41,7 +41,7 @@
 | 0 | **Redéployer le proxy IA durci** | Dashboard Supabase → Edge Functions → `groq-proxy` → Code → coller `supabase/functions/groq-proxy/index.ts` → Deploy (garder Verify JWT sur OFF). Puis tester une question dans le chat. Tant que ce n'est pas fait, n'importe qui peut utiliser la clé Groq de l'app. Déployé le 21 oct. 2026 (vérifié : un appel sans élève connecté est refusé, 401) | ✅ |
 | 0 bis | Vérifier sur le téléphone après l'audit | Bouton retour (fiche plein écran, Veille, menu, Pomodoro), ajout d'un devoir avec date, Pomodoro écran verrouillé, mode avion (l'app doit s'ouvrir avec « Hors connexion ») | ⬜ |
 | 0 ter | Bouton « Supprimer mon compte » (RGPD, élèves mineurs) | Demande une petite Edge Function avec la clé service (supprime `user_data` + l'utilisateur) | ⬜ |
-| 1 | Empêcher Supabase de se mettre en pause | Petite tâche automatique qui « réveille » le projet chaque semaine (sinon connexion + IA cassées après ~7 jours sans utilisation) | ⬜ |
+| 1 | Empêcher Supabase de se mettre en pause | Tâche GitHub Actions `.github/workflows/supabase-reveil.yml` (21 oct. 2026) : tous les jours à 6h17 UTC, requête à la base + vérif auth + proxy IA (401 attendu) ; échec = e-mail GitHub à Gabriel ; se réactive elle-même (dépôt public : sinon désactivée après 60 jours sans commit). Lancer à la main : onglet Actions → Réveil Supabase → Run workflow | ✅ |
 | 2 | Vérifier l'app sur téléphone après la pause | Connexion, sync, chat IA, photos, annales | ⬜ |
 | 3 | Annales — SVT | ~75 exos, même format (énoncé + schéma + correction + piège brevet) | ⬜ |
 | 4 | Annales — Histoire-Géo-EMC | ~60 exos (documents, repères, développement construit) | ⬜ |

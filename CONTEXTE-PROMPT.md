@@ -77,6 +77,7 @@ CE QUE GABRIEL VEUT
 ATTENTION SUPABASE GRATUIT
 - Le projet se met en pause après ~7 jours sans activité : connexion ET IA
   cassées. Solution : dashboard Supabase -> Restore project.
+  Évité par la tâche quotidienne .github/workflows/supabase-reveil.yml (GitHub Actions).
 ```
 
 ---

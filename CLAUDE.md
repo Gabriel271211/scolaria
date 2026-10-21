@@ -23,7 +23,7 @@ Tu travailles sur **ScolarIA**, une application scolaire pour élèves français
 | `tests/run.mjs` | **Tests automatiques** (86 tests, ~1 min, sans dépendance : Node + Chrome du PC, Supabase et IA simulés). `node tests/run.mjs` après CHAQUE modif. Non déployé (`.vercelignore`). Détail : `DOCUMENTATION.md` § 8 bis. |
 
 ### Connexions externes
-- **Supabase** (`vefnkztjmodchvmspukh`) : auth email/mdp, sync cloud (table `user_data`), Edge Function `groq-proxy`. ⚠️ Projet gratuit : **mis en pause après ~7 jours d'inactivité** → connexion ET IA cassées. Si l'adresse `*.supabase.co` ne répond plus : dashboard Supabase → Restore project.
+- **Supabase** (`vefnkztjmodchvmspukh`) : auth email/mdp, sync cloud (table `user_data`), Edge Function `groq-proxy`. ⚠️ Projet gratuit : **mis en pause après ~7 jours d'inactivité** → connexion ET IA cassées. **Évité par la tâche GitHub Actions `.github/workflows/supabase-reveil.yml`** (requête quotidienne + vérif auth et proxy IA ; si ça ne répond pas, la tâche échoue et GitHub envoie un e-mail). Si l'adresse `*.supabase.co` ne répond plus : dashboard Supabase → Restore project.
 - **Groq** : jamais appelé en direct, toujours via `GROQ_PROXY` (`callGroq` / `callGroqStream`). Modèles dans `AI_TEXT_MODEL` / `AI_VISION_MODELS`. Si l'IA renvoie `model_not_found`, Groq a retiré le modèle : changer le nom là (ce n'est pas un problème de clé).
 - **Vercel** : redéploiement automatique à chaque `git push` sur `main`.
 

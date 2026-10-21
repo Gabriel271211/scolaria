@@ -1,0 +1,65 @@
+# Réveil quotidien du projet Supabase de ScolarIA.
+# Plan gratuit : le projet est mis en pause après ~7 jours sans activité, et alors la connexion
+# ET l'IA de l'app ne marchent plus. Une petite requête par jour suffit à le garder éveillé.
+# Si quelque chose ne répond pas (projet en pause, proxy IA disparu…), la tâche échoue et
+# GitHub envoie un e-mail à Gabriel : c'est aussi une alerte.
+# Lancer à la main : onglet Actions du dépôt → « Réveil Supabase » → Run workflow.
+name: Réveil Supabase
+
+on:
+  schedule:
+    - cron: '17 6 * * *'   # tous les jours à 6h17 UTC (8h17 en France l'été, 7h17 l'hiver)
+  workflow_dispatch:
+
+permissions:
+  actions: write   # dernière étape : empêcher GitHub de désactiver cette tâche
+  contents: read
+
+jobs:
+  reveil:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      SUPABASE_URL: https://vefnkztjmodchvmspukh.supabase.co
+      # clé « publishable » : publique (elle est déjà dans l'app), les données restent protégées par RLS
+      SUPABASE_KEY: sb_publishable_OVVDWsvA2-0dJuTdQREYVw_kSiTu7Ge
+    steps:
+      - name: Requête à la base de données (compte comme une activité)
+        run: |
+          code=$(curl -s -o reponse.txt -w '%{http_code}' --retry 3 --retry-delay 20 --retry-all-errors --max-time 30 \
+            "$SUPABASE_URL/rest/v1/user_data?select=user_id&limit=1" -H "apikey: $SUPABASE_KEY") || code=000
+          echo "Base de données : HTTP $code"
+          if [ "$code" != "200" ]; then
+            head -c 300 reponse.txt 2>/dev/null; echo
+            echo "::error::Supabase ne répond pas (HTTP $code). Projet en pause ? Dashboard Supabase → projet → Restore project."
+            exit 1
+          fi
+
+      - name: Connexion des élèves (auth) joignable
+        run: |
+          code=$(curl -s -o /dev/null -w '%{http_code}' --retry 3 --retry-delay 20 --retry-all-errors --max-time 30 \
+            "$SUPABASE_URL/auth/v1/health" -H "apikey: $SUPABASE_KEY") || code=000
+          echo "Auth : HTTP $code"
+          [ "$code" = "200" ] || { echo "::error::La connexion des élèves (Supabase Auth) ne répond pas (HTTP $code)."; exit 1; }
+
+      - name: Proxy de l'IA en place (refuse un appel sans élève connecté)
+        run: |
+          code=$(curl -s -o reponse.txt -w '%{http_code}' --retry 3 --retry-delay 20 --max-time 30 -X POST \
+            "$SUPABASE_URL/functions/v1/groq-proxy" -H "Content-Type: application/json" -d '{}') || code=000
+          echo "Proxy IA : HTTP $code"
+          # 401 = la fonction tourne et refuse bien les inconnus (aucun appel à Groq, aucun jeton consommé)
+          if [ "$code" != "401" ]; then
+            head -c 300 reponse.txt 2>/dev/null; echo
+            echo "::error::Le proxy IA groq-proxy ne répond pas comme prévu (HTTP $code au lieu de 401). Dashboard Supabase → Edge Functions."
+            exit 1
+          fi
+
+      - name: Garder cette tâche active
+        # GitHub désactive les tâches planifiées d'un dépôt public après 60 jours sans commit :
+        # on la réactive à chaque passage (pas besoin de faux commits)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api -X PUT "repos/$GITHUB_REPOSITORY/actions/workflows/supabase-reveil.yml/enable" \
+            && echo "Tâche maintenue active" \
+            || echo "::warning::Impossible de réactiver la tâche (elle reste active tant que le dépôt a des commits)."

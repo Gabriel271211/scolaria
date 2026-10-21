@@ -90,7 +90,7 @@ Cible principale : **smartphone Android sous Chrome** (installable comme app PWA
 
 > ⚠️ **Sécurité critique** : la clé Groq vit UNIQUEMENT dans le secret Supabase `GROQ_API_KEY`. Elle ne doit JAMAIS être écrite en dur dans le code client ni commitée — sinon elle est volée et révoquée automatiquement. C'est exactement le bug qui cassait l'IA des autres comptes auparavant.
 
-> ⚠️ **Projet gratuit = mise en pause automatique** après ~7 jours sans activité. Symptôme : connexion ET IA cassées, l'adresse `vefnkztjmodchvmspukh.supabase.co` ne répond plus. **Évité par la tâche GitHub Actions `.github/workflows/supabase-reveil.yml`** (requête quotidienne + vérif auth et proxy IA ; si ça ne répond pas, la tâche échoue et GitHub envoie un e-mail). Solution : dashboard Supabase → **Restore project** (possible seulement pendant 90 jours de pause). Arrivé en octobre 2026 après 3 mois d'inactivité.
+> ⚠️ **Projet gratuit = mise en pause automatique** après ~7 jours sans activité. Symptôme : connexion ET IA cassées, l'adresse `vefnkztjmodchvmspukh.supabase.co` ne répond plus. **Évité par la tâche GitHub Actions `.github/workflows/supabase-reveil.yml`** (requête quotidienne + vérif auth, proxy IA et fonction supprimer-compte ; si ça ne répond pas, la tâche échoue et GitHub envoie un e-mail). Solution : dashboard Supabase → **Restore project** (possible seulement pendant 90 jours de pause). Arrivé en octobre 2026 après 3 mois d'inactivité.
 
 ### 3.3 Vercel (hébergement)
 

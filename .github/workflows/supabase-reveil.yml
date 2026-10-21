@@ -54,6 +54,18 @@ jobs:
             exit 1
           fi
 
+      - name: Fonction « Supprimer mon compte » en place (refuse un appel sans élève connecté)
+        run: |
+          code=$(curl -s -o reponse.txt -w '%{http_code}' --retry 3 --retry-delay 20 --max-time 30 -X POST \
+            "$SUPABASE_URL/functions/v1/supprimer-compte" -H "Content-Type: application/json" -d '{}') || code=000
+          echo "Supprimer mon compte : HTTP $code"
+          # 401 = la fonction tourne, a sa cle service et refuse bien les inconnus (rien n'est supprime)
+          if [ "$code" != "401" ]; then
+            head -c 300 reponse.txt 2>/dev/null; echo
+            echo "::error::La fonction supprimer-compte ne répond pas comme prévu (HTTP $code au lieu de 401). Dashboard Supabase → Edge Functions."
+            exit 1
+          fi
+
       - name: Garder cette tâche active
         # GitHub désactive les tâches planifiées d'un dépôt public après 60 jours sans commit :
         # on la réactive à chaque passage (pas besoin de faux commits)

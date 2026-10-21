@@ -111,6 +111,9 @@ body::after {
   color: var(--accent);
   font-style: normal;
 }
+/* Bandeau « Hors connexion » (sous l'en-tete, tant que le telephone n'a pas de reseau) */
+#offline-bar { display: none; position: fixed; top: var(--hdr-h); left: 0; right: 0; z-index: 150; background: #f59e0b; color: #1a1a1a; font-size: 12px; font-weight: 700; text-align: center; padding: 6px 12px; line-height: 1.35; }
+body.offline #offline-bar { display: block; }
 #hdr-streak-badge { display: flex; align-items: center; gap: 4px; background: #fff8ec; border: 1.5px solid #f0c060; border-radius: 20px; padding: 4px 10px; font-size: 12px; font-weight: 700; color: #c07010; flex-shrink: 0; }
 body.dark #hdr-streak-badge { background: #2a2110; border-color: #5a4516; color: #e0b860; }
 
@@ -1925,6 +1928,8 @@ body.dark .ann-piege{background:#2a2110;border-color:#5a4516;color:#e0b860}
   </div>
 </header>
 
+<div id="offline-bar" role="status">📴 Hors connexion · tes données restent sur ce téléphone, l'IA reviendra avec le réseau</div>
+
 <!-- DRAWER OVERLAY -->
 <div id="drawer-overlay" onclick="closeDrawer()"></div>
 
@@ -2902,6 +2907,17 @@ function toast(msg, ms) {
   if (_toastTimer) clearTimeout(_toastTimer);
   _toastTimer = setTimeout(function() { t.classList.remove('show'); }, ms || 2800);
 }
+
+/* ══ HORS CONNEXION ══
+   Bandeau visible tant que le telephone n'a pas de reseau (mode avion, pas de 4G/wifi) */
+function majHorsLigne(evt) {
+  var hors = navigator.onLine === false;
+  document.body.classList.toggle('offline', hors);
+  if (evt && evt.type === 'online') toast('Connexion retrouvée ✅');
+}
+window.addEventListener('online', majHorsLigne);
+window.addEventListener('offline', majHorsLigne);
+majHorsLigne();
 
 /* ══ INSTALLATION PWA ══ */
 var _installEvt = null;

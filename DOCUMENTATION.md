@@ -50,6 +50,7 @@ Cible principale : **smartphone Android sous Chrome** (installable comme app PWA
 1. **Authentification** (email + mot de passe)
    - `signUp` (inscription), `signInWithPassword` (connexion), `onAuthStateChange` (suit l'état de session).
    - À l'ouverture de la session, les données du cloud sont récupérées (`syncFromCloud`) puis l'app démarre **une seule fois** (`_appDemarre`) : les renouvellements de session (`TOKEN_REFRESHED`, environ toutes les heures) ne rechargent plus rien.
+   - **Bandeau « Hors connexion »** (`#offline-bar`, `majHorsLigne()`) : visible sous l'en-tête dès que le téléphone n'a plus de réseau (`navigator.onLine`, événements `online`/`offline`) ; « Connexion retrouvée » au retour.
    - **Hors connexion** : si la session ne peut pas être vérifiée au bout de 6 s (ou si la librairie n'a pas pu se charger), `_demarrageHorsLigne()` ouvre l'app avec les données du téléphone (message « Hors connexion »).
 
 2. **Synchronisation des données** (table `user_data`, protégée par RLS : vérifié en oct. 2026, la clé publique ne voit aucune ligne)

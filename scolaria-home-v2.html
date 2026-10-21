@@ -111,6 +111,8 @@ body::after {
   color: var(--accent);
   font-style: normal;
 }
+#hdr-streak-badge { display: flex; align-items: center; gap: 4px; background: #fff8ec; border: 1.5px solid #f0c060; border-radius: 20px; padding: 4px 10px; font-size: 12px; font-weight: 700; color: #c07010; flex-shrink: 0; }
+body.dark #hdr-streak-badge { background: #2a2110; border-color: #5a4516; color: #e0b860; }
 
 /* ── DRAWER (menu hamburger) ── */
 #drawer-overlay {
@@ -480,29 +482,6 @@ body::after {
 .mo-c { flex: 1; padding: 11px; border: 1.5px solid var(--bord); border-radius: 12px; background: transparent; font-size: 14px; font-weight: 700; font-family: var(--fb); color: var(--mu); cursor: pointer; }
 .mo-s { flex: 2; padding: 11px; border: none; border-radius: 12px; background: var(--accent); font-size: 14px; font-weight: 700; font-family: var(--fb); color: #fff; cursor: pointer; }
 
-/* ── TIMER MODAL ── */
-#timer-modal {
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,.75);
-  backdrop-filter: blur(10px);
-  z-index: 400;
-  display: none;
-  align-items: center; justify-content: center;
-}
-#timer-modal.open { display: flex; }
-.tm-box { background: var(--card); border-radius: 20px; padding: 24px 28px; text-align: center; min-width: 260px; }
-.tm-title { font-size: 14px; font-weight: 800; margin-bottom: 4px; }
-.tm-sub { font-size: 11px; color: var(--mu); margin-bottom: 20px; }
-.tm-dig { font-size: 52px; font-weight: 800; color: var(--accent); letter-spacing: 2px; margin-bottom: 14px; font-variant-numeric: tabular-nums; }
-.tm-dur { display: flex; gap: 6px; justify-content: center; margin-bottom: 16px; }
-.tm-dur button { padding: 5px 12px; border-radius: 8px; border: 1px solid var(--bord); background: var(--bg); color: var(--mu); font-size: 11px; font-family: var(--fb); cursor: pointer; font-weight: 600; }
-.tm-dur button.on { border-color: var(--accent); color: var(--accent); background: var(--accent-l); }
-.tm-row { display: flex; gap: 8px; justify-content: center; }
-.tm-btn { padding: 9px 20px; border-radius: 10px; border: none; font-size: 13px; font-family: var(--fb); font-weight: 700; cursor: pointer; }
-.tm-start { background: var(--accent); color: #fff; }
-.tm-stop { background: rgba(239,68,68,.1); border: 1px solid var(--danger); color: var(--danger); }
-.tm-close { background: var(--bg); border: 1px solid var(--bord); color: var(--mu); }
-
 /* ── TITRE MANUSCRIT ── */
 .handwrite-title {
   font-family: 'Caveat', cursive;
@@ -536,20 +515,6 @@ body::after {
 .ht-blue   { --hl: #93c5fd; }
 .ht-yellow { --hl: #fef08a; }
 .ht-purple { --hl: #ddd6fe; }
-.ht-pink   { --hl: #fecdd3; }
-
-/* ── PLACEHOLDER ── */
-.placeholder {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 60px 20px;
-  text-align: center;
-  gap: 10px;
-  color: var(--mu);
-}
-.placeholder p { font-size: 14px; }
 
 /* ── HOME ── */
 #s-home {
@@ -560,33 +525,6 @@ body::after {
 }
 #s-home.active { display: block; }
 
-/* stats */
-.home-stats {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 20px;
-}
-.home-stat {
-  flex: 1;
-  background: var(--card);
-  border: 1px solid var(--bord);
-  border-radius: 14px;
-  padding: 12px 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-}
-.home-stat-icon {
-  width: 32px; height: 32px;
-  border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
-}
-.home-stat-icon svg { width: 16px; height: 16px; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-.home-stat-val { font-size: 20px; font-weight: 800; color: var(--tx); line-height: 1; }
-.home-stat-lbl { font-size: 10px; font-weight: 600; color: var(--mu); text-transform: uppercase; letter-spacing: .4px; }
-
-/* modules */
 .home-section-title {
   font-size: 11px;
   font-weight: 700;
@@ -595,39 +533,6 @@ body::after {
   letter-spacing: .8px;
   margin-bottom: 10px;
 }
-.home-modules {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-.home-module {
-  border-radius: 16px;
-  padding: 16px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  cursor: pointer;
-  border: none;
-  text-align: left;
-  font-family: var(--fb);
-  transition: opacity .15s, transform .1s;
-  -webkit-tap-highlight-color: transparent;
-}
-.home-module:active { opacity: .88; transform: scale(.98); }
-.home-module-icon {
-  width: 46px; height: 46px;
-  border-radius: 13px;
-  background: rgba(255,255,255,.22);
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-}
-.home-module-icon svg { width: 22px; height: 22px; stroke: #fff; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-.home-module-info { flex: 1; }
-.home-module-name { font-size: 15px; font-weight: 800; color: #fff; letter-spacing: -.2px; }
-.home-module-sub  { font-size: 12px; color: rgba(255,255,255,.75); margin-top: 2px; }
-.home-module-arr  { width: 28px; height: 28px; border-radius: 8px; background: rgba(255,255,255,.18); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.home-module-arr svg { width: 14px; height: 14px; stroke: #fff; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
 
 /* outils */
 .home-tools {
@@ -827,12 +732,12 @@ body::after {
   border-radius: 50%;
   margin: 0 auto 6px;
   display: flex; align-items: center; justify-content: center;
-  background: conic-gradient(var(--pc, var(--accent)) var(--pa, 0deg), #f0f0f8 0deg);
+  background: conic-gradient(var(--pc, var(--accent)) var(--pa, 0deg), var(--bord) 0deg);
 }
 .home-prog-inner {
   width: 38px; height: 38px;
   border-radius: 50%;
-  background: white;
+  background: var(--card);
   display: flex; align-items: center; justify-content: center;
   font-size: 10px; font-weight: 800;
 }
@@ -848,27 +753,32 @@ body::after {
   cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 14px;
   letter-spacing: -.4px;
   position: relative; overflow: hidden;
-  box-shadow: 0 8px 28px rgba(79,70,229,.52);
+  box-shadow: 0 10px 34px rgba(79,70,229,.6);
   animation: revpulse 2.8s ease-in-out infinite;
   -webkit-tap-highlight-color: transparent;
 }
+/* animations sur transform uniquement (pas box-shadow / left : repeint a chaque image) */
 .rev-work-btn::after {
   content: '';
-  position: absolute; top: 0; left: -80%;
+  position: absolute; top: 0; left: 0;
   width: 50%; height: 100%;
   background: linear-gradient(90deg, transparent, rgba(255,255,255,.2), transparent);
-  transform: skewX(-15deg);
+  transform: translateX(-160%) skewX(-15deg);
   animation: revshimmer 3.2s ease-in-out infinite;
 }
 .rev-work-btn:active { opacity: .88; transform: scale(.98); }
 .rev-work-btn svg { width: 26px; height: 26px; fill: rgba(255,255,255,.9); flex-shrink: 0; }
 @keyframes revpulse {
-  0%,100% { box-shadow: 0 8px 28px rgba(79,70,229,.52); transform: translateY(0); }
-  50%      { box-shadow: 0 14px 44px rgba(79,70,229,.8); transform: translateY(-4px); }
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-4px); }
 }
 @keyframes revshimmer {
-  0%       { left: -80%; }
-  60%,100% { left: 130%; }
+  0%       { transform: translateX(-160%) skewX(-15deg); }
+  60%,100% { transform: translateX(260%) skewX(-15deg); }
+}
+/* reglage « Supprimer les animations » du telephone */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
 .rev-step-hdr { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; }
 .rev-back {
@@ -901,7 +811,6 @@ body::after {
   -webkit-tap-highlight-color: transparent;
 }
 .rev-dur-btn.sel { border-color: var(--accent); background: var(--accent-l); }
-.rev-dur-emoji { font-size: 28px; flex-shrink: 0; }
 .rev-dur-icon { width: 42px; height: 42px; border-radius: 12px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
 .rev-dur-icon svg { width: 20px; height: 20px; }
 .rev-dur-info  { flex: 1; }
@@ -919,9 +828,6 @@ body::after {
   border-radius: 14px; padding: 13px 16px; margin-bottom: 10px;
   cursor: pointer; -webkit-tap-highlight-color: transparent;
 }
-.rev-cours-row-info { flex: 1; }
-.rev-cours-row-name { font-size: 13px; font-weight: 700; color: var(--tx); }
-.rev-cours-row-sub  { font-size: 11px; color: var(--mu); margin-top: 2px; }
 .rev-sw {
   width: 44px; height: 24px; border-radius: 12px; background: var(--bord);
   position: relative; transition: background .2s; flex-shrink: 0;
@@ -979,7 +885,6 @@ body::after {
 .rev-card-back  { display: none; width: 100%; }
 .rev-card.flipped .rev-card-front { display: none; }
 .rev-card.flipped .rev-card-back  { display: block; }
-.rev-card-emoji { font-size: 32px; margin-bottom: 10px; }
 .rev-card-q { font-size: 17px; font-weight: 800; color: var(--tx); line-height: 1.4; }
 .rev-card-hint { font-size: 12px; color: var(--mu); margin-top: 8px; }
 .rev-card-ok-lbl { font-size: 11px; font-weight: 700; color: var(--success); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 8px; }
@@ -1000,18 +905,11 @@ body::after {
   transition: opacity .15s, transform .1s; -webkit-tap-highlight-color: transparent;
 }
 .rev-act-row button:active { opacity: .85; transform: scale(.97); }
-.rev-btn-ok    { background: #dcfce7; color: #16a34a; }
-.rev-btn-retry { background: #fef3c7; color: #d97706; }
 .rev-result { text-align: center; padding: 28px 16px; }
-.rev-result-emoji { font-size: 56px; margin-bottom: 12px; }
 .rev-result-title { font-size: 24px; font-weight: 800; color: var(--tx); margin-bottom: 6px; }
 .rev-result-sub   { font-size: 14px; color: var(--mu); margin-bottom: 20px; }
 .rev-result-pills { display: flex; gap: 10px; justify-content: center; margin-bottom: 24px; }
 .rev-pill { padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 700; }
-.rev-pill-ok    { background: #dcfce7; color: #16a34a; }
-.rev-pill-retry { background: #fef3c7; color: #d97706; }
-.rev-restart { width: 100%; padding: 14px; border-radius: 14px; background: var(--accent); border: none; color: #fff; font-size: 15px; font-weight: 800; font-family: var(--fb); cursor: pointer; margin-bottom: 10px; -webkit-tap-highlight-color: transparent; }
-.rev-home-back { width: 100%; padding: 14px; border-radius: 14px; background: transparent; border: 1.5px solid var(--bord); color: var(--mu); font-size: 15px; font-weight: 700; font-family: var(--fb); cursor: pointer; -webkit-tap-highlight-color: transparent; }
 .rev-deck-card {
   background: var(--card);
   border: 1px solid var(--bord);
@@ -1044,46 +942,6 @@ body::after {
   border-radius: 14px; margin-bottom: 16px;
 }
 
-.rev-ai-bar {
-  background: var(--card);
-  border: 1.5px solid var(--bord);
-  border-radius: 16px;
-  padding: 13px 14px;
-  margin-top: 4px;
-}
-.rev-ai-label {
-  font-size: 10px; font-weight: 700;
-  color: var(--mu); text-transform: uppercase;
-  letter-spacing: .6px; margin-bottom: 9px;
-  display: flex; align-items: center; gap: 5px;
-}
-.rev-ai-label svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-.rev-ai-row {
-  display: flex; gap: 8px; align-items: center;
-}
-.rev-ai-input {
-  flex: 1;
-  border: 1.5px solid var(--bord);
-  border-radius: 10px;
-  padding: 9px 12px;
-  font-size: 14px;
-  font-family: var(--fb);
-  color: var(--tx);
-  background: var(--bg);
-  outline: none;
-}
-.rev-ai-input:focus { border-color: var(--accent); }
-.rev-ai-send {
-  width: 38px; height: 38px;
-  border-radius: 10px;
-  background: var(--accent);
-  border: none;
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer; flex-shrink: 0;
-  transition: opacity .15s;
-}
-.rev-ai-send:active { opacity: .8; }
-.rev-ai-send svg { width: 16px; height: 16px; stroke: #fff; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
 /* ══ CHAT IA ══ */
 #s-chat {
@@ -1630,12 +1488,6 @@ body::after {
 /* CONJUGUEUR */
 .conj-box{background:var(--bg);border:1.5px solid var(--bord);border-radius:14px;padding:14px;margin-bottom:8px}
 .conj-title{font-size:13px;font-weight:800;margin-bottom:10px;color:var(--tx)}
-.conj-title-main{font-size:14px;font-weight:800;margin-bottom:12px;color:var(--tx)}
-.conj-table{width:100%;border-collapse:collapse}
-.conj-table td{padding:6px 8px;font-size:13px;border-bottom:1px solid var(--bord)}
-.conj-table td:first-child{color:var(--mu);font-weight:600;width:38%}
-.conj-table td:last-child{color:var(--tx);font-weight:600}
-.conj-table tr:last-child td{border-bottom:none}
 /* Tableaux de conjugaison generes par l IA (markdown) */
 .conj-box h3{font-size:12px;font-weight:800;color:var(--accent);margin:14px 0 6px;text-transform:uppercase;letter-spacing:.4px}
 .conj-box h2,.conj-box h3:first-of-type{margin-top:2px}
@@ -1676,13 +1528,6 @@ body::after {
 .ia-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
 .ia-ttl{font-size:16px;font-weight:800;color:var(--tx)}
 .ia-cls{background:transparent;border:none;color:var(--mu);font-size:18px;cursor:pointer;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:8px}
-/* Interro IA */
-.interro-q-box{background:var(--bg);border:1.5px solid var(--bord);border-radius:14px;padding:14px;font-size:14px;font-weight:700;line-height:1.55;margin-bottom:12px;color:var(--tx)}
-.interro-inp{width:100%;background:var(--card);border:1.5px solid var(--bord);border-radius:10px;padding:11px 12px;color:var(--tx);font-size:14px;font-family:var(--fb);outline:none;resize:none;min-height:70px;margin-bottom:10px}
-.interro-inp:focus{border-color:var(--accent)}
-.interro-feedback{border-radius:10px;padding:11px 13px;font-size:13px;line-height:1.55;margin-bottom:12px}
-.interro-ok{background:#dcfce7;color:#16a34a;border:1px solid #bbf7d0}
-.interro-ko{background:#fee2e2;color:#dc2626;border:1px solid #fca5a5}
 /* Scanner */
 /* ── SCAN CHOICE ── */
 .scan-opt-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
@@ -1717,8 +1562,6 @@ body::after {
 .rev-ia-result code{background:var(--bg);border-radius:4px;padding:1px 5px;font-size:12px}
 .rev-ia-result strong{font-weight:800;color:var(--tx)}
 .rev-ia-result hr{border:none;border-top:1px solid var(--bord);margin:12px 0}
-.rev-ia-btns{display:flex;flex-direction:column;gap:10px;margin-top:16px}
-.rev-ia-btn-primary{width:100%;padding:14px;border:none;border-radius:14px;background:var(--accent);color:#fff;font-size:14px;font-weight:800;font-family:var(--fb);cursor:pointer}
 .rev-ia-btn-sec{width:100%;padding:12px;border:1.5px solid var(--bord);border-radius:14px;background:transparent;color:var(--tx);font-size:13px;font-weight:700;font-family:var(--fb);cursor:pointer}
 .rev-err-box{background:#fff1f2;border:1.5px solid #fca5a5;border-radius:14px;padding:16px;text-align:center;color:#dc2626;font-size:13px;line-height:1.5;margin-top:8px}
 .rev-err-box button{margin-top:12px;padding:10px 20px;border:none;border-radius:10px;background:var(--danger);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--fb)}
@@ -1746,13 +1589,6 @@ body::after {
 #rev-fs-body strong{font-weight:800}
 #rev-fs-body code{background:var(--bg);border-radius:4px;padding:2px 5px;font-size:12px}
 #rev-fs-body hr{border:none;border-top:1px solid var(--bord);margin:14px 0}
-/* CLÉ API GROQ */
-.groq-bar{background:var(--bg);border:1.5px solid var(--bord);border-radius:14px;padding:14px;margin-bottom:14px}
-.groq-bar label{font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:8px}
-.groq-row{display:flex;gap:8px}
-.groq-inp{flex:1;background:var(--card);border:1.5px solid var(--bord);border-radius:10px;padding:10px 12px;font-size:14px;font-family:var(--fb);color:var(--tx);outline:none}
-.groq-inp:focus{border-color:var(--accent)}
-.groq-save{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:10px 16px;font-size:13px;font-weight:700;font-family:var(--fb);cursor:pointer;flex-shrink:0}
 /* ── VEILLE DE CONTRÔLE ── */
 .vc-inp-lbl{font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:6px}
 .vc-inp{width:100%;background:var(--bg);border:1.5px solid var(--bord);border-radius:12px;padding:11px 13px;color:var(--tx);font-size:14px;font-family:var(--fb);outline:none;transition:border-color .15s}
@@ -1973,7 +1809,8 @@ body.dark .ann-piege{background:#2a2110;border-color:#5a4516;color:#e0b860}
 .ann-chat-msgs{display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
 .ann-msg{font-size:13.5px;line-height:1.55;padding:9px 12px;border-radius:13px;max-width:90%;white-space:pre-wrap;word-wrap:break-word}
 .ann-msg.u{align-self:flex-end;background:var(--accent);color:#fff;border-bottom-right-radius:4px}
-.ann-msg.a{align-self:flex-start;background:var(--bg);color:var(--tx);border-bottom-left-radius:4px}
+.ann-msg.a{align-self:flex-start;background:var(--bg);color:var(--tx);border-bottom-left-radius:4px;white-space:normal}
+.ann-msg.a p{margin:0 0 5px}.ann-msg.a ul,.ann-msg.a ol{margin:4px 0 6px;padding-left:18px}.ann-msg.a br{display:none}
 .ann-chat-empty{font-size:12px;color:var(--mu);text-align:center;padding:6px 4px;line-height:1.5}
 .ann-chatbar{display:flex;gap:8px;align-items:flex-end}
 .ann-chatbar textarea{flex:1;resize:none;border:1.5px solid var(--bord);background:var(--bg);border-radius:12px;padding:10px 12px;font-size:14px;font-family:var(--fb);color:var(--tx);max-height:90px;line-height:1.4}
@@ -2020,9 +1857,9 @@ body.dark .ann-piege{background:#2a2110;border-color:#5a4516;color:#e0b860}
 .ob-btn-primary:disabled{background:var(--bord);color:var(--mu);cursor:not-allowed}
 .ob-finish-wrap{display:flex;flex-direction:column;align-items:center;gap:8px}
 .ob-finish-wrap .ob-mascot{font-size:80px}
-.ob-xp-badge{background:linear-gradient(135deg,#f59e0b,#f97316);color:#fff;border-radius:16px;padding:14px 28px;font-size:15px;font-weight:700;margin:8px 0}
 </style>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<!-- version FIGEE (une mise a jour automatique de « @2 » pourrait tout casser) ; crossorigin = mise en cache hors ligne par sw.js -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.min.js" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -2082,7 +1919,7 @@ body.dark .ann-piege{background:#2a2110;border-color:#5a4516;color:#e0b860}
     <span></span><span></span><span></span>
   </div>
   <div id="hdr-title">Scolar<em>IA</em></div>
-  <div id="hdr-streak-badge" style="display:flex;align-items:center;gap:4px;background:#fff8ec;border:1.5px solid #f0c060;border-radius:20px;padding:4px 10px;font-size:12px;font-weight:700;color:#c07010;flex-shrink:0">
+  <div id="hdr-streak-badge" title="Jours d'affilée avec du travail">
     <svg width="10" height="13" viewBox="0 0 10 13" fill="none"><path d="M5 1C5 1 7.5 3.5 7.5 6C7.5 4.5 6 4 6 4C6 4 8.5 6 7.5 9.5C8.5 8.5 9 7 9 7C9 7 10 12 5 12C1.5 12 0.5 9.5 2 7.5C2.5 9 4 9.5 4 9.5C2.5 7.5 3.5 5.5 4.5 4.5C4.5 5.5 5 6 5 6C5 4.5 5 1 5 1Z" fill="#c07010"/></svg>
     <span id="hdr-streak-val">0</span>
   </div>
@@ -2184,7 +2021,7 @@ body.dark .ann-piege{background:#2a2110;border-color:#5a4516;color:#e0b860}
           <svg width="14" height="16" viewBox="0 0 14 16" fill="none"><path d="M7 1C7 1 10 4 10 7C10 5.5 8.5 5 8.5 5C8.5 5 11.5 7 10.5 10.5C11.5 9.5 12 8 12 8C12 8 13 13 7 13C3.5 13 2.5 10.5 4 8.5C4.5 10 6 10.5 6 10.5C4.5 8.5 5.5 6.5 6.5 5.5C6.5 6.5 7 7 7 7C7 5.5 7 1 7 1Z" fill="#c07010"/></svg>
           <span class="home-cpt-n gold" id="home-streak">0</span>
         </div>
-        <div class="home-cpt-lbl">Jours d&#39;affile</div>
+        <div class="home-cpt-lbl">Jours d&#39;affilée</div>
       </div>
       <div class="home-cpt-sep"></div>
       <div class="home-cpt-item">
@@ -2239,8 +2076,8 @@ body.dark .ann-piege{background:#2a2110;border-color:#5a4516;color:#e0b860}
       </div>
       <div class="home-mod-info">
         <div>
-          <div class="home-mod-name">Veille Controle</div>
-          <div class="home-mod-desc" id="vc-home-desc">Rappels et preparation avant chaque exam</div>
+          <div class="home-mod-name">Veille de contrôle</div>
+          <div class="home-mod-desc" id="vc-home-desc">Planning de révision + rappels avant chaque contrôle</div>
         </div>
         <div class="home-mod-cta" style="background:#e84040">
           <svg viewBox="0 0 14 14"><path d="M3 7H11M8 4L11 7L8 10"/></svg>
@@ -2295,7 +2132,7 @@ body.dark .ann-piege{background:#2a2110;border-color:#5a4516;color:#e0b860}
       <div class="home-mod-info">
         <div>
           <div class="home-mod-name">Scan de Cours</div>
-          <div class="home-mod-desc">Photo de tes notes &#8594; fiche structuree par l&#39;IA</div>
+          <div class="home-mod-desc">Photo de ton cahier &#8594; cours recopié ou fiche par l&#39;IA</div>
         </div>
         <div class="home-mod-cta" style="background:var(--accent)">
           <svg viewBox="0 0 14 14"><path d="M3 7H11M8 4L11 7L8 10"/></svg>
@@ -2338,7 +2175,7 @@ body.dark .ann-piege{background:#2a2110;border-color:#5a4516;color:#e0b860}
       <div class="home-mod-info">
         <div>
           <div class="home-mod-name">Quiz Vocal</div>
-          <div class="home-mod-desc">Reponds a voix haute, l&#39;IA analyse ta reponse</div>
+          <div class="home-mod-desc">Réponds à voix haute, l&#39;IA corrige ta réponse</div>
         </div>
         <div class="home-mod-cta" style="background:#16a34a">
           <svg viewBox="0 0 14 14"><path d="M3 7H11M8 4L11 7L8 10"/></svg>
@@ -2376,7 +2213,7 @@ body.dark .ann-piege{background:#2a2110;border-color:#5a4516;color:#e0b860}
     </div>
 
     <!-- ACCES RAPIDE -->
-    <div class="home-section-title">Acces rapide</div>
+    <div class="home-section-title">Accès rapide</div>
     <div class="home-gen-card">
       <div class="home-gen-row" onclick="goSec('s-chat',document.querySelector('.nav-btn[onclick*=s-chat]'))">
         <div class="home-gen-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
@@ -2432,7 +2269,7 @@ body.dark .ann-piege{background:#2a2110;border-color:#5a4516;color:#e0b860}
     </div>
 
     <!-- SITES EDUCATIFS -->
-    <div class="home-section-title">Sites educatifs</div>
+    <div class="home-section-title">Sites éducatifs</div>
     <div class="home-sites">
       <a class="home-site" href="https://pronote.fr" target="_blank">
         <div class="home-site-logo" style="background:#6c2fa0">P</div>
@@ -2601,7 +2438,7 @@ body.dark .ann-piege{background:#2a2110;border-color:#5a4516;color:#e0b860}
         <button onclick="openMesCours()" style="font-size:11px;color:var(--accent);background:none;border:none;cursor:pointer;font-family:var(--fb);font-weight:600;padding:4px 0">Tout voir</button>
       </div>
       <div id="rev-mc"></div>
-      <div class="home-section-title" style="margin-top:22px;margin-bottom:10px">Mes decks</div>
+      <div class="home-section-title" style="margin-top:22px;margin-bottom:10px">Mes flashcards</div>
       <div id="rev-decks-s1"></div>
       <div id="rev-fav-section" style="display:none">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-top:18px;margin-bottom:6px">
@@ -2723,7 +2560,7 @@ body.dark .ann-piege{background:#2a2110;border-color:#5a4516;color:#e0b860}
     <div class="prof-stats-row">
       <div class="prof-stat">
         <div class="prof-stat-n" id="prof-streak">0</div>
-        <div class="prof-stat-l">🔥 Streak</div>
+        <div class="prof-stat-l">🔥 Série</div>
       </div>
       <div class="prof-stat">
         <div class="prof-stat-n" id="prof-flash-n">0</div>
@@ -2769,11 +2606,10 @@ body.dark .ann-piege{background:#2a2110;border-color:#5a4516;color:#e0b860}
           <label>Mon objectif</label>
           <select id="profil-objectif">
             <option value="">— Choisir —</option>
-            <option>Décrocher le Brevet</option>
-            <option>Avoir le Bac</option>
-            <option>Améliorer mes notes</option>
-            <option>Ne pas couler</option>
-            <option>Cartonner les interros</option>
+            <option value="bonnes-notes">Avoir de bonnes notes</option>
+            <option value="brevet" id="profil-obj-exam">Réussir le brevet</option>
+            <option value="niveau">Me remettre à niveau</option>
+            <option value="progresser">Progresser chaque jour</option>
           </select>
         </div>
       </div>
@@ -2838,7 +2674,7 @@ body.dark .ann-piege{background:#2a2110;border-color:#5a4516;color:#e0b860}
     <!-- Données -->
     <div class="prof-card" style="border-color:rgba(239,68,68,.2)">
       <div class="prof-card-title" style="color:var(--danger)">⚠️ Données</div>
-      <button class="prof-reset-btn" onclick="if(confirm('Réinitialiser toutes tes données ScolarIA ?')){localStorage.clear();location.reload()}">Réinitialiser toutes mes données</button>
+      <button class="prof-reset-btn" onclick="resetDonnees()">Réinitialiser toutes mes données</button>
     </div>
 
     <div style="text-align:center;font-size:11px;color:var(--mu);padding:8px 0 16px">
@@ -2865,24 +2701,6 @@ body.dark .ann-piege{background:#2a2110;border-color:#5a4516;color:#e0b860}
     <div class="mob">
       <button class="mo-c" onclick="closeMo()">Annuler</button>
       <button class="mo-s" onclick="moSave()">Ajouter</button>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL TIMER -->
-<div id="timer-modal">
-  <div class="tm-box">
-    <div class="tm-title" id="tm-title">Timer</div>
-    <div class="tm-sub" id="tm-sub"></div>
-    <div class="tm-dig" id="tm-dig">25:00</div>
-    <div class="tm-dur">
-      <button data-min="15" onclick="setTmDur(15)">15 min</button>
-      <button data-min="25" class="on" onclick="setTmDur(25)">25 min</button>
-      <button data-min="45" onclick="setTmDur(45)">45 min</button>
-    </div>
-    <div class="tm-row">
-      <button class="tm-btn tm-start" onclick="toggleTm()">Lancer</button>
-      <button class="tm-btn tm-close" onclick="closeTm()">Fermer</button>
     </div>
   </div>
 </div>
@@ -2971,8 +2789,10 @@ function toggleTheme() {
   _applyThemeUI(isDark);
 }
 (function initTheme() {
+  /* pas encore de choix : on suit le mode sombre du telephone */
   var saved = localStorage.getItem('sk_theme');
-  if (saved === 'dark') { document.body.classList.add('dark'); _applyThemeUI(true); }
+  var sombre = saved ? saved === 'dark' : !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  if (sombre) { document.body.classList.add('dark'); _applyThemeUI(true); }
 })();
 
 /* ── NAVIGATION ── */
@@ -2993,6 +2813,64 @@ function closeDrawer() {
   document.getElementById('drawer').classList.remove('open');
   document.getElementById('drawer-overlay').classList.remove('open');
 }
+
+/* ══ BOUTON RETOUR DU TÉLÉPHONE ══
+   Avant, le retour Android FERMAIT l'app depuis n'importe quelle fenetre (sauf Mes cours).
+   Tant qu'une fenetre est ouverte, ou qu'on n'est pas sur l'accueil, une entree « garde »
+   ({ng:1}) reste dans l'historique : le retour ferme la fenetre du dessus, puis revient a
+   l'accueil, et seulement ensuite quitte l'app. Mes cours garde ses propres entrees ({mc:n}). */
+function _visible(id) { var e = document.getElementById(id); return !!e && !!e.style.display && e.style.display !== 'none'; }
+function navOuvert() {
+  if (document.getElementById('fb-login') && document.getElementById('fb-login').style.display !== 'none') return false;
+  if (_visible('onboarding')) return typeof _obStep !== 'undefined' && _obStep > 0;
+  if (_visible('hist-panel') || _visible('rev-fullscreen')) return true;
+  if (document.querySelector('.ia-modal.open, .tool-modal.open, #mo.open, #drawer.open')) return true;
+  var sec = document.querySelector('.sec.active');
+  return !!sec && sec.id !== 's-home';
+}
+/* ferme ce qui est le plus haut a l'ecran ; false s'il n'y avait rien */
+function navFermerHaut() {
+  if (_visible('onboarding')) { if (typeof _obStep !== 'undefined' && _obStep > 0) { obBack(); return true; } return false; }
+  if (_visible('hist-panel')) { closeHistPanel(); return true; }
+  if (_visible('rev-fullscreen')) { closeRevFullscreen(); return true; }
+  var vc = document.getElementById('vc-modal');
+  if (vc && vc.classList.contains('open')) {
+    var vb = document.getElementById('vc-back');
+    if (vb && vb.style.display !== 'none') vcShowList(); else closeVeilleControle();
+    return true;
+  }
+  var fermer = { 'vq-modal': closeVocalQuiz, 'interro-ai-modal': closeInterroAI, 'scan-modal': closeScanCours,
+    'pomo-modal': function() { closeTool('pomo'); }, 'moy-modal': function() { closeTool('moy'); },
+    'tool-modal': function() { closeTool('tool'); }, 'mo': closeMo };
+  for (var id in fermer) {
+    var m = document.getElementById(id);
+    if (m && m.classList.contains('open')) { fermer[id](); return true; }
+  }
+  var dr = document.getElementById('drawer');
+  if (dr && dr.classList.contains('open')) { closeDrawer(); return true; }
+  return false;
+}
+function navRetour() {
+  if (!navFermerHaut()) {
+    var sec = document.querySelector('.sec.active');
+    var r1 = document.getElementById('rev-s1');
+    if (sec && sec.id === 's-annales' && typeof annStack !== 'undefined' && annStack.length) annBack();
+    else if (sec && sec.id === 's-revisions' && r1 && r1.style.display === 'none') showRevStep(1);
+    else if (sec && sec.id !== 's-home') goSec('s-home', document.querySelector('.nav-btn[onclick*="s-home"]'));
+  }
+  navSync();
+}
+/* une entree a consommer doit exister des que quelque chose est ouvert */
+function navSync() {
+  if ((typeof _mcIgnorePop !== 'undefined' && _mcIgnorePop > 0) || (typeof mcPanelOuvert === 'function' && mcPanelOuvert())) return;
+  if (!navOuvert()) return;
+  var st = history.state;
+  if (st && (st.ng || st.mc)) return;
+  try { history.pushState({ ng: 1 }, ''); } catch(e) {}
+}
+/* toutes les fenetres s'ouvrent par un appui (ou Entree) : on resynchronise juste apres */
+document.addEventListener('click', function() { setTimeout(navSync, 0); }, true);
+document.addEventListener('keyup', function(e) { if (e.key === 'Enter') setTimeout(navSync, 0); }, true);
 
 /* ── CLAVIER MOBILE ── */
 if (window.visualViewport) {
@@ -3064,25 +2942,54 @@ function installApp() {
   }
 }
 
-/* ══ DEVOIRS ══ */
+/* ══ DEVOIRS ══
+   Un devoir : { id, mat, desc, due: 'AAAA-MM-JJ' (vraie date de rendu, '' si inconnue),
+   date: libelle (anciens devoirs / secours), done }. Le libelle du jour (« Demain »…) et la
+   couleur d'urgence sont recalcules chaque jour a partir de due. */
 let devoirs = [], dvId = 1, dvShowDone = false;
 
 function loadDevoirs() {
   try {
     const s = localStorage.getItem('sk_dv');
-    if (s) { devoirs = JSON.parse(s); dvId = Math.max(0, ...devoirs.map(d => d.id)) + 1; }
-    else {
-      devoirs = [
-        {id:dvId++,mat:'Maths',desc:'Exercices fonctions affines p.42',date:'Demain',urg:'urgent',done:false},
-        {id:dvId++,mat:'Histoire-Géo',desc:'Apprendre la Révolution Française',date:'Vendredi',urg:'semaine',done:false},
-        {id:dvId++,mat:'Anglais',desc:'Rédaction 150 mots : My dream job',date:'Jeudi',urg:'semaine',done:false},
-      ];
-      saveDv();
-    }
+    devoirs = s ? JSON.parse(s) : [];
+    if (!Array.isArray(devoirs)) devoirs = [];
+    /* anciens devoirs : une date precise ecrite en texte (« lundi 17 mars ») devient une vraie date */
+    devoirs.forEach(function(d) {
+      if (d.due) return;
+      var n = dvParseDate(String(d.date || '').toLowerCase());
+      if (n !== null) d.due = vcYmd(vcAddDays(new Date(), n));
+    });
+    dvId = devoirs.reduce(function(m, d) { return Math.max(m, +d.id || 0); }, 0) + 1;
   } catch(e) { devoirs = []; }
 }
 
 function saveDv() { try { localStorage.setItem('sk_dv', JSON.stringify(devoirs)); } catch(e) {} scheduleSync(); }
+
+/* Texte (« demain », « vendredi », « 17 mars », « 17/03 », « 2026-11-03 ») -> 'AAAA-MM-JJ' ('' si inconnu) */
+function dvDueDe(texte) {
+  var s = String(texte || '').toLowerCase().trim();
+  if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
+  if (!s || s === '?') return '';
+  var n = dvLabelRank(s);
+  return n === 99 ? '' : vcYmd(vcAddDays(new Date(), n));
+}
+function dvJours(d) { return d.due ? vcDiff(d.due) : null; }
+/* Urgence calculee depuis la vraie date (avant : figee le jour ou le devoir etait ajoute) */
+function dvUrg(d) {
+  var n = dvJours(d);
+  if (n === null) return d.urg || 'semaine';
+  return n <= 1 ? 'urgent' : n <= 7 ? 'semaine' : 'plus';
+}
+/* Groupe d'affichage : { k: libelle, r: rang pour le tri } */
+function dvGroupe(d) {
+  var n = dvJours(d);
+  if (n === null) {
+    var k = d.date && d.date !== '?' ? d.date : 'Sans date';
+    return { k: k, r: k === 'Sans date' ? 999 : dvLabelRank(k) };
+  }
+  if (n < 0) return { k: 'En retard', r: -1 };
+  return { k: dvCtrlLabel(d.due), r: n };
+}
 
 /* Rang d'un libelle de jour ("Demain", "Vendredi"...) : nombre de jours d'ici la */
 function dvLabelRank(label) {
@@ -3170,28 +3077,32 @@ function renderDevoirs() {
     return;
   }
   const urgColor = {urgent:'#ef4444', semaine:'#f59e0b', plus:'#16a34a'};
-  const groups = {}, ctrlGroups = {}, ctrlRank = {};
-  active.forEach(d => { const k = d.date||'Sans date'; if(!groups[k]) groups[k]=[]; groups[k].push(d); });
+  const groups = {}, ctrlGroups = {}, rankOf = {};
+  active.forEach(d => {
+    const g = dvGroupe(d);
+    if(!groups[g.k]) groups[g.k]=[];
+    groups[g.k].push(d);
+    if (rankOf[g.k] === undefined || g.r < rankOf[g.k]) rankOf[g.k] = g.r;
+  });
   /* les controles rejoignent le groupe de leur jour, places en premier */
   ctrls.sort((a,b) => a.date < b.date ? -1 : 1).forEach(c => {
     const k = dvCtrlLabel(c.date);
     if(!groups[k]) groups[k]=[];
-    if(!ctrlGroups[k]) { ctrlGroups[k]=[]; ctrlRank[k] = vcDiff(c.date); }
+    if(!ctrlGroups[k]) ctrlGroups[k]=[];
     ctrlGroups[k].push(c);
+    rankOf[k] = vcDiff(c.date);
   });
-  /* controle = date exacte connue ; devoir = rang estime depuis son libelle */
-  const rank = k => ctrlRank[k] !== undefined ? ctrlRank[k] : dvLabelRank(k);
-  const days = Object.keys(groups).sort((a,b) => rank(a) - rank(b));
+  const days = Object.keys(groups).sort((a,b) => rankOf[a] - rankOf[b]);
   let html = days.map(day =>
     `<div class="dv-day-group">
-      <div class="dv-day-hdr"><div class="dv-day-line"></div><span class="dv-day-lbl">${esc(day)}</span><div class="dv-day-line"></div></div>
+      <div class="dv-day-hdr"><div class="dv-day-line"></div><span class="dv-day-lbl"${day === 'En retard' ? ' style="color:var(--danger)"' : ''}>${esc(day)}</span><div class="dv-day-line"></div></div>
       ${(ctrlGroups[day]||[]).map(buildCtrlCard).join('')}
       ${groups[day].map(d => buildDvCard(d, urgColor)).join('')}
     </div>`
   ).join('');
   if (dvShowDone && done.length) {
     html += `<div class="dv-day-group">
-      <div class="dv-day-hdr"><div class="dv-day-line"></div><span class="dv-day-lbl" style="color:var(--success)">Termines</span><div class="dv-day-line"></div></div>
+      <div class="dv-day-hdr"><div class="dv-day-line"></div><span class="dv-day-lbl" style="color:var(--success)">Terminés</span><div class="dv-day-line"></div></div>
       ${done.map(d => buildDvCard(d, urgColor)).join('')}
     </div>`;
   }
@@ -3199,11 +3110,12 @@ function renderDevoirs() {
 }
 
 function buildDvCard(d, urgColor) {
-  const color = urgColor[d.urg] || 'var(--bord)';
-  return `<div class="dvc${d.done?' done':''}" id="dvc_${d.id}" data-urg="${d.urg}" style="border-left-color:${color}" onclick="this.classList.toggle('expanded')">
+  const urg = dvUrg(d);
+  const color = urgColor[urg] || 'var(--bord)';
+  return `<div class="dvc${d.done?' done':''}" id="dvc_${+d.id}" data-urg="${urg}" style="border-left-color:${color}" onclick="this.classList.toggle('expanded')">
     <div class="dvsw"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
     <div class="dvm">
-      <div class="dvck${d.done?' on':''}" onclick="event.stopPropagation();toggleDv(${d.id})">
+      <div class="dvck${d.done?' on':''}" onclick="event.stopPropagation();toggleDv(${+d.id})">
         <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
       </div>
       <div class="dvi">
@@ -3211,13 +3123,13 @@ function buildDvCard(d, urgColor) {
         <div class="dvm-d">${esc(d.desc)}</div>
       </div>
       <div class="dvr">
-        <button class="dv-btn dv-tm" onclick="event.stopPropagation();openTm(${d.id})" title="Timer">
+        <button class="dv-btn dv-tm" onclick="event.stopPropagation();openTm(${+d.id})" title="Minuteur" aria-label="Minuteur">
           <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
         </button>
-        <button class="dv-btn dv-ai" onclick="event.stopPropagation();dvAiHelpOne(${d.id})" title="Aide IA">
+        <button class="dv-btn dv-ai" onclick="event.stopPropagation();dvAiHelpOne(${+d.id})" title="Aide IA" aria-label="Aide de l'IA">
           <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
         </button>
-        <button class="dv-btn dv-del" onclick="event.stopPropagation();delDv(${d.id})" title="Supprimer">
+        <button class="dv-btn dv-del" onclick="event.stopPropagation();delDv(${+d.id})" title="Supprimer" aria-label="Supprimer">
           <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
       </div>
@@ -3231,7 +3143,7 @@ function toggleDv(id) {
     d.done = !d.done;
     saveDv();
     renderDevoirs();
-    updateStreak();
+    if (d.done) markActivity(); else updateStreak();
     updateHomeProgression();
     var dc = document.getElementById('home-devoirs-count');
     if (dc) dc.textContent = dvActiveCount();
@@ -3307,102 +3219,53 @@ function todayStr() {
   return days[d.getDay()] + ' ' + d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
 }
 
-function smartUrgence(dateStr) {
-  if (!dateStr || dateStr === '?') return 'semaine';
-  var now = new Date();
-  var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  var dayNames = ['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'];
-  var monthNames = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
-  var s = dateStr.toLowerCase().trim();
-  if (s.includes('demain') || s.includes('tomorrow')) return 'urgent';
-  if (s.includes('aujourd') || s.includes('ce soir') || s.includes('maintenant')) return 'urgent';
-  if (s.includes('semaine prochaine') || s.includes('lundi prochain') || s.includes('mardi prochain') || s.includes('mercredi prochain') || s.includes('jeudi prochain') || s.includes('vendredi prochain')) return 'plus';
-  var targetDate = null;
-  for (var di = 0; di < 7; di++) {
-    if (s.includes(dayNames[di])) {
-      var todayDay = today.getDay();
-      var daysUntil = (di - todayDay + 7) % 7;
-      if (daysUntil === 0) daysUntil = 7;
-      targetDate = new Date(today);
-      targetDate.setDate(today.getDate() + daysUntil);
-      break;
-    }
-  }
-  if (!targetDate) {
-    var dateMatch = s.match(/(\d{1,2})[\/\-\s](\d{1,2})/);
-    if (dateMatch) {
-      targetDate = new Date(now.getFullYear(), parseInt(dateMatch[2]) - 1, parseInt(dateMatch[1]));
-      if (targetDate < today) targetDate.setFullYear(now.getFullYear() + 1);
-    }
-    if (!targetDate) {
-      for (var mi = 0; mi < monthNames.length; mi++) {
-        if (s.includes(monthNames[mi])) {
-          var numMatch = s.match(new RegExp('(\\d{1,2})\\s*(?:er)?\\s*(?:' + monthNames[mi] + ')'));
-          var day = numMatch ? parseInt(numMatch[1]) : 1;
-          targetDate = new Date(now.getFullYear(), mi, day);
-          if (targetDate < today) targetDate.setFullYear(now.getFullYear() + 1);
-          break;
-        }
-      }
-    }
-  }
-  if (targetDate) {
-    var diff = Math.ceil((targetDate - today) / (1000 * 60 * 60 * 24));
-    if (diff <= 2) return 'urgent';
-    if (diff <= 7) return 'semaine';
-    return 'plus';
-  }
-  return 'semaine';
-}
-
 async function scanDevoir(e) {
   var f = e.target.files[0]; if (!f) return;
   e.target.value = '';
   toast('⏳ Analyse de la photo...', 8000);
-  var reader = new FileReader();
-  reader.onload = async function(ev) {
-    var dataUrl = ev.target.result;
-    var b64 = dataUrl.split(',')[1];
-    var mime = f.type || 'image/jpeg';
-    if (!['image/jpeg','image/png','image/gif','image/webp'].includes(mime)) mime = 'image/jpeg';
-    var today = todayStr();
-    var sysPrompt = 'Tu lis des screenshots d\'agendas scolaires et photos de cahiers. Aujourd\'hui on est ' + today + '. Réponds UNIQUEMENT avec un JSON valide : {"devoirs":[{"mat":"Maths","desc":"description courte","date":"date exacte comme lundi 17 mars"}]}. Mets la date exacte du jour de rendu. Si aucun devoir visible : {"devoirs":[]}.';
-    try {
-      /* JSON strict attendu : pas de bloc niveau */
-      var text = await callGroqVision([
-        { role: 'system', content: sysPrompt },
-        { role: 'user', content: [
-          { type: 'image_url', image_url: { url: 'data:' + mime + ';base64,' + b64 } },
-          { type: 'text', text: 'Extrais tous les devoirs et leurs dates de rendu visibles sur cette image.' }
-        ]}
-      ], 1200, { noNiveau: true });
-      var parsed = null;
-      var jsonMatch = text.match(/\{[\s\S]*\}/);
-      if (jsonMatch) { try { parsed = JSON.parse(jsonMatch[0]); } catch(e2) {} }
-      if (!parsed) { try { parsed = JSON.parse(text); } catch(e2) {} }
-      if (!parsed || !parsed.devoirs) throw new Error('Réponse inattendue');
-      if (parsed.devoirs.length) {
-        parsed.devoirs.forEach(function(d) {
-          devoirs.push({ id: dvId++, mat: d.mat || 'Divers', desc: d.desc || '', date: d.date || '?', urg: smartUrgence(d.date || ''), done: false });
-        });
-        saveDv(); renderDevoirs(); updateHomeStats();
-        goSec('s-devoirs', document.querySelector('.nav-btn[onclick*="s-devoirs"]'));
-        toast('✅ ' + parsed.devoirs.length + ' devoir(s) importé(s) !');
-      } else {
-        toast('ℹ️ Aucun devoir détecté sur la photo');
-      }
-    } catch(err) {
-      toast('❌ ' + String(err.message).slice(0, 60));
-      console.error('scanDevoir :', err.message);
+  /* photo reduite : une photo brute de telephone depasse la limite d'image de Groq */
+  var dataUrl = await imageReduiteP(f);
+  if (!dataUrl) { toast('Impossible de lire cette image'); return; }
+  var sysPrompt = 'Tu lis des captures d\'agendas scolaires (Pronote, ENT…) et des photos de cahiers de textes. Aujourd\'hui on est ' + todayStr() + ' (' + vcYmd(new Date()) + '). ' +
+    'Réponds UNIQUEMENT avec un JSON valide : {"devoirs":[{"mat":"Maths","desc":"description courte","date":"AAAA-MM-JJ"}]}. ' +
+    '"date" = le jour où le devoir est à rendre, au format AAAA-MM-JJ (calcule-le à partir de la date du jour si l\'agenda écrit « pour lundi », « demain »…), ou "" s\'il est inconnu. Si aucun devoir n\'est visible : {"devoirs":[]}.';
+  try {
+    /* JSON strict attendu : pas de bloc niveau */
+    var text = await callGroqVision([
+      { role: 'system', content: sysPrompt },
+      { role: 'user', content: [
+        { type: 'image_url', image_url: { url: dataUrl } },
+        { type: 'text', text: 'Extrais tous les devoirs et leurs dates de rendu visibles sur cette image.' }
+      ]}
+    ], 1200, { noNiveau: true });
+    var parsed = null;
+    var jsonMatch = text.match(/\{[\s\S]*\}/);
+    if (jsonMatch) { try { parsed = JSON.parse(jsonMatch[0]); } catch(e2) {} }
+    if (!parsed) { try { parsed = JSON.parse(text); } catch(e2) {} }
+    if (!parsed || !Array.isArray(parsed.devoirs)) throw new Error('Réponse inattendue, réessaie avec une photo plus nette');
+    if (parsed.devoirs.length) {
+      parsed.devoirs.forEach(function(d) {
+        var due = dvDueDe(d.date);
+        devoirs.push({ id: dvId++, mat: String(d.mat || 'Divers').slice(0, 40), desc: String(d.desc || '').slice(0, 300),
+                       date: due ? dvCtrlLabel(due) : String(d.date || '?'), due: due, done: false });
+      });
+      saveDv(); renderDevoirs(); updateHomeStats();
+      goSec('s-devoirs', document.querySelector('.nav-btn[onclick*="s-devoirs"]'));
+      toast('✅ ' + parsed.devoirs.length + ' devoir(s) importé(s) !');
+    } else {
+      toast('ℹ️ Aucun devoir détecté sur la photo');
     }
-  };
-  reader.readAsDataURL(f);
+  } catch(err) {
+    toast('❌ ' + String(err.message).slice(0, 80), 4000);
+    console.error('scanDevoir :', err.message);
+  }
 }
 
 function dvAiHelpOne(id) {
   var d = devoirs.find(function(x){ return x.id === id; }); if (!d) return;
+  var quand = d.due ? dvCtrlLabel(d.due).toLowerCase() : (d.date && d.date !== '?' ? d.date : '');
   var inp = document.getElementById('chat-input');
-  if (inp) inp.value = 'Aide-moi pour ce devoir : ' + d.mat + ' — "' + d.desc + '" (à rendre ' + d.date + ').';
+  if (inp) inp.value = 'Aide-moi pour ce devoir : ' + d.mat + ' — "' + d.desc + '"' + (quand ? ' (à rendre ' + quand + ')' : '') + '.';
   goSec('s-chat', document.querySelector('.nav-btn[onclick*="s-chat"]'));
   setTimeout(function() {
     var i = document.getElementById('chat-input');
@@ -3410,67 +3273,56 @@ function dvAiHelpOne(id) {
   }, 50);
 }
 
-/* ── MODAL DEVOIR ── */
+/* ── MODAL DEVOIR ──
+   Vraie date (selecteur du telephone + raccourcis) ; l'urgence est deduite de la date */
+var _moDue = '';
 function openMo() {
+  _moDue = vcYmd(vcAddDays(new Date(), 1));
   document.getElementById('moc').innerHTML = `
-    <div class="mof"><label>Matiere</label><select id="mo-mat">
-      <option>Maths</option><option>Francais</option><option>Histoire-Geo</option>
+    <div class="mof"><label>Matière</label><select id="mo-mat">
+      <option>Maths</option><option>Français</option><option>Histoire-Géo</option>
       <option>Physique-Chimie</option><option>SVT</option><option>Anglais</option>
-      <option>Espagnol</option><option>Technologie</option><option>Arts plastiques</option><option>EPS</option>
+      <option>Espagnol</option><option>Allemand</option><option>Technologie</option><option>Arts plastiques</option>
+      <option>Musique</option><option>EPS</option><option>SES</option><option>NSI</option><option>Philosophie</option><option>Autre</option>
     </select></div>
-    <div class="mof"><label>Description</label><input type="text" id="mo-desc" placeholder="ex: Exercices p.42-43"></div>
-    <div class="mof"><label>Date limite</label><input type="text" id="mo-date" placeholder="ex: Mardi, Lundi 18 mars..."></div>
-    <div class="mof"><label>Urgence</label><select id="mo-urg">
-      <option value="urgent">Urgent — 2 jours</option>
-      <option value="semaine">Cette semaine</option>
-      <option value="plus">Plus tard</option>
-    </select></div>`;
+    <div class="mof"><label>Description</label><input type="text" id="mo-desc" maxlength="200" placeholder="ex : Exercices p.42-43"></div>
+    <div class="mof"><label>À rendre le</label>
+      <div class="vc-chips" id="mo-chips"></div>
+      <input type="date" id="mo-date" value="${_moDue}" onchange="moSetDue(this.value)">
+    </div>`;
+  moChips();
   document.getElementById('mo').classList.add('open');
   setTimeout(() => document.getElementById('mo-desc')?.focus(), 200);
+}
+function moChips() {
+  var el = document.getElementById('mo-chips'); if (!el) return;
+  el.innerHTML = [[0, 'Aujourd\'hui'], [1, 'Demain'], [2, 'Après-demain'], [7, 'Dans 1 semaine']].map(function(q) {
+    var y = vcYmd(vcAddDays(new Date(), q[0]));
+    return '<button type="button" class="vc-chip' + (_moDue === y ? ' on' : '') + '" onclick="moSetDue(\'' + y + '\')">' + q[1] + '</button>';
+  }).join('');
+}
+function moSetDue(y) {
+  _moDue = /^\d{4}-\d{2}-\d{2}$/.test(y || '') ? y : '';
+  var i = document.getElementById('mo-date'); if (i && i.value !== _moDue) i.value = _moDue;
+  moChips();
 }
 function moSave() {
   const mat  = document.getElementById('mo-mat')?.value || 'Divers';
   const desc = document.getElementById('mo-desc')?.value.trim();
-  const date = document.getElementById('mo-date')?.value.trim() || '?';
-  const urg  = document.getElementById('mo-urg')?.value || 'semaine';
   if (!desc) { document.getElementById('mo-desc').style.borderColor = 'var(--danger)'; return; }
-  devoirs.push({id: dvId++, mat, desc, date, urg, done: false});
+  devoirs.push({ id: dvId++, mat, desc, date: _moDue ? dvCtrlLabel(_moDue) : '?', due: _moDue, done: false });
   saveDv(); renderDevoirs(); closeMo(); updateHomeStats();
 }
 function closeMo() { document.getElementById('mo').classList.remove('open'); }
 function moOut(e) { if (e.target === document.getElementById('mo')) closeMo(); }
 
-/* ══ TIMER DEVOIR ══ */
-let tmI, tmR = false, tmS = 25*60, tmTot = 25*60;
+/* ══ MINUTEUR D'UN DEVOIR ══
+   = le Pomodoro (avant : un 2e minuteur en double, sans alarme a la fin) */
 function openTm(id) {
-  const d = devoirs.find(x => x.id === id);
-  document.getElementById('tm-title').textContent = d?.mat || 'Timer';
-  document.getElementById('tm-sub').textContent = d?.desc || '';
-  clearInterval(tmI); tmR = false; setTmDur(25);
-  document.querySelector('.tm-start').textContent = 'Lancer';
-  document.getElementById('timer-modal').classList.add('open');
-}
-function closeTm() { clearInterval(tmI); tmR = false; document.getElementById('timer-modal').classList.remove('open'); }
-function setTmDur(min) {
-  if (tmR) return;
-  tmTot = min * 60; tmS = tmTot;
-  document.querySelectorAll('.tm-dur button').forEach(b => b.classList.toggle('on', parseInt(b.dataset.min) === min));
-  updTmDig();
-}
-function updTmDig() {
-  const m = String(Math.floor(tmS/60)).padStart(2,'0');
-  const s = String(tmS%60).padStart(2,'0');
-  document.getElementById('tm-dig').textContent = m + ':' + s;
-}
-function toggleTm() {
-  const btn = document.querySelector('.tm-start');
-  if (!tmR) {
-    tmR = true; btn.textContent = 'Pause';
-    tmI = setInterval(() => {
-      if (tmS <= 0) { clearInterval(tmI); tmR = false; btn.textContent = 'Lancer'; return; }
-      tmS--; updTmDig();
-    }, 1000);
-  } else { clearInterval(tmI); tmR = false; btn.textContent = 'Reprendre'; }
+  var d = devoirs.find(function(x){ return x.id === id; });
+  openTool('pomo');
+  var q = document.getElementById('pomo-quote');
+  if (q && d && !poR) q.textContent = 'Focus : ' + d.mat + ' — ' + d.desc;
 }
 
 /* ══ PRÉNOM & CITATIONS ══ */
@@ -3531,7 +3383,7 @@ function updateHomeStats() {
   }
   var genDvSub = document.getElementById('gen-dv-sub');
   if (genDvSub) {
-    var urgents = devoirs.filter(function(d){ return !d.done && d.urg === 'urgent'; }).length +
+    var urgents = devoirs.filter(function(d){ return !d.done && dvUrg(d) === 'urgent'; }).length +
       dvControles().filter(function(c){ return vcDiff(c.date) <= 1; }).length;
     if (dvActive === 0) genDvSub.textContent = 'Tout est à jour';
     else if (urgents > 0) genDvSub.textContent = urgents + ' urgent' + (urgents > 1 ? 's' : '') + ' · ' + dvActive + ' au total';
@@ -3624,6 +3476,12 @@ async function revStart() {
     var ta = document.getElementById('rev-cours-txt');
     if (ta) cours = ta.value.trim();
   }
+  /* limite Groq gratuite = 8 000 jetons/minute (demande + reponse) : un cours entier ne passe pas */
+  var REV_COURS_MAX = 7000;
+  if (cours.length > REV_COURS_MAX) {
+    cours = cours.slice(0, REV_COURS_MAX);
+    toast('Cours très long : ScolarIA utilise le début (environ 3 pages)', 4000);
+  }
 
   /* Validation : sujet obligatoire si pas de cours collé */
   if (!topic && !cours) {
@@ -3638,7 +3496,7 @@ async function revStart() {
   /* Affiche l'étape 4 avec spinner */
   showRevStep(4);
   var s4 = document.getElementById('rev-s4');
-  var typeLabels = { flashcards: 'Flashcards', fiche: 'Fiche', quiz: 'Interrogation', resume: 'Resume' };
+  var typeLabels = { flashcards: 'Flashcards', fiche: 'Fiche', quiz: 'Interrogation', resume: 'Résumé' };
   s4.innerHTML =
     '<div class="rev-sess-hdr">' +
       '<button class="rev-sess-close" onclick="showRevStep(1)">&#x2715;</button>' +
@@ -3733,15 +3591,15 @@ async function revStart() {
       if (cards.length < 1) {
         s4.innerHTML =
           '<div class="rev-sess-hdr"><button class="rev-sess-close" onclick="showRevStep(1)">&#x2715;</button><span class="rev-sess-lbl">Erreur</span></div>' +
-          '<div class="rev-err-box">Impossible de parser les flashcards.<br><small>' + esc(reply.substring(0,120)) + '...</small>' +
-          '<button onclick="showRevStep(3)">Reessayer</button></div>';
+          '<div class="rev-err-box">Les flashcards n’ont pas pu être créées.<br><small>' + esc(reply.substring(0,120)) + '...</small>' +
+          '<button onclick="showRevStep(3)">Réessayer</button></div>';
         return;
       }
       revStartSession(cards);
       saveRevDeck(topic || 'Cours', cards);
       addToHist('flashcards', topic || 'Cours', 'Flashcards', reply);
     } else {
-      var label = typeLabels[revCurType] || 'Resultat';
+      var label = typeLabels[revCurType] || 'Résultat';
       window._revLastReply = reply;
       window._revLastLabel = label;
       window._revLastTopic = topic || 'Cours';
@@ -3778,7 +3636,7 @@ async function revStart() {
       '<div class="rev-sess-hdr"><button class="rev-sess-close" onclick="showRevStep(1)">&#x2715;</button><span class="rev-sess-lbl">Erreur</span></div>' +
       '<div class="rev-err-box">Erreur : ' + esc(err.message) + '<br><br>' +
         '' +
-        '<br><button onclick="showRevStep(3)">Reessayer</button>' +
+        '<br><button onclick="showRevStep(3)">Réessayer</button>' +
       '</div>';
   }
 }
@@ -3797,7 +3655,7 @@ function openRevFullscreen() {
       var n = parseInt(localStorage.getItem('sk_fiche_count') || '0') + 1;
       localStorage.setItem('sk_fiche_count', String(n));
     } catch(e) {}
-    updateStreak();
+    markActivity();
     updateHomeProgression();
     body.innerHTML = parseFicheV2(window._revLastReply || '', topic);
     body.className = 'paper-bg';
@@ -3867,20 +3725,20 @@ function revRenderCard() {
       '<span class="rev-sess-lbl">Carte ' + (revIdx+1) + ' / ' + total + '</span>' +
     '</div>' +
     '<div class="rev-prog-bar"><div class="rev-prog-fill" style="width:' + pct + '%"></div></div>' +
-    '<div class="rev-card" id="rev-cur-card">' +
+    '<div class="rev-card" id="rev-cur-card" onclick="revFlip()">' +
       '<div class="rev-card-front">' +
-        '<div class="rev-card-q">' + (card.q || '') + '</div>' +
+        '<div class="rev-card-q">' + esc(card.q || '') + '</div>' +
         '<div class="rev-card-hint">Appuie pour voir la réponse</div>' +
       '</div>' +
       '<div class="rev-card-back">' +
-        '<div class="rev-card-ok-lbl">Reponse</div>' +
-        '<div class="rev-card-a">' + (card.a || '') + '</div>' +
+        '<div class="rev-card-ok-lbl">Réponse</div>' +
+        '<div class="rev-card-a">' + esc(card.a || '') + '</div>' +
       '</div>' +
     '</div>' +
-    '<button class="rev-see-btn" id="rev-see-btn" onclick="revFlip()">Voir la reponse</button>' +
+    '<button class="rev-see-btn" id="rev-see-btn" onclick="revFlip()">Voir la réponse</button>' +
     '<div class="rev-act-row" id="rev-act-row" style="display:none">' +
       '<button style="flex:1;background:#dcfce7;color:#16a34a;border:none;border-radius:12px;padding:14px;font-size:14px;font-weight:800;cursor:pointer" onclick="revAnswer(true)">&#10003; Je savais</button>' +
-      '<button style="flex:1;background:#fee2e2;color:#dc2626;border:none;border-radius:12px;padding:14px;font-size:14px;font-weight:800;cursor:pointer" onclick="revAnswer(false)">&#8635; A revoir</button>' +
+      '<button style="flex:1;background:#fee2e2;color:#dc2626;border:none;border-radius:12px;padding:14px;font-size:14px;font-weight:800;cursor:pointer" onclick="revAnswer(false)">&#8635; À revoir</button>' +
     '</div>';
 }
 
@@ -3912,22 +3770,22 @@ function revAnswer(ok) {
 
 function revShowResult() {
   /* Activité = marquer le streak + mettre à jour la progression */
-  updateStreak();
+  markActivity();
   updateHomeProgression();
   var s4 = document.getElementById('rev-s4');
   if (!s4) return;
   var total = revSession.length;
   var pct = Math.round((revScore.ok / total) * 100);
-  var titre = pct >= 80 ? 'Excellent !' : pct >= 50 ? 'Bien joue !' : 'Continue !';
+  var titre = pct >= 80 ? 'Excellent !' : pct >= 50 ? 'Bien joué !' : 'Continue !';
   var scoreClr = pct >= 80 ? '#16a34a' : pct >= 50 ? '#4f46e5' : '#f59e0b';
   s4.innerHTML =
     '<div class="rev-result">' +
       '<div style="width:72px;height:72px;border-radius:50%;background:' + scoreClr + '22;border:3px solid ' + scoreClr + ';display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:22px;font-weight:900;color:' + scoreClr + '">' + pct + '%</div>' +
       '<div class="rev-result-title">' + titre + '</div>' +
-      '<div class="rev-result-sub">' + pct + '% de reussite sur ' + total + ' cartes</div>' +
+      '<div class="rev-result-sub">' + pct + '% de réussite sur ' + total + ' cartes</div>' +
       '<div class="rev-result-pills">' +
-        '<div class="rev-pill" style="background:#dcfce7;color:#16a34a">&#10003; ' + revScore.ok + ' sus</div>' +
-        '<div class="rev-pill" style="background:#fee2e2;color:#dc2626">&#8635; ' + revScore.retry + ' a revoir</div>' +
+        '<div class="rev-pill" style="background:#dcfce7;color:#16a34a">&#10003; ' + revScore.ok + ' connues</div>' +
+        '<div class="rev-pill" style="background:#fee2e2;color:#dc2626">&#8635; ' + revScore.retry + ' à revoir</div>' +
       '</div>' +
       '<button style="width:100%;background:var(--accent);color:#fff;border:none;border-radius:14px;padding:16px;font-size:15px;font-weight:800;cursor:pointer;margin-bottom:12px" onclick="revStartSession(revSession)">Recommencer</button>' +
       '<button style="width:100%;background:var(--card);color:var(--tx);border:1.5px solid var(--bord);border-radius:14px;padding:14px;font-size:14px;font-weight:700;cursor:pointer" onclick="showRevStep(1)">Retour accueil</button>' +
@@ -3968,7 +3826,7 @@ function renderRevDecks() {
   try {
     var decks = JSON.parse(localStorage.getItem('sk_decks') || '[]');
     if (!decks.length) {
-      el.innerHTML = '<div class="rev-deck-empty">Génère des flashcards pour créer ton premier deck !</div>';
+      el.innerHTML = '<div class="rev-deck-empty">Génère des flashcards pour créer ton premier paquet !</div>';
       return;
     }
     var ico = '<svg viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="6" width="16" height="12" rx="2"/><rect x="2" y="4" width="16" height="12" rx="2"/></svg>';
@@ -3977,7 +3835,7 @@ function renderRevDecks() {
         '<div class="rev-deck-icon">' + ico + '</div>' +
         '<div class="rev-deck-info">' +
           '<div class="rev-deck-name">' + esc(d.name) + '</div>' +
-          '<div class="rev-deck-meta">' + d.count + ' carte' + (d.count > 1 ? 's' : '') + ' &middot; ' + d.date + '</div>' +
+          '<div class="rev-deck-meta">' + (+d.count || 0) + ' carte' + (d.count > 1 ? 's' : '') + ' &middot; ' + esc(d.date || '') + '</div>' +
         '</div>' +
         '<button onclick="event.stopPropagation();deleteRevDeck(' + d.id + ')" style="background:none;border:none;cursor:pointer;padding:6px;opacity:.4;display:flex;align-items:center;-webkit-tap-highlight-color:transparent">' +
           '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="var(--mu)" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg>' +
@@ -3985,14 +3843,35 @@ function renderRevDecks() {
       '</div>';
     }).join('');
   } catch(e) {
-    el.innerHTML = '<div class="rev-deck-empty">Aucun deck sauvegardé.</div>';
+    el.innerHTML = '<div class="rev-deck-empty">Aucune flashcard sauvegardée.</div>';
   }
 }
 
 /* ══ CHAT IA ══ */
 var chatHistory = [];
+var _chatBusy = false;   /* une reponse est en cours : pas de 2e envoi en parallele (quota Groq) */
+
+/* Historique envoye a l'IA : les derniers messages dans un budget de ~6 000 caracteres
+   (~1 700 jetons). Sans limite, quelques longues reponses suffisent a depasser la limite
+   Groq de 8 000 jetons/minute et TOUS les messages suivants echouent. */
+var CHAT_HIST_MAX = 6000, CHAT_MSG_MAX = 1500;
+function chatHistIA(n) {
+  var out = [], total = 0, h = chatHistory.slice(-(n || 12));
+  for (var i = h.length - 1; i >= 0; i--) {
+    var c = String(h[i].content || '');
+    if (c.length > CHAT_MSG_MAX) c = c.slice(0, CHAT_MSG_MAX) + ' […]';
+    if (total + c.length > CHAT_HIST_MAX && out.length) break;
+    total += c.length;
+    out.unshift({ role: h[i].role, content: c });
+  }
+  return out;
+}
+/* Defilement auto seulement si l'eleve est deja en bas (sinon il ne peut pas relire pendant la reponse) */
+function chatEnBas(msgs) { return msgs.scrollHeight - msgs.scrollTop - msgs.clientHeight < 120; }
 
 function newChat() {
+  /* une interrogation en cours est abandonnee (sinon le prochain message serait pris pour une reponse) */
+  if (_cq) { _cq = null; cqSetInput(false); }
   chatHistory = [];
   saveChatLS();
   _histCurrentId = null;
@@ -4013,17 +3892,16 @@ const SHORTCUTS = {
   résumer: 'Résume en 7 points clés : ',
   calc:    'Résous ce calcul étape par étape : ',
   conj:    'Conjugue ce verbe à tous les temps principaux (présent, imparfait, futur, conditionnel, subjonctif) : ',
-  conv:    'Convertis : ',
-  scan:    'Analyse ce cours et génère une fiche de révision + 8 flashcards basées DESSUS :\n\n'
+  conv:    'Convertis : '
 };
 
 function chatShortcut(type) {
+  /* « Scan cours » ouvre vraiment le scanner (avant : il collait juste une phrase dans le chat) */
+  if (type === 'scan') { openScanCours(); return; }
   const input = document.getElementById('chat-input');
   const current = input.value.trim();
   const prefix = SHORTCUTS[type] || '';
-  if (type === 'scan') {
-    input.value = prefix;
-  } else if (current) {
+  if (current) {
     input.value = prefix + current;
   } else {
     input.value = prefix;
@@ -4036,18 +3914,17 @@ function chatShortcut(type) {
 async function chatPhoto(e) {
   var f = e.target.files[0]; if (!f) return;
   e.target.value = '';
-  var reader = new FileReader();
-  reader.onload = async function(ev) {
-    var dataUrl = ev.target.result;
-    var b64 = dataUrl.split(',')[1];
-    var mime = f.type || 'image/jpeg';
-    if (!['image/jpeg','image/png','image/gif','image/webp'].includes(mime)) mime = 'image/jpeg';
-
+  if (_chatBusy) { toast('Attends la fin de la réponse…'); return; }
+  /* photo reduite (2000 px) : une photo de telephone brute depasse la limite d'image de Groq (4 Mo) */
+  var dataUrl = await imageReduiteP(f);
+  if (!dataUrl) { toast('Impossible de lire cette image'); return; }
+  _chatBusy = true;
+  try {
     var input = document.getElementById('chat-input');
     var question = input ? input.value.trim() : '';
     if (input) { input.value = ''; autoResize(input); }
     collapseShortcuts();
-    updateStreak();
+    markActivity();
 
     var msgs = document.getElementById('chat-msgs');
     var welcome = msgs ? msgs.querySelector('.chat-welcome') : null;
@@ -4066,7 +3943,7 @@ async function chatPhoto(e) {
       var reply = await callGroqVision([
         { role: 'system', content: SCOLARIA_SYSTEM },
         { role: 'user', content: [
-          { type: 'image_url', image_url: { url: 'data:' + mime + ';base64,' + b64 } },
+          { type: 'image_url', image_url: { url: dataUrl } },
           { type: 'text', text: prompt }
         ]}
       ], 1800);
@@ -4081,10 +3958,9 @@ async function chatPhoto(e) {
       if (msgs) msgs.scrollTop = msgs.scrollHeight;
     } catch(err) {
       thinking.classList.remove('thinking');
-      thinking.textContent = 'Erreur : ' + String(err.message).slice(0, 80);
+      thinking.textContent = 'Erreur : ' + String(err.message).slice(0, 120);
     }
-  };
-  reader.readAsDataURL(f);
+  } finally { _chatBusy = false; }
 }
 
 /* ══ RACCOURCIS REPLIABLES ══ */
@@ -4548,7 +4424,7 @@ function cqFin() {
     (c.ratees.length ? ' Questions ratées : ' + c.ratees.map(function(r) { return r.q + ' (attendu : ' + r.a + ' ; réponse de l\'élève : ' + r.rep + ')'; }).join(' | ') : ' Aucune erreur.') });
   if (chatHistory.length > 24) chatHistory = chatHistory.slice(-24);
   saveChatLS();
-  updateStreak(); updateHomeProgression(); updateHomeStats();
+  markActivity(); updateHomeProgression(); updateHomeStats();
 }
 function cqStop() {
   if (!_cq) return;
@@ -4605,9 +4481,14 @@ async function sendChat() {
     cqRepondreTexte(text);
     return;
   }
+  if (_chatBusy) { toast('Attends la fin de la réponse…'); return; }
+  _chatBusy = true;
+  try { await _sendChat(input, text); } finally { _chatBusy = false; }
+}
+async function _sendChat(input, text) {
   input.value = '';
   autoResize(input);
-  updateStreak();
+  markActivity();
   collapseShortcuts();
 
   addMsg(text, 'user');
@@ -4620,7 +4501,7 @@ async function sendChat() {
     webCount();
     try {
       var wMsgs = [{ role: 'system', content: SCOLARIA_SYSTEM }];
-      chatHistory.slice(-6).forEach(function(h){ wMsgs.push({ role: h.role, content: h.content }); });
+      chatHistIA(6).forEach(function(h){ wMsgs.push(h); });
       wMsgs.push({ role: 'user', content: text });
       var w = await callGroqWeb(wMsgs);
       thinking.classList.remove('thinking');
@@ -4649,7 +4530,7 @@ async function sendChat() {
     if (!_structured) {
       /* ── Streaming token par token ── */
       var sMsgs = [{ role: 'system', content: SCOLARIA_SYSTEM }];
-      chatHistory.slice(-12).forEach(function(h){ sMsgs.push({ role: h.role, content: h.content }); });
+      chatHistIA(12).forEach(function(h){ sMsgs.push(h); });
       /* consigne de l'outil juste avant le message : elle pese plus que perdue en haut du prompt */
       sMsgs.push({ role: 'system', content: CHAT_TOOL_HINT });
       sMsgs.push({ role: 'user', content: text });
@@ -4657,8 +4538,9 @@ async function sendChat() {
       var forcer = CQ_DEMANDE.test(text);
       var out = await callGroqStream(sMsgs, function(full){
         if (!gotText) { gotText = true; thinking.classList.remove('thinking'); thinking.style.maxWidth = '100%'; }
+        var enBas = chatEnBas(msgs);
         thinking.innerHTML = mdToHtml(full);
-        msgs.scrollTop = msgs.scrollHeight;
+        if (enBas) msgs.scrollTop = msgs.scrollHeight;
       }, undefined, { tools: CHAT_TOOLS, toolChoice: forcer ? { type: 'function', function: { name: 'lancer_interrogation' } } : 'auto' });
       /* L'IA a decide d'utiliser l'outil d'interrogation */
       var tool = out.toolCalls.filter(function(c){ return c.name === 'lancer_interrogation'; })[0];
@@ -4669,14 +4551,15 @@ async function sendChat() {
       if (chatHistory.length > 24) chatHistory = chatHistory.slice(-24);
       saveChatLS();
       updateHomeStats();
+      var enBas2 = chatEnBas(msgs);
       thinking.innerHTML = mdToHtml(reply);
-      msgs.scrollTop = msgs.scrollHeight;
+      if (enBas2) msgs.scrollTop = msgs.scrollHeight;
       return;
     }
 
     /* ── Fiche / flashcards : réponse en une fois ── */
     var groqMsgs = [{ role: 'system', content: SCOLARIA_SYSTEM }];
-    chatHistory.slice(-12).forEach(function(h){ groqMsgs.push({ role: h.role, content: h.content }); });
+    chatHistIA(12).forEach(function(h){ groqMsgs.push(h); });
     groqMsgs.push({ role: 'user', content: text });
     reply = await callGroq(groqMsgs, undefined, { niveau: 'revision' });
 
@@ -4689,8 +4572,8 @@ async function sendChat() {
     var detectedType = detectChatType(reply);
     if (detectedType) {
       var chatTopic = extractChatTopic(text);
-      var chatLabels = { fiche: 'Fiche', flashcards: 'Flashcards', quiz: 'Interrogation', resume: 'Resume' };
-      var chatLabel = chatLabels[detectedType] || 'Resultat';
+      var chatLabels = { fiche: 'Fiche', flashcards: 'Flashcards', quiz: 'Interrogation', resume: 'Résumé' };
+      var chatLabel = chatLabels[detectedType] || 'Résultat';
       window._revLastReply = reply;
       window._revLastLabel = chatLabel;
       window._revLastTopic = chatTopic;
@@ -4713,7 +4596,7 @@ async function sendChat() {
         '<div class="rev-result-preview" onclick="openRevFullscreen()" style="margin:0">' +
           '<div class="rev-result-preview-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + chatIco + '</svg></div>' +
           '<div class="rev-result-preview-info">' +
-            '<div class="rev-result-preview-name">' + chatLabel + ' prete !</div>' +
+            '<div class="rev-result-preview-name">' + chatLabel + ' prête !</div>' +
             '<div class="rev-result-preview-sub">' + esc(chatTopic) + '</div>' +
           '</div>' +
           '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--mu)" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>' +
@@ -4777,7 +4660,7 @@ var HIST_TYPE_META = {
   fiche:      { label:'Fiche',        bg:'#f0fdf4', stroke:'#16a34a', svgPath:'<path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/>' },
   flashcards: { label:'Flashcards',   bg:'#eef2ff', stroke:'#4f46e5', svgPath:'<rect x="4" y="6" width="16" height="12" rx="2"/><rect x="2" y="4" width="16" height="12" rx="2"/>' },
   quiz:       { label:'Interrogation',bg:'#fff1f2', stroke:'#f43f5e', svgPath:'<circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>' },
-  resume:     { label:'Resume',       bg:'#fff7ed', stroke:'#f59e0b', svgPath:'<line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="11" x2="15" y2="11"/><line x1="3" y1="16" x2="18" y2="16"/>' }
+  resume:     { label:'Résumé',       bg:'#fff7ed', stroke:'#f59e0b', svgPath:'<line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="11" x2="15" y2="11"/><line x1="3" y1="16" x2="18" y2="16"/>' }
 };
 
 function loadHist() {
@@ -4879,7 +4762,7 @@ function renderFavs() {
       '</div>' +
       '<div class="hist-info" onclick="reopenHist(' + item.id + ')">' +
         '<div class="hist-title">' + esc(item.topic) + '</div>' +
-        '<div class="hist-sub">' + m.label + ' &middot; ' + item.date + '</div>' +
+        '<div class="hist-sub">' + m.label + ' &middot; ' + esc(item.date || '') + '</div>' +
       '</div>' +
       '<button class="hist-star" onclick="toggleFav(' + item.id + ')">' +
         '<svg viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>' +
@@ -4893,7 +4776,7 @@ function renderHist() {
   if (!list) return;
   var h = loadHist();
   if (!h.length) {
-    list.innerHTML = '<div class="hist-empty" style="padding-top:32px">Aucune génération pour l\'instant<br><span style="font-size:10px">Tes fiches, flashcards et quiz apparaitront ici</span></div>';
+    list.innerHTML = '<div class="hist-empty" style="padding-top:32px">Aucune génération pour l\'instant<br><span style="font-size:10px">Tes fiches, flashcards et quiz apparaîtront ici</span></div>';
     return;
   }
   var sorted = h.slice().sort(function(a, b) {
@@ -4911,7 +4794,7 @@ function renderHist() {
       '</div>' +
       '<div class="hist-info" onclick="reopenHist(' + item.id + ')">' +
         '<div class="hist-title">' + esc(item.topic) + '</div>' +
-        '<div class="hist-sub">' + m.label + ' &middot; ' + item.date + '</div>' +
+        '<div class="hist-sub">' + m.label + ' &middot; ' + esc(item.date || '') + '</div>' +
       '</div>' +
       '<button class="hist-star" onclick="toggleFav(' + item.id + ')">' +
         '<svg viewBox="0 0 24 24" fill="' + sf + '" stroke="' + ss + '" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>' +
@@ -5408,16 +5291,46 @@ function _groqWaitMs(msg) {
   if (!m) return null;
   return (m[1] ? +m[1] * 3600000 : 0) + (m[2] ? +m[2] * 60000 : 0) + (m[4] === 'ms' ? +m[3] : +m[3] * 1000);
 }
+/* Jeton de session de l'eleve : le proxy peut ainsi refuser les appels qui ne viennent
+   pas d'un eleve connecte (sinon n'importe qui peut vider le quota Groq de l'app) */
+async function _groqJeton() {
+  try {
+    if (typeof _supa !== 'undefined' && _supa) {
+      var s = await _supa.auth.getSession();
+      if (s && s.data && s.data.session) return s.data.session.access_token;
+    }
+  } catch(e) {}
+  return SUPA_ANON;
+}
+var GROQ_TIMEOUT_MS = 90000;
+var AI_TROP_LONG_MSG = 'Ta demande est trop longue pour ScolarIA : raccourcis ton texte (ou commence un nouveau chat) et réessaie.';
 async function _groqFetch(payload) {
+  var jeton = await _groqJeton();
   for (var essai = 0; ; essai++) {
-    var res = await fetch(GROQ_PROXY, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + SUPA_ANON },
-      body: JSON.stringify(payload)
-    });
+    /* pas de reponse au bout de 90 s : on abandonne au lieu d'attendre a l'infini */
+    var ctrl = typeof AbortController !== 'undefined' ? new AbortController() : null;
+    var tm = ctrl ? setTimeout(function() { ctrl.abort(); }, GROQ_TIMEOUT_MS) : null;
+    var res;
+    try {
+      res = await fetch(GROQ_PROXY, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + jeton },
+        body: JSON.stringify(payload),
+        signal: ctrl ? ctrl.signal : undefined
+      });
+    } catch(e) {
+      clearTimeout(tm);
+      if (e && e.name === 'AbortError') throw new Error('ScolarIA met trop de temps à répondre. Réessaie.');
+      throw new Error(navigator.onLine === false ? 'Pas de connexion internet : l\'IA a besoin du réseau.' : 'Impossible de joindre ScolarIA. Vérifie ta connexion et réessaie.');
+    }
+    clearTimeout(tm);
+    if (res.status === 401) throw new Error('Ta session a expiré : déconnecte-toi puis reconnecte-toi.');
+    if (res.status === 413) throw new Error(AI_TROP_LONG_MSG);
     if (res.status !== 429) return res;
     var info = null; try { info = await res.clone().json(); } catch(e) {}
     var msg = (info && info.error && info.error.message) || '';
+    /* demande plus grosse que la limite par minute : attendre ne sert a rien */
+    if (/request too large|reduce your message size/i.test(msg)) throw new Error(AI_TROP_LONG_MSG);
     var wait = _groqWaitMs(msg);
     if (essai < 2 && wait !== null && wait <= 15000) {
       await new Promise(function(r) { setTimeout(r, wait + 400); });
@@ -5529,8 +5442,14 @@ async function callGroqStream(messages, onToken, maxTok, opts) {
   var reader = res.body.getReader();
   var decoder = new TextDecoder();
   var full = '', buf = '', calls = [];
+  /* affichage au plus toutes les 80 ms (et pas a chaque jeton : tout le texte est
+     reconverti en HTML a chaque affichage, trop lourd pour un telephone) */
+  var _aff = null;
+  function _afficher() { _aff = null; onToken(_cleanMath(full)); }
   while (true) {
-    var chunk = await reader.read();
+    var chunk;
+    try { chunk = await reader.read(); }
+    catch(e) { clearTimeout(_aff); throw new Error('La connexion a été coupée pendant la réponse. Réessaie.'); }
     if (chunk.done) break;
     buf += decoder.decode(chunk.value, { stream: true });
     var lines = buf.split('\n');
@@ -5543,7 +5462,7 @@ async function callGroqStream(messages, onToken, maxTok, opts) {
       try {
         var j = JSON.parse(payload);
         var d = (j.choices && j.choices[0] && j.choices[0].delta) || {};
-        if (d.content) { full += d.content; onToken(_cleanMath(full)); }
+        if (d.content) { full += d.content; if (!_aff) _aff = setTimeout(_afficher, 80); }
         /* appels d'outil : le nom puis les arguments peuvent arriver en plusieurs morceaux */
         (d.tool_calls || []).forEach(function(tc) {
           var k = tc.index || 0;
@@ -5554,6 +5473,7 @@ async function callGroqStream(messages, onToken, maxTok, opts) {
       } catch(e) {}
     }
   }
+  if (_aff) { clearTimeout(_aff); _afficher(); }   /* dernier morceau toujours affiche */
   var toolCalls = calls.filter(Boolean).map(function(c) {
     var a = {}; try { a = JSON.parse(c.args || '{}'); } catch(e) {}
     return { name: c.name, args: a };
@@ -5570,6 +5490,8 @@ function _verdictOk(r) {
   return !!m && m[1] === 'CORRECT';
 }
 function _verdictText(r) { return String(r || '').replace(/\*\*/g, '').trim(); }
+/* Defini AVANT CORRECTEUR_SYS qui l'utilise (sinon le prompt finit par « undefined ») */
+var GRADER_RULE = ' Ta réponse commence OBLIGATOIREMENT par le mot CORRECT ou INCORRECT (sans gras, sans phrase avant).';
 
 /* ══ CORRECTEUR COMMUN (interro du chat, Interro IA, Quiz vocal) ══
    La reponse prevue n'est qu'UN EXEMPLE : beaucoup de questions acceptent plusieurs
@@ -5594,7 +5516,6 @@ async function corrigerReponse(question, prevue, reponse, choix) {
   ], 400, { niveau: 'court', effort: 'medium' });
   return { ok: _verdictOk(r), expl: _verdictText(r).replace(/^(IN)?CORRECT\s*[.:!,—–-]*\s*/i, '') };
 }
-var GRADER_RULE = ' Ta réponse commence OBLIGATOIREMENT par le mot CORRECT ou INCORRECT (sans gras, sans phrase avant).';
 
 /* ══ MODALES OUTILS ══ */
 var TOOL_TITLES = { calc: 'Calculatrice', conv: 'Convertisseur', conj: 'Conjugueur' };
@@ -5639,8 +5560,8 @@ function closeTool(name) {
 /* ══ POMODORO ══ */
 var PORC = 2 * Math.PI * 75;
 var poS = 25*60, poR = false, poI = null, poW = true, poC = 0, poF = 0, poSk = 0;
-var POMO_WORK = ['Tu es en mode focus.','25 minutes, tu peux le faire.','Eteins les notifs, c\'est ton moment.','Chaque pomodoro te rapproche de ton objectif.','Allez, concentration !'];
-var POMO_BREAK = ['Pause meritee. Leve-toi, bois de l\'eau.','5 minutes pour recharger les batteries.','Etire-toi, ton cerveau le merite.','Respire profondement. Le focus revient tout seul.'];
+var POMO_WORK = ['Tu es en mode focus.','25 minutes, tu peux le faire.','Éteins les notifs, c\'est ton moment.','Chaque pomodoro te rapproche de ton objectif.','Allez, concentration !'];
+var POMO_BREAK = ['Pause méritée. Lève-toi, bois de l\'eau.','5 minutes pour recharger les batteries.','Étire-toi, ton cerveau le mérite.','Respire profondément. Le focus revient tout seul.'];
 
 function initPomo() { updPoRing(); }
 
@@ -5655,26 +5576,36 @@ function updPoRing() {
   if (dig) dig.textContent = m + ':' + s;
 }
 
+/* Le temps restant est calcule depuis l'heure de fin (poFin) : quand le telephone est
+   verrouille, Android gele setInterval ; au deverrouillage le minuteur est quand meme juste. */
+var poFin = 0;
+function poTick() {
+  if (!poR) return;
+  var reste = Math.max(0, Math.round((poFin - Date.now()) / 1000));
+  if (poW) poF += Math.max(0, poS - reste);
+  poS = reste;
+  updPoRing();
+  if (poS <= 0) poEnd();
+}
+document.addEventListener('visibilitychange', function() { if (!document.hidden) poTick(); });
 function togglePomo() {
   if (poR) {
+    poTick();
     clearInterval(poI); poR = false;
     document.getElementById('ppbtn').textContent = '▶';
     document.getElementById('psub').textContent = 'En pause...';
   } else {
     poR = true;
+    poFin = Date.now() + poS * 1000;
     document.getElementById('ppbtn').textContent = '⏸';
-    document.getElementById('psub').textContent = poW ? 'Focus total !' : 'Pause meritee';
+    document.getElementById('psub').textContent = poW ? 'Focus total !' : 'Pause méritée';
     var q = poW ? POMO_WORK : POMO_BREAK;
     var qel = document.getElementById('pomo-quote');
     if (qel) qel.textContent = q[Math.floor(Math.random()*q.length)];
-    poI = setInterval(function() {
-      poS--;
-      if (poW) poF++;
-      updPoRing();
-      if (poS <= 0) poEnd();
-    }, 1000);
+    poI = setInterval(poTick, 500);
   }
 }
+function poSkip() { var phase = poW; poTick(); if (poW === phase) poEnd(); }   /* poTick a pu deja finir la phase */
 
 function pomoAlert() {
   try { if (navigator.vibrate) navigator.vibrate([350, 120, 350, 120, 350, 120, 450]); } catch(e) {}
@@ -5716,7 +5647,8 @@ function poEnd() {
     poW = false; poS = 5*60;
     var ph = document.getElementById('pph'); ph.textContent = 'PAUSE'; ph.style.background = 'rgba(22,163,74,.15)'; ph.style.color = 'var(--success)';
     document.getElementById('psub').textContent = 'Pause 5 min !';
-    document.getElementById('pomo-quote').textContent = 'Bien merite ! Detends-toi.';
+    document.getElementById('pomo-quote').textContent = 'Bien mérité ! Détends-toi.';
+    markActivity();
   } else {
     poW = true; poS = 25*60;
     var ph2 = document.getElementById('pph'); ph2.textContent = 'TRAVAIL'; ph2.style.background = 'var(--accent-l)'; ph2.style.color = 'var(--accent)';
@@ -5729,7 +5661,7 @@ function resetPomo() {
   clearInterval(poI); poR = false; poW = true; poS = 25*60;
   document.getElementById('ppbtn').textContent = '▶';
   var ph = document.getElementById('pph'); ph.textContent = 'TRAVAIL'; ph.style.background = 'var(--accent-l)'; ph.style.color = 'var(--accent)';
-  document.getElementById('psub').textContent = 'Pret a bosser ?';
+  document.getElementById('psub').textContent = 'Prêt à bosser ?';
   document.getElementById('pomo-quote').textContent = 'Lance le timer pour commencer';
   updPoRing();
 }
@@ -5843,7 +5775,7 @@ var CONJ_PROMPTS = {
     + 'Termina con una linea: "**Participio:** ...".\n'
     + 'Sin introduccion ni conclusion. Solo los titulos y las tablas.'; }
 };
-var CONJ_LOADING = { fr:'ScolarIA conjugue', en:'ScolarIA is conjugating', es:'ScolarIA esta conjugando' };
+var CONJ_LOADING = { fr:'ScolarIA conjugue', en:'ScolarIA is conjugating', es:'ScolarIA está conjugando' };
 var CONJ_SYS = 'Tu es un conjugueur expert et rigoureux (francais, anglais, espagnol). Tes conjugaisons sont toujours correctes, y compris pour les verbes irreguliers. Tu ne renvoies que des tableaux markdown, sans commentaire.';
 
 function doConj(verb) {
@@ -5893,7 +5825,7 @@ function calcMoy() {
   if (!totC) { document.getElementById('mbig').textContent='—'; document.getElementById('mmsg').textContent='Remplis au moins une note !'; return; }
   var moy = (tot/totC).toFixed(2);
   var col = moy>=14 ? 'var(--success)' : moy>=10 ? 'var(--accent)' : 'var(--danger)';
-  var msg = moy>=16?'Excellente moyenne !':moy>=14?'Tres bien !':moy>=12?'Bien, continue !':moy>=10?'Ca passe, encore un effort !':'Du travail en perspective...';
+  var msg = moy>=16?'Excellente moyenne !':moy>=14?'Très bien !':moy>=12?'Bien, continue !':moy>=10?'Ça passe, encore un effort !':'Du travail en perspective...';
   document.getElementById('mbig').style.color = col;
   document.getElementById('mbig').textContent = moy + '/20';
   document.getElementById('mmsg').textContent = msg;
@@ -5951,7 +5883,7 @@ function renderVQCard() {
       qStats.ok    += vqOk;
       localStorage.setItem('sk_quiz_stats', JSON.stringify(qStats));
     } catch(e) {}
-    updateStreak();
+    markActivity();
     updateHomeProgression();
     var pct = Math.round(vqOk / vqCards.length * 100);
     var clr = pct>=80?'var(--success)':pct>=50?'var(--accent)':'var(--danger)';
@@ -6055,107 +5987,52 @@ function vqNext(){ vqIdx++; renderVQCard(); }
 
 /* ══════════════════════════════════════════════
    INTERROGATION IA
+   La fenetre sert seulement a choisir le sujet et le nombre de questions : l'interrogation
+   se deroule dans le chat (fonctions cq* : QCM a boutons, correction, bilan, historique).
+   Avant : un 2e systeme en double, qui demandait des QCM sans jamais afficher les choix.
 ══════════════════════════════════════════════ */
-var interroQs=[], interroIdx=0, interroScore=0;
-
 function openInterroAI() {
   document.getElementById('interro-ai-modal').classList.add('open');
   showInterroForm();
 }
 function closeInterroAI() { document.getElementById('interro-ai-modal').classList.remove('open'); }
 function showInterroForm() {
+  var bouton = function(n, on) {
+    return '<button id="iq-' + n + '" onclick="setIQ(' + n + ',this)" style="cursor:pointer;flex:1;padding:8px;border-radius:10px;border:1.5px solid ' + (on ? 'var(--accent)' : 'var(--bord)') + ';background:' + (on ? 'var(--accent-l)' : 'transparent') + ';color:' + (on ? 'var(--accent)' : 'var(--mu)') + ';font-weight:700;font-family:var(--fb);font-size:13px">' + n + '</button>';
+  };
   document.getElementById('interro-ai-content').innerHTML =
     '<label class="rev-topic-lbl">Sujet</label>' +
-    '<input id="interro-topic" class="rev-topic-inp" placeholder="ex: La Révolution française, les fonctions..." style="margin-bottom:10px" oninput="this.classList.remove(\'err\')">' +
+    '<input id="interro-topic" class="rev-topic-inp" placeholder="ex : La Révolution française, les fonctions..." style="margin-bottom:10px" oninput="this.classList.remove(\'err\')" onkeydown="if(event.key===\'Enter\')startInterroAI()">' +
     '<label class="rev-topic-lbl">Nombre de questions</label>' +
-    '<div style="display:flex;gap:8px;margin-bottom:14px">' +
-      '<button class="rev-dur-badge sel" id="iq-5" onclick="setIQ(5,this)" style="cursor:pointer;flex:1;padding:8px;border-radius:10px;border:1.5px solid var(--accent);background:var(--accent-l);color:var(--accent);font-weight:700;font-family:var(--fb);font-size:13px">5</button>' +
-      '<button class="rev-dur-badge" id="iq-10" onclick="setIQ(10,this)" style="cursor:pointer;flex:1;padding:8px;border-radius:10px;border:1.5px solid var(--bord);background:transparent;color:var(--mu);font-weight:700;font-family:var(--fb);font-size:13px">10</button>' +
-      '<button class="rev-dur-badge" id="iq-15" onclick="setIQ(15,this)" style="cursor:pointer;flex:1;padding:8px;border-radius:10px;border:1.5px solid var(--bord);background:transparent;color:var(--mu);font-weight:700;font-family:var(--fb);font-size:13px">15</button>' +
-    '</div>' +
+    '<div style="display:flex;gap:8px;margin-bottom:14px">' + bouton(5, true) + bouton(8, false) + bouton(10, false) + '</div>' +
+    '<div class="vc-hint" style="margin:-4px 0 4px">L\'interrogation se fait dans le chat : QCM à toucher ou réponse à écrire, correction après chaque question, puis ton bilan.</div>' +
     '<button class="rev-go-btn" onclick="startInterroAI()">' +
       '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>' +
       'Lancer l\'interrogation' +
     '</button>';
   window._interroNb = 5;
+  setTimeout(function() { var i = document.getElementById('interro-topic'); if (i) i.focus(); }, 200);
 }
 function setIQ(n, el) {
   window._interroNb = n;
-  document.querySelectorAll('#iq-5,#iq-10,#iq-15').forEach(function(b){
+  document.querySelectorAll('#iq-5,#iq-8,#iq-10').forEach(function(b){
     b.style.borderColor='var(--bord)'; b.style.background='transparent'; b.style.color='var(--mu)';
   });
   el.style.borderColor='var(--accent)'; el.style.background='var(--accent-l)'; el.style.color='var(--accent)';
 }
-async function startInterroAI() {
-  var topic=document.getElementById('interro-topic')?document.getElementById('interro-topic').value.trim():'';
-  if(!topic){var i=document.getElementById('interro-topic');if(i)i.classList.add('err');return;}
-  var nb=window._interroNb||5;
-  document.getElementById('interro-ai-content').innerHTML =
-    '<div class="rev-loading"><div class="rev-spin"></div><div class="rev-loading-txt">L\'IA prépare tes questions...</div></div>';
-  try {
-    var prompt='Génère '+nb+' questions variées (QCM, vrai/faux, réponse courte) sur "'+topic+'" niveau '+getClasse()+'. Pour chaque question, utilise ce format exact (une par ligne) :\nQ: [question]\nR: [réponse attendue]\n';
-    var reply=await callGroq([{role:'system',content:SCOLARIA_SYSTEM},{role:'user',content:prompt}],undefined,{niveau:'revision'});
-    interroQs=parseInterroQs(reply);
-    if(!interroQs.length) throw new Error('Impossible de générer les questions — réessaie');
-    interroIdx=0; interroScore=0;
-    renderInterroQ();
-  } catch(e) {
-    document.getElementById('interro-ai-content').innerHTML='<div class="rev-err-box">'+esc(e.message)+'<br><button onclick="showInterroForm()">Réessayer</button></div>';
-  }
+function startInterroAI() {
+  var inp = document.getElementById('interro-topic');
+  var topic = inp ? inp.value.trim() : '';
+  if (!topic) { if (inp) { inp.classList.add('err'); inp.focus(); } return; }
+  if (_cq) { toast('Une interrogation est déjà en cours dans le chat'); return; }
+  if (_chatBusy) { toast('Attends la fin de la réponse dans le chat…'); return; }
+  closeInterroAI();
+  goSec('s-chat', document.querySelector('.nav-btn[onclick*="s-chat"]'));
+  collapseShortcuts();
+  var demande = 'Interroge-moi sur ' + topic;
+  addMsg(demande, 'user');
+  cqStart({ sujet: topic, nb_questions: window._interroNb || 5 }, addMsg('', 'ai thinking'), demande);
 }
-function parseInterroQs(text) {
-  var qs=[]; var lines=text.split('\n');
-  var curQ=null;
-  for(var i=0;i<lines.length;i++){
-    var l=lines[i].trim();
-    if(/^Q\s*:/i.test(l)) curQ={q:l.replace(/^Q\s*:\s*/i,'').trim(),a:''};
-    else if(/^R\s*:/i.test(l)&&curQ){curQ.a=l.replace(/^R\s*:\s*/i,'').trim();qs.push(curQ);curQ=null;}
-  }
-  return qs;
-}
-function renderInterroQ() {
-  if(interroIdx>=interroQs.length){
-    var pct=Math.round(interroScore/interroQs.length*100);
-    var clr=pct>=80?'var(--success)':pct>=50?'var(--accent)':'var(--danger)';
-    document.getElementById('interro-ai-content').innerHTML=
-      '<div style="text-align:center;padding:16px 0">' +
-        '<div class="vq-score-circle" style="border-color:'+clr+';color:'+clr+';background:'+clr+'22">'+pct+'%</div>' +
-        '<div style="font-size:20px;font-weight:900;margin-bottom:6px">'+(pct>=80?'Excellent !':pct>=50?'Bien joué !':'Continue !')+'</div>' +
-        '<div style="font-size:13px;color:var(--mu);margin-bottom:24px">'+interroScore+' / '+interroQs.length+' correctes</div>' +
-        '<button class="rev-go-btn" onclick="startInterroAI()">Rejouer</button>' +
-        '<button class="rev-ia-btn-sec" style="margin-top:10px" onclick="showInterroForm()">Nouveau sujet</button>' +
-      '</div>';
-    return;
-  }
-  var q=interroQs[interroIdx];
-  document.getElementById('interro-ai-content').innerHTML=
-    '<div style="font-size:12px;font-weight:700;color:var(--mu);margin-bottom:10px">'+(interroIdx+1)+' / '+interroQs.length+' &nbsp;·&nbsp; ✅ '+interroScore+'</div>' +
-    '<div class="interro-q-box">'+esc(q.q)+'</div>' +
-    '<textarea class="interro-inp" id="interro-ans" placeholder="Ta réponse..." rows="3"></textarea>' +
-    '<div id="interro-fb" class="interro-feedback" style="display:none"></div>' +
-    '<div style="display:flex;gap:10px">' +
-      '<button id="interro-val-btn" onclick="checkInterroAnswer()" style="flex:1;background:var(--accent);color:#fff;border:none;border-radius:12px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--fb)">Valider</button>' +
-      '<button id="interro-next-btn" onclick="interroAINext()" style="display:none;flex:1;background:var(--success);color:#fff;border:none;border-radius:12px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--fb)">Suivant →</button>' +
-    '</div>';
-  setTimeout(function(){var a=document.getElementById('interro-ans');if(a)a.focus();},200);
-}
-async function checkInterroAnswer() {
-  var ans=document.getElementById('interro-ans')?document.getElementById('interro-ans').value.trim():'';
-  if(!ans){toast('Écris ta réponse d\'abord');return;}
-  var q=interroQs[interroIdx];
-  var fb=document.getElementById('interro-fb'); if(!fb) return;
-  var vb=document.getElementById('interro-val-btn'); if(vb){vb.disabled=true;vb.textContent='⚡ Correction...';}
-  fb.style.display='block'; fb.textContent='Vérification...'; fb.className='interro-feedback';
-  try{
-    var c=await corrigerReponse(q.q, q.a, ans);
-    if(c.ok){interroScore++;fb.className='interro-feedback interro-ok';}
-    else{fb.className='interro-feedback interro-ko';}
-    fb.textContent=(c.ok?'✅ ':'❌ ')+c.expl;
-  }catch(e){fb.className='interro-feedback interro-ko';fb.textContent='Correction impossible. Exemple de bonne réponse : '+q.a;}
-  if(vb)vb.style.display='none';
-  var nb=document.getElementById('interro-next-btn');if(nb)nb.style.display='block';
-}
-function interroAINext(){interroIdx++;renderInterroQ();}
 
 /* ══════════════════════════════════════════════
    SCANNER DE COURS
@@ -6189,6 +6066,8 @@ function imageReduite(file, cb) {
   img.onerror = function() { URL.revokeObjectURL(url); cb(null); };
   img.src = url;
 }
+/* Meme chose en promesse : var dataUrl = await imageReduiteP(fichier) (null si illisible) */
+function imageReduiteP(file) { return new Promise(function(r) { imageReduite(file, r); }); }
 function handleScanFile(file) {
   if(!file) return;
   imageReduite(file, function(dataUrl){
@@ -6196,8 +6075,6 @@ function handleScanFile(file) {
     var prev=document.getElementById('scan-preview');
     if(prev){prev.src=dataUrl;prev.style.display='block';}
     scanImageData={b64:dataUrl.split(',')[1],mime:'image/jpeg',full:dataUrl};
-    var drop=document.getElementById('scan-drop');
-    if(drop) drop.innerHTML='<div class="scan-drop-icon">✅</div><div class="scan-drop-txt"><strong>Image chargée</strong><br>Clique sur une option ci-dessous</div>';
     var acts=document.getElementById('scan-actions'); if(acts) acts.style.display='block';
   });
 }
@@ -6229,7 +6106,7 @@ async function scanTranscrirePlusieurs(files) {
   for (var i = 0; i < files.length; i++) {
     res.innerHTML = '<div class="rev-loading" style="padding:30px 0"><div class="rev-spin"></div><div class="rev-loading-txt">ScolarIA recopie la page ' + (i + 1) + ' / ' + files.length + '…</div><div class="rev-loading-sub">Environ 10 secondes par page</div></div>';
     try {
-      var dataUrl = await new Promise(function(r) { imageReduite(files[i], r); });
+      var dataUrl = await imageReduiteP(files[i]);
       if (!dataUrl) throw new Error('Image illisible');
       var t = await mcTranscrire(dataUrl);
       if (!c) c = mcDepuisScan(t);
@@ -6308,7 +6185,6 @@ function mcCahierAuto(mat) {
 }
 function mcDate(ts) { return new Date(ts).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' }); }
 function mcDateLongue(ts) { return new Date(ts).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }); }
-function mcMots(t) { return (String(t || '').match(/\S+/g) || []).length; }
 
 /* ── HTML sur : seules les balises de mise en forme sont gardees, sans aucun attribut ── */
 var MC_TAGS = { H1:1, H2:1, H3:1, P:1, DIV:1, BR:1, UL:1, OL:1, LI:1, B:1, STRONG:1, I:1, EM:1, U:1, S:1, MARK:1,
@@ -6435,8 +6311,9 @@ function mcRetourInterne() {
 /* fleche ‹ : passe par l'historique pour rester synchronise avec le bouton du telephone */
 function mcRetour() { if (_mcPile > 0) history.back(); else mcRetourInterne(); }
 window.addEventListener('popstate', function() {
-  if (_mcIgnorePop > 0) { _mcIgnorePop--; return; }
-  if (_mcPile <= 0 || !mcPanelOuvert()) return;
+  if (_mcIgnorePop > 0) { _mcIgnorePop--; navSync(); return; }
+  /* hors de Mes cours : bouton retour commun (fenetre du dessus, puis accueil) */
+  if (_mcPile <= 0 || !mcPanelOuvert()) { navRetour(); return; }
   _mcPile--;
   /* un menu ou une fenetre ouverte : le retour la ferme seulement */
   var sh = document.getElementById('mc-sheet'), po = document.getElementById('mc-pop');
@@ -6740,6 +6617,7 @@ function mcEnregistrer() {
   c.titre = titre;
   mcFixerPages(c, pages, suites);
   mcPut(c);
+  markActivity();   /* ecrire son cours = travailler */
 }
 function mcFinEdition() {
   mcEnregistrer();
@@ -6774,7 +6652,7 @@ async function mcAjouterPages(files) {
     var etat = document.getElementById('mc-page-etat');
     if (etat) etat.innerHTML = '<div class="rev-loading" style="padding:16px 0"><div class="rev-spin"></div><div class="rev-loading-txt">ScolarIA recopie la photo ' + (i + 1) + ' / ' + files.length + '…</div></div>';
     try {
-      var dataUrl = await new Promise(function(res) { imageReduite(files[i], res); });
+      var dataUrl = await imageReduiteP(files[i]);
       if (!dataUrl) throw new Error('Image illisible');
       var t = await mcTranscrire(dataUrl);
       var c = mcGet(id); if (!c) return;
@@ -7146,6 +7024,7 @@ function vcRevDates(ymd) {
 function openVeilleControle(id) {
   document.getElementById('vc-modal').classList.add('open');
   if (id && vcGet(id)) vcShowDetail(id); else vcShowList();
+  setTimeout(navSync, 0);   /* ouverture possible depuis une notification (sans appui) */
 }
 function closeVeilleControle() {
   document.getElementById('vc-modal').classList.remove('open');
@@ -7353,7 +7232,7 @@ function vcShowDetail(id) {
 function vcToggleTask(id, k) {
   var c = vcGet(id); if (!c) return;
   c.done = c.done || {};
-  if (c.done[k]) delete c.done[k]; else c.done[k] = 1;
+  if (c.done[k]) delete c.done[k]; else { c.done[k] = 1; markActivity(); }
   vcPut(c);
   vcShowDetail(id);
 }
@@ -7463,29 +7342,41 @@ var userProfile = { prenom: '', classe: '', matiere: '', objectif: '', avatar: '
 /* ══════════════════════════════════════════════
    STREAK — SYSTÈME FLAME FONCTIONNEL
 ══════════════════════════════════════════════ */
-function getTodayKey() {
-  return 'sk_day_' + new Date().toISOString().slice(0, 10);
-}
+/* Un jour compte seulement si l'eleve a TRAVAILLE (question a l'IA, flashcards, interro,
+   devoir coche, fiche, cours ecrit...) : markActivity(). Ouvrir l'app ne suffit plus.
+   Date LOCALE (avant : date UTC, donc apres minuit en France le travail comptait pour la veille). */
+function getTodayKey() { return 'sk_day_' + vcYmd(new Date()); }
 
+/* Serie en cours : si rien n'est encore fait aujourd'hui, on compte jusqu'a hier
+   (la serie ne retombe pas a 0 le matin) */
 function getStreakCount() {
-  var count = 0;
-  var d = new Date();
-  for (var i = 0; i < 365; i++) {
-    var key = 'sk_day_' + new Date(d.getTime()).toISOString().slice(0, 10);
-    if (localStorage.getItem(key) !== '1') break;
+  var count = 0, d = new Date();
+  if (localStorage.getItem(getTodayKey()) !== '1') d = vcAddDays(d, -1);
+  for (var i = 0; i < 400; i++) {
+    if (localStorage.getItem('sk_day_' + vcYmd(d)) !== '1') break;
     count++;
-    d.setDate(d.getDate() - 1);
+    d = vcAddDays(d, -1);
   }
   return count;
 }
 
+function markActivity() {
+  var k = getTodayKey();
+  if (localStorage.getItem(k) !== '1') {
+    try { localStorage.setItem(k, '1'); } catch(e) {}
+    /* on oublie les jours de plus d'un an (ils sont aussi envoyes au cloud) */
+    var limite = 'sk_day_' + vcYmd(vcAddDays(new Date(), -400));
+    Object.keys(localStorage).forEach(function(x) { if (x.indexOf('sk_day_') === 0 && x < limite) localStorage.removeItem(x); });
+  }
+  scheduleSync();
+  updateStreak();
+}
+
+/* Affiche la serie (n'ecrit plus rien) */
 function updateStreak() {
-  /* Marquer aujourd'hui comme actif */
-  localStorage.setItem(getTodayKey(), '1');
   var count = getStreakCount();
-  /* Sauvegarder dans sk_streak (compat) */
   try {
-    localStorage.setItem('sk_streak', JSON.stringify({ count: count, date: new Date().toISOString().slice(0, 10) }));
+    localStorage.setItem('sk_streak', JSON.stringify({ count: count, date: vcYmd(new Date()) }));
   } catch(e) {}
   /* Mettre à jour tous les affichages */
   ['hdr-streak-val', 'home-streak', 'prof-streak'].forEach(function(id) {
@@ -7545,6 +7436,15 @@ function toggleProfInfos() {
   if (chev) chev.style.transform = open ? 'rotate(-90deg)' : 'rotate(0deg)';
 }
 
+/* Objectif : memes codes que l'onboarding (anciens profils : libelles du profil convertis) */
+function _objectifCode(o) {
+  o = String(o || '');
+  if (/^(bonnes-notes|brevet|niveau|progresser)$/.test(o)) return o;
+  if (/brevet|bac/i.test(o)) return 'brevet';
+  if (/couler/i.test(o)) return 'niveau';
+  if (/notes|interro/i.test(o)) return 'bonnes-notes';
+  return '';
+}
 function loadProfile() {
   try {
     var s = localStorage.getItem('sk_prof');
@@ -7553,7 +7453,7 @@ function loadProfile() {
       userProfile.prenom   = p.prenom   || '';
       userProfile.classe   = p.classe   || '';
       userProfile.matiere  = p.matiere  || '';
-      userProfile.objectif = p.objectif || '';
+      userProfile.objectif = _objectifCode(p.objectif);
       userProfile.avatar   = p.avatar   || '🎓';
       userProfile.photo    = p.photo    || '';
     }
@@ -7578,6 +7478,7 @@ async function changePassword() {
   if (!np || !nc) { _secMsg('Remplis les deux champs.', false); return; }
   if (np.length < 6) { _secMsg('Mot de passe trop court (6 caractères minimum).', false); return; }
   if (np !== nc)  { _secMsg('Les mots de passe ne correspondent pas.', false); return; }
+  if (!_supa || !currentUser) { _secMsg('Pas de connexion au compte pour le moment. Réessaie plus tard.', false); return; }
   var res = await _supa.auth.updateUser({ password: np });
   if (res.error) { _secMsg(res.error.message, false); }
   else {
@@ -7625,6 +7526,7 @@ function renderProfileUI() {
   var sub = document.getElementById('profil-sub-display');
   if (sub) sub.textContent = (userProfile.classe || 'Élève') + ' · ScolarIA';
   updateNiveauUI();
+  var oe = document.getElementById('profil-obj-exam'); if (oe) oe.textContent = 'Réussir le ' + examLabel();
   /* Fields */
   var pi = document.getElementById('profil-prenom');   if (pi) pi.value = userProfile.prenom;
   var pc = document.getElementById('profil-classe');   if (pc) pc.value = userProfile.classe;
@@ -7771,9 +7673,8 @@ function initApp() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  /* initApp() est appelé par Supabase auth après syncFromCloud().
-     Fallback si Supabase n'est pas disponible. */
-  if (typeof supabase === 'undefined') initApp();
+  /* initApp() est appelé par Supabase auth après syncFromCloud()
+     (ou par _demarrageHorsLigne si la session ne peut pas être vérifiée). */
 
   /* ══ PWA — service worker (offline + installable) ══ */
   if ('serviceWorker' in navigator && location.protocol !== 'file:') {
@@ -7786,28 +7687,43 @@ document.addEventListener('DOMContentLoaded', function() {
 <!-- SUPABASE AUTH + SYNC -->
 <script>
 /* ══ SUPABASE AUTH + SYNC ══ */
-var _supa = supabase.createClient(
+/* Si la librairie Supabase n'a pas pu se charger (hors ligne, CDN bloque), l'app
+   demarre quand meme avec les donnees du telephone (voir _demarrageHorsLigne). */
+var _supa = (typeof supabase !== 'undefined') ? supabase.createClient(
   'https://vefnkztjmodchvmspukh.supabase.co',
   'sb_publishable_OVVDWsvA2-0dJuTdQREYVw_kSiTu7Ge'
-);
+) : null;
 var currentUser = null;
 var _syncTimer  = null;
+var _appDemarre = false;   /* initApp deja lance : un simple renouvellement de session ne recharge plus rien */
 
 var SYNC_KEYS = [
   'sk_dv','sk_prof','sk_decks','sk_hist','sk_chat',
-  'sk_fiche_count','sk_flash_stats','sk_quiz_stats','sk_streak','sk_ctrl','sk_cours','sk_cahiers'
+  'sk_fiche_count','sk_flash_stats','sk_quiz_stats','sk_streak','sk_ctrl','sk_cours','sk_cahiers','sk_ann_seen'
 ];
 
-/* ── Sync ── */
+/* ── Sync ──
+   sk__modif = date de la derniere modification locale ; sk__envoi = date de la derniere
+   version bien enregistree dans le cloud. sk__modif > sk__envoi : des changements ne sont
+   pas encore dans le cloud (hors ligne, app fermee trop vite, erreur reseau...) : le cloud
+   ne doit JAMAIS les ecraser. Le cloud garde __modif pour savoir quelle version est la plus recente.
+   (cles sk__ = techniques, jamais copiees depuis le cloud) */
+function _syncNum(k) { return +(localStorage.getItem(k) || 0) || 0; }
+function _syncEnAttente() { return _syncNum('sk__modif') > _syncNum('sk__envoi'); }
 function scheduleSync() {
+  /* toujours > derniere version connue, meme si l'horloge d'un autre appareil etait en avance */
+  var m = Math.max(Date.now(), _syncNum('sk__envoi') + 1, _syncNum('sk__modif') + 1);
+  try { localStorage.setItem('sk__modif', String(m)); } catch(e) {}
   if (!currentUser) return;
   clearTimeout(_syncTimer);
   _syncTimer = setTimeout(syncToCloud, 3000);
 }
 
 async function syncToCloud() {
-  if (!currentUser) return;
-  var data = {};
+  clearTimeout(_syncTimer); _syncTimer = null;
+  if (!currentUser || !_supa) return false;
+  var modif = _syncNum('sk__modif');
+  var data = { __modif: modif };
   SYNC_KEYS.forEach(function(k) {
     var v = localStorage.getItem(k);
     if (v !== null) data[k] = v;
@@ -7817,26 +7733,58 @@ async function syncToCloud() {
     if (key && key.startsWith('sk_day_')) data[key] = localStorage.getItem(key);
   }
   try {
-    await _supa.from('user_data').upsert({ user_id: currentUser.id, data: data }, { onConflict: 'user_id' });
+    /* supabase-js ne leve pas d'exception : l'erreur est dans le resultat */
+    var r = await _supa.from('user_data').upsert({ user_id: currentUser.id, data: data }, { onConflict: 'user_id' });
+    if (r.error) throw new Error(r.error.message);
+    /* une modif faite pendant l'envoi garde sk__modif > sk__envoi : elle partira au prochain envoi */
+    try { localStorage.setItem('sk__envoi', String(modif)); } catch(e2) {}
+    return true;
   } catch(e) {
     console.warn('syncToCloud échoué:', e.message);
+    return false;
   }
 }
 
 async function syncFromCloud() {
-  if (!currentUser) return;
+  if (!currentUser || !_supa) return;
   try {
-    var res = await _supa.from('user_data').select('data').eq('user_id', currentUser.id).single();
-    if (res.error || !res.data || !res.data.data) return;
-    var remote = res.data.data;
+    var res = await _supa.from('user_data').select('data').eq('user_id', currentUser.id).maybeSingle();
+    if (res.error) throw new Error(res.error.message);
+    var remote = (res.data && res.data.data) || null;
+    var rModif = remote ? (+remote.__modif || 0) : 0;
+    /* changements locaux pas encore envoyes et plus recents que le cloud : c'est eux qu'on garde */
+    if (_syncEnAttente() && _syncNum('sk__modif') > rModif) { await syncToCloud(); return; }
+    if (!remote) return;
     Object.keys(remote).forEach(function(k) {
-      if (k.startsWith('sk_')) {
+      if (k.indexOf('sk_') === 0 && k.indexOf('sk__') !== 0) {
         try { localStorage.setItem(k, remote[k]); } catch(e2) {}
       }
     });
+    try { localStorage.setItem('sk__modif', String(rModif)); localStorage.setItem('sk__envoi', String(rModif)); } catch(e3) {}
   } catch(e) {
     console.warn('syncFromCloud échoué:', e.message);
   }
+}
+
+/* Envoi immediat quand on quitte l'app (Android peut la geler avant les 3 s) ou au retour du reseau */
+document.addEventListener('visibilitychange', function() {
+  if (currentUser && _syncEnAttente()) syncToCloud();
+});
+window.addEventListener('online', function() {
+  if (currentUser && _syncEnAttente()) syncToCloud();
+});
+
+/* « Réinitialiser toutes mes données » : efface le telephone ET le cloud
+   (avant : seul le telephone etait vide, et le cloud remettait tout a la connexion suivante) */
+async function resetDonnees() {
+  if (!confirm('Effacer TOUTES tes données ScolarIA (devoirs, cours, flashcards, historique, contrôles…) sur ce téléphone et dans ton compte ? C\'est définitif.')) return;
+  Object.keys(localStorage).forEach(function(k) {
+    if (k.indexOf('sk_') === 0 && k !== 'sk_theme') localStorage.removeItem(k);
+  });
+  try { localStorage.setItem('sk__modif', String(Date.now() + 1)); } catch(e) {}
+  if (currentUser) await syncToCloud();
+  try { if ('caches' in window) await caches.delete('scolaria-data'); } catch(e) {}
+  location.reload();
 }
 
 /* ── Messages d'erreur Supabase → français ── */
@@ -7903,6 +7851,7 @@ async function submitFbAuth() {
   var email = (document.getElementById('fb-email').value || '').trim();
   var pass  = document.getElementById('fb-pass').value || '';
   if (!email || !pass) { _fbShowErr('Remplis tous les champs.'); return; }
+  if (!_supa) { _fbShowErr('Connexion impossible : vérifie ta connexion internet puis recharge la page.'); return; }
   _fbSetLoading(true);
 
   if (window._fbMode === 'register') {
@@ -7924,7 +7873,10 @@ async function submitFbAuth() {
 
 /* ── Déconnexion ── */
 async function logout() {
-  await _supa.auth.signOut();
+  /* changements pas encore dans le cloud : on les envoie avant de tout effacer */
+  if (currentUser && _syncEnAttente()) await syncToCloud();
+  if (_syncEnAttente() && !confirm('Tes dernières modifications ne sont pas encore sauvegardées dans ton compte (pas de connexion). Te déconnecter quand même ? Elles seront perdues.')) return;
+  if (_supa) { try { await _supa.auth.signOut(); } catch(e) {} }
   /* Plus de rappels de controles pour ce compte : copie du service worker + verif en arriere-plan */
   try { if ('caches' in window) await caches.delete('scolaria-data'); } catch(e) {}
   try {
@@ -8007,7 +7959,6 @@ function _obRender() {
         '<div class="ob-mascot">🎉</div>' +
         '<div class="ob-q">C\'est parti, ' + _esc(_obAnswers.prenom) + ' !</div>' +
         '<div class="ob-sub">Ton espace ScolarIA est prêt</div>' +
-        '<div class="ob-xp-badge">+50 XP de bienvenue 🌟</div>' +
         '<button class="ob-btn ob-btn-primary" style="margin-top:20px;max-width:320px;width:100%" onclick="obFinish()">Commencer ScolarIA 🚀</button>' +
       '</div>';
     return;
@@ -8118,30 +8069,65 @@ function obFinish() {
 }
 
 /* ── Écoute des changements de session ── */
-_supa.auth.onAuthStateChange(function(event, session) {
-  var overlay = document.getElementById('fb-login');
-  var status  = document.getElementById('fb-login-status');
-  var forms   = document.getElementById('fb-auth-forms');
-
+function _demarrerSession(user) {
+  _updateDrawerUser(user);
+  syncFromCloud().then(function() {
+    var overlay = document.getElementById('fb-login');
+    if (overlay) overlay.style.display = 'none';
+    var prof = null;
+    try { prof = JSON.parse(localStorage.getItem('sk_prof') || 'null'); } catch(e) {}
+    if (!prof || !prof.prenom) startOnboarding();
+    else initApp();
+    _appDemarre = true;
+  });
+}
+if (_supa) _supa.auth.onAuthStateChange(function(event, session) {
   if (session && session.user) {
+    var memeCompte = currentUser && currentUser.id === session.user.id;
     currentUser = session.user;
-    _updateDrawerUser(session.user);
-    syncFromCloud().then(function() {
-      if (overlay) overlay.style.display = 'none';
-      var prof = null;
-      try { prof = JSON.parse(localStorage.getItem('sk_prof') || 'null'); } catch(e) {}
-      if (!prof || !prof.prenom) {
-        startOnboarding();
-      } else {
-        initApp();
-      }
-    });
+    /* TOKEN_REFRESHED (environ toutes les heures, et au retour dans l'app), USER_UPDATED... :
+       surtout NE PAS recharger le cloud par-dessus le travail en cours (interro, cours, devoirs) */
+    if (memeCompte && _appDemarre) return;
+    /* recommandation Supabase : aucun appel Supabase directement dans ce callback ;
+       et on attend que toute la page (modales en bas du fichier) soit chargee */
+    setTimeout(function() {
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function() { _demarrerSession(session.user); });
+      else _demarrerSession(session.user);
+    }, 0);
   } else {
     currentUser = null;
+    if (_appDemarre) return;   /* app deja ouverte (mode hors connexion) : on y reste */
+    var status = document.getElementById('fb-login-status');
+    var forms  = document.getElementById('fb-auth-forms');
     if (status) status.style.display = 'none';
     if (forms)  forms.style.display  = 'flex';
   }
 });
+
+/* ── Mode hors connexion ──
+   Sans reseau, la session ne peut pas etre verifiee : au lieu d'un chargement sans fin,
+   l'app s'ouvre avec les donnees du telephone (elles partiront dans le cloud au retour du reseau). */
+function _aSessionLocale() {
+  try { for (var i = 0; i < localStorage.length; i++) if (/^sb-.+-auth-token$/.test(localStorage.key(i) || '')) return true; } catch(e) {}
+  return false;
+}
+function _demarrageHorsLigne() {
+  if (_appDemarre || currentUser) return;
+  var prof = null;
+  try { prof = JSON.parse(localStorage.getItem('sk_prof') || 'null'); } catch(e) {}
+  if (!prof || !prof.prenom) {
+    var st = document.querySelector('#fb-login-status span');
+    if (st && !_supa) st.textContent = 'Connexion impossible : vérifie ta connexion internet puis recharge la page.';
+    return;
+  }
+  var overlay = document.getElementById('fb-login');
+  if (overlay) overlay.style.display = 'none';
+  initApp();
+  _appDemarre = true;
+  toast('Hors connexion : tes données restent sur ce téléphone', 4000);
+}
+if (!_supa) document.addEventListener('DOMContentLoaded', _demarrageHorsLigne);
+else setTimeout(function() { if (_aSessionLocale()) _demarrageHorsLigne(); }, 6000);
 </script>
 
 <!-- ══ MODALE POMODORO ══ -->
@@ -8166,7 +8152,7 @@ _supa.auth.onAuthStateChange(function(event, session) {
       <div class="pctrl">
         <button class="pbtn pr" onclick="resetPomo()">↺</button>
         <button class="pbtn pp" id="ppbtn" onclick="togglePomo()">▶</button>
-        <button class="pbtn ps" onclick="poS=1">⏭</button>
+        <button class="pbtn ps" onclick="poSkip()" aria-label="Passer à la suite">⏭</button>
       </div>
       <div class="pomo-quote" id="pomo-quote">Lance le timer pour commencer</div>
     </div>
@@ -8412,8 +8398,7 @@ _supa.auth.onAuthStateChange(function(event, session) {
 <!-- TOAST -->
 <div id="sk-toast"></div>
 
-<!-- ══ ANNALES BREVET (donnees + logique) ══ -->
-<script src="annales-data.js"></script>
+<!-- ══ ANNALES BREVET (logique ; les donnees annales-data.js sont chargees a la 1re ouverture) ══ -->
 <script>
 var annStack = [];
 var annChatMsgs = [];
@@ -8421,13 +8406,29 @@ var annChatCtx = '';
 
 function annSetBack(show){ var b=document.getElementById('ann-back'); if(b) b.style.display = show ? 'inline-flex' : 'none'; }
 
+/* annales-data.js (300 Ko) : charge seulement quand on ouvre les Annales (avant : a chaque demarrage) */
+var _annChargement = null;
+function annCharger(){
+  if(typeof ANNALES !== 'undefined') return Promise.resolve(true);
+  if(!_annChargement) _annChargement = new Promise(function(ok){
+    var s=document.createElement('script'); s.src='annales-data.js';
+    s.onload=function(){ ok(typeof ANNALES !== 'undefined'); };
+    s.onerror=function(){ _annChargement=null; ok(false); };
+    document.head.appendChild(s);
+  });
+  return _annChargement;
+}
 function annOpen(){
   closeDrawer();
-  if(typeof ANNALES === 'undefined'){ toast('Donnees des exercices indisponibles'); return; }
   document.querySelectorAll('.sec').forEach(function(s){ s.classList.remove('active'); });
   document.querySelectorAll('.nav-btn').forEach(function(b){ b.classList.remove('active'); });
   var sec=document.getElementById('s-annales'); if(sec) sec.classList.add('active');
-  annHome();
+  annSetBack(false);
+  if(typeof ANNALES === 'undefined') document.getElementById('ann-view').innerHTML='<div class="rev-loading"><div class="rev-spin"></div><div class="rev-loading-txt">Chargement des exercices…</div></div>';
+  annCharger().then(function(ok){
+    if(!ok){ document.getElementById('ann-view').innerHTML='<div class="ann-empty">Impossible de charger les exercices. Vérifie ta connexion puis réessaie.<br><br><button class="btn btn-ghost" onclick="annOpen()">Réessayer</button></div>'; return; }
+    annHome();
+  });
 }
 
 function annBack(){
@@ -8453,16 +8454,16 @@ function annHome(){
   annSetBack(false);
   document.getElementById('ann-view').innerHTML =
     '<div class="ann-h1">Annales Brevet</div>'+
-    '<div class="ann-sub">Entraine-toi sur des exercices type brevet, avec correction detaillee et un coach IA.</div>'+
+    '<div class="ann-sub">Entraîne-toi sur des exercices type brevet, avec correction détaillée et un coach IA.</div>'+
     annLevelNote()+
     '<div class="ann-choice" onclick="annGoMatieres(\'gen\')">'+
       '<div class="ann-choice-ic"><svg viewBox="0 0 24 24"><path d="M9 2h6M10 2v6.5L5.2 18A2 2 0 0 0 7 21h10a2 2 0 0 0 1.8-3L14 8.5V2"/><path d="M8 15h8"/></svg></div>'+
-      '<div class="ann-choice-tx"><div class="ann-choice-tt">Demander un exercice</div><div class="ann-choice-ds">Choisis une matiere et un chapitre. On te sort un exo, different a chaque fois.</div></div>'+
+      '<div class="ann-choice-tx"><div class="ann-choice-tt">Demander un exercice</div><div class="ann-choice-ds">Choisis une matière et un chapitre. On te sort un exo, différent à chaque fois.</div></div>'+
       '<div class="ann-choice-ar">&#8250;</div>'+
     '</div>'+
     '<div class="ann-choice" onclick="annGoMatieres(\'lib\')">'+
       '<div class="ann-choice-ic"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>'+
-      '<div class="ann-choice-tx"><div class="ann-choice-tt">Bibliotheque d\'exercices</div><div class="ann-choice-ds">Parcours tous les exos par matiere et chapitre, puis choisis celui que tu veux.</div></div>'+
+      '<div class="ann-choice-tx"><div class="ann-choice-tt">Bibliothèque d\'exercices</div><div class="ann-choice-ds">Parcours tous les exos par matière et chapitre, puis choisis celui que tu veux.</div></div>'+
       '<div class="ann-choice-ar">&#8250;</div>'+
     '</div>';
 }
@@ -8470,9 +8471,9 @@ function annHome(){
 function annGoMatieres(mode){ annStack.push(['annHome']); annMatieres(mode); }
 function annMatieres(mode){
   annSetBack(true);
-  var html='<div class="ann-chip">'+(mode==='gen'?'Demander un exercice':'Bibliotheque')+'</div>'+
-    '<div class="ann-h1" style="font-size:20px">Choisis une matiere</div>'+
-    '<div class="ann-sub">D\'autres matieres arriveront bientot.</div>';
+  var html='<div class="ann-chip">'+(mode==='gen'?'Demander un exercice':'Bibliothèque')+'</div>'+
+    '<div class="ann-h1" style="font-size:20px">Choisis une matière</div>'+
+    '<div class="ann-sub">D\'autres matières arriveront bientôt.</div>';
   Object.keys(ANNALES).forEach(function(matId){
     var m=ANNALES[matId]; var n=0; m.themes.forEach(function(t){ n+=t.exos.length; });
     html+='<div class="ann-row" onclick="annGoChapitres(\''+mode+'\',\''+matId+'\')">'+
@@ -8492,7 +8493,7 @@ function annChapitres(mode,matId){
     '<div class="ann-sub">'+(mode==='gen'?'On te donnera un exercice au hasard du chapitre.':'Tu choisiras ensuite ton exercice dans la liste.')+'</div>';
   m.themes.forEach(function(t,i){
     var key=annThemeKey(matId,t.id); var arr=seen[key]||[]; var tot=t.exos.length;
-    var sub=(mode==='gen') ? (arr.length>=tot ? 'Tous vus &middot; l\'IA en genere un nouveau' : (arr.length+' / '+tot+' deja vus')) : (tot+' exercices');
+    var sub=(mode==='gen') ? (arr.length>=tot ? 'Tous vus &middot; l\'IA en génère un nouveau' : (arr.length+' / '+tot+' déjà vus')) : (tot+' exercices');
     var leaf=(mode==='gen') ? 'annPickAndShow' : 'annGoExoList';
     html+='<div class="ann-row" onclick="'+leaf+'(\''+matId+'\',\''+t.id+'\')">'+
       '<div class="ann-row-n">'+(i+1)+'</div>'+
@@ -8527,7 +8528,7 @@ function annGetTheme(matId,themeId){
   return null;
 }
 function annSeenGet(){ try{ return JSON.parse(localStorage.getItem('sk_ann_seen')||'{}'); }catch(e){ return {}; } }
-function annSeenSave(o){ try{ localStorage.setItem('sk_ann_seen', JSON.stringify(o)); }catch(e){} }
+function annSeenSave(o){ try{ localStorage.setItem('sk_ann_seen', JSON.stringify(o)); }catch(e){} scheduleSync(); }
 
 function annPickExo(matId,themeId){
   var th=annGetTheme(matId,themeId); if(!th) return null;
@@ -8558,7 +8559,7 @@ function annShowExo(matId,themeId,exoId,fromGen){
 }
 
 function annDiffMeta(d){
-  var map={ facile:{c:'facile',l:'Facile'}, moyen:{c:'moyen',l:'Moyen'}, difficile:{c:'difficile',l:'Difficile'}, expert:{c:'expert',l:'Tres difficile'} };
+  var map={ facile:{c:'facile',l:'Facile'}, moyen:{c:'moyen',l:'Moyen'}, difficile:{c:'difficile',l:'Difficile'}, expert:{c:'expert',l:'Très difficile'} };
   return map[d] || map.moyen;
 }
 
@@ -8573,7 +8574,7 @@ function annTableHtml(rows){
 }
 
 function annCorrIcon(){ return '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>'; }
-function annPiegeHtml(p){ return '<div class="ann-piege"><svg viewBox="0 0 24 24"><path d="M12 9v4M12 17h.01M10.3 3.86l-8.5 14.7A1.5 1.5 0 0 0 3.1 21h17.8a1.5 1.5 0 0 0 1.3-2.44l-8.5-14.7a1.5 1.5 0 0 0-2.6 0z"/></svg><div><b>Piege brevet :</b> '+esc(p)+'</div></div>'; }
+function annPiegeHtml(p){ return '<div class="ann-piege"><svg viewBox="0 0 24 24"><path d="M12 9v4M12 17h.01M10.3 3.86l-8.5 14.7A1.5 1.5 0 0 0 3.1 21h17.8a1.5 1.5 0 0 0 1.3-2.44l-8.5-14.7a1.5 1.5 0 0 0-2.6 0z"/></svg><div><b>Piège brevet :</b> '+esc(p)+'</div></div>'; }
 
 function annRenderExo(matId,themeId,e,fromGen){
   annSetBack(true);
@@ -8623,7 +8624,7 @@ function annToggleCorr(btn){
 function annGenerateExo(matId,themeId,th){
   annSetBack(true);
   var v=document.getElementById('ann-view');
-  v.innerHTML='<div class="ann-exo"><div class="ann-exo-top"><span class="ann-exo-badge">'+esc(th.titre)+'</span></div><div class="ann-empty">Tu as fait tous les exercices de ce chapitre.<br>L\'IA t\'en prepare un nouveau...</div></div>';
+  v.innerHTML='<div class="ann-exo"><div class="ann-exo-top"><span class="ann-exo-badge">'+esc(th.titre)+'</span></div><div class="ann-empty">Tu as fait tous les exercices de ce chapitre.<br>L\'IA t\'en prépare un nouveau...</div></div>';
   var sys="Tu rediges des exercices scolaires clairs et corrects, en francais, niveau college (3eme).";
   var usr="Cree UN exercice type brevet original sur le theme : "+th.titre+". Niveau 3eme, calculs simples et exacts. "+
     "Respecte EXACTEMENT ce format, sans rien ecrire d autre :\n"+
@@ -8631,7 +8632,7 @@ function annGenerateExo(matId,themeId,th){
   callGroq([{role:'system',content:sys},{role:'user',content:usr}],1200,{noNiveau:true}).then(function(txt){
     annRenderGenExo(matId,themeId,th,txt);
   }).catch(function(err){
-    v.innerHTML='<div class="ann-exo"><div class="ann-empty">Erreur : '+esc(err.message)+'<br><br><button class="btn btn-ghost" onclick="annPickAndRender(\''+matId+'\',\''+themeId+'\')">Reessayer</button></div></div>';
+    v.innerHTML='<div class="ann-exo"><div class="ann-empty">Erreur : '+esc(err.message)+'<br><br><button class="btn btn-ghost" onclick="annPickAndRender(\''+matId+'\',\''+themeId+'\')">Réessayer</button></div></div>';
   });
 }
 
@@ -8646,7 +8647,7 @@ function annRenderGenExo(matId,themeId,th,txt){
   if(pm){ piege=pm[1].trim(); rest=rest.slice(0,pm.index); }
   var corr=rest.trim();
   var html='<div class="ann-exo">';
-  html+='<div class="ann-exo-top"><span class="ann-exo-badge">'+esc(th.titre)+'</span><span class="ann-diff moyen">genere par IA</span></div>';
+  html+='<div class="ann-exo-top"><span class="ann-exo-badge">'+esc(th.titre)+'</span><span class="ann-diff moyen">généré par IA</span></div>';
   html+='<div class="ann-exo-tt">'+esc(title)+'</div>';
   html+='<div class="ann-exo-enonce">'+esc(top).replace(/\n/g,'<br>')+'</div>';
   html+='<button class="btn btn-primary btn-full ann-corr-btn" onclick="annToggleCorr(this)">Voir la correction</button>';
@@ -8670,9 +8671,9 @@ function annChatHtml(){
   return '<div class="ann-chat">'+
     '<div class="ann-chat-hd"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Coach IA &middot; explique-moi</div>'+
     '<div class="ann-quick">'+
-      '<button onclick="annQuick(\'Explique-moi la methode pour resoudre cet exercice, etape par etape\')">Explique-moi</button>'+
-      '<button onclick="annQuick(\'Donne-moi juste un indice pour demarrer, sans la reponse\')">Un indice</button>'+
-      '<button onclick="annQuick(\'Par ou je commence ?\')">Par ou commencer ?</button>'+
+      '<button onclick="annQuick(\'Explique-moi la méthode pour résoudre cet exercice, étape par étape\')">Explique-moi</button>'+
+      '<button onclick="annQuick(\'Donne-moi juste un indice pour démarrer, sans la réponse\')">Un indice</button>'+
+      '<button onclick="annQuick(\'Par où je commence ?\')">Par où commencer ?</button>'+
     '</div>'+
     '<div class="ann-chat-msgs" id="ann-chat-msgs"></div>'+
     '<div class="ann-chatbar"><textarea id="ann-chat-input" rows="1" placeholder="Pose ta question sur l\'exercice..." oninput="annAutoGrow(this)" onkeydown="annKey(event)"></textarea>'+
@@ -8687,11 +8688,12 @@ function annQuick(t){ var ta=document.getElementById('ann-chat-input'); if(ta) t
 
 function annRenderChat(){
   var box=document.getElementById('ann-chat-msgs'); if(!box) return;
-  if(!annChatMsgs.length){ box.innerHTML='<div class="ann-chat-empty">Bloque sur l\'exercice ? Demande une explication, un indice, ou fais verifier ta reponse.</div>'; return; }
+  if(!annChatMsgs.length){ box.innerHTML='<div class="ann-chat-empty">Bloqué sur l\'exercice ? Demande une explication, un indice, ou fais vérifier ta réponse.</div>'; return; }
   var h='';
   annChatMsgs.forEach(function(m){
     if(m.role==='assistant' && !m.content){ h+='<div class="ann-msg a">...</div>'; return; }
-    h+='<div class="ann-msg '+(m.role==='user'?'u':'a')+'">'+esc(m.content)+'</div>';
+    /* reponses de l'IA : markdown rendu (gras, listes) au lieu des ** affiches tels quels */
+    h+= m.role==='user' ? '<div class="ann-msg u">'+esc(m.content)+'</div>' : '<div class="ann-msg a">'+mdToHtml(m.content)+'</div>';
   });
   box.innerHTML=h;
   box.scrollTop=box.scrollHeight;
@@ -8701,6 +8703,7 @@ function annSend(){
   var ta=document.getElementById('ann-chat-input'); if(!ta) return;
   var q=ta.value.trim(); if(!q) return;
   ta.value=''; ta.style.height='auto';
+  markActivity();
   annChatMsgs.push({ role:'user', content:q });
   var sys={ role:'system', content:"Tu es un professeur de maths et de physique-chimie de college, patient et tres clair. Tu aides un eleve a comprendre UN exercice precis du brevet (niveau 3eme). Si l eleve n est pas en 3eme, explique avec les mots de sa classe et rappelle les notions qu il n a pas encore vues.\n\nREGLES IMPORTANTES :\n- Reste concentre UNIQUEMENT sur cet exercice et sur la question que pose l'eleve. Ne parle de rien d'autre.\n- Explique la METHODE etape par etape, avec des phrases courtes et simples, adaptees a sa classe.\n- Rappelle d'abord la formule ou la propriete utile, puis montre comment l'appliquer ICI, avec les valeurs de l'enonce.\n- Si l'eleve demande un indice, donne seulement la prochaine etape, sans donner le resultat final.\n- Si l'eleve demande la solution, detaille le calcul jusqu'au resultat, puis donne la reponse.\n- N'invente aucune donnee : utilise seulement l'enonce ci-dessous.\n- Quand l'eleve dit qu'il n'a pas compris, reformule ton explication plus simplement (d'autres mots, un petit exemple concret) jusqu'a ce qu'il comprenne, mais SANS ajouter d'etapes inutiles ni partir sur autre chose.\n- Reste bref et va droit au but : reponds a ce qui est demande, sans bla-bla et sans poser de question en retour a l'eleve.\n\nVoici l'exercice (enonce, questions et correction de reference) :\n\n"+annChatCtx };
   var msgs=[sys].concat(annChatMsgs.map(function(m){ return { role:m.role, content:m.content }; }));

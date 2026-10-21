@@ -9,11 +9,11 @@ Tu travailles sur **ScolarIA**, une application scolaire pour élèves français
 ### Fichiers
 | Fichier | Rôle |
 |---------|------|
-| `scolaria-home-v2.html` | **L'app** (~5900 lignes) : chat IA, devoirs, révisions, flashcards, interro, quiz vocal, scanner, veille de contrôle, conjugueur, pomodoro, moyennes, historique/favoris, annales brevet, profil, onboarding, auth. Servi par défaut (`index.html` / `vercel.json`). |
-| `annales-data.js` | Banque d'exos type brevet (`window.ANNALES`, Maths + PC, 280 exos). Strings en "double quotes", SVG en backticks. |
+| `scolaria-home-v2.html` | **L'app** (~8700 lignes) : chat IA, devoirs, révisions, flashcards, interro, quiz vocal, scanner, veille de contrôle, conjugueur, pomodoro, moyennes, historique/favoris, annales brevet, profil, onboarding, auth. Servi par défaut (`index.html` / `vercel.json`). |
+| `annales-data.js` | Banque d'exos type brevet (`window.ANNALES`, Maths + PC, 280 exos). Strings en "double quotes", SVG en backticks. **Chargé seulement à l'ouverture des Annales** (`annCharger()`), pas au démarrage. |
 | `reset-password.html` | Réinitialisation mot de passe (code OTP Supabase). |
 | `manifest.json` + `sw.js` | PWA. **Bumper `CACHE` dans `sw.js`** quand on ajoute un fichier au précache. |
-| `supabase/functions/groq-proxy/index.ts` | Edge Function qui relaie les appels IA vers Groq (clé côté serveur). |
+| `supabase/functions/groq-proxy/index.ts` | Edge Function qui relaie les appels IA vers Groq (clé côté serveur). Version durcie (oct. 2026) : seuls les élèves connectés (jeton de session vérifié), `max_tokens` ≤ 8000, outils limités. **Ne se déploie pas avec git push** : dashboard Supabase → Edge Functions → groq-proxy → coller le code → Deploy. |
 | `archive/` | Ancien projet (Langues, Sciences, anciens plans). Exclu du déploiement via `.vercelignore`. |
 | `DOCUMENTATION.md` | Doc complète (architecture, connexions, fonctionnalités, données). |
 | `CONTEXTE-PROMPT.md` | Prompt de contexte à copier-coller dans une autre IA. |
@@ -41,7 +41,7 @@ Tu travailles sur **ScolarIA**, une application scolaire pour élèves français
 - `NIVEAU_REPERES` dit dans quelle classe chaque notion **et sa notation** apparaissent (ex. ℕ ℤ ℚ ℝ en 2nde, ℂ en Terminale) : le compléter si l'IA attribue une notion à la mauvaise classe.
 - **Photos : toujours `callGroqVision(messages, maxTok, opts)`** (essaie chaque modèle de `AI_VISION_MODELS`), jamais un `fetch` direct.
 - Les trois fonctions **lèvent une erreur si l'IA renvoie un texte vide** (`AI_EMPTY_MSG`) : chaque appel doit être dans un `try/catch` ou avoir un `.catch`.
-- **Corriger une réponse d'élève : toujours `corrigerReponse(question, prevue, reponse, choix)`** → `{ ok, expl }` (utilisé par l'interro du chat, l'Interro IA et le Quiz vocal). La réponse prévue n'est qu'UN EXEMPLE : toute réponse juste est acceptée (une autre cause, un autre exemple…), l'orthographe est ignorée. Réflexion `medium` (~0,8 s). Afficher « Exemple de bonne réponse » pour une question ouverte.
+- **Corriger une réponse d'élève : toujours `corrigerReponse(question, prevue, reponse, choix)`** → `{ ok, expl }` (utilisé par l'interro du chat et le Quiz vocal ; l'outil « Interro IA » de l'accueil lance l'interro du chat, il n'a plus son propre système). La réponse prévue n'est qu'UN EXEMPLE : toute réponse juste est acceptée (une autre cause, un autre exemple…), l'orthographe est ignorée. Réflexion `medium` (~0,8 s). Afficher « Exemple de bonne réponse » pour une question ouverte.
 - Correcteurs : lire le verdict avec `_verdictOk(r)` (tolère le gras et une phrase avant), afficher avec `_verdictText(r)`, ajouter `GRADER_RULE` au prompt.
 - Règle IA : un sujet d'une autre année est **toujours expliqué** (signalé en 1re phrase, puis adapté au niveau de l'élève).
 - Ne JAMAIS réécrire « 3ème » ou « brevet » en dur dans un prompt : utiliser `getClasse()` et `examLabel()` (brevet/bac).
@@ -73,7 +73,18 @@ Pour `annales-data.js` : `node --check annales-data.js`
 ### 4. Modifications sûres
 - Faire les changements **section par section**, pas tout d'un coup
 - Préfixer les nouvelles fonctionnalités (ex. Annales : fonctions `ann*`, CSS `.ann-`, section `#s-annales`)
-- Données localStorage : préfixe `sk_`. Si elles doivent suivre l'utilisateur sur ses appareils, les ajouter à `SYNC_KEYS`
+- Données localStorage : préfixe `sk_`. Si elles doivent suivre l'utilisateur sur ses appareils, les ajouter à `SYNC_KEYS` **et appeler `scheduleSync()` après chaque écriture** (sinon la modif n'est pas protégée contre l'écrasement par le cloud). Clés `sk__…` (deux tirets) = techniques, jamais copiées depuis le cloud.
+
+### 5. Règles ajoutées par l'audit d'octobre 2026
+- **Synchro** : `sk__modif` (dernière modif locale, toujours croissante) / `sk__envoi` (dernière version bien enregistrée dans le cloud) ; le cloud garde `__modif`. `syncFromCloud` n'écrase JAMAIS des modifs locales non envoyées et plus récentes. `syncToCloud` vérifie `r.error` (supabase-js ne lève pas d'exception). Ne jamais faire `localStorage.clear()` ailleurs que dans `logout()` (qui envoie d'abord les modifs en attente). Réinitialiser = `resetDonnees()` (téléphone ET cloud).
+- **Session** : `onAuthStateChange` ne démarre l'app qu'une fois (`_appDemarre`) ; un `TOKEN_REFRESHED` ne recharge rien. Sans réseau, `_demarrageHorsLigne()` ouvre l'app avec les données du téléphone au bout de 6 s.
+- **Bouton retour Android** : toute nouvelle fenêtre/panneau doit être ajoutée à `navOuvert()` ET `navFermerHaut()` (sinon le retour ferme l'app). Mes cours garde son propre historique (`mcSyncHistorique`).
+- **Devoirs** : vraie date `due` (`AAAA-MM-JJ`) ; libellé (« Demain »…) et urgence calculés chaque jour (`dvGroupe`, `dvUrg`). Ne plus stocker de date en texte relatif.
+- **Série (streak)** : `markActivity()` seulement quand l'élève travaille vraiment ; `updateStreak()` ne fait qu'afficher. Dates locales (`vcYmd`), jamais `toISOString()` (UTC).
+- **Photos** : toujours réduire avec `imageReduite` / `await imageReduiteP(file)` avant un appel vision (une photo brute dépasse la limite Groq de 4 Mo).
+- **Historique du chat envoyé à l'IA** : toujours `chatHistIA(n)` (budget ~6 000 caractères), jamais `chatHistory` brut (sinon la limite de 8 000 jetons/minute casse le chat). Textes collés par l'élève : les tronquer (Révisions : 7 000 caractères).
+- **Minuteurs** : calculer le temps restant depuis une heure de fin (`Date.now()`), jamais en décrémentant dans `setInterval` (gelé quand l'écran est verrouillé).
+- **supabase-js figée en 2.118.0** (même URL dans `scolaria-home-v2.html`, `reset-password.html` et `sw.js`, avec `crossorigin="anonymous"` pour le cache hors ligne). Pour monter de version : changer les 3 + bumper `CACHE`.
 
 ---
 

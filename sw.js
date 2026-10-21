@@ -1,11 +1,18 @@
-const CACHE = 'scolaria-v7';
+const CACHE = 'scolaria-v8';
 /* Cache de donnees (controles + rappels deja envoyes) : jamais supprime aux mises a jour */
 const DATA = 'scolaria-data';
-const API_HOSTS = ['groq.com', 'supabase.co', 'googleapis.com', 'anthropic.com', 'generativelanguage'];
+/* Appels d'API : jamais mis en cache (une reponse IA ou des donnees perimees seraient servies) */
+const API_HOSTS = ['groq.com', 'supabase.co', 'googleapis.com'];
+/* Librairie Supabase (version figee, meme URL que dans scolaria-home-v2.html) : sans elle,
+   l'app hors ligne restait bloquee sur « Vérification en cours… » */
+const SUPABASE_JS = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.min.js';
 
 self.addEventListener('install', e => {
   self.skipWaiting();
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(['./', './scolaria-home-v2.html', './annales-data.js', './manifest.json', './icons/icon-192.png', './icons/icon-512.png']).catch(() => {})));
+  e.waitUntil(caches.open(CACHE).then(c => Promise.all([
+    c.addAll(['./', './scolaria-home-v2.html', './annales-data.js', './manifest.json', './icons/icon-192.png', './icons/icon-512.png']).catch(() => {}),
+    c.add(new Request(SUPABASE_JS, { mode: 'cors' })).catch(() => {})
+  ])));
 });
 
 self.addEventListener('activate', e => {
@@ -19,6 +26,8 @@ self.addEventListener('activate', e => {
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
   if (API_HOSTS.some(h => e.request.url.includes(h))) return;
+  /* reseau d'abord, cache en secours ; une page ouverte avec ?ctrl=… (notification) retrouve la page en cache */
+  const opts = e.request.mode === 'navigate' ? { ignoreSearch: true } : undefined;
   e.respondWith(
     fetch(e.request).then(resp => {
       if (resp.ok) {
@@ -26,7 +35,7 @@ self.addEventListener('fetch', e => {
         caches.open(CACHE).then(c => c.put(e.request, clone)).catch(() => {});
       }
       return resp;
-    }).catch(() => caches.match(e.request))
+    }).catch(() => caches.match(e.request, opts))
   );
 });
 

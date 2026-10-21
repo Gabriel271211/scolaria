@@ -11,7 +11,7 @@ en HTML/CSS/JS pur — PAS de framework, PAS de build system. Juste des fichiers
 .html autonomes. Cible : smartphone Android sous Chrome, installable en PWA.
 
 FICHIERS PRINCIPAUX
-- scolaria-home-v2.html : L'APP (une seule app, ~5900 lignes) — chat IA, devoirs,
+- scolaria-home-v2.html : L'APP (une seule app, ~8700 lignes) — chat IA, devoirs,
   flashcards, interro, scanner, conjugueur, pomodoro, moyennes, révisions,
   historique, annales brevet, profil.
 - archive/ : ancien projet abandonné (modes Langues et Sciences), non déployé,

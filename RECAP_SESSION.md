@@ -1,7 +1,7 @@
 # 🎯 OBJECTIFS SCOLARIA + checklist de session
 
 > ScolarIA = **une seule app** (`scolaria-home-v2.html`). L'ancien plan « un mode par matière » (Langues, Sciences, Histoire, Arts, Arène…) est abandonné → voir `archive/`.
-> Mis à jour : octobre 2026.
+> Mis à jour : 21 octobre 2026 (audit complet).
 
 ---
 
@@ -27,6 +27,7 @@
 | Scanner → « Mes cours » : transcription fidèle, sauvegardée, modifiable, plusieurs pages, révisable (fiche, flashcards, interro) | ✅ |
 | Mes cours v2 (style Notes d'Apple) : cahiers colorés, page de cahier modifiable directement, barre de mise en forme, menu ⋯, rangement automatique | ✅ |
 | Mes cours : vraies pages (26 lignes, numérotées, débordement automatique), ajout de pages facile (vierge / photo / plusieurs photos), bouton retour Android, clavier aligné | ✅ |
+| **Audit complet (21 oct. 2026)** : synchro sans perte de données (hors ligne, app fermée vite, erreurs d'envoi), session qui ne recharge plus tout chaque heure, mode hors connexion, correcteur IA réparé (prompt finissait par « undefined »), historique du chat limité (plus de chat cassé par la limite Groq), délai max 90 s + erreurs en français, photos réduites partout, devoirs avec vraie date (+ « En retard »), série = jours de travail réel, Pomodoro juste écran verrouillé, bouton retour Android partout, Interro IA → interro du chat, flashcards échappées, Annales chargées à la demande, mode nuit, accents, code mort supprimé, proxy IA durci | ✅ |
 
 ---
 
@@ -34,6 +35,9 @@
 
 | # | Objectif | Détail | Statut |
 |---|----------|--------|:------:|
+| 0 | **Redéployer le proxy IA durci** | Dashboard Supabase → Edge Functions → `groq-proxy` → Code → coller `supabase/functions/groq-proxy/index.ts` → Deploy (garder Verify JWT sur OFF). Puis tester une question dans le chat. Tant que ce n'est pas fait, n'importe qui peut utiliser la clé Groq de l'app | ⬜ |
+| 0 bis | Vérifier sur le téléphone après l'audit | Bouton retour (fiche plein écran, Veille, menu, Pomodoro), ajout d'un devoir avec date, Pomodoro écran verrouillé, mode avion (l'app doit s'ouvrir avec « Hors connexion ») | ⬜ |
+| 0 ter | Bouton « Supprimer mon compte » (RGPD, élèves mineurs) | Demande une petite Edge Function avec la clé service (supprime `user_data` + l'utilisateur) | ⬜ |
 | 1 | Empêcher Supabase de se mettre en pause | Petite tâche automatique qui « réveille » le projet chaque semaine (sinon connexion + IA cassées après ~7 jours sans utilisation) | ⬜ |
 | 2 | Vérifier l'app sur téléphone après la pause | Connexion, sync, chat IA, photos, annales | ⬜ |
 | 3 | Annales — SVT | ~75 exos, même format (énoncé + schéma + correction + piège brevet) | ⬜ |

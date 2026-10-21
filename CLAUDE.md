@@ -9,16 +9,18 @@ Tu travailles sur **ScolarIA**, une application scolaire pour élèves français
 ### Fichiers
 | Fichier | Rôle |
 |---------|------|
-| `scolaria-home-v2.html` | **L'app** (~8700 lignes) : chat IA, devoirs, révisions, flashcards, interro, quiz vocal, scanner, veille de contrôle, conjugueur, pomodoro, moyennes, historique/favoris, annales brevet, profil, onboarding, auth. Servi par défaut (`index.html` / `vercel.json`). |
+| `scolaria-home-v2.html` | **L'app** : seulement le HTML (~1200 lignes : écrans, fenêtres) + les `<link>`/`<script>` ci-dessous. Servi par défaut (`index.html` / `vercel.json`). |
+| `css/app.css` | Tous les styles de l'app (chercher « ── X ── »). |
+| `js/*.js` | Le JavaScript, **un fichier par fonctionnalité**, chargé dans CET ordre : `base` (thème, navigation, bouton retour, esc/toast) → `devoirs` → `accueil` → `revisions` → `chat` (chat IA, interro du chat `cq*`, recherche 🌐) → `historique` → `niveau` (NIVEAUX, programmes 2026-2027) → `ia` (callGroq…, detectMat, correcteur) → `outils` (Pomodoro, calculatrice, conjugueur, moyenne, quiz vocal, scanner) → `cours` (Mes cours) → `veille` → `profil` (profil, série, progression) → `demarrage` (initApp) → `compte` (Supabase, synchro, onboarding, hors connexion) → `annales`. Scripts classiques (pas de module) : toutes les fonctions restent globales. |
 | `annales-data.js` | Banque d'exos type brevet (`window.ANNALES`, Maths + PC, 280 exos). Strings en "double quotes", SVG en backticks. **Chargé seulement à l'ouverture des Annales** (`annCharger()`), pas au démarrage. |
 | `reset-password.html` | Réinitialisation mot de passe (code OTP Supabase). |
-| `manifest.json` + `sw.js` | PWA. **Bumper `CACHE` dans `sw.js`** quand on ajoute un fichier au précache. |
+| `manifest.json` + `sw.js` | PWA. Précache **tout ou rien** de `APP_FILES` (HTML, CSS, JS). **Bumper `CACHE` dans `sw.js`** quand on ajoute un fichier au précache. Une page servie depuis le cache prend aussi ses JS/CSS dans le cache (jamais deux versions mélangées). |
 | `supabase/functions/groq-proxy/index.ts` | Edge Function qui relaie les appels IA vers Groq (clé côté serveur). Version durcie (oct. 2026) : seuls les élèves connectés (jeton de session vérifié), `max_tokens` ≤ 8000, outils limités. **Ne se déploie pas avec git push** : dashboard Supabase → Edge Functions → groq-proxy → coller le code → Deploy. |
 | `archive/` | Ancien projet (Langues, Sciences, anciens plans). Exclu du déploiement via `.vercelignore`. |
 | `DOCUMENTATION.md` | Doc complète (architecture, connexions, fonctionnalités, données). |
 | `CONTEXTE-PROMPT.md` | Prompt de contexte à copier-coller dans une autre IA. |
 | `RECAP_SESSION.md` | **Objectifs / feuille de route** + checklist de session. |
-| `tests/run.mjs` | **Tests automatiques** (68 tests, ~1 min, sans dépendance : Node + Chrome du PC, Supabase et IA simulés). `node tests/run.mjs` après CHAQUE modif. Non déployé (`.vercelignore`). Détail : `DOCUMENTATION.md` § 8 bis. |
+| `tests/run.mjs` | **Tests automatiques** (86 tests, ~1 min, sans dépendance : Node + Chrome du PC, Supabase et IA simulés). `node tests/run.mjs` après CHAQUE modif. Non déployé (`.vercelignore`). Détail : `DOCUMENTATION.md` § 8 bis. |
 
 ### Connexions externes
 - **Supabase** (`vefnkztjmodchvmspukh`) : auth email/mdp, sync cloud (table `user_data`), Edge Function `groq-proxy`. ⚠️ Projet gratuit : **mis en pause après ~7 jours d'inactivité** → connexion ET IA cassées. Si l'adresse `*.supabase.co` ne répond plus : dashboard Supabase → Restore project.
@@ -31,7 +33,7 @@ Tu travailles sur **ScolarIA**, une application scolaire pour élèves français
 
 ## Niveau scolaire (6ème → Terminale)
 - L'élève choisit sa classe (onboarding + profil, `userProfile.classe`). `getClasse()` la renvoie (défaut : 3ème).
-- `NIVEAUX` (dans `scolaria-home-v2.html`) : pour chaque classe → cycle, examen, **façon de parler**, **programme officiel**.
+- `NIVEAUX` (dans `js/niveau.js`) : pour chaque classe → cycle, examen, **façon de parler**, **programme officiel**.
 - `niveauPrompt()` construit le bloc envoyé à l'IA ; `_withNiveau(messages)` l'ajoute au prompt système.
 - **`callGroq` / `callGroqStream` / `callGroqVision` l'ajoutent automatiquement à CHAQUE appel.** Options (3e argument, 4e pour `callGroqStream`) : `{ noNiveau: true }` pour les formats stricts (conjugueur JSON, scan d'agenda, génération d'exo d'annales) ; `{ niveau: 'court' }` pour les petits appels (correcteurs CORRECT/INCORRECT) : une ligne au lieu de ~400 jetons ; **`{ niveau: 'revision' }` pour TOUT contenu généré** (fiches, flashcards, quiz, interros, résumés, planning, scanner de cours) : contenu strictement de la classe, aucune notation d'une classe supérieure, jamais « vu en seconde » ; réflexion `medium` (définitions plus justes, ~2 s). Sans option = mode chat (une notion d'une autre année est expliquée et signalée).
 - **`PROG_MATIERES`** (maths, physique-chimie, SVT, histoire-géo, français, philosophie) : programme officiel **en vigueur en 2026-2027** pour chaque classe (`prog` + `pas` = pas encore au programme + `note`), sources en commentaire. `detectMat()` choisit la matière d'après le dernier message de l'élève ; seul le programme de CETTE matière est envoyé (sinon résumé général `NIVEAUX[c].prog` + `NIVEAU_REPERES`). En physique-chimie et SVT au collège, le programme est sur le cycle 4 (ordre libre selon le prof) : ne jamais dire qu'une notion du cycle 4 n'est pas au programme. Si l'IA utilise une notion d'une classe supérieure, l'ajouter explicitement dans `pas` (ex. H₃O⁺ et pH = −log au collège). **À mettre à jour à la rentrée 2027 (maths/français 4ème, maths Terminale) et 2028 (3ème)**.
@@ -52,7 +54,8 @@ Tu travailles sur **ScolarIA**, une application scolaire pour élèves français
 ## Règles absolues — NE JAMAIS violer
 
 ### 1. Avant toute modification
-- **Lire la section concernée** avant de commencer (le fichier fait ~6000 lignes : lire ce qui est pertinent, pas tout d'un coup)
+- **Lire la section concernée** avant de commencer (trouver le bon fichier `js/…` dans le tableau des fichiers, lire ce qui est pertinent)
+- **Nouveau fichier JS** : l'ajouter dans `scolaria-home-v2.html` à la bonne place (une ligne exécutée au chargement ne peut utiliser que les fonctions des fichiers chargés AVANT) **et** dans `APP_FILES` de `sw.js` + changer `CACHE` (sinon cassé hors ligne : les tests le vérifient). Une fonction appelée par un `onclick` doit rester globale (pas de `type="module"`).
 - **Lancer les tests** après chaque modif : tout doit être ✅ avant de commiter
 
 ### 2. Le JS doit toujours être valide : les tests
@@ -103,6 +106,6 @@ node tests/run.mjs synchro    # un seul groupe (démarrage, synchro, écrans, fo
 
 ## Ce que Gabriel veut
 - Que l'app fonctionne bien sur **smartphone Android (Chrome)**
-- Pas de framework, pas de build — fichiers HTML standalone
+- Pas de framework, pas de build — HTML + CSS + JavaScript classiques, servis tels quels (découpés par fonctionnalité depuis oct. 2026)
 - Contenu adapté **à la classe de l'élève** (programme officiel, façon de parler, pièges brevet/bac), et l'IA doit toujours pouvoir expliquer un sujet d'une autre année
 - Les objectifs à jour sont dans `RECAP_SESSION.md`

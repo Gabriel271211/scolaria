@@ -129,11 +129,20 @@ async function testsCode() {
     vrai(v.every(x => x === v[0] && x !== 'absente'), 'versions trouvées : ' + v.join(', '));
   });
 
+  const precache = () => {
+    const m = lire('sw.js').match(/const APP_FILES\s*=\s*\[([^\]]*)\]/);
+    vrai(m, 'liste APP_FILES = [...] introuvable dans sw.js');
+    return m[1].match(/'[^']*'/g).map(s => s.slice(1, -1).replace(/^\.\//, ''));
+  };
   await test('Les fichiers précachés par sw.js existent', () => {
-    const m = lire('sw.js').match(/addAll\(\[([^\]]*)\]/);
-    vrai(m, 'liste addAll([...]) introuvable dans sw.js');
-    const manquants = m[1].match(/'[^']*'/g).map(s => s.slice(1, -1)).filter(f => f !== './' && !fs.existsSync(path.join(ROOT, f)));
-    egal(manquants, [], 'fichiers manquants');
+    egal(precache().filter(f => f && !fs.existsSync(path.join(ROOT, f))), [], 'fichiers manquants');
+  });
+
+  await test('Chaque fichier JS/CSS chargé par l\'app est précaché par sw.js (sinon : cassé hors ligne)', () => {
+    const html = lire(APP), liste = precache(), oublis = [];
+    for (const m of html.matchAll(/<(?:script[^>]*\ssrc|link[^>]*\shref)="([^"#?]+\.(?:js|css))"/g)) if (!/^https?:/.test(m[1]) && !liste.includes(m[1])) oublis.push(m[1]);
+    for (const m of toutLeJs().matchAll(/\.src\s*=\s*'([\w./-]+\.js)'/g)) if (!liste.includes(m[1])) oublis.push(m[1] + ' (chargé par le JS)');
+    egal(oublis, [], 'à ajouter dans APP_FILES de sw.js (et changer CACHE)');
   });
 
   await test('Les fichiers locaux appelés par les pages existent (src, href, manifest)', () => {
@@ -176,37 +185,52 @@ async function testsCode() {
   await testsServiceWorker();
 }
 
-/* Le gestionnaire « fetch » de sw.js avec un faux reseau et un faux cache (delai reduit a 0,3 s) */
+/* Le gestionnaire « fetch » de sw.js avec un faux reseau et un faux cache
+   (delais reduits : page 0,3 s au lieu de 4 s, fichier 0,8 s au lieu de 10 s) */
 async function testsServiceWorker() {
-  const src = lire('sw.js').replace(/RESEAU_MAX = \d+/, 'RESEAU_MAX = 300');
-  function lancer(cas) {
+  const src = lire('sw.js').replace(/RESEAU_MAX = \d+/, 'RESEAU_MAX = 300').replace(/RESEAU_MAX_FICHIER = \d+/, 'RESEAU_MAX_FICHIER = 800');
+  /* un service worker neuf ; reseau(url) -> { mode: 'ok' | 'echec' | 'jamais', delai } */
+  function sw(reseau, avecCache) {
     const handlers = {}, mises = [];
     const self = { addEventListener: (t, f) => { handlers[t] = f; }, registration: { scope: 'http://x/' }, skipWaiting() {}, clients: {} };
-    const caches = { match: async () => (cas.cache ? 'COPIE' : undefined), open: async () => ({ put: async () => { mises.push(1); } }), keys: async () => [] };
-    const fetch = () => new Promise((res, rej) => {
-      if (cas.reseau === 'jamais') return;
-      setTimeout(() => (cas.reseau === 'echec' ? rej(new Error('hors ligne')) : res({ ok: true, clone: () => 'CLONE', id: 'RESEAU' })), cas.delai);
+    const caches = { match: async () => (avecCache ? 'COPIE' : undefined), open: async () => ({ put: async (req) => { mises.push(req.url); } }), keys: async () => [] };
+    const fetch = req => new Promise((res, rej) => {
+      const r = reseau(req.url);
+      if (r.mode === 'jamais') return;
+      setTimeout(() => (r.mode === 'echec' ? rej(new Error('hors ligne')) : res({ ok: true, clone: () => 'CLONE', id: 'RESEAU' })), r.delai || 5);
     });
     new Function('self', 'caches', 'fetch', src)(self, caches, fetch);
-    let reponse = null; const vie = [];
-    handlers.fetch({ request: { method: 'GET', url: 'http://x/scolaria-home-v2.html', mode: 'navigate' }, respondWith: p => { reponse = p; }, waitUntil: p => vie.push(p) });
-    const t0 = Date.now();
-    return new Promise(fin => {
-      let fait = false;
-      reponse.then(r => { fait = true; fin({ servi: r === 'COPIE' ? 'cache' : r.id, ms: Date.now() - t0 }); }, () => { fait = true; fin({ servi: 'erreur', ms: Date.now() - t0 }); });
-      setTimeout(() => { if (!fait) fin({ servi: 'en attente', ms: Date.now() - t0 }); }, 1200);
-    }).then(r => Promise.race([Promise.all(vie), pause(1200)]).then(() => Object.assign(r, { majCache: mises.length })));
+    /* une requete : la page (navigate, ouvre le client 'c1') ou un de ses fichiers (client 'c1') */
+    const demande = (url, page) => {
+      let reponse = null; const vie = [];
+      handlers.fetch({ request: { method: 'GET', url: 'http://x/' + url, mode: page ? 'navigate' : 'no-cors' }, clientId: page ? '' : 'c1', resultingClientId: page ? 'c1' : '',
+        respondWith: p => { reponse = p; }, waitUntil: p => vie.push(p) });
+      const t0 = Date.now();
+      return new Promise(fin => {
+        let fait = false;
+        reponse.then(r => { fait = true; fin({ servi: r === 'COPIE' ? 'cache' : r.id, ms: Date.now() - t0 }); }, () => { fait = true; fin({ servi: 'erreur', ms: Date.now() - t0 }); });
+        setTimeout(() => { if (!fait) fin({ servi: 'en attente', ms: Date.now() - t0 }); }, 1500);
+      });
+    };
+    return { demande, mises, fin: () => pause(1300) };
   }
+  const tous = mode => (delai) => () => ({ mode, delai });
   const cas = [
-    ['réseau rapide → réponse du réseau, cache mis à jour', { reseau: 'ok', delai: 30, cache: true }, r => r.servi === 'RESEAU' && r.majCache === 1],
-    ['réseau muet → copie en cache après le délai', { reseau: 'jamais', cache: true }, r => r.servi === 'cache' && r.ms >= 280 && r.ms < 600],
-    ['mode avion → copie en cache tout de suite', { reseau: 'echec', delai: 5, cache: true }, r => r.servi === 'cache' && r.ms < 250],
-    ['mode avion sans copie → erreur (pas d\'attente infinie)', { reseau: 'echec', delai: 5, cache: false }, r => r.servi === 'erreur'],
-    ['réseau lent sans copie → on attend le réseau', { reseau: 'ok', delai: 600, cache: false }, r => r.servi === 'RESEAU' && r.majCache === 1],
-    ['réseau lent avec copie → copie, puis cache mis à jour', { reseau: 'ok', delai: 600, cache: true }, r => r.servi === 'cache' && r.majCache === 1]
+    ['réseau rapide → réponse du réseau, cache mis à jour', async () => { const s = sw(tous('ok')(30), true); const r = await s.demande('app.html', true); await s.fin(); return r.servi === 'RESEAU' && s.mises.length === 1 || r; }],
+    ['réseau muet → page en cache après le délai', async () => { const r = await sw(tous('jamais')(), true).demande('app.html', true); return r.servi === 'cache' && r.ms >= 280 && r.ms < 700 || r; }],
+    ['mode avion → page en cache tout de suite', async () => { const r = await sw(tous('echec')(5), true).demande('app.html', true); return r.servi === 'cache' && r.ms < 250 || r; }],
+    ['mode avion sans copie → erreur (pas d\'attente infinie)', async () => { const r = await sw(tous('echec')(5), false).demande('app.html', true); return r.servi === 'erreur' || r; }],
+    ['réseau lent sans copie → on attend le réseau', async () => { const s = sw(tous('ok')(600), false); const r = await s.demande('app.html', true); await s.fin(); return r.servi === 'RESEAU' && s.mises.length === 1 || r; }],
+    ['page en cache (réseau lent) → la réponse tardive ne remplace PAS la page en cache', async () => { const s = sw(tous('ok')(600), true); const r = await s.demande('app.html', true); await s.fin(); return r.servi === 'cache' && s.mises.length === 0 || [r, s.mises]; }],
+    ['page en cache → ses fichiers JS viennent aussi du cache (pas de mélange de versions)', async () => {
+      const s = sw(u => (u.endsWith('.html') ? { mode: 'jamais' } : { mode: 'ok', delai: 5 }), true);
+      await s.demande('app.html', true); const r = await s.demande('js/base.js', false); return r.servi === 'cache' && r.ms < 100 || r; }],
+    ['page du réseau → ses fichiers attendent le réseau plus longtemps (0,6 s < délai fichier)', async () => {
+      const s = sw(u => (u.endsWith('.html') ? { mode: 'ok', delai: 5 } : { mode: 'ok', delai: 600 }), true);
+      await s.demande('app.html', true); const r = await s.demande('js/base.js', false); return r.servi === 'RESEAU' || r; }]
   ];
-  await Promise.all(cas.map(async c => { c.r = await lancer(c[1]); }));
-  for (const c of cas) await test('Service worker : ' + c[0], () => vrai(c[2](c.r), 'résultat : ' + JSON.stringify(c.r)));
+  const res = await Promise.all(cas.map(c => c[1]()));
+  for (let i = 0; i < cas.length; i++) await test('Service worker : ' + cas[i][0], () => vrai(res[i] === true, 'résultat : ' + JSON.stringify(res[i])));
 }
 
 /* ══ 2. NAVIGATEUR (Chrome sans fenetre, piloté par le protocole DevTools) ══ */
@@ -435,6 +459,9 @@ class Onglet {
   }
   async capture(nom) {
     if (!CAPTURES) return;
+    /* fin des animations d'ouverture, curseur clignotant cache : captures comparables d'une fois a l'autre */
+    await this.ev('document.activeElement && document.activeElement.blur && document.activeElement.blur()').catch(() => {});
+    await pause(700);
     const r = await this.s('Page.captureScreenshot', { format: 'png' });
     const d = path.join(ROOT, 'tests', '.out');
     fs.mkdirSync(d, { recursive: true });
@@ -486,6 +513,9 @@ async function testsNavigateur(nav, base) {
       egal(await o.ev('document.getElementById("fb-login").style.display'), 'none', 'écran de connexion');
       vrai(/Léa/.test(await o.ev('document.getElementById("home-greeting").textContent')), 'prénom absent de l\'accueil');
       egal(await o.ev('document.querySelector(".sec.active").id'), 's-home', 'section affichée');
+      /* les styles sont bien appliques (feuille chargee, barre du bas positionnee) */
+      vrai(await o.ev('[].some.call(document.styleSheets, function(s) { try { return s.cssRules.length > 200; } catch (e) { return false; } })'), 'styles de l\'app non chargés');
+      egal(await o.ev('getComputedStyle(document.querySelector(".nav-btn").parentElement).position'), 'fixed', 'barre du bas');
       await o.capture('accueil');
       o.sansErreur();
     });

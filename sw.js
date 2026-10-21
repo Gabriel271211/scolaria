@@ -1,4 +1,4 @@
-const CACHE = 'scolaria-v8';
+const CACHE = 'scolaria-v9';
 /* Cache de donnees (controles + rappels deja envoyes) : jamais supprime aux mises a jour */
 const DATA = 'scolaria-data';
 /* Appels d'API : jamais mis en cache (une reponse IA ou des donnees perimees seraient servies) */
@@ -7,10 +7,20 @@ const API_HOSTS = ['groq.com', 'supabase.co', 'googleapis.com'];
    l'app hors ligne restait bloquee sur « Vérification en cours… » */
 const SUPABASE_JS = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.min.js';
 
+/* Fichiers de l'app, precaches ENSEMBLE (meme version). Tout fichier charge par
+   scolaria-home-v2.html doit etre dans cette liste (verifie par node tests/run.mjs). */
+const APP_FILES = ['./', './scolaria-home-v2.html', './css/app.css',
+  './js/base.js', './js/devoirs.js', './js/accueil.js', './js/revisions.js', './js/chat.js', './js/historique.js',
+  './js/niveau.js', './js/ia.js', './js/outils.js', './js/cours.js', './js/veille.js', './js/profil.js',
+  './js/demarrage.js', './js/compte.js', './js/annales.js',
+  './annales-data.js', './manifest.json', './icons/icon-192.png', './icons/icon-512.png'];
+
 self.addEventListener('install', e => {
   self.skipWaiting();
+  /* tout ou rien : si un fichier ne se telecharge pas, l'installation echoue et l'ancienne
+     version (complete) reste en place, au lieu d'un cache a moitie vide hors ligne */
   e.waitUntil(caches.open(CACHE).then(c => Promise.all([
-    c.addAll(['./', './scolaria-home-v2.html', './annales-data.js', './manifest.json', './icons/icon-192.png', './icons/icon-512.png']).catch(() => {}),
+    c.addAll(APP_FILES),
     c.add(new Request(SUPABASE_JS, { mode: 'cors' })).catch(() => {})
   ])));
 });
@@ -23,19 +33,30 @@ self.addEventListener('activate', e => {
   );
 });
 
-/* Reseau qui ne repond pas (une seule barre, wifi sans internet) : au bout de 4 s on sert la copie
-   en cache au lieu de laisser l'app bloquee sur le logo ; le reseau met quand meme le cache a jour */
+/* Reseau qui ne repond pas (une seule barre, wifi sans internet) : au bout de 4 s on sert la page
+   en cache au lieu de laisser l'app bloquee sur le logo. Fichiers (JS, CSS) d'une page venue du
+   reseau : 10 s avant le cache (le reseau marche, et on evite de melanger deux versions). */
 const RESEAU_MAX = 4000;
+const RESEAU_MAX_FICHIER = 10000;
+/* Pages servies depuis le cache : leurs fichiers viennent AUSSI du cache, pour ne jamais
+   melanger le HTML d'une version avec le JavaScript d'une autre (l'app est en plusieurs fichiers) */
+const pagesEnCache = new Set();
 
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
   if (API_HOSTS.some(h => e.request.url.includes(h))) return;
   /* reseau d'abord, cache en secours ; une page ouverte avec ?ctrl=… (notification) retrouve la page en cache */
-  const opts = e.request.mode === 'navigate' ? { ignoreSearch: true } : undefined;
+  const page = e.request.mode === 'navigate';
+  const opts = page ? { ignoreSearch: true } : undefined;
   const copie = () => caches.match(e.request, opts);
-  let maj = Promise.resolve();
+  if (!page && e.clientId && pagesEnCache.has(e.clientId)) {
+    e.respondWith(copie().then(r => r || fetch(e.request)));
+    return;
+  }
+  let maj = Promise.resolve(), enregistrer = true;
   const reseau = fetch(e.request).then(resp => {
-    if (resp.ok) {
+    /* page deja servie depuis le cache : on garde le cache coherent (pas de HTML neuf sans son JS) */
+    if (resp.ok && enregistrer) {
       const clone = resp.clone();
       maj = caches.open(CACHE).then(c => c.put(e.request, clone)).catch(() => {});
     }
@@ -45,12 +66,20 @@ self.addEventListener('fetch', e => {
   e.waitUntil(reseau.then(() => maj, () => {}));
   e.respondWith(new Promise((resolve, reject) => {
     let fini = false;
-    const servir = r => { if (!fini) { fini = true; resolve(r); } };
-    const minuteur = setTimeout(() => { copie().then(r => { if (r) servir(r); }); }, RESEAU_MAX);
-    reseau.then(resp => { clearTimeout(minuteur); servir(resp); }, () => {
+    const servir = (r, depuisCache) => {
+      if (fini) return;
+      fini = true;
+      if (page && e.resultingClientId) {
+        if (depuisCache) { pagesEnCache.add(e.resultingClientId); enregistrer = false; }
+        else pagesEnCache.delete(e.resultingClientId);
+      }
+      resolve(r);
+    };
+    const minuteur = setTimeout(() => { copie().then(r => { if (r) servir(r, true); }); }, page ? RESEAU_MAX : RESEAU_MAX_FICHIER);
+    reseau.then(resp => { clearTimeout(minuteur); servir(resp, false); }, () => {
       clearTimeout(minuteur);
       if (fini) return;
-      copie().then(r => { if (r) servir(r); else { fini = true; reject(new Error('hors ligne')); } });
+      copie().then(r => { if (r) servir(r, true); else { fini = true; reject(new Error('hors ligne')); } });
     });
   }));
 });

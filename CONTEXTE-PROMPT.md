@@ -11,7 +11,9 @@ en HTML/CSS/JS pur — PAS de framework, PAS de build system. Juste des fichiers
 .html autonomes. Cible : smartphone Android sous Chrome, installable en PWA.
 
 FICHIERS PRINCIPAUX
-- scolaria-home-v2.html : L'APP (une seule app, ~8700 lignes) — chat IA, devoirs,
+- scolaria-home-v2.html + css/app.css + js/*.js : L'APP (une seule app ; HTML + styles + un fichier JS par
+  fonctionnalité, chargés dans l'ordre : base, devoirs, accueil, revisions, chat, historique, niveau, ia,
+  outils, cours, veille, profil, demarrage, compte, annales) — chat IA, devoirs,
   flashcards, interro, scanner, conjugueur, pomodoro, moyennes, révisions,
   historique, annales brevet, profil.
 - archive/ : ancien projet abandonné (modes Langues et Sciences), non déployé,
@@ -55,8 +57,7 @@ DONNÉES LOCALES (localStorage, préfixe sk_)
 
 RÈGLES DE DÉVELOPPEMENT
 - Lire le fichier concerné en entier avant toute modif.
-- Après CHAQUE modif, vérifier le JS avec Node.js :
-  node -e "const fs=require('fs');const c=fs.readFileSync('scolaria-home-v2.html','utf8');const s=c.match(/<script>([\s\S]*?)<\/script>/g);let j=s?s.map(x=>x.replace(/<\/?script>/g,'')).join('\n'):'';try{new Function(j);console.log('JS OK')}catch(e){console.error('JS ERROR:',e.message)}"
+- Après CHAQUE modif : node tests/run.mjs (86 tests automatiques, ~1 min, tout doit être ✅).
 - Compter les <div ouverts et fermés : ils doivent être égaux.
 - Pas d'apostrophes non échappées dans les strings JS en '...'.
 - Pas de template literals (backticks) dans le HTML inline.
@@ -66,7 +67,7 @@ RÈGLES DE DÉVELOPPEMENT
 
 CE QUE GABRIEL VEUT
 - App fluide sur smartphone Android (Chrome).
-- Pas de framework, pas de build — fichiers HTML standalone.
+- Pas de framework, pas de build — HTML + CSS + JS classiques servis tels quels.
 - L'élève choisit sa classe : l'IA adapte programme + façon de parler
   (NIVEAUX, niveauPrompt, _withNiveau ajouté auto dans callGroq). Jamais de
   « 3ème » en dur : getClasse() / examLabel(). Un sujet d'une autre année

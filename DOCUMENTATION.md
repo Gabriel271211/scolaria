@@ -8,7 +8,7 @@ Vue d'ensemble complète de l'application : architecture, connexions externes, f
 
 Application scolaire pour élèves français du **collège au lycée (6ème → Terminale)**, développée par Gabriel. L'élève choisit sa classe et toute l'IA s'adapte à son programme et à sa façon de parler.
 **Single Page Application en HTML/CSS/JS pur** — pas de framework, pas de build system.
-Chaque écran est un fichier `.html` autonome (standalone).
+L'app = `scolaria-home-v2.html` (HTML) + `css/app.css` + `js/*.js` (un fichier par fonctionnalité, scripts classiques chargés dans l'ordre, servis tels quels).
 
 Cible principale : **smartphone Android sous Chrome** (installable comme app PWA).
 
@@ -19,7 +19,9 @@ Cible principale : **smartphone Android sous Chrome** (installable comme app PWA
 | Fichier | Rôle |
 |---------|------|
 | `index.html` | Redirige immédiatement vers `scolaria-home-v2.html` (point d'entrée). |
-| `scolaria-home-v2.html` | **App principale** (~8700 lignes) : chat IA, devoirs, flashcards, pomodoro, moyennes, révisions, bibliothèque, annales brevet, profil. |
+| `scolaria-home-v2.html` | **L'app** : le HTML (écrans, fenêtres, ~1200 lignes) + les `<link>`/`<script>` des fichiers ci-dessous. |
+| `css/app.css` | Tous les styles (chercher « ── X ── »). |
+| `js/base.js` … `js/annales.js` | Le JavaScript, un fichier par fonctionnalité, **chargés dans cet ordre** : `base` (thème, navigation, bouton retour, esc/toast, hors connexion) → `devoirs` → `accueil` → `revisions` → `chat` (chat IA, interro du chat, recherche 🌐) → `historique` → `niveau` (classes, programmes officiels) → `ia` (appels Groq, detectMat, correcteur) → `outils` (Pomodoro, calculatrice, convertisseur, conjugueur, moyenne, quiz vocal, scanner) → `cours` (Mes cours) → `veille` → `profil` (profil, série, progression) → `demarrage` (initApp) → `compte` (Supabase, synchro, onboarding, session) → `annales`. Une ligne exécutée au chargement ne peut utiliser que les fonctions des fichiers déjà chargés. |
 | `annales-data.js` | Banque d'exercices type Brevet (Maths + Physique-Chimie, 280 exos), chargée par `scolaria-home-v2.html` **à la première ouverture des Annales** (`annCharger()`), pas au démarrage. |
 | `archive/` | **Ancien projet conservé mais retiré de l'app** (non déployé, voir `archive/README.md`) : modes Langues et Sciences + anciens docs de plan. |
 | `.vercelignore` | Exclut `archive/` et `tests/` du déploiement Vercel. |
@@ -73,7 +75,7 @@ Cible principale : **smartphone Android sous Chrome** (installable comme app PWA
 
 - **JAMAIS appelée directement par le client.** Tout passe par le proxy Supabase.
 - API compatible OpenAI (`/openai/v1/chat/completions`).
-- **Modèles utilisés** (définis à UN seul endroit : `AI_TEXT_MODEL` et `AI_VISION_MODELS` dans `scolaria-home-v2.html`) :
+- **Modèles utilisés** (définis à UN seul endroit : `AI_TEXT_MODEL` et `AI_VISION_MODELS` dans `js/ia.js`) :
   - Texte : `openai/gpt-oss-120b` (avec `reasoning_effort: 'low'` pour rester rapide). Ses formules LaTeX sont converties en texte lisible par `_cleanMath()`.
   - Vision (photos de cours/devoirs) : `qwen/qwen3.8-27b`
   - ⚠️ Groq supprime régulièrement des modèles → erreur `model_not_found` = l'IA ne répond plus. Il suffit de changer les noms dans `AI_TEXT_MODEL` / `AI_VISION_MODELS` (liste : https://console.groq.com/docs/models). Les anciens Llama 3.3 / Llama 4 ont disparu en 2026.
@@ -91,7 +93,7 @@ Cible principale : **smartphone Android sous Chrome** (installable comme app PWA
 
 ## 4. Comment les appels IA fonctionnent (dans le code)
 
-Dans `scolaria-home-v2.html` :
+Dans `js/ia.js` :
 
 ```js
 var GROQ_PROXY = 'https://vefnkztjmodchvmspukh.supabase.co/functions/v1/groq-proxy';
@@ -138,7 +140,7 @@ async function callGroqVision(messages, maxTok, opts) { ... } // photos : essaie
 
 ## 5 bis. Niveau scolaire (6ème → Terminale)
 - L'élève choisit sa classe (onboarding + profil, `userProfile.classe`). `getClasse()` la renvoie (défaut : 3ème).
-- `NIVEAUX` (dans `scolaria-home-v2.html`) : pour chaque classe → cycle, examen, **façon de parler**, **programme officiel**.
+- `NIVEAUX` (dans `js/niveau.js`) : pour chaque classe → cycle, examen, **façon de parler**, **programme officiel**.
 - `niveauPrompt()` construit le bloc envoyé à l'IA ; `_withNiveau(messages)` l'ajoute au prompt système.
 - **`callGroq` / `callGroqStream` l'ajoutent automatiquement à CHAQUE appel.** Passer `{ noNiveau: true }` en 3e argument (`callGroq`) ou 4e (`callGroqStream`) pour les formats stricts (conjugueur JSON, génération d'exo d'annales). Les appels vision directs utilisent `_withNiveau` à la main.
 - Règle IA : un sujet d'une autre année est **toujours expliqué** (signalé en 1re phrase, puis adapté au niveau de l'élève).
@@ -180,7 +182,7 @@ Préfixe commun : `sk_`.
 
 - **`manifest.json`** : nom « ScolarIA », `id` + `start_url` = `/scolaria-home-v2.html`, affichage `standalone`, portrait, thème `#4F46E5`. Icônes **PNG** dans `icons/` (192, 512, 512 maskable — Android refuse les icônes SVG/data:), `icons/apple-touch-icon.png` pour iPhone.
 - **Bouton « Installer l'app »** dans le tiroir (`#dm-install`, fonction `installApp()`) : caché par défaut, apparaît quand Chrome déclenche `beforeinstallprompt` (ouvre la vraie fenêtre d'installation) ou sur iPhone (affiche les instructions Partager → Sur l'écran d'accueil). Disparaît une fois l'app installée.
-- **`sw.js`** : cache `scolaria-v8` (précache aussi la librairie Supabase figée : sans elle l'app hors ligne restait bloquée sur « Vérification en cours… » ; une page ouverte avec `?ctrl=` retrouve la page en cache) + cache `scolaria-data` (jamais effacé : contrôles à rappeler + rappels déjà envoyés). Gère aussi les **notifications des contrôles** : message `ctrl-check` envoyé par la page (ouverture + toutes les 10 min), `periodicsync` en arrière-plan (Chrome Android, app installée, au mieux), clic sur la notif → ouvre le contrôle (`?ctrl=<id>`). Stratégie **network-first** (réseau d'abord, cache en secours) avec un délai max `RESEAU_MAX` (4 s) : si le réseau ne répond pas (une barre, wifi sans internet), la copie en cache est servie et le téléchargement continue pour mettre le cache à jour. Les hôtes d'API (`groq.com`, `supabase.co`, `anthropic.com`, `generativelanguage`) sont exclus du cache pour ne jamais servir une réponse IA périmée.
+- **`sw.js`** : cache `scolaria-v9`, précache **tout ou rien** de `APP_FILES` (HTML, `css/app.css`, tous les `js/*.js`, annales, icônes : si un fichier manque, l'ancienne version complète reste en place). Une page servie depuis le cache prend aussi ses JS/CSS dans le cache (`pagesEnCache`, jamais deux versions mélangées) ; fichiers d'une page venue du réseau : 10 s avant le cache (`RESEAU_MAX_FICHIER`). Précache aussi la librairie Supabase figée : sans elle l'app hors ligne restait bloquée sur « Vérification en cours… » ; une page ouverte avec `?ctrl=` retrouve la page en cache) + cache `scolaria-data` (jamais effacé : contrôles à rappeler + rappels déjà envoyés). Gère aussi les **notifications des contrôles** : message `ctrl-check` envoyé par la page (ouverture + toutes les 10 min), `periodicsync` en arrière-plan (Chrome Android, app installée, au mieux), clic sur la notif → ouvre le contrôle (`?ctrl=<id>`). Stratégie **network-first** (réseau d'abord, cache en secours) avec un délai max `RESEAU_MAX` (4 s) : si le réseau ne répond pas (une barre, wifi sans internet), la copie en cache est servie et le téléchargement continue pour mettre le cache à jour. Les hôtes d'API (`groq.com`, `supabase.co`, `anthropic.com`, `generativelanguage`) sont exclus du cache pour ne jamais servir une réponse IA périmée.
 
 ---
 

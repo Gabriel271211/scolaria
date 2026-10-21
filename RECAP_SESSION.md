@@ -35,7 +35,7 @@
 
 | # | Objectif | Détail | Statut |
 |---|----------|--------|:------:|
-| 0 | **Redéployer le proxy IA durci** | Dashboard Supabase → Edge Functions → `groq-proxy` → Code → coller `supabase/functions/groq-proxy/index.ts` → Deploy (garder Verify JWT sur OFF). Puis tester une question dans le chat. Tant que ce n'est pas fait, n'importe qui peut utiliser la clé Groq de l'app | ⬜ |
+| 0 | **Redéployer le proxy IA durci** | Dashboard Supabase → Edge Functions → `groq-proxy` → Code → coller `supabase/functions/groq-proxy/index.ts` → Deploy (garder Verify JWT sur OFF). Puis tester une question dans le chat. Tant que ce n'est pas fait, n'importe qui peut utiliser la clé Groq de l'app. Déployé le 21 oct. 2026 (vérifié : un appel sans élève connecté est refusé, 401) | ✅ |
 | 0 bis | Vérifier sur le téléphone après l'audit | Bouton retour (fiche plein écran, Veille, menu, Pomodoro), ajout d'un devoir avec date, Pomodoro écran verrouillé, mode avion (l'app doit s'ouvrir avec « Hors connexion ») | ⬜ |
 | 0 ter | Bouton « Supprimer mon compte » (RGPD, élèves mineurs) | Demande une petite Edge Function avec la clé service (supprime `user_data` + l'utilisateur) | ⬜ |
 | 1 | Empêcher Supabase de se mettre en pause | Petite tâche automatique qui « réveille » le projet chaque semaine (sinon connexion + IA cassées après ~7 jours sans utilisation) | ⬜ |

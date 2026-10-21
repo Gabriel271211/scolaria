@@ -1,0 +1,3 @@
+# Tests : copie locale de supabase-js et captures d'ecran (recreees a chaque lancement)
+tests/.cache/
+tests/.out/

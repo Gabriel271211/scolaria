@@ -22,7 +22,8 @@ Cible principale : **smartphone Android sous Chrome** (installable comme app PWA
 | `scolaria-home-v2.html` | **App principale** (~8700 lignes) : chat IA, devoirs, flashcards, pomodoro, moyennes, révisions, bibliothèque, annales brevet, profil. |
 | `annales-data.js` | Banque d'exercices type Brevet (Maths + Physique-Chimie, 280 exos), chargée par `scolaria-home-v2.html` **à la première ouverture des Annales** (`annCharger()`), pas au démarrage. |
 | `archive/` | **Ancien projet conservé mais retiré de l'app** (non déployé, voir `archive/README.md`) : modes Langues et Sciences + anciens docs de plan. |
-| `.vercelignore` | Exclut `archive/` du déploiement Vercel. |
+| `.vercelignore` | Exclut `archive/` et `tests/` du déploiement Vercel. |
+| `tests/run.mjs` | **Tests automatiques** (voir section 8 bis) : `node tests/run.mjs`. Non déployé. |
 | `reset-password.html` | Page de réinitialisation de mot de passe (liée depuis l'écran de connexion). |
 | `manifest.json` | Manifeste PWA (nom, icônes, couleurs, écran de démarrage). |
 | `icons/` | Icônes PNG de l'app installée (192, 512, maskable, apple-touch). |
@@ -185,8 +186,34 @@ Préfixe commun : `sk_`.
 
 ## 8. Règles techniques importantes
 
-- **JS toujours valide** : après chaque modif, vérifier avec Node.js (extraction des `<script>` + `new Function()`).
-- **Div équilibrés** : nombre de `<div` == nombre de `</div>`.
+- **Après chaque modif : `node tests/run.mjs`** (voir 8 bis). Tout doit être ✅ avant de pousser.
+- **JS toujours valide** et **div équilibrés** (`<div` == `</div>` dans le HTML) : vérifiés par les tests.
 - **Pas d'apostrophes non échappées** dans les strings JS délimitées par `'`.
 - **Échapper le HTML généré** côté JS (fonction `esc`/`e`) pour éviter le XSS.
 - Modifications **section par section**, jamais tout d'un coup.
+
+---
+
+## 8 bis. Tests automatiques (`tests/run.mjs`)
+
+Une seule commande vérifie que rien n'est cassé (environ 1 min) :
+
+```bash
+node tests/run.mjs
+```
+
+- `node tests/run.mjs --rapide` : seulement les vérifications du code, sans navigateur (2 s).
+- `node tests/run.mjs synchro` : seulement les groupes dont le nom contient « synchro » (ou `démarrage`, `écrans`, `fonctions`, `code`).
+- `node tests/run.mjs --captures` : enregistre aussi des captures d'écran (taille téléphone) dans `tests/.out/`.
+
+**Sans dépendance** : Node 22+ et Chrome (ou Edge) déjà installés. Le script lance Chrome sans fenêtre, en taille Android (390 px), et le pilote par le protocole DevTools. **Supabase et l'IA sont simulés** : aucun vrai compte, aucune vraie donnée, aucun jeton Groq consommé. La première fois, il copie supabase-js dans `tests/.cache/` (internet nécessaire une fois).
+
+| Groupe | Ce qui est vérifié |
+|--------|--------------------|
+| Code | Syntaxe JS de chaque page et fichier, `<div>`/`<script>` équilibrés, pas de clé Groq ni d'appel direct à Groq, même version de supabase-js partout, fichiers précachés et liens locaux existants, `localStorage.clear()` seulement dans `logout()`, pas de `toISOString()`, service worker (réseau rapide / muet / mode avion / lent). |
+| Démarrage | Écran de connexion, élève connecté, mode avion (avec session valide et **expirée**), réseau muet (≤ 8 s), librairie introuvable, nouvel élève (onboarding), `reset-password.html`. |
+| Synchro | Le cloud n'écrase jamais des modifs locales non envoyées, le cloud plus récent remplace le téléphone, rien n'est renvoyé si tout est à jour, un envoi refusé reste en attente. |
+| Écrans | Chaque `onclick`/`oninput` appelle une fonction qui existe, les onglets du bas, **chaque fenêtre se ferme avec le bouton retour** (liste `FENETRES`), Annales (280 exos), ajout d'un devoir jusqu'au cloud, série, mode nuit, chat avec l'IA simulée (niveau + jeton envoyés), correcteur, limites Groq (par minute / par jour), erreurs IA. |
+| Fonctions | Dates locales, date de rendu, groupes/urgence des devoirs, verdict du correcteur, `detectMat` sur des sujets réels (Résistance 1940 / résistance électrique, Lumières…), niveau → brevet/bac, historique du chat limité, échappement HTML (`esc`, `mdToHtml`, `mcPropre`), calculatrice. |
+
+**Quand on ajoute une fonctionnalité** : ajouter son test dans `tests/run.mjs`. Une nouvelle fenêtre ou un nouveau panneau va dans la liste `FENETRES` (le test vérifie que le bouton retour la ferme). Si un test échoue parce que le comportement a changé **exprès**, mettre le test à jour.

@@ -18,6 +18,7 @@ Tu travailles sur **ScolarIA**, une application scolaire pour élèves français
 | `DOCUMENTATION.md` | Doc complète (architecture, connexions, fonctionnalités, données). |
 | `CONTEXTE-PROMPT.md` | Prompt de contexte à copier-coller dans une autre IA. |
 | `RECAP_SESSION.md` | **Objectifs / feuille de route** + checklist de session. |
+| `tests/run.mjs` | **Tests automatiques** (68 tests, ~1 min, sans dépendance : Node + Chrome du PC, Supabase et IA simulés). `node tests/run.mjs` après CHAQUE modif. Non déployé (`.vercelignore`). Détail : `DOCUMENTATION.md` § 8 bis. |
 
 ### Connexions externes
 - **Supabase** (`vefnkztjmodchvmspukh`) : auth email/mdp, sync cloud (table `user_data`), Edge Function `groq-proxy`. ⚠️ Projet gratuit : **mis en pause après ~7 jours d'inactivité** → connexion ET IA cassées. Si l'adresse `*.supabase.co` ne répond plus : dashboard Supabase → Restore project.
@@ -52,14 +53,16 @@ Tu travailles sur **ScolarIA**, une application scolaire pour élèves français
 
 ### 1. Avant toute modification
 - **Lire la section concernée** avant de commencer (le fichier fait ~6000 lignes : lire ce qui est pertinent, pas tout d'un coup)
-- **Compter les `<div` ouverts et fermés** avant/après : l'écart doit rester le même (il y a quelques `<div` dans des strings JS, donc l'écart actuel n'est pas 0)
-- **Vérifier la syntaxe JS** avec Node.js après chaque modif (voir workflow)
+- **Lancer les tests** après chaque modif : tout doit être ✅ avant de commiter
 
-### 2. Le JS doit toujours être valide
-```js
-node -e "const fs=require('fs');const c=fs.readFileSync('scolaria-home-v2.html','utf8');const s=c.match(/<script>([\s\S]*?)<\/script>/g);let j=s?s.map(x=>x.replace(/<\/?script>/g,'')).join('\n'):'';try{new Function(j);console.log('JS OK')}catch(e){console.error('JS ERROR:',e.message)}"
+### 2. Le JS doit toujours être valide : les tests
+```bash
+node tests/run.mjs            # tout (~1 min) : code, démarrage, synchro, écrans, fonctions
+node tests/run.mjs --rapide   # syntaxe JS, <div>/<script> équilibrés, sécurité… (2 s, sans navigateur)
+node tests/run.mjs synchro    # un seul groupe (démarrage, synchro, écrans, fonctions, code)
 ```
-Pour `annales-data.js` : `node --check annales-data.js`
+- Ils vérifient la syntaxe JS et l'équilibre des `<div` (HTML hors scripts : doit être égal), plus le comportement réel de l'app dans Chrome taille téléphone.
+- **Nouvelle fenêtre/panneau** → l'ajouter à `FENETRES` dans `tests/run.mjs` (vérifie que le bouton retour la ferme). **Nouvelle fonctionnalité** → ajouter son test. Comportement changé exprès → mettre le test à jour (jamais le supprimer pour « faire passer »).
 - Pas d'apostrophes (`'`) non échappées dans les strings JS délimitées par `'`
   - ❌ `'onclick="this.classList.toggle('on')"'`
   - ✅ `'onclick="toggleClass(this)"'` — passer par une fonction
@@ -92,8 +95,8 @@ Pour `annales-data.js` : `node --check annales-data.js`
 
 1. Lire la section concernée du fichier
 2. Faire la modification
-3. Vérifier le JS (commande ci-dessus) + l'équilibre des `<div`
-4. Tester dans le preview (largeur mobile 390px, console sans erreur rouge)
+3. `node tests/run.mjs` : tout doit être ✅ (ajouter/mettre à jour les tests de la fonctionnalité)
+4. Changement visuel : vérifier aussi à l'œil (preview 390px, ou `node tests/run.mjs --captures` → `tests/.out/`)
 5. Commiter et pusher → Vercel se redéploie automatiquement
 6. Mettre à jour `RECAP_SESSION.md` (objectifs) et `DOCUMENTATION.md` si une fonctionnalité change
 7. Confirmer à Gabriel

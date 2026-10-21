@@ -29,6 +29,7 @@
 | Mes cours : vraies pages (26 lignes, numérotées, débordement automatique), ajout de pages facile (vierge / photo / plusieurs photos), bouton retour Android, clavier aligné | ✅ |
 | **Audit complet (21 oct. 2026)** : synchro sans perte de données (hors ligne, app fermée vite, erreurs d'envoi), session qui ne recharge plus tout chaque heure, mode hors connexion, correcteur IA réparé (prompt finissait par « undefined »), historique du chat limité (plus de chat cassé par la limite Groq), délai max 90 s + erreurs en français, photos réduites partout, devoirs avec vraie date (+ « En retard »), série = jours de travail réel, Pomodoro juste écran verrouillé, bouton retour Android partout, Interro IA → interro du chat, flashcards échappées, Annales chargées à la demande, mode nuit, accents, code mort supprimé, proxy IA durci | ✅ |
 | App bloquée sur le logo sans réseau (21 oct. 2026) : ouverture immédiate en mode avion, jamais plus de 8 s d'attente du cloud, service worker qui sert la copie en cache si le réseau ne répond pas en 4 s | ✅ |
+| **Tests automatiques** (21 oct. 2026) : `node tests/run.mjs`, 68 tests en ~1 min (code, démarrage dont mode avion + session expirée, synchro sans perte, chaque fenêtre + bouton retour, chat/correcteur/limites IA simulés, fonctions). Vérifiés : 4 bugs introduits exprès ont tous été détectés | ✅ |
 
 ---
 

@@ -879,6 +879,16 @@ async function testsFonctions(o) {
     egal(r, [true, true, '2026-11-03', '', '']);
   });
 
+  await test('Devoirs : un devoir fait ne part pas à l\'année suivante, une année décalée est réparée', async () => {
+    const r = await o.ev('(function() { var t = new Date(), y = t.getFullYear(), passe = vcYmd(vcAddDays(t, -120)), mois = ["janv","févr","mars","avr","mai","juin","juil","août","sept","oct","nov","déc"];' +
+      'var p = new Date(passe + "T12:00:00"), jours = ["dimanche","lundi","mardi","mercredi","jeudi","vendredi","samedi"], lib = jours[p.getDay()] + " " + p.getDate() + " " + mois[p.getMonth()];' +
+      'var faux = (+passe.slice(0, 4) + 1) + passe.slice(4);' +
+      'localStorage.setItem("sk_dv", JSON.stringify([{ id: 1, mat: "A", desc: "x", date: lib, done: true }, { id: 2, mat: "B", desc: "y", date: lib, done: true, due: faux }]));' +
+      'loadDevoirs(); var res = [devoirs[0].due === passe, devoirs[1].due === passe, dvParseDate(lib) > 0, dvParseDate(lib, true) < 0, dvRepareAnnee("2026-11-20", "Vendredi 20 novembre")];' +
+      'localStorage.removeItem("sk_dv"); loadDevoirs(); return res; })()');
+    egal(r, [true, true, true, true, '2026-11-20']);
+  });
+
   await test('Devoirs : groupe et urgence recalculés chaque jour', async () => {
     const r = await o.ev('(function() { var d = function(n) { return { due: vcYmd(vcAddDays(new Date(), n)) }; };' +
       'return [dvGroupe(d(-1)).k, dvUrg(d(-1)), dvGroupe(d(0)).k, dvUrg(d(1)), dvUrg(d(5)), dvUrg(d(20)), dvGroupe({ date: "?" }).k]; })()');

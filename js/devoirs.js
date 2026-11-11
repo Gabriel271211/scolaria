@@ -17,12 +17,27 @@ function loadDevoirs() {
     if (!Array.isArray(devoirs)) devoirs = [];
     /* anciens devoirs : une date precise ecrite en texte (« lundi 17 mars ») devient une vraie date */
     devoirs.forEach(function(d) {
+      /* reparation : ancien bug qui envoyait un devoir passe a l'annee suivante (« mardi 26 mai » 2026
+         devenu 26 mai 2027). Le jour de la semaine ecrit trahit l'erreur : s'il colle a l'annee
+         precedente et pas a la date enregistree, on revient a l'annee precedente. */
+      if (d.due) d.due = dvRepareAnnee(d.due, d.date);
       if (d.due) return;
-      var n = dvParseDate(String(d.date || '').toLowerCase());
+      /* un devoir deja fait ne part jamais a l'annee suivante : c'etait une date passee */
+      var n = dvParseDate(String(d.date || '').toLowerCase(), !!d.done);
       if (n !== null) d.due = vcYmd(vcAddDays(new Date(), n));
     });
     dvId = devoirs.reduce(function(m, d) { return Math.max(m, +d.id || 0); }, 0) + 1;
   } catch(e) { devoirs = []; }
+}
+
+/* 'AAAA-MM-JJ' + libelle (« mardi 26 mai ») -> date corrigee d'un an en arriere si seul l'an d'avant colle au jour ecrit */
+function dvRepareAnnee(due, label) {
+  var noms = ['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'];
+  var s = String(label || '').toLowerCase().trim(), j = -1;
+  for (var i = 0; i < 7; i++) if (s.indexOf(noms[i]) === 0) { j = i; break; }
+  if (j < 0 || !/^\d{4}-\d{2}-\d{2}$/.test(due) || !/\d/.test(s)) return due;
+  var avant = (+due.slice(0, 4) - 1) + due.slice(4);
+  return vcDate(due).getDay() !== j && vcDate(avant).getDay() === j ? avant : due;
 }
 
 function saveDv() { try { localStorage.setItem('sk_dv', JSON.stringify(devoirs)); } catch(e) {} scheduleSync(); }
@@ -69,8 +84,9 @@ function dvLabelRank(label) {
   return 99;
 }
 
-/* "17 mars" / "17/03" -> jours d'ici la (null si pas de date). Sans annee : la prochaine occurrence */
-function dvParseDate(s) {
+/* "17 mars" / "17/03" -> jours d'ici la (null si pas de date). Sans annee : la prochaine occurrence,
+   sauf si garderAnnee (devoir deja fait : la date est forcement passee, on reste sur l'annee en cours) */
+function dvParseDate(s, garderAnnee) {
   var mois = ['janv','févr','mars','avr','mai','juin','juil','août','sept','oct','nov','déc'];
   var alt  = { 'fevr':1, 'aout':7, 'dec':11 };
   var j = null, m = -1, r;
@@ -86,7 +102,7 @@ function dvParseDate(s) {
   var now = new Date(), today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   var d = new Date(now.getFullYear(), m, j);
   /* plus de 2 mois dans le passe = annee prochaine (ex : "5 janvier" vu en octobre) */
-  if ((d - today) / 864e5 < -60) d = new Date(now.getFullYear() + 1, m, j);
+  if (!garderAnnee && (d - today) / 864e5 < -60) d = new Date(now.getFullYear() + 1, m, j);
   return Math.round((d - today) / 864e5);
 }
 
@@ -289,7 +305,8 @@ async function scanDevoir(e) {
   var dataUrl = await imageReduiteP(f);
   if (!dataUrl) { toast('Impossible de lire cette image'); return; }
   var sysPrompt = 'Tu lis des captures d\'agendas scolaires (Pronote, ENT…) et des photos de cahiers de textes. Aujourd\'hui on est ' + todayStr() + ' (' + vcYmd(new Date()) + '). ' +
-    'Réponds UNIQUEMENT avec un JSON valide : {"devoirs":[{"mat":"Maths","desc":"description courte","date":"AAAA-MM-JJ"}]}. ' +
+    'Réponds UNIQUEMENT avec un JSON valide : {"devoirs":[{"mat":"Maths","desc":"texte complet du devoir","date":"AAAA-MM-JJ"}]}. ' +
+    '"desc" = TOUT le texte du devoir recopié mot pour mot, sans résumer ni couper : consignes, pages, numéros d\'exercices, chapitres ou notions à revoir (ex : « Contrôle de maths : revoir les vecteurs, exercices 12 à 15 p. 87 »). ' +
     '"date" = le jour où le devoir est à rendre, au format AAAA-MM-JJ (calcule-le à partir de la date du jour si l\'agenda écrit « pour lundi », « demain »…), ou "" s\'il est inconnu. Si aucun devoir n\'est visible : {"devoirs":[]}.';
   try {
     /* JSON strict attendu : pas de bloc niveau */
@@ -299,7 +316,7 @@ async function scanDevoir(e) {
         { type: 'image_url', image_url: { url: dataUrl } },
         { type: 'text', text: 'Extrais tous les devoirs et leurs dates de rendu visibles sur cette image.' }
       ]}
-    ], 1200, { noNiveau: true });
+    ], 2000, { noNiveau: true });
     var parsed = null;
     var jsonMatch = text.match(/\{[\s\S]*\}/);
     if (jsonMatch) { try { parsed = JSON.parse(jsonMatch[0]); } catch(e2) {} }
@@ -308,7 +325,7 @@ async function scanDevoir(e) {
     if (parsed.devoirs.length) {
       parsed.devoirs.forEach(function(d) {
         var due = dvDueDe(d.date);
-        devoirs.push({ id: dvId++, mat: String(d.mat || 'Divers').slice(0, 40), desc: String(d.desc || '').slice(0, 300),
+        devoirs.push({ id: dvId++, mat: String(d.mat || 'Divers').slice(0, 40), desc: String(d.desc || '').slice(0, 1000),
                        date: due ? dvCtrlLabel(due) : String(d.date || '?'), due: due, done: false });
       });
       saveDv(); renderDevoirs(); updateHomeStats();
